@@ -6,9 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="xiaofei-im" />
         <module name="xiaofei-im-route" />
+        <module name="xiaofei-im-discovery-api" />
+        <module name="xiaofei-im" />
+        <module name="xiaofei-im-discovery-zk" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="xiaofei-im-server" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
