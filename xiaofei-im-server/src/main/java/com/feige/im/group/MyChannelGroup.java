@@ -1,5 +1,6 @@
 package com.feige.im.group;
 
+
 import com.feige.im.constant.ChannelAttr;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
@@ -9,6 +10,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.util.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class MyChannelGroup {
 
-    private static Logger log = LogManager.getLogger(MyChannelGroup.class);
+    private static final Logger LOG = LogManager.getLogger(MyChannelGroup.class);
 
     // value为集合是因为考虑到同一个用户登录了多个平台 ios | android | web | pc | mac
     private static final Map<String,Collection<Channel>> MAP = new ConcurrentHashMap<>();
@@ -82,11 +84,11 @@ public class MyChannelGroup {
         if (channels.isEmpty()){
             MAP.put(key, channels);
         }
-        log.info("userId = {}的连接加入到group中，上线平台为：{}",key,channel.attr(ChannelAttr.PLATFORM).get());
+        LOG.info("userId = {}的连接加入到group中，上线平台为：{}",() -> key,() -> channel.attr(ChannelAttr.PLATFORM).get());
         channels.add(channel);
 
         if (!channel.isActive()){
-            log.warn("userId = {}的连接被移除",key);
+            LOG.warn("userId = {}的连接被移除",key);
             remove(channel);
         }
     }

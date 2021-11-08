@@ -5,8 +5,11 @@ import com.feige.im.constant.ProcessorEnum;
 import com.feige.im.group.MyChannelGroup;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.DefaultMsg;
+import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.channel.Channel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Date;
@@ -19,12 +22,13 @@ import java.util.Objects;
  * @date: 2021/10/10 13:24<br/>
  */
 public class DefaultProtocolProcessor  implements ProtocolProcessor{
-
-
+    private static final Logger LOG = LogManager.getLogger(DefaultProtocolProcessor.class);
+    private static final MyChannelGroup channelGroup = MyChannelGroup.getInstance();
 
     @Override
     public void process(ProcessorEnum key, Channel channel, Message message) {
-        MyChannelGroup channelGroup = MyChannelGroup.getInstance();
+        LOG.debug("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(message));
+
         switch (key){
             case READ:
                 if (Objects.isNull(message)) {

@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package com.feige.im.pojo.proto;
+
+option java_outer_classname = "DefaultMsg";
+
+message Auth {
+  string userId = 1;
+
+  string deviceId = 2;
+
+  string deviceName = 3;
+
+  string version = 4;
+
+  string osVersion = 5;
+
+  string language = 6;
+
+  string token = 7;
+
+  string platform = 8;
+}
+
+
+
+message Forced {
+  /**
+     *消息ID
+     */
+  int64 id = 1;
+  /**
+     *用户ID
+     */
+  string userId = 2;
+  /**
+     *账号登录的IP
+     */
+  string ip = 3;
+  /**
+     *账号登录的地址
+     */
+  string address = 4;
+
+  /**
+     *账号登录的时间
+     */
+  string timestamp = 7;
+}
+
+
+message Msg{
+  /**
+     *消息ID
+     */
+  int64 id = 1;
+  /**
+     *发送者ID
+     */
+  string senderId = 2;
+  /**
+     *消息接收者ID
+     */
+  string receiverId = 3;
+  /**
+     *消息内容
+     */
+  string content = 4;
+  /**
+     *消息格式 txt/json/html/...
+     */
+  int32 format = 5;
+  /**
+     *消息类型 私聊/群聊/...
+     */
+  uint32 msgType = 6;
+  /**
+     *时间
+     */
+  string timestamp = 7;
+  /**
+     *消息类型
+     */
+  uint32 contentType = 8;
+  /**
+     *额外消息
+     */
+  string extra = 9;
+}
+
+/**
+心跳消息
+ */
+message Ping {
+  int32 ping = 1;
+}
+
+
+message Pong {
+  uint32 pong = 1;
+}
+
+
+message ClusterAuth {
+  string nodeKey = 1;
+}

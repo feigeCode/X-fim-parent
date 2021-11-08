@@ -14,6 +14,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.Executors;
 
 
 /**
@@ -24,30 +25,33 @@ import org.apache.logging.log4j.Logger;
  */
 public class ImServer {
 
-    private static final Logger log = LogManager.getLogger(ImServer.class);
+    private static final Logger LOG = LogManager.getLogger(ImServer.class);
 
     private final int port;
     private final EventLoopGroup bossGroup;
     private final EventLoopGroup workGroup;
     private final Class<? extends ServerChannel> serverChannel;
     private final ProtocolProcessor processor;
+    private final Runnable runnable;
 
-    private ImServer(int port, ProtocolProcessor processor){
+    private ImServer(int port, ProtocolProcessor processor,Runnable runnable){
         this.port = port;
         this.processor = processor;
+        this.runnable = runnable;
         if (OsUtil.isLinux()){
-            this.bossGroup = new EpollEventLoopGroup(new NameThreadFactory("nio-boss-"));
-            this.workGroup = new EpollEventLoopGroup(new NameThreadFactory("nio-work-"));
+            this.bossGroup = new EpollEventLoopGroup(new NameThreadFactory("server-nio-boss-"));
+            this.workGroup = new EpollEventLoopGroup(new NameThreadFactory("server-nio-work-"));
             this.serverChannel = EpollServerSocketChannel.class;
         }else {
-            this.bossGroup = new NioEventLoopGroup(new NameThreadFactory("nio-boss-"));
-            this.workGroup = new NioEventLoopGroup(new NameThreadFactory("nio-work-"));
+            this.bossGroup = new NioEventLoopGroup(new NameThreadFactory("server-nio-boss-"));
+            this.workGroup = new NioEventLoopGroup(new NameThreadFactory("server-nio-work-"));
             this.serverChannel = NioServerSocketChannel.class;
         }
     }
 
-    public static void start(int port, ProtocolProcessor processor){
-        new ImServer(port, processor).init();
+    public static void start(int port, ProtocolProcessor processor,Runnable runnable){
+        ImServer imServer = new ImServer(port, processor,runnable);
+        imServer.createServer();
     }
 
     /**
@@ -58,10 +62,11 @@ public class ImServer {
      * @return: void
      */
     public static void start(){
-        start(8090, new DefaultProtocolProcessor());
+        start(8090, new DefaultProtocolProcessor(),null);
     }
 
-    private void init() {
+
+    private void createServer() {
         ChannelFuture channelFuture = new ServerBootstrap()
                 .group(bossGroup, workGroup)
                 .childOption(ChannelOption.TCP_NODELAY, true)
@@ -72,9 +77,11 @@ public class ImServer {
                 .bind().syncUninterruptibly();
         channelFuture.channel().newSucceededFuture().addListener(future -> {
             Parser.registerDefaultParsing();
-            log.info("netty websocket server in {} port start finish....", this.port);
+            LOG.info("netty websocket server in {} port start finish....", this.port);
         });
         channelFuture.channel().closeFuture().addListener(future -> this.destroy());
+        // 集群模式下需要和其他节点建立连接
+        clusterConnect();
     }
 
     public void destroy(){
@@ -83,6 +90,13 @@ public class ImServer {
         }
         if (this.workGroup != null){
             this.workGroup.shutdownGracefully();
+        }
+    }
+
+    public void clusterConnect(){
+        if (runnable != null){
+            LOG.info("集群模式，开始连接其他主机");
+            Executors.newSingleThreadExecutor(new NameThreadFactory("cluster-connect-task-")).execute(runnable);
         }
     }
 
