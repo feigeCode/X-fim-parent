@@ -19,10 +19,10 @@ import org.apache.logging.log4j.Logger;
 @ChannelHandler.Sharable
 public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
 
-    private final ProtocolProcessor processor;
+    private final MsgProcessor processor;
 
-    public XiaoFeiImHandler(ProtocolProcessor protocolProcessor){
-        this.processor = protocolProcessor;
+    public XiaoFeiImHandler(MsgProcessor msgProcessor){
+        this.processor = msgProcessor;
     }
 
     private static final Logger log = LogManager.getLogger(XiaoFeiImHandler.class);

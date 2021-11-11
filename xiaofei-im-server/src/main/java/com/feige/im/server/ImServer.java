@@ -1,7 +1,7 @@
 package com.feige.im.server;
 
-import com.feige.im.handler.DefaultProtocolProcessor;
-import com.feige.im.handler.ProtocolProcessor;
+import com.feige.im.handler.DefaultMsgProcessor;
+import com.feige.im.handler.MsgProcessor;
 import com.feige.im.parser.Parser;
 import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.OsUtil;
@@ -31,10 +31,10 @@ public class ImServer {
     private final EventLoopGroup bossGroup;
     private final EventLoopGroup workGroup;
     private final Class<? extends ServerChannel> serverChannel;
-    private final ProtocolProcessor processor;
+    private final MsgProcessor processor;
     private final Runnable runnable;
 
-    private ImServer(int port, ProtocolProcessor processor,Runnable runnable){
+    private ImServer(int port, MsgProcessor processor, Runnable runnable){
         this.port = port;
         this.processor = processor;
         this.runnable = runnable;
@@ -49,7 +49,7 @@ public class ImServer {
         }
     }
 
-    public static void start(int port, ProtocolProcessor processor,Runnable runnable){
+    public static void start(int port, MsgProcessor processor, Runnable runnable){
         ImServer imServer = new ImServer(port, processor,runnable);
         imServer.createServer();
     }
@@ -62,7 +62,7 @@ public class ImServer {
      * @return: void
      */
     public static void start(){
-        start(8090, new DefaultProtocolProcessor(),null);
+        start(8090, new DefaultMsgProcessor(),null);
     }
 
 

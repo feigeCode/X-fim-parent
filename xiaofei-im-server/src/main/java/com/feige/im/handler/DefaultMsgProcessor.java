@@ -17,12 +17,12 @@ import java.util.Objects;
 
 /**
  * @author feige<br />
- * @ClassName: DefaultProtocolProcessor <br/>
+ * @ClassName: DefaultMsgProcessor <br/>
  * @Description: <br/>
  * @date: 2021/10/10 13:24<br/>
  */
-public class DefaultProtocolProcessor  implements ProtocolProcessor{
-    private static final Logger LOG = LogManager.getLogger(DefaultProtocolProcessor.class);
+public class DefaultMsgProcessor implements MsgProcessor {
+    private static final Logger LOG = LogManager.getLogger(DefaultMsgProcessor.class);
     private static final MyChannelGroup channelGroup = MyChannelGroup.getInstance();
 
     @Override

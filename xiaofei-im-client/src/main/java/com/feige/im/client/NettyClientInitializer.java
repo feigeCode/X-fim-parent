@@ -2,8 +2,7 @@ package com.feige.im.client;
 
 import com.feige.im.codec.XiaoFeiProtoBufDecoder;
 import com.feige.im.codec.XiaoFeiProtoBufEncoder;
-import com.feige.im.handler.ProtocolProcessor;
-import com.feige.im.handler.ServerHeartbeatHandler;
+import com.feige.im.handler.MsgProcessor;
 import com.feige.im.handler.XiaoFeiImHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -11,17 +10,13 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import io.netty.handler.timeout.IdleStateHandler;
 
 import java.net.URI;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author feige<br />
@@ -30,11 +25,11 @@ import java.util.concurrent.TimeUnit;
  * @date: 2021/11/7 18:34<br/>
  */
 public class NettyClientInitializer extends ChannelInitializer<SocketChannel> {
-    private final ProtocolProcessor processor;
+    private final MsgProcessor processor;
     private final String ip;
     private final int port;
 
-    public NettyClientInitializer(ProtocolProcessor processor, String ip, int port) {
+    public NettyClientInitializer(MsgProcessor processor, String ip, int port) {
         this.processor = processor;
         this.ip = ip;
         this.port = port;

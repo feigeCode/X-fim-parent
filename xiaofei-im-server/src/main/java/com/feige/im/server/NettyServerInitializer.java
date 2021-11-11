@@ -2,7 +2,7 @@ package com.feige.im.server;
 
 import com.feige.im.codec.XiaoFeiProtoBufDecoder;
 import com.feige.im.codec.XiaoFeiProtoBufEncoder;
-import com.feige.im.handler.ProtocolProcessor;
+import com.feige.im.handler.MsgProcessor;
 import com.feige.im.handler.ServerHeartbeatHandler;
 import com.feige.im.handler.XiaoFeiImHandler;
 import io.netty.channel.ChannelInitializer;
@@ -21,10 +21,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
 
-    private final ProtocolProcessor processor;
+    private final MsgProcessor processor;
 
-    public NettyServerInitializer(ProtocolProcessor protocolProcessor){
-        this.processor = protocolProcessor;
+    public NettyServerInitializer(MsgProcessor msgProcessor){
+        this.processor = msgProcessor;
     }
 
     @Override

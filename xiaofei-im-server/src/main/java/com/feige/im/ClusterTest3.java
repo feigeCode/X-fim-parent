@@ -1,7 +1,7 @@
 package com.feige.im;
 
-import com.feige.im.handler.ClusterProtocolProcessor;
-import com.feige.im.handler.DefaultProtocolProcessor;
+import com.feige.im.handler.ClusterMsgForwardProcessor;
+import com.feige.im.handler.DefaultMsgProcessor;
 import com.feige.im.pojo.Server;
 import com.feige.im.route.impl.ConsistentHashRoute;
 import com.feige.im.runnable.ClusterConnectTask;
@@ -20,7 +20,7 @@ public class ClusterTest3 {
         ArrayList<Server> servers = new ArrayList<>();
         servers.add(new Server("localhost",8090));
         servers.add(new Server("localhost",8100));
-        ClusterProtocolProcessor processor = new ClusterProtocolProcessor(new DefaultProtocolProcessor(), new ConsistentHashRoute());
+        ClusterMsgForwardProcessor processor = new ClusterMsgForwardProcessor(new DefaultMsgProcessor(), new ConsistentHashRoute());
         ClusterConnectTask clusterConnectTask = new ClusterConnectTask(servers, processor);
         ImServer.start(8120,processor,clusterConnectTask);
     }

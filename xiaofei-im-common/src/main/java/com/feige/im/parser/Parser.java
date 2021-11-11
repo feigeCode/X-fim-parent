@@ -30,6 +30,10 @@ public class Parser {
 
 
     public static void add(Integer key, Class<? extends Message> t,DeserializationHandler handler){
+        if (!Objects.isNull(key) && (key.equals(1) || key.equals(0))){
+            log.error("0和1已经被分配为心跳key，请重新分配key！");
+            throw new IllegalArgumentException("0和1已经被分配为心跳key，请重新分配key！");
+        }
         if (!Objects.isNull(key) && !Objects.isNull(t) && !Objects.isNull(handler)){
             if (map1.containsKey(key)){
                 log.error("{}该key已被其它解析器占用，请重新分配key！",key);

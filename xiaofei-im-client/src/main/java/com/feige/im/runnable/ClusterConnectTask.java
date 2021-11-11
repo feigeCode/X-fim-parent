@@ -1,7 +1,7 @@
 package com.feige.im.runnable;
 
 import com.feige.im.client.ImClient;
-import com.feige.im.handler.ProtocolProcessor;
+import com.feige.im.handler.MsgProcessor;
 import com.feige.im.pojo.Server;
 
 import java.util.List;
@@ -12,12 +12,12 @@ import java.util.List;
  * @Description: 和其他主机建立连接<br/>
  * @date: 2021/11/7 22:48<br/>
  */
-public class ClusterConnectTask implements Runnable{
+public class ClusterConnectTask implements Runnable {
 
     private final List<Server> serverList;
-    private final ProtocolProcessor processor;
+    private final MsgProcessor processor;
 
-    public ClusterConnectTask(List<Server> serverList, ProtocolProcessor processor) {
+    public ClusterConnectTask(List<Server> serverList, MsgProcessor processor) {
         this.serverList = serverList;
         this.processor = processor;
     }

@@ -2,9 +2,7 @@ package com.feige.im.codec;
 
 import com.feige.im.constant.ChannelAttr;
 import com.feige.im.constant.ImConst;
-import com.feige.im.handler.XiaoFeiImHandler;
 import com.feige.im.parser.Parser;
-import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.buffer.ByteBuf;

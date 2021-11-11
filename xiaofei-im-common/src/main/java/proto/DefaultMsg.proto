@@ -104,3 +104,9 @@ message Pong {
 message ClusterAuth {
   string nodeKey = 1;
 }
+
+
+message Ack {
+  string id = 1;
+  string status = 2;
+}
