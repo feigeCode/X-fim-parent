@@ -9,21 +9,26 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>xiaofei-im-discovery-api</artifactId>
+    <artifactId>xiaofei-im-discovery-nacos</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+
     <dependencies>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-discovery-api</artifactId>
+            <version>${xiaofei.im.version}</version>
         </dependency>
     </dependencies>
+
+
+
 
 </project>

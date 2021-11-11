@@ -1,6 +1,9 @@
 package com.feige.zk.discovery.impl;
 
 import com.feige.discovery.ProviderService;
+import com.feige.discovery.pojo.ServerInstance;
+
+import java.util.List;
 
 /**
  * @author feige<br />
@@ -10,4 +13,23 @@ import com.feige.discovery.ProviderService;
  */
 public class ProviderServiceImpl implements ProviderService {
 
+    @Override
+    public void registerServerInstance(ServerInstance serverInstance) {
+
+    }
+
+    @Override
+    public void deregisterServerInstance(ServerInstance serverInstance) {
+
+    }
+
+    @Override
+    public List<ServerInstance> getAllServerInstances(String serverName) {
+        return null;
+    }
+
+    @Override
+    public void subscribe(String name) {
+
+    }
 }

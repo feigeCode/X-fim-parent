@@ -6,11 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="xiaofei-im-common" />
-        <module name="xiaofei-im-route" />
+        <module name="xiaofei-im-route-api" />
+        <module name="xiaofei-im-clsuter" />
         <module name="xiaofei-im-discovery-api" />
         <module name="xiaofei-im-discovery-zk" />
         <module name="xiaofei-im-server" />
+        <module name="xiaofei-im-discovery-nacos" />
+        <module name="xiaofei-im-common" />
+        <module name="xiaofei-im-route" />
         <module name="xiaofei-im-client" />
       </profile>
     </annotationProcessing>

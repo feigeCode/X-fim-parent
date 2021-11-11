@@ -16,6 +16,9 @@
         <module>xiaofei-im-discovery-api</module>
         <module>xiaofei-im-client</module>
         <module>xiaofei-im-common</module>
+        <module>xiaofei-im-discovery-nacos</module>
+        <module>xiaofei-im-route-api</module>
+        <module>xiaofei-im-clsuter</module>
     </modules>
 
     <properties>
@@ -40,10 +43,19 @@
         <druid.version>1.1.10</druid.version>
         <swagger.version>2.7.0</swagger.version>
         <jwt.version>0.7.0</jwt.version>
+        <nacos-client.version>2.0.2</nacos-client.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- https://mvnrepository.com/artifact/com.alibaba.nacos/nacos-client -->
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos-client.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
