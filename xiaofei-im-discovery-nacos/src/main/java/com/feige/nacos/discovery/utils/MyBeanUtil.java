@@ -34,6 +34,7 @@ public class MyBeanUtil {
         instance.setHealthy(serverInstance.isHealthy());
         instance.setWeight(serverInstance.getWeight());
         instance.setMetadata(serverInstance.getMetadata());
+        instance.setServiceName(serverInstance.getServiceName());
         return instance;
     }
 
@@ -54,6 +55,7 @@ public class MyBeanUtil {
         serverInstance.setHealthy(instance.isHealthy());
         serverInstance.setWeight(instance.getWeight());
         serverInstance.setMetadata(instance.getMetadata());
+        serverInstance.setServiceName(instance.getServiceName());
         return serverInstance;
     }
 

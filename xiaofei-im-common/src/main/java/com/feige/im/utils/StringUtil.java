@@ -17,6 +17,30 @@ public class StringUtil {
         return str == null || "".equals(str);
     }
 
+    public static boolean isBlank(CharSequence s) {
+        if (s != null) {
+            for (int i = 0; i < s.length(); ++i) {
+                if (!Character.isWhitespace(s.charAt(i))) {
+                    return false;
+                }
+            }
+
+        }
+        return true;
+    }
+
+    public static boolean containsBlanks(CharSequence s) {
+        if (s != null) {
+            for (int i = 0; i < s.length(); ++i) {
+                if (Character.isWhitespace(s.charAt(i))) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
 
     public static String protoMsgFormat(Message message){
         if (isEmpty(message) || isEmpty(message.toString())){
@@ -25,4 +49,5 @@ public class StringUtil {
         String msg = message.toString().trim().replaceAll("\n", ",");
         return "{" + msg + "}";
     }
+
 }

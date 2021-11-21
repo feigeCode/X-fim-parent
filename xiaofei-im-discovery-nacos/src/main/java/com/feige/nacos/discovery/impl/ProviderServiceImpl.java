@@ -40,7 +40,7 @@ public class ProviderServiceImpl implements ProviderService {
         try {
             namingService.registerInstance(instance.getServiceName(),instance);
         } catch (NacosException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 
@@ -50,7 +50,7 @@ public class ProviderServiceImpl implements ProviderService {
         try {
             namingService.deregisterInstance(instance.getServiceName(),instance);
         } catch (NacosException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 
@@ -60,7 +60,7 @@ public class ProviderServiceImpl implements ProviderService {
             List<Instance> instanceList = namingService.getAllInstances(serverName);
             return MyBeanUtil.instances2serverInstances(instanceList);
         } catch (NacosException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
         return new ArrayList<>();
     }

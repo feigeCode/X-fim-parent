@@ -44,10 +44,16 @@
         <swagger.version>2.7.0</swagger.version>
         <jwt.version>0.7.0</jwt.version>
         <nacos-client.version>2.0.2</nacos-client.version>
+        <yaml.version>1.25</yaml.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${yaml.version}</version>
+            </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.alibaba.nacos/nacos-client -->
             <dependency>

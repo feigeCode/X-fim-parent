@@ -23,7 +23,7 @@ public class Parser {
         Message process(ByteBufInputStream in) throws Exception;
     }
 
-    private static final Logger log = LogManager.getLogger(Parser.class);
+    private static final Logger LOG =  LogManager.getLogger(Parser.class);
 
     public static Map<Integer,DeserializationHandler> map1 = new ConcurrentHashMap<>();
     public static Map<Class<? extends Message>,Integer> map2 = new ConcurrentHashMap<>();
@@ -31,17 +31,17 @@ public class Parser {
 
     public static void add(Integer key, Class<? extends Message> t,DeserializationHandler handler){
         if (!Objects.isNull(key) && (key.equals(1) || key.equals(0))){
-            log.error("0和1已经被分配为心跳key，请重新分配key！");
+            LOG.error("0和1已经被分配为心跳key，请重新分配key！");
             throw new IllegalArgumentException("0和1已经被分配为心跳key，请重新分配key！");
         }
         if (!Objects.isNull(key) && !Objects.isNull(t) && !Objects.isNull(handler)){
             if (map1.containsKey(key)){
-                log.error("{}该key已被其它解析器占用，请重新分配key！",key);
+                LOG.error("{}该key已被其它解析器占用，请重新分配key！",key);
                 throw new IllegalArgumentException("该key已被其它解析器占用，请重新分配key！");
             }
             map1.put(key,handler);
             map2.put(t,key);
-            log.info("key = {}, className = {}的解析器已加入map中",key,t.getCanonicalName());
+            LOG.info("key = {}, className = {}的解析器已加入map中",key,t.getCanonicalName());
         }
     }
 
@@ -55,10 +55,10 @@ public class Parser {
             try {
                 return handler.process(in);
             } catch (Exception e) {
-                log.error(e.getMessage(),e);
+                LOG.error(e.getMessage(),e);
             }
         }
-        log.error("未找到key = {}的解析器，请查看客户端发送的数据类型标识是否和当前解析器匹配",key);
+        LOG.error("未找到key = {}的解析器，请查看客户端发送的数据类型标识是否和当前解析器匹配",key);
         return null;
     }
 

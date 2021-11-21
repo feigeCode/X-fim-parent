@@ -11,6 +11,7 @@ import io.netty.channel.Channel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
@@ -27,9 +28,16 @@ public class DefaultMsgProcessor implements MsgProcessor {
 
     @Override
     public void process(ProcessorEnum key, Channel channel, Message message) {
-        LOG.debug("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(message));
-
+        LOG.info("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(message));
         switch (key){
+            case ACTIVE:
+                System.out.println("连接进入");
+                InetSocketAddress inetSocketAddress = (InetSocketAddress)channel.remoteAddress();
+                System.out.println(inetSocketAddress.getHostName());
+                System.out.println(inetSocketAddress.getPort());
+                System.out.println(inetSocketAddress.getAddress().getHostAddress());
+                System.out.println(inetSocketAddress.getHostString());
+                break;
             case READ:
                 if (Objects.isNull(message)) {
                     return;
@@ -68,6 +76,9 @@ public class DefaultMsgProcessor implements MsgProcessor {
                 break;
             case INACTIVE:
                 channelGroup.remove(channel);
+                break;
+            case EXCEPTION:
+                System.out.println("发生异常");
                 break;
         }
 

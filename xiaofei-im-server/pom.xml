@@ -27,6 +27,11 @@
             <artifactId>xiaofei-im-client</artifactId>
             <version>${xiaofei.im.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-clsuter</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

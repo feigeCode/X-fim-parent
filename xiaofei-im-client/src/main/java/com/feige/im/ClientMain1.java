@@ -5,10 +5,11 @@ import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.DefaultMsg;
 import io.netty.channel.Channel;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 
 /**
  * @author feige<br />
@@ -16,11 +17,11 @@ import java.io.InputStreamReader;
  * @Description: <br/>
  * @date: 2021/11/6 23:19<br/>
  */
-public class ClientMain {
+public class ClientMain1 {
 
     public static void main(String[] args) throws IOException {
         Parser.registerDefaultParsing();
-        ImClient localhost = ImClient.connect("192.168.0.107", 8002, (key, channel, msg) -> {
+        ImClient localhost = ImClient.connect("192.168.0.107", 8001, (key, channel, msg) -> {
             System.out.println(msg);
         });
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -30,7 +31,7 @@ public class ClientMain {
             if ("1".equals(s)){
                 DefaultMsg.Auth auth = DefaultMsg.Auth.newBuilder()
                         .setPlatform("android")
-                        .setUserId("2")
+                        .setUserId("1")
                         .setDeviceName("w")
                         .setDeviceId("1")
                         .setLanguage("en")
@@ -46,8 +47,8 @@ public class ClientMain {
                         .setMsgType(1)
                         .setExtra("extra")
                         .setFormat(1)
-                        .setSenderId("2")
-                        .setReceiverId("1")
+                        .setSenderId("1")
+                        .setReceiverId("2")
                         .setTimestamp(String.valueOf(System.currentTimeMillis()))
                         .build();
                 channel.writeAndFlush(msg);

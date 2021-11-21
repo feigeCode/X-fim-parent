@@ -15,5 +15,41 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-common</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-client</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-route-api</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-route</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-discovery-api</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-discovery-nacos</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

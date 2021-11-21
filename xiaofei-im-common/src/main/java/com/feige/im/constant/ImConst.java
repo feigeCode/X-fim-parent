@@ -37,7 +37,10 @@ public interface ImConst {
     /**
      * 配置信息
      */
-    String NODE_KEY = "nodeKey";
+    String SERVER_IP = "server.ip";
+    String SERVER_PORT = "server.port";
+
+
 
 
 

@@ -1,12 +1,16 @@
 package com.feige.im;
 
-import com.feige.im.handler.ClusterMsgForwardProcessor;
+import com.feige.discovery.pojo.ServerInstance;
+import com.feige.im.config.ClusterConfig;
+import com.feige.im.handler.client.DefaultClientMsgProcessor;
+import com.feige.im.handler.server.ClusterMsgForwardProcessor;
+import com.feige.im.handler.server.DefaultClusterMsgForwardProcessor;
 import com.feige.im.handler.DefaultMsgProcessor;
-import com.feige.im.pojo.Server;
-import com.feige.im.route.impl.ConsistentHashRoute;
+
 import com.feige.im.runnable.ClusterConnectTask;
 import com.feige.im.server.ImServer;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -17,10 +21,11 @@ import java.util.ArrayList;
  */
 public class ClusterTest2 {
     public static void main(String[] args) {
-        ArrayList<Server> servers = new ArrayList<>();
-        servers.add(new Server("localhost",8090));
-        ClusterMsgForwardProcessor processor = new ClusterMsgForwardProcessor(new DefaultMsgProcessor(), new ConsistentHashRoute());
-        ClusterConnectTask clusterConnectTask = new ClusterConnectTask(servers, processor);
-        ImServer.start(8100,processor,clusterConnectTask);
+        ArrayList<ServerInstance> servers = new ArrayList<>();
+        servers.add(new ServerInstance("192.168.0.107",8001));
+        ClusterMsgForwardProcessor defaultClusterMsgForwardProcessor = new DefaultClusterMsgForwardProcessor(new DefaultMsgProcessor());
+        DefaultClientMsgProcessor defaultClientMsgProcessor = new DefaultClientMsgProcessor();
+        ClusterConnectTask clusterConnectTask = new ClusterConnectTask(servers, defaultClientMsgProcessor);
+        ImServer.start(new File("E:\\project\\im\\xiaofei-im-parent\\conf\\xiaofei-im2.properties"),defaultClusterMsgForwardProcessor,clusterConnectTask);
     }
 }

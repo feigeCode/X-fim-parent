@@ -1,9 +1,6 @@
 package com.feige.im.client;
 
-import com.feige.im.channel.ClusterChannel;
-import com.feige.im.constant.ChannelAttr;
 import com.feige.im.handler.MsgProcessor;
-import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.OsUtil;
 import io.netty.bootstrap.Bootstrap;
@@ -31,7 +28,6 @@ import java.net.InetSocketAddress;
 public class ImClient {
 
     public static final Logger LOG = LogManager.getLogger(ImClient.class);
-    public static final ClusterChannel clusterChannel = ClusterChannel.getINSTANCE();
     private final int port;
     private final String ip;
     private final EventLoopGroup wordGroup;
@@ -52,10 +48,10 @@ public class ImClient {
         }
     }
 
-    public static void connect(String ip, int port, MsgProcessor processor) {
+    public static ImClient connect(String ip, int port, MsgProcessor processor) {
         ImClient imClient = new ImClient(ip, port, processor);
         imClient.createClient();
-
+        return imClient;
     }
 
     private void createClient() {
@@ -64,40 +60,12 @@ public class ImClient {
                 .group(this.wordGroup)
                 .handler(new NettyClientInitializer(processor, ip, port))
                 .connect(new InetSocketAddress(ip, port)).syncUninterruptibly();
-        channelFuture.channel().closeFuture().addListener(future -> {
-            this.destroy();
+        channelFuture.channel().closeFuture().addListener(future -> this.destroy());
+        channelFuture.channel().newSucceededFuture().addListener(future -> {
+            LOG.info("与ip={},port={}的主机建立连接成功！",ip,port);
         });
         this.channel = channelFuture.channel();
-        init();
-        LOG.info("初始化工作完成");
-    }
 
-    /**
-     * 初始化操作
-     */
-    public void init() {
-        // 当客户端使用时需要注册消息类型
-        // Parser.registerDefaultParsing();
-        this.channel.attr(ChannelAttr.NODE_KEY).set(ip + ":" + port);
-        clusterChannel.add(this.channel);
-        LOG.info("与ip={},port={}的主机建立连接成功，开始初始化工作",() -> ip,() -> port);
-        sendClusterConnectMsg();
-    }
-
-    public void sendClusterConnectMsg(){
-        DefaultMsg.ClusterAuth clusterAuth = DefaultMsg.ClusterAuth.newBuilder()
-                .setNodeKey("localhost:8100")
-                .build();
-        LOG.info("开始发送集群连接消息{}",() -> "");
-        clusterChannel.write(ip + ":" + port, clusterAuth);
-        LOG.info("集群连接消息发送完成{}",() -> "");
-    }
-
-    /**
-     * 重连
-     */
-    public static void reconnect(){
-        //
     }
 
     /**
@@ -110,4 +78,19 @@ public class ImClient {
     }
 
 
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public MsgProcessor getProcessor() {
+        return processor;
+    }
 }

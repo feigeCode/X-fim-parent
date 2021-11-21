@@ -34,13 +34,13 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        log.info("连接进入");
         ctx.channel().attr(ChannelAttr.ID).set(ctx.channel().id().asShortText());
+        processor.process(ProcessorEnum.ACTIVE,ctx.channel(),null);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        log.info("userId = {}的连接不活跃",ctx.channel().attr(ChannelAttr.USER_ID));
+        log.info("channelId = {}的连接不活跃",ctx.channel().attr(ChannelAttr.ID));
         if (ctx.channel().attr(ChannelAttr.USER_ID) == null){
             return;
         }
@@ -52,5 +52,6 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error(cause);
+        processor.process(ProcessorEnum.EXCEPTION,ctx.channel(),null);
     }
 }

@@ -16,25 +16,25 @@ import java.util.TreeMap;
  */
 public class ConsistentHashRoute implements IRoute {
 
+
     public static final int VIRTUAL_NODE_COUNT = 5;
+
+    public static final String[] strings = {"192.168.0.107:8001", "192.168.0.107:8002"};
 
     private final TreeMap<Integer, String> MAP = new TreeMap<>();
 
     public static void main(String[] args) {
-        String[] strings = {"192.168.0.0:8011", "192.168.0.1:8011", "192.168.0.2:8011",
-                "192.168.0.3:8011", "192.168.0.4:8011"};
+        String[] strings = {"192.168.0.107:8001", "192.168.0.107:8002"};
         ConsistentHashRoute consistentHashRoute = new ConsistentHashRoute(strings);
         String route1 = consistentHashRoute.getRoute("1");
         String route2 = consistentHashRoute.getRoute("2");
-        String route3 = consistentHashRoute.getRoute("3");
         System.out.println(route1);
         System.out.println(route2);
-        System.out.println(route3);
 
     }
 
     public ConsistentHashRoute(){
-
+        this(strings);
     }
 
     public ConsistentHashRoute(Collection<String> servers){

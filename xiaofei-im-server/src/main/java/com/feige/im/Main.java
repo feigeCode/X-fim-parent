@@ -2,6 +2,7 @@ package com.feige.im;
 
 import com.feige.im.server.ImServer;
 
+import java.io.File;
 
 
 /**
@@ -12,6 +13,6 @@ import com.feige.im.server.ImServer;
  */
 public class Main {
     public static void main(String[] args) {
-        ImServer.start();
+        ImServer.start(new File("E:\\project\\im\\xiaofei-im-parent\\conf\\xiaofei-im.properties"));
     }
 }

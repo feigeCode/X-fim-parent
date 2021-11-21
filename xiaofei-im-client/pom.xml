@@ -22,11 +22,6 @@
             <artifactId>xiaofei-im-common</artifactId>
             <version>${xiaofei.im.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.feige</groupId>
-            <artifactId>xiaofei-im-route</artifactId>
-            <version>${xiaofei.im.version}</version>
-        </dependency>
     </dependencies>
 
 </project>

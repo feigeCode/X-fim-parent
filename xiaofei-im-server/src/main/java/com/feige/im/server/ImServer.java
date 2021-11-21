@@ -1,8 +1,11 @@
 package com.feige.im.server;
 
+import com.feige.im.config.ClusterConfig;
+import com.feige.im.constant.ImConst;
 import com.feige.im.handler.DefaultMsgProcessor;
 import com.feige.im.handler.MsgProcessor;
 import com.feige.im.parser.Parser;
+import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.OsUtil;
 import io.netty.bootstrap.ServerBootstrap;
@@ -14,6 +17,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.concurrent.Executors;
 
 
@@ -26,6 +31,7 @@ import java.util.concurrent.Executors;
 public class ImServer {
 
     private static final Logger LOG = LogManager.getLogger(ImServer.class);
+    private static final ClusterConfig CONFIG = ClusterConfig.getClusterConfig();
 
     private final int port;
     private final EventLoopGroup bossGroup;
@@ -33,6 +39,7 @@ public class ImServer {
     private final Class<? extends ServerChannel> serverChannel;
     private final MsgProcessor processor;
     private final Runnable runnable;
+
 
     private ImServer(int port, MsgProcessor processor, Runnable runnable){
         this.port = port;
@@ -49,24 +56,81 @@ public class ImServer {
         }
     }
 
-    public static void start(int port, MsgProcessor processor, Runnable runnable){
-        ImServer imServer = new ImServer(port, processor,runnable);
+
+
+    /**
+     * @description: 通过配置文件启动，默认的消息处理器，默认的处理器功能受限，推荐使用自定义的
+     * @author: feige
+     * @date: 2021/11/14 1:02
+     * @param	file 文件对象
+     * @return: void
+     */
+    public static void start(File file){
+        start(file,new DefaultMsgProcessor(),null);
+    }
+
+    /**
+     * @description: 通过配置文件启动，默认的消息处理器，默认的处理器功能受限，推荐使用自定义的
+     * @author: feige
+     * @date: 2021/11/14 16:14
+     * @param	is	配置文件流
+     * @return: void
+     */
+    public static void start(InputStream is){
+        start(is,new DefaultMsgProcessor(),null);
+    }
+
+    /**
+     * @description:
+     * @author: feige
+     * @date: 2021/11/14 16:16
+     * @param	file 配置文件对象
+     * @param	processor	消息处理器
+     * @param	runnable	集群连接任务
+     * @return: void
+     */
+    public static void start(File file,MsgProcessor processor, Runnable runnable){
+        CONFIG.loadProperties(file);
+        start0(processor,runnable);
+    }
+
+    /**
+     * @description:
+     * @author: feige
+     * @date: 2021/11/14 16:16
+     * @param	is 配置文件流
+     * @param	processor	消息处理器
+     * @param	runnable	集群连接任务
+     * @return: void
+     */
+    public static void start(InputStream is, MsgProcessor processor, Runnable runnable){
+        CONFIG.loadProperties(is);
+        start0(processor,runnable);
+    }
+
+    /**
+     * @description: 运行启动器
+     * @author: feige
+     * @date: 2021/11/14 16:17
+     * @param	processor	消息处理器
+     * @param	runnable	集群任务
+     * @return: void
+     */
+    public static void start0(MsgProcessor processor, Runnable runnable){
+        String port = CONFIG.getConfigByKey(ImConst.SERVER_PORT);
+        AssertUtil.notBlank(port,"port");
+        ImServer imServer = new ImServer(Integer.parseInt(port), processor,runnable);
         imServer.createServer();
     }
 
     /**
-     * @description: 系统默认的端口和默认的消息处理器，默认的处理器功能受限，推荐使用自定义的
+     * @description: 创建启动器
      * @author: feige
-     * @date: 2021/10/10 13:26
-     * @param
+     * @date: 2021/11/14 16:19
      * @return: void
      */
-    public static void start(){
-        start(8090, new DefaultMsgProcessor(),null);
-    }
-
-
-    private void createServer() {
+    public void createServer() {
+        Parser.registerDefaultParsing();
         ChannelFuture channelFuture = new ServerBootstrap()
                 .group(bossGroup, workGroup)
                 .childOption(ChannelOption.TCP_NODELAY, true)
@@ -76,7 +140,6 @@ public class ImServer {
                 .childHandler(new NettyServerInitializer(processor))
                 .bind().syncUninterruptibly();
         channelFuture.channel().newSucceededFuture().addListener(future -> {
-            Parser.registerDefaultParsing();
             LOG.info("netty websocket server in {} port start finish....", this.port);
         });
         channelFuture.channel().closeFuture().addListener(future -> this.destroy());
@@ -84,6 +147,12 @@ public class ImServer {
         clusterConnect();
     }
 
+   /**
+    * @description: 关闭资源
+    * @author: feige
+    * @date: 2021/11/14 16:19
+    * @return: void
+    */
     public void destroy(){
         if (this.bossGroup != null){
             this.bossGroup.shutdownGracefully();
@@ -93,6 +162,12 @@ public class ImServer {
         }
     }
 
+    /**
+     * @description: 集群模式下使用
+     * @author: feige
+     * @date: 2021/11/14 16:18
+     * @return: void
+     */
     public void clusterConnect(){
         if (runnable != null){
             LOG.info("集群模式，开始连接其他主机");

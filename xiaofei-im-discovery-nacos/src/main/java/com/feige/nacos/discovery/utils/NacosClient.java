@@ -18,7 +18,7 @@ public class NacosClient {
 
     public static NamingService getNamingService(){
         try {
-            return NamingFactory.createNamingService("localhost:8848");
+            return NamingFactory.createNamingService("127.0.0.1:8848");
         } catch (NacosException e) {
             LOG.error(e);
         }

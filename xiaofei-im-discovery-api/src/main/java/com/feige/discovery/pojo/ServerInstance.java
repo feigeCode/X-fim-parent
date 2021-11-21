@@ -20,9 +20,16 @@ public class ServerInstance {
     private boolean ephemeral = true;
     private String clusterName;
     private String serviceName;
-    private Map<String, String> metadata = new HashMap();
+    private Map<String, String> metadata = new HashMap<>();
 
 
+    public ServerInstance() {
+    }
+
+    public ServerInstance(String ip, int port) {
+        this.ip = ip;
+        this.port = port;
+    }
 
     public String getInstanceId() {
         return instanceId;

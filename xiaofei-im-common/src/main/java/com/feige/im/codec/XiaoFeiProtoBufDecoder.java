@@ -32,7 +32,6 @@ public class XiaoFeiProtoBufDecoder extends MessageToMessageDecoder<BinaryWebSoc
         ctx.channel().attr(ChannelAttr.PING_COUNT).set(null);
         ByteBuf buf = msg.content();
         byte type = buf.readByte();
-
         // 心跳
         if (ImConst.PONG_MSG_TYPE == type){
             LOG.info("收到心跳{}",() -> StringUtil.protoMsgFormat(ImConst.PONG_MSG));
