@@ -41,7 +41,7 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
     }
 
     @Override
-    public void process(ProcessorEnum key, Channel channel, Message msg) {
+    public void process(ProcessorEnum key, Channel channel, Message msg, Throwable cause) {
         LOG.info("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(msg));
         switch (key){
             case ACTIVE:
@@ -52,7 +52,7 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
                 break;
             case INACTIVE:
                 clusterChannel.remove(channel);
-                processor.process(key, channel, msg);
+                processor.process(key, channel, msg,null);
                 break;
             case EXCEPTION:
                 System.out.println("发生异常");
@@ -80,7 +80,7 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
         }
 
         if (msg instanceof DefaultMsg.Auth || msg instanceof DefaultMsg.Forced){
-            processor.process(ProcessorEnum.READ,channel,msg);
+            processor.process(ProcessorEnum.READ,channel,msg,null);
             return;
         }
 
@@ -127,7 +127,7 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
         }
         if (myNodeKey.equals(nodeKey)){
             // 如果在本机，则往下走
-            processor.process(ProcessorEnum.READ, channel, msg);
+            processor.process(ProcessorEnum.READ, channel, msg,null);
         }else {
             // 不在本机则转发到用户所在的机器
             clusterChannel.write(nodeKey,msg);

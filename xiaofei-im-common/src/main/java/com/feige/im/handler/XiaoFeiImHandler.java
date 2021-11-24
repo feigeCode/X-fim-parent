@@ -29,13 +29,13 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-        processor.process(ProcessorEnum.READ,ctx.channel(),msg);
+        processor.process(ProcessorEnum.READ,ctx.channel(),msg,null);
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         ctx.channel().attr(ChannelAttr.ID).set(ctx.channel().id().asShortText());
-        processor.process(ProcessorEnum.ACTIVE,ctx.channel(),null);
+        processor.process(ProcessorEnum.ACTIVE,ctx.channel(),null,null);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
         if (ctx.channel().attr(ChannelAttr.USER_ID) == null){
             return;
         }
-        processor.process(ProcessorEnum.INACTIVE,ctx.channel(), null);
+        processor.process(ProcessorEnum.INACTIVE,ctx.channel(), null,null);
 
     }
 
@@ -52,6 +52,6 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error(cause);
-        processor.process(ProcessorEnum.EXCEPTION,ctx.channel(),null);
+        processor.process(ProcessorEnum.EXCEPTION,ctx.channel(),null,cause);
     }
 }

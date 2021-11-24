@@ -34,7 +34,7 @@ public abstract class ClusterClientMsgProcessor implements MsgProcessor {
 
 
     @Override
-    public void process(ProcessorEnum key, Channel channel, Message msg) {
+    public void process(ProcessorEnum key, Channel channel, Message msg, Throwable cause) {
         LOG.info("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(msg));
         switch (key){
             case ACTIVE:

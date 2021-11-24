@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface ProviderService {
 
+    String CLUSTER_NAME = "XIAOFEI-IM";
+
 
     /**
      * 注册实例
@@ -32,12 +34,12 @@ public interface ProviderService {
      * @param serverName
      * @return
      */
-    List<ServerInstance> getAllServerInstances(String serverName);
+    List<ServerInstance> getAllServerInstances();
 
     /**
      * 监听服务下的实例列表变化
      * @param name
      */
-    void subscribe(String name);
+    void subscribe();
 
 }

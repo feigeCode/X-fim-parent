@@ -38,9 +38,11 @@ public class ProviderServiceImpl implements ProviderService {
     public void registerServerInstance(ServerInstance serverInstance) {
         Instance instance = MyBeanUtil.serverInstance2Instance(serverInstance);
         try {
-            namingService.registerInstance(instance.getServiceName(),instance);
+            namingService.registerInstance(CLUSTER_NAME,instance);
+            LOG.info("nacos registry, {} {}:{} register finished", new Object[]{instance.getInstanceId(), instance.getIp(), instance.getPort()});
         } catch (NacosException e) {
-            LOG.error(e);
+            LOG.error("nacos registry, {} register failed...{},", new Object[]{instance.getInstanceId(), instance.toString()});
+            LOG.error(e.getErrMsg(),e);
         }
     }
 
@@ -48,16 +50,16 @@ public class ProviderServiceImpl implements ProviderService {
     public void deregisterServerInstance(ServerInstance serverInstance) {
         Instance instance = MyBeanUtil.serverInstance2Instance(serverInstance);
         try {
-            namingService.deregisterInstance(instance.getServiceName(),instance);
+            namingService.deregisterInstance(CLUSTER_NAME,instance);
         } catch (NacosException e) {
             LOG.error(e);
         }
     }
 
     @Override
-    public List<ServerInstance> getAllServerInstances(String serverName) {
+    public List<ServerInstance> getAllServerInstances() {
         try {
-            List<Instance> instanceList = namingService.getAllInstances(serverName);
+            List<Instance> instanceList = namingService.getAllInstances(CLUSTER_NAME);
             return MyBeanUtil.instances2serverInstances(instanceList);
         } catch (NacosException e) {
             LOG.error(e);
@@ -66,9 +68,9 @@ public class ProviderServiceImpl implements ProviderService {
     }
 
     @Override
-    public void subscribe(String name) {
+    public void subscribe() {
         try {
-            namingService.subscribe(name,event -> {
+            namingService.subscribe(CLUSTER_NAME,event -> {
                 if (event instanceof NamingEvent){
                     NamingEvent namingEvent = (NamingEvent) event;
                     List<Instance> instances = namingEvent.getInstances();

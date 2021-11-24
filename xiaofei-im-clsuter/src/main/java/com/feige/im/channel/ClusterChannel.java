@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date: 2021/11/6 12:30<br/>
  */
 public class ClusterChannel {
+
     private static final Logger LOG = LogManager.getLogger(ClusterChannel.class);
 
     private static final Map<String, Channel> MAP = new ConcurrentHashMap<>();

@@ -1,5 +1,8 @@
 package com.feige.im.server;
 
+import com.feige.discovery.DiscoveryManager;
+import com.feige.discovery.ProviderService;
+import com.feige.discovery.pojo.ServerInstance;
 import com.feige.im.config.ClusterConfig;
 import com.feige.im.constant.ImConst;
 import com.feige.im.handler.DefaultMsgProcessor;
@@ -140,7 +143,15 @@ public class ImServer {
                 .childHandler(new NettyServerInitializer(processor))
                 .bind().syncUninterruptibly();
         channelFuture.channel().newSucceededFuture().addListener(future -> {
+            ProviderService providerService = DiscoveryManager.getProviderService();
+            assert providerService != null;
+            ServerInstance instance = new ServerInstance("192.168.0.107", this.port);
+            instance.setServiceName("test");
+            instance.setInstanceId("123456");
+            providerService.registerServerInstance(instance);
+            providerService.subscribe();
             LOG.info("netty websocket server in {} port start finish....", this.port);
+
         });
         channelFuture.channel().closeFuture().addListener(future -> this.destroy());
         // 集群模式下需要和其他节点建立连接

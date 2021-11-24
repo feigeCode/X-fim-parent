@@ -17,7 +17,7 @@ public class NacosTest {
     public static void main(String[] args) {
         ProviderService providerService = DiscoveryManager.getProviderService();
         assert providerService != null;
-        ServerInstance instance = new ServerInstance("127.0.0.1", 8848);
+        ServerInstance instance = new ServerInstance("127.0.0.1", 8090);
         instance.setServiceName("test");
         providerService.registerServerInstance(instance);
     }

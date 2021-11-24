@@ -27,7 +27,7 @@ public class DefaultMsgProcessor implements MsgProcessor {
     private static final MyChannelGroup channelGroup = MyChannelGroup.getInstance();
 
     @Override
-    public void process(ProcessorEnum key, Channel channel, Message message) {
+    public void process(ProcessorEnum key, Channel channel, Message message, Throwable cause) {
         LOG.info("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(message));
         switch (key){
             case ACTIVE:

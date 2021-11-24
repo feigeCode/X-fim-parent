@@ -24,12 +24,12 @@ public class ProviderServiceImpl implements ProviderService {
     }
 
     @Override
-    public List<ServerInstance> getAllServerInstances(String serverName) {
+    public List<ServerInstance> getAllServerInstances() {
         return null;
     }
 
     @Override
-    public void subscribe(String name) {
+    public void subscribe() {
 
     }
 }
