@@ -13,6 +13,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * @author feige<br />
@@ -38,11 +40,11 @@ public class ProviderServiceImpl implements ProviderService {
     public void registerServerInstance(ServerInstance serverInstance) {
         Instance instance = MyBeanUtil.serverInstance2Instance(serverInstance);
         try {
+            LOG.info("nacos registry, {} {}:{} register begin", new Object[]{instance.getInstanceId(), instance.getIp(), instance.getPort()});
             namingService.registerInstance(CLUSTER_NAME,instance);
             LOG.info("nacos registry, {} {}:{} register finished", new Object[]{instance.getInstanceId(), instance.getIp(), instance.getPort()});
         } catch (NacosException e) {
-            LOG.error("nacos registry, {} register failed...{},", new Object[]{instance.getInstanceId(), instance.toString()});
-            LOG.error(e.getErrMsg(),e);
+            LOG.error("nacos register failed...",e);
         }
     }
 
@@ -68,17 +70,22 @@ public class ProviderServiceImpl implements ProviderService {
     }
 
     @Override
-    public void subscribe() {
+    public void subscribe(Consumer<List<String>> consumer) {
         try {
             namingService.subscribe(CLUSTER_NAME,event -> {
                 if (event instanceof NamingEvent){
                     NamingEvent namingEvent = (NamingEvent) event;
                     List<Instance> instances = namingEvent.getInstances();
-                    instances.forEach(System.out::println);
+                    LOG.info("Nacos NamingEvent: instances = {}", () -> instances);
+                    List<String> collect = instances
+                            .stream()
+                            .map(instance -> instance.getIp() + ":" + instance.getPort())
+                            .collect(Collectors.toList());
+                    consumer.accept(collect);
                 }
             });
         } catch (NacosException e) {
-            LOG.error(e);
+            LOG.error(e.getErrMsg(),e);
         }
     }
 }

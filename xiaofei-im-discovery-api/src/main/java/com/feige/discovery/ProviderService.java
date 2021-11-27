@@ -3,6 +3,7 @@ package com.feige.discovery;
 import com.feige.discovery.pojo.ServerInstance;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author feige<br />
@@ -38,8 +39,8 @@ public interface ProviderService {
 
     /**
      * 监听服务下的实例列表变化
-     * @param name
+     * @param consumer
      */
-    void subscribe();
+    void subscribe(Consumer<List<String>> consumer);
 
 }

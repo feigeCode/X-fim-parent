@@ -21,7 +21,7 @@ public class ClientMain1 {
 
     public static void main(String[] args) throws IOException {
         Parser.registerDefaultParsing();
-        ImClient localhost = ImClient.connect("192.168.0.107", 8001, (key, channel, msg) -> {
+        ImClient localhost = ImClient.connect("192.168.0.100", 8003, (key, channel, msg,throwable) -> {
             System.out.println(msg);
         });
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));

@@ -19,22 +19,23 @@ public class ConsistentHashRoute implements IRoute {
 
     public static final int VIRTUAL_NODE_COUNT = 5;
 
-    public static final String[] strings = {"192.168.0.107:8001", "192.168.0.107:8002"};
 
-    private final TreeMap<Integer, String> MAP = new TreeMap<>();
+    private TreeMap<Integer, String> MAP;
 
     public static void main(String[] args) {
-        String[] strings = {"192.168.0.107:8001", "192.168.0.107:8002"};
+        String[] strings = {"192.168.0.100:8001", "192.168.0.100:8002","192.168.0.100:8003"};
         ConsistentHashRoute consistentHashRoute = new ConsistentHashRoute(strings);
         String route1 = consistentHashRoute.getRoute("1");
         String route2 = consistentHashRoute.getRoute("2");
+        String route3 = consistentHashRoute.getRoute("34353");
         System.out.println(route1);
         System.out.println(route2);
+        System.out.println(route3);
 
     }
 
     public ConsistentHashRoute(){
-        this(strings);
+
     }
 
     public ConsistentHashRoute(Collection<String> servers){
@@ -46,14 +47,17 @@ public class ConsistentHashRoute implements IRoute {
     }
 
 
-
-
+    @Override
     public void add(Collection<String> servers){
+        TreeMap<Integer, String> treeMap = new TreeMap<>();
         for (String server : servers) {
-            MAP.put(hash(server),server);
+            treeMap.put(hash(server),server);
             for (int i = 0; i < VIRTUAL_NODE_COUNT; i++) {
-                MAP.put(hash("vir:" + server + ":node" + i),server);
+                treeMap.put(hash("vir:" + server + ":node" + i),server);
             }
+        }
+        synchronized (this){
+            this.MAP = treeMap;
         }
     }
 
@@ -75,6 +79,16 @@ public class ConsistentHashRoute implements IRoute {
             return sortedMap.get(sortedMap.firstKey());
         }
         return MAP.firstEntry().getValue();
+    }
+
+    @Override
+    public void remove(String server) {
+        synchronized (this){
+            MAP.remove(hash(server));
+            for (int i = 0; i < VIRTUAL_NODE_COUNT; i++) {
+                MAP.remove(hash("vir:" + server + ":node" + i));
+            }
+        }
     }
 
     /**

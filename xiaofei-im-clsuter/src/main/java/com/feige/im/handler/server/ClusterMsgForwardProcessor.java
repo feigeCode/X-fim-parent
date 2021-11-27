@@ -37,7 +37,7 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
     public ClusterMsgForwardProcessor(MsgProcessor processor) {
         this.processor = processor;
         this.route = RouteManager.getIRoutes();
-        AssertUtil.notNull(this.route,"route");
+
     }
 
     @Override

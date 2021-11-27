@@ -51,7 +51,7 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error(cause);
+        log.error(cause.getMessage(),cause);
         processor.process(ProcessorEnum.EXCEPTION,ctx.channel(),null,cause);
     }
 }

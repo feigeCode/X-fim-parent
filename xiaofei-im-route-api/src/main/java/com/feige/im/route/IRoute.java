@@ -1,5 +1,6 @@
 package com.feige.im.route;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -10,12 +11,28 @@ import java.util.List;
  */
 public interface IRoute {
 
+    /**
+     * 添加集群服务节点IP
+     * @param servers
+     */
+    void add(Collection<String> servers);
+
     default String getRoute(List<String> servers,String key){
         return null;
     };
 
+    /**
+     * 通过接收者获取对方所在节点的IP
+     * @param key
+     * @return
+     */
     String getRoute(String key);
 
+    /**
+     * 移除IP
+     * @param server
+     */
+    void remove(String server);
 
     default int hash(String str){
         int hashCode = str.hashCode();

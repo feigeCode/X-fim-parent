@@ -4,6 +4,7 @@ import com.feige.discovery.ProviderService;
 import com.feige.discovery.pojo.ServerInstance;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author feige<br />
@@ -29,7 +30,7 @@ public class ProviderServiceImpl implements ProviderService {
     }
 
     @Override
-    public void subscribe() {
+    public void subscribe(Consumer<List<String>> consumer) {
 
     }
 }

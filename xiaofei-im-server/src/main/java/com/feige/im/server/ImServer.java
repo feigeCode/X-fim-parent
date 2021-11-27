@@ -1,8 +1,6 @@
 package com.feige.im.server;
 
-import com.feige.discovery.DiscoveryManager;
-import com.feige.discovery.ProviderService;
-import com.feige.discovery.pojo.ServerInstance;
+
 import com.feige.im.config.ClusterConfig;
 import com.feige.im.constant.ImConst;
 import com.feige.im.handler.DefaultMsgProcessor;
@@ -22,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 
 /**
@@ -41,13 +39,14 @@ public class ImServer {
     private final EventLoopGroup workGroup;
     private final Class<? extends ServerChannel> serverChannel;
     private final MsgProcessor processor;
-    private final Runnable runnable;
+    private final Consumer<Integer> consumer;
 
 
-    private ImServer(int port, MsgProcessor processor, Runnable runnable){
+
+    private ImServer(int port, MsgProcessor processor, Consumer<Integer> consumer){
         this.port = port;
         this.processor = processor;
-        this.runnable = runnable;
+        this.consumer = consumer;
         if (OsUtil.isLinux()){
             this.bossGroup = new EpollEventLoopGroup(new NameThreadFactory("server-nio-boss-"));
             this.workGroup = new EpollEventLoopGroup(new NameThreadFactory("server-nio-work-"));
@@ -89,12 +88,12 @@ public class ImServer {
      * @date: 2021/11/14 16:16
      * @param	file 配置文件对象
      * @param	processor	消息处理器
-     * @param	runnable	集群连接任务
+     * @param	consumer	集群任务
      * @return: void
      */
-    public static void start(File file,MsgProcessor processor, Runnable runnable){
+    public static void start(File file,MsgProcessor processor, Consumer<Integer> consumer){
         CONFIG.loadProperties(file);
-        start0(processor,runnable);
+        start0(processor,consumer);
     }
 
     /**
@@ -103,12 +102,12 @@ public class ImServer {
      * @date: 2021/11/14 16:16
      * @param	is 配置文件流
      * @param	processor	消息处理器
-     * @param	runnable	集群连接任务
+     * @param	consumer	集群任务
      * @return: void
      */
-    public static void start(InputStream is, MsgProcessor processor, Runnable runnable){
+    public static void start(InputStream is, MsgProcessor processor, Consumer<Integer> consumer){
         CONFIG.loadProperties(is);
-        start0(processor,runnable);
+        start0(processor,consumer);
     }
 
     /**
@@ -116,13 +115,13 @@ public class ImServer {
      * @author: feige
      * @date: 2021/11/14 16:17
      * @param	processor	消息处理器
-     * @param	runnable	集群任务
+     * @param	consumer	集群任务
      * @return: void
      */
-    public static void start0(MsgProcessor processor, Runnable runnable){
+    public static void start0(MsgProcessor processor, Consumer<Integer> consumer){
         String port = CONFIG.getConfigByKey(ImConst.SERVER_PORT);
         AssertUtil.notBlank(port,"port");
-        ImServer imServer = new ImServer(Integer.parseInt(port), processor,runnable);
+        ImServer imServer = new ImServer(Integer.parseInt(port), processor,consumer);
         imServer.createServer();
     }
 
@@ -143,15 +142,7 @@ public class ImServer {
                 .childHandler(new NettyServerInitializer(processor))
                 .bind().syncUninterruptibly();
         channelFuture.channel().newSucceededFuture().addListener(future -> {
-            ProviderService providerService = DiscoveryManager.getProviderService();
-            assert providerService != null;
-            ServerInstance instance = new ServerInstance("192.168.0.107", this.port);
-            instance.setServiceName("test");
-            instance.setInstanceId("123456");
-            providerService.registerServerInstance(instance);
-            providerService.subscribe();
             LOG.info("netty websocket server in {} port start finish....", this.port);
-
         });
         channelFuture.channel().closeFuture().addListener(future -> this.destroy());
         // 集群模式下需要和其他节点建立连接
@@ -180,10 +171,13 @@ public class ImServer {
      * @return: void
      */
     public void clusterConnect(){
-        if (runnable != null){
-            LOG.info("集群模式，开始连接其他主机");
-            Executors.newSingleThreadExecutor(new NameThreadFactory("cluster-connect-task-")).execute(runnable);
+        if (consumer != null){
+            LOG.info("集群任务开始");
+            consumer.accept(this.port);
         }
+//        Executors
+//                .newSingleThreadExecutor(new NameThreadFactory("cluster-connect-task-"))
+//                .execute(runnable);
     }
 
 

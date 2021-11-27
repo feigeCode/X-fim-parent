@@ -1,6 +1,8 @@
 package com.feige.im.route;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ServiceLoader;
 
 /**
@@ -12,13 +14,22 @@ import java.util.ServiceLoader;
 public class RouteManager {
 
     private static  final ServiceLoader<IRoute> iRoutes = ServiceLoader.load(IRoute.class);;
-
+    public static final List<IRoute> ROUTES = new ArrayList<>();
 
     public static IRoute getIRoutes(){
-        Iterator<IRoute> iterator = iRoutes.iterator();
-        if (iterator.hasNext()){
-            return iterator.next();
+        if (ROUTES.isEmpty()){
+            synchronized (RouteManager.class){
+                if (ROUTES.isEmpty()) {
+                    Iterator<IRoute> iterator = iRoutes.iterator();
+                    if (iterator.hasNext()){
+                        ROUTES.add(iterator.next());
+                    }
+                }
+            }
         }
-        return null;
+        if (ROUTES.size() > 0){
+            return ROUTES.get(0);
+        }
+        throw new IllegalArgumentException("未发现任何的路由实现类，请检查META-INF/services下的配置文件");
     }
 }

@@ -50,4 +50,22 @@ public class StringUtil {
         return "{" + msg + "}";
     }
 
+    public static int[] toCodePoints(final CharSequence str) {
+        if (str == null) {
+            return null;
+        }
+        if (str.length() == 0) {
+            return new int[0];
+        }
+
+        final String s = str.toString();
+        final int[] result = new int[s.codePointCount(0, s.length())];
+        int index = 0;
+        for (int i = 0; i < result.length; i++) {
+            result[i] = s.codePointAt(index);
+            index += Character.charCount(result[i]);
+        }
+        return result;
+    }
+
 }
