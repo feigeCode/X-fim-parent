@@ -6,6 +6,7 @@ import com.feige.im.constant.ImConst;
 import com.feige.im.handler.DefaultMsgProcessor;
 import com.feige.im.handler.MsgProcessor;
 import com.feige.im.parser.Parser;
+import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.OsUtil;
@@ -173,11 +174,9 @@ public class ImServer {
     public void clusterConnect(){
         if (consumer != null){
             LOG.info("集群任务开始");
+            Parser.add(5, DefaultMsg.ClusterAuth.class,DefaultMsg.ClusterAuth::parseFrom);
             consumer.accept(this.port);
         }
-//        Executors
-//                .newSingleThreadExecutor(new NameThreadFactory("cluster-connect-task-"))
-//                .execute(runnable);
     }
 
 

@@ -49,14 +49,15 @@ public class ConsistentHashRoute implements IRoute {
 
     @Override
     public void add(Collection<String> servers){
-        TreeMap<Integer, String> treeMap = new TreeMap<>();
-        for (String server : servers) {
-            treeMap.put(hash(server),server);
-            for (int i = 0; i < VIRTUAL_NODE_COUNT; i++) {
-                treeMap.put(hash("vir:" + server + ":node" + i),server);
-            }
-        }
         synchronized (this){
+            TreeMap<Integer, String> treeMap = new TreeMap<>();
+            for (String server : servers) {
+                treeMap.put(hash(server),server);
+                for (int i = 0; i < VIRTUAL_NODE_COUNT; i++) {
+                    treeMap.put(hash("vir:" + server + ":node" + i),server);
+                }
+            }
+            
             this.MAP = treeMap;
         }
     }

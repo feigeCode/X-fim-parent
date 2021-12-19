@@ -28,9 +28,6 @@ public class ProviderServiceImpl implements ProviderService {
 
     private final NamingService namingService;
 
-    public ProviderServiceImpl(NamingService namingService) {
-        this.namingService = namingService;
-    }
 
     public ProviderServiceImpl() {
         this.namingService = NacosClient.getNamingService();

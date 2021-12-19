@@ -70,7 +70,5 @@ public class Parser {
         add(2, DefaultMsg.Auth.class, DefaultMsg.Auth::parseFrom);
         add(3,DefaultMsg.Msg.class, DefaultMsg.Msg::parseFrom);
         add(4, DefaultMsg.Forced.class, DefaultMsg.Forced::parseFrom);
-        // 集群才注册
-        add(5,DefaultMsg.ClusterAuth.class,DefaultMsg.ClusterAuth::parseFrom);
     }
 }
