@@ -6,6 +6,8 @@
 #### 软件架构
 软件架构说明
 
+![image-20211219214438712](https://gitee.com/feigeCode/picture/raw/master/img/image-20211219214438712.png)
+
 
 #### 安装教程
 

@@ -19,6 +19,7 @@
         <module>xiaofei-im-discovery-nacos</module>
         <module>xiaofei-im-route-api</module>
         <module>xiaofei-im-clsuter</module>
+        <module>xiaofei-im-load-balancer-gatway</module>
     </modules>
 
     <properties>
