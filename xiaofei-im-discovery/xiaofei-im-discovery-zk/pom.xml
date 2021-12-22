@@ -9,12 +9,23 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>xiaofei-im-route</artifactId>
+    <artifactId>xiaofei-im-discovery-zk</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-x-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-discovery-api</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

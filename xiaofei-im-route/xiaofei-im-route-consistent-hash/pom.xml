@@ -9,12 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>xiaofei-im-route</artifactId>
+    <artifactId>xiaofei-im-route-consistent-hash</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-route-api</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
