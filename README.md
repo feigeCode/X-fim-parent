@@ -9,6 +9,13 @@
 ![image-20211219214438712](https://gitee.com/feigeCode/picture/raw/master/img/image-20211219214438712.png)
 
 
+
+
+
+![image-20211222175352005](C:/Users/feige/AppData/Roaming/Typora/typora-user-images/image-20211222175352005.png)
+
+
+
 #### 安装教程
 
 1.  xxxx
