@@ -1,4 +1,4 @@
-package com.feige.im;
+package com.feige.im.test;
 
 import com.feige.im.client.ImClient;
 import com.feige.im.parser.Parser;
@@ -15,11 +15,11 @@ import java.io.InputStreamReader;
  * @Description: <br/>
  * @date: 2021/11/6 23:19<br/>
  */
-public class ClientMain2 {
+public class ClientMain {
 
     public static void main(String[] args) throws IOException {
         Parser.registerDefaultParsing();
-        ImClient localhost = ImClient.connect("192.168.0.100", 8002, (key, channel, msg,throwable) -> {
+        ImClient localhost = ImClient.connect("192.168.0.100", 8001, (key, channel, msg,throwable) -> {
             System.out.println(msg);
         });
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -29,7 +29,7 @@ public class ClientMain2 {
             if ("1".equals(s)){
                 DefaultMsg.Auth auth = DefaultMsg.Auth.newBuilder()
                         .setPlatform("android")
-                        .setUserId("34353")
+                        .setUserId("2")
                         .setDeviceName("w")
                         .setDeviceId("1")
                         .setLanguage("en")
@@ -45,7 +45,7 @@ public class ClientMain2 {
                         .setMsgType(1)
                         .setExtra("extra")
                         .setFormat(1)
-                        .setSenderId("34353")
+                        .setSenderId("2")
                         .setReceiverId("1")
                         .setTimestamp(String.valueOf(System.currentTimeMillis()))
                         .build();

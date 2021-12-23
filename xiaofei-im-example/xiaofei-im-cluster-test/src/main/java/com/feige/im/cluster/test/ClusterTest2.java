@@ -1,4 +1,4 @@
-package com.feige.im;
+package com.feige.im.cluster.test;
 
 import com.feige.im.handler.client.DefaultClientMsgProcessor;
 import com.feige.im.handler.server.ClusterMsgForwardProcessor;

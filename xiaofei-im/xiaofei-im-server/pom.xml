@@ -22,18 +22,6 @@
             <artifactId>xiaofei-im-common</artifactId>
             <version>${xiaofei.im.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.feige</groupId>
-            <artifactId>xiaofei-im-client</artifactId>
-            <version>${xiaofei.im.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.feige</groupId>
-            <artifactId>xiaofei-im-clsuter</artifactId>
-            <version>${xiaofei.im.version}</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <build>

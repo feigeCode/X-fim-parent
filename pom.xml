@@ -14,7 +14,7 @@
         <module>xiaofei-im/xiaofei-im-server</module>
         <module>xiaofei-im/xiaofei-im-client</module>
         <module>xiaofei-im/xiaofei-im-common</module>
-        <module>xiaofei-im/xiaofei-im-clsuter</module>
+        <module>xiaofei-im/xiaofei-im-cluster</module>
         <module>xiaofei-im-discovery</module>
         <module>xiaofei-im-discovery/xiaofei-im-discovery-zk</module>
         <module>xiaofei-im-discovery/xiaofei-im-discovery-api</module>
@@ -24,7 +24,8 @@
         <module>xiaofei-im-route/xiaofei-im-route-consistent-hash</module>
         <module>xiaofei-im-load-balancer-gatway</module>
         <module>xiaofei-im-example</module>
-        <module>xiaofei-im-example/xiaofei-im-clsuter-test</module>
+        <module>xiaofei-im-example/xiaofei-im-cluster-test</module>
+        <module>xiaofei-im-example/xiaofei-im-client-test</module>
     </modules>
 
     <properties>

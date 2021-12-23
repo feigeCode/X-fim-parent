@@ -1,4 +1,4 @@
-package com.feige.im;
+package com.feige.im.test;
 
 import com.feige.im.server.ImServer;
 
