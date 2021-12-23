@@ -1,5 +1,6 @@
 package com.feige.im.test;
 
+import com.feige.im.parser.Parser;
 import com.feige.im.server.ImServer;
 
 
@@ -15,6 +16,7 @@ import java.io.File;
  */
 public class Main {
     public static void main(String[] args) {
+        Parser.registerDefaultParsing();
         ImServer.start(new File("E:\\project\\im\\xiaofei-im-parent\\conf\\xiaofei-im.properties"));
     }
 }

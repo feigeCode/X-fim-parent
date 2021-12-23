@@ -133,7 +133,6 @@ public class ImServer {
      * @return: void
      */
     public void createServer() {
-        Parser.registerDefaultParsing();
         ChannelFuture channelFuture = new ServerBootstrap()
                 .group(bossGroup, workGroup)
                 .childOption(ChannelOption.TCP_NODELAY, true)
