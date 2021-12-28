@@ -26,6 +26,7 @@
         <module>xiaofei-im-example</module>
         <module>xiaofei-im-example/xiaofei-im-cluster-test</module>
         <module>xiaofei-im-example/xiaofei-im-client-test</module>
+        <module>xiaofei-im-example/xiaofei-im-feixin</module>
     </modules>
 
     <properties>

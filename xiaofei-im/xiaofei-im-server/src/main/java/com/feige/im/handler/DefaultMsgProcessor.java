@@ -31,12 +31,7 @@ public class DefaultMsgProcessor implements MsgProcessor {
         LOG.info("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(message));
         switch (key){
             case ACTIVE:
-                System.out.println("连接进入");
-                InetSocketAddress inetSocketAddress = (InetSocketAddress)channel.remoteAddress();
-                System.out.println(inetSocketAddress.getHostName());
-                System.out.println(inetSocketAddress.getPort());
-                System.out.println(inetSocketAddress.getAddress().getHostAddress());
-                System.out.println(inetSocketAddress.getHostString());
+                LOG.info("有新的连接进入ShortId={}",channel.id().asShortText());
                 break;
             case READ:
                 if (Objects.isNull(message)) {
@@ -44,14 +39,12 @@ public class DefaultMsgProcessor implements MsgProcessor {
                 }
                 if (message instanceof DefaultMsg.Msg){
                     DefaultMsg.Msg msg = Parser.getT(DefaultMsg.Msg.class, message);
-                    System.out.println(msg);
                     String receiverId = msg.getReceiverId();
                     channelGroup.write(receiverId,msg);
                 }
 
                 if (message instanceof DefaultMsg.Auth){
                     DefaultMsg.Auth msg = Parser.getT(DefaultMsg.Auth.class, message);
-                    System.out.println(msg);
                     channel.attr(ChannelAttr.USER_ID).set(msg.getUserId());
                     channel.attr(ChannelAttr.PLATFORM).set(msg.getPlatform());
                     channel.attr(ChannelAttr.DEVICE_ID).set(msg.getDeviceId());
@@ -78,7 +71,7 @@ public class DefaultMsgProcessor implements MsgProcessor {
                 channelGroup.remove(channel);
                 break;
             case EXCEPTION:
-                System.out.println("发生异常");
+                LOG.error("发生异常：",cause);
                 break;
         }
 
