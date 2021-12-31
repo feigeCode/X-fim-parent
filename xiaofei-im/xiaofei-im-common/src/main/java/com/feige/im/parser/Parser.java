@@ -25,8 +25,8 @@ public class Parser {
 
     private static final Logger LOG =  LogManager.getLogger(Parser.class);
 
-    public static Map<Integer,DeserializationHandler> map1 = new ConcurrentHashMap<>();
-    public static Map<Class<? extends Message>,Integer> map2 = new ConcurrentHashMap<>();
+    public static final Map<Integer,DeserializationHandler> DESERIALIZATION_MAP = new ConcurrentHashMap<>();
+    public static final Map<Class<? extends Message>,Integer> MSG_KEY_MAP = new ConcurrentHashMap<>();
 
 
     public static void add(Integer key, Class<? extends Message> t,DeserializationHandler handler){
@@ -35,12 +35,12 @@ public class Parser {
             throw new IllegalArgumentException("0和1已经被分配为心跳key，请重新分配key！");
         }
         if (!Objects.isNull(key) && !Objects.isNull(t) && !Objects.isNull(handler)){
-            if (map1.containsKey(key)){
+            if (DESERIALIZATION_MAP.containsKey(key)){
                 LOG.error("{}该key已被其它解析器占用，请重新分配key！",key);
                 throw new IllegalArgumentException("该key已被其它解析器占用，请重新分配key！");
             }
-            map1.put(key,handler);
-            map2.put(t,key);
+            DESERIALIZATION_MAP.put(key,handler);
+            MSG_KEY_MAP.put(t,key);
             LOG.info("key = {}, className = {}的解析器已加入map中",key,t.getCanonicalName());
         }
     }
@@ -50,7 +50,7 @@ public class Parser {
     }
 
     public static Message getMessage(Integer key, ByteBufInputStream in){
-        DeserializationHandler handler = map1.get(key);
+        DeserializationHandler handler = DESERIALIZATION_MAP.get(key);
         if (Objects.nonNull(handler)){
             try {
                 return handler.process(in);
@@ -63,12 +63,13 @@ public class Parser {
     }
 
     public static Integer getKey(Class<? extends Message> t){
-        return map2.get(t);
+        return MSG_KEY_MAP.get(t);
     }
 
     public static void registerDefaultParsing(){
         add(2, DefaultMsg.Auth.class, DefaultMsg.Auth::parseFrom);
         add(3,DefaultMsg.Msg.class, DefaultMsg.Msg::parseFrom);
         add(4, DefaultMsg.Forced.class, DefaultMsg.Forced::parseFrom);
+        add(6,DefaultMsg.TransportMsg.class,DefaultMsg.TransportMsg::parseFrom);
     }
 }

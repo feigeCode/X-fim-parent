@@ -19,7 +19,7 @@ public class ClientMain2 {
 
     public static void main(String[] args) throws IOException {
         Parser.registerDefaultParsing();
-        ImClient localhost = ImClient.connect("192.168.0.100", 8002, (key, channel, msg,throwable) -> {
+        ImClient localhost = ImClient.connect("10.1.204.70", 8002, (key, channel, msg,throwable) -> {
             System.out.println(msg);
         });
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -29,27 +29,33 @@ public class ClientMain2 {
             if ("1".equals(s)){
                 DefaultMsg.Auth auth = DefaultMsg.Auth.newBuilder()
                         .setPlatform("android")
-                        .setUserId("34353")
+                        .setToken("34353")
                         .setDeviceName("w")
                         .setDeviceId("1")
                         .setLanguage("en")
                         .setOsVersion("1.0")
-                        .setToken("token")
+                        .setVersion("1.0")
+                        .setAddress("四川省成都市双流区")
+                        .setIp("10.1.204.70")
                         .build();
                 channel.writeAndFlush(auth);
             }else {
                 DefaultMsg.Msg msg = DefaultMsg.Msg.newBuilder()
                         .setId(123456L)
                         .setContent("hello netty!")
-                        .setContentType(1)
                         .setMsgType(1)
                         .setExtra("extra")
                         .setFormat(1)
                         .setSenderId("34353")
-                        .setReceiverId("1")
+                        .setReceiverId("0")
+                        .setStatus(1)
                         .setTimestamp(String.valueOf(System.currentTimeMillis()))
                         .build();
-                channel.writeAndFlush(msg);
+                DefaultMsg.TransportMsg transportMsg = DefaultMsg.TransportMsg.newBuilder()
+                        .setType(1)
+                        .setMsg(msg)
+                        .build();
+                channel.writeAndFlush(transportMsg);
             }
 
         }

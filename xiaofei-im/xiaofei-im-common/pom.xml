@@ -6,6 +6,7 @@
         <artifactId>xiaofei-im-parent</artifactId>
         <groupId>com.feige</groupId>
         <version>1.0</version>
+        <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -71,7 +72,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <protocArtifact>com.google.protobuf:protoc:${protobuf.java.version}:exe:${os.detected.classifier}</protocArtifact>
-                    <protoSourceRoot></protoSourceRoot>
+                    <protoSourceRoot>src/main/java/proto</protoSourceRoot>
                     <outputDirectory>src/main/java</outputDirectory>
                     <clearOutputDirectory>false</clearOutputDirectory>
                     <temporaryProtoFileDirectory>${project.build.directory}/protoc-dependencies</temporaryProtoFileDirectory>

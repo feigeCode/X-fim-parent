@@ -19,23 +19,43 @@ public final class DefaultMsg {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string userId = 1;</code>
-     * @return The userId.
+     * <pre>
+     **
+     *登录IP
+     * </pre>
+     *
+     * <code>string ip = 1;</code>
+     * @return The ip.
      */
-    java.lang.String getUserId();
+    java.lang.String getIp();
     /**
-     * <code>string userId = 1;</code>
-     * @return The bytes for userId.
+     * <pre>
+     **
+     *登录IP
+     * </pre>
+     *
+     * <code>string ip = 1;</code>
+     * @return The bytes for ip.
      */
     com.google.protobuf.ByteString
-        getUserIdBytes();
+        getIpBytes();
 
     /**
+     * <pre>
+     **
+     *设备ID
+     * </pre>
+     *
      * <code>string deviceId = 2;</code>
      * @return The deviceId.
      */
     java.lang.String getDeviceId();
     /**
+     * <pre>
+     **
+     *设备ID
+     * </pre>
+     *
      * <code>string deviceId = 2;</code>
      * @return The bytes for deviceId.
      */
@@ -43,11 +63,21 @@ public final class DefaultMsg {
         getDeviceIdBytes();
 
     /**
+     * <pre>
+     **
+     *设备名字
+     * </pre>
+     *
      * <code>string deviceName = 3;</code>
      * @return The deviceName.
      */
     java.lang.String getDeviceName();
     /**
+     * <pre>
+     **
+     *设备名字
+     * </pre>
+     *
      * <code>string deviceName = 3;</code>
      * @return The bytes for deviceName.
      */
@@ -55,11 +85,21 @@ public final class DefaultMsg {
         getDeviceNameBytes();
 
     /**
+     * <pre>
+     **
+     *APP版本
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The version.
      */
     java.lang.String getVersion();
     /**
+     * <pre>
+     **
+     *APP版本
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The bytes for version.
      */
@@ -67,11 +107,21 @@ public final class DefaultMsg {
         getVersionBytes();
 
     /**
+     * <pre>
+     **
+     *系统版本
+     * </pre>
+     *
      * <code>string osVersion = 5;</code>
      * @return The osVersion.
      */
     java.lang.String getOsVersion();
     /**
+     * <pre>
+     **
+     *系统版本
+     * </pre>
+     *
      * <code>string osVersion = 5;</code>
      * @return The bytes for osVersion.
      */
@@ -79,11 +129,21 @@ public final class DefaultMsg {
         getOsVersionBytes();
 
     /**
+     * <pre>
+     **
+     *语言
+     * </pre>
+     *
      * <code>string language = 6;</code>
      * @return The language.
      */
     java.lang.String getLanguage();
     /**
+     * <pre>
+     **
+     *语言
+     * </pre>
+     *
      * <code>string language = 6;</code>
      * @return The bytes for language.
      */
@@ -91,11 +151,21 @@ public final class DefaultMsg {
         getLanguageBytes();
 
     /**
+     * <pre>
+     **
+     *登录token，没有token时可用作userId
+     * </pre>
+     *
      * <code>string token = 7;</code>
      * @return The token.
      */
     java.lang.String getToken();
     /**
+     * <pre>
+     **
+     *登录token，没有token时可用作userId
+     * </pre>
+     *
      * <code>string token = 7;</code>
      * @return The bytes for token.
      */
@@ -103,16 +173,48 @@ public final class DefaultMsg {
         getTokenBytes();
 
     /**
+     * <pre>
+     **
+     *平台名
+     * </pre>
+     *
      * <code>string platform = 8;</code>
      * @return The platform.
      */
     java.lang.String getPlatform();
     /**
+     * <pre>
+     **
+     *平台名
+     * </pre>
+     *
      * <code>string platform = 8;</code>
      * @return The bytes for platform.
      */
     com.google.protobuf.ByteString
         getPlatformBytes();
+
+    /**
+     * <pre>
+     **
+     *地址
+     * </pre>
+     *
+     * <code>string address = 9;</code>
+     * @return The address.
+     */
+    java.lang.String getAddress();
+    /**
+     * <pre>
+     **
+     *地址
+     * </pre>
+     *
+     * <code>string address = 9;</code>
+     * @return The bytes for address.
+     */
+    com.google.protobuf.ByteString
+        getAddressBytes();
   }
   /**
    * Protobuf type {@code com.feige.im.pojo.proto.Auth}
@@ -127,7 +229,7 @@ public final class DefaultMsg {
       super(builder);
     }
     private Auth() {
-      userId_ = "";
+      ip_ = "";
       deviceId_ = "";
       deviceName_ = "";
       version_ = "";
@@ -135,6 +237,7 @@ public final class DefaultMsg {
       language_ = "";
       token_ = "";
       platform_ = "";
+      address_ = "";
     }
 
     @java.lang.Override
@@ -170,7 +273,7 @@ public final class DefaultMsg {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              userId_ = s;
+              ip_ = s;
               break;
             }
             case 18: {
@@ -215,6 +318,12 @@ public final class DefaultMsg {
               platform_ = s;
               break;
             }
+            case 74: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              address_ = s;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -247,36 +356,46 @@ public final class DefaultMsg {
               com.feige.im.pojo.proto.DefaultMsg.Auth.class, com.feige.im.pojo.proto.DefaultMsg.Auth.Builder.class);
     }
 
-    public static final int USERID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object userId_;
+    public static final int IP_FIELD_NUMBER = 1;
+    private volatile java.lang.Object ip_;
     /**
-     * <code>string userId = 1;</code>
-     * @return The userId.
+     * <pre>
+     **
+     *登录IP
+     * </pre>
+     *
+     * <code>string ip = 1;</code>
+     * @return The ip.
      */
-    public java.lang.String getUserId() {
-      java.lang.Object ref = userId_;
+    public java.lang.String getIp() {
+      java.lang.Object ref = ip_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        userId_ = s;
+        ip_ = s;
         return s;
       }
     }
     /**
-     * <code>string userId = 1;</code>
-     * @return The bytes for userId.
+     * <pre>
+     **
+     *登录IP
+     * </pre>
+     *
+     * <code>string ip = 1;</code>
+     * @return The bytes for ip.
      */
     public com.google.protobuf.ByteString
-        getUserIdBytes() {
-      java.lang.Object ref = userId_;
+        getIpBytes() {
+      java.lang.Object ref = ip_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        userId_ = b;
+        ip_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -286,6 +405,11 @@ public final class DefaultMsg {
     public static final int DEVICEID_FIELD_NUMBER = 2;
     private volatile java.lang.Object deviceId_;
     /**
+     * <pre>
+     **
+     *设备ID
+     * </pre>
+     *
      * <code>string deviceId = 2;</code>
      * @return The deviceId.
      */
@@ -302,6 +426,11 @@ public final class DefaultMsg {
       }
     }
     /**
+     * <pre>
+     **
+     *设备ID
+     * </pre>
+     *
      * <code>string deviceId = 2;</code>
      * @return The bytes for deviceId.
      */
@@ -322,6 +451,11 @@ public final class DefaultMsg {
     public static final int DEVICENAME_FIELD_NUMBER = 3;
     private volatile java.lang.Object deviceName_;
     /**
+     * <pre>
+     **
+     *设备名字
+     * </pre>
+     *
      * <code>string deviceName = 3;</code>
      * @return The deviceName.
      */
@@ -338,6 +472,11 @@ public final class DefaultMsg {
       }
     }
     /**
+     * <pre>
+     **
+     *设备名字
+     * </pre>
+     *
      * <code>string deviceName = 3;</code>
      * @return The bytes for deviceName.
      */
@@ -358,6 +497,11 @@ public final class DefaultMsg {
     public static final int VERSION_FIELD_NUMBER = 4;
     private volatile java.lang.Object version_;
     /**
+     * <pre>
+     **
+     *APP版本
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The version.
      */
@@ -374,6 +518,11 @@ public final class DefaultMsg {
       }
     }
     /**
+     * <pre>
+     **
+     *APP版本
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The bytes for version.
      */
@@ -394,6 +543,11 @@ public final class DefaultMsg {
     public static final int OSVERSION_FIELD_NUMBER = 5;
     private volatile java.lang.Object osVersion_;
     /**
+     * <pre>
+     **
+     *系统版本
+     * </pre>
+     *
      * <code>string osVersion = 5;</code>
      * @return The osVersion.
      */
@@ -410,6 +564,11 @@ public final class DefaultMsg {
       }
     }
     /**
+     * <pre>
+     **
+     *系统版本
+     * </pre>
+     *
      * <code>string osVersion = 5;</code>
      * @return The bytes for osVersion.
      */
@@ -430,6 +589,11 @@ public final class DefaultMsg {
     public static final int LANGUAGE_FIELD_NUMBER = 6;
     private volatile java.lang.Object language_;
     /**
+     * <pre>
+     **
+     *语言
+     * </pre>
+     *
      * <code>string language = 6;</code>
      * @return The language.
      */
@@ -446,6 +610,11 @@ public final class DefaultMsg {
       }
     }
     /**
+     * <pre>
+     **
+     *语言
+     * </pre>
+     *
      * <code>string language = 6;</code>
      * @return The bytes for language.
      */
@@ -466,6 +635,11 @@ public final class DefaultMsg {
     public static final int TOKEN_FIELD_NUMBER = 7;
     private volatile java.lang.Object token_;
     /**
+     * <pre>
+     **
+     *登录token，没有token时可用作userId
+     * </pre>
+     *
      * <code>string token = 7;</code>
      * @return The token.
      */
@@ -482,6 +656,11 @@ public final class DefaultMsg {
       }
     }
     /**
+     * <pre>
+     **
+     *登录token，没有token时可用作userId
+     * </pre>
+     *
      * <code>string token = 7;</code>
      * @return The bytes for token.
      */
@@ -502,6 +681,11 @@ public final class DefaultMsg {
     public static final int PLATFORM_FIELD_NUMBER = 8;
     private volatile java.lang.Object platform_;
     /**
+     * <pre>
+     **
+     *平台名
+     * </pre>
+     *
      * <code>string platform = 8;</code>
      * @return The platform.
      */
@@ -518,6 +702,11 @@ public final class DefaultMsg {
       }
     }
     /**
+     * <pre>
+     **
+     *平台名
+     * </pre>
+     *
      * <code>string platform = 8;</code>
      * @return The bytes for platform.
      */
@@ -529,6 +718,52 @@ public final class DefaultMsg {
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         platform_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ADDRESS_FIELD_NUMBER = 9;
+    private volatile java.lang.Object address_;
+    /**
+     * <pre>
+     **
+     *地址
+     * </pre>
+     *
+     * <code>string address = 9;</code>
+     * @return The address.
+     */
+    public java.lang.String getAddress() {
+      java.lang.Object ref = address_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        address_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *地址
+     * </pre>
+     *
+     * <code>string address = 9;</code>
+     * @return The bytes for address.
+     */
+    public com.google.protobuf.ByteString
+        getAddressBytes() {
+      java.lang.Object ref = address_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        address_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -549,8 +784,8 @@ public final class DefaultMsg {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getUserIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userId_);
+      if (!getIpBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, ip_);
       }
       if (!getDeviceIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, deviceId_);
@@ -573,6 +808,9 @@ public final class DefaultMsg {
       if (!getPlatformBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, platform_);
       }
+      if (!getAddressBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, address_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -582,8 +820,8 @@ public final class DefaultMsg {
       if (size != -1) return size;
 
       size = 0;
-      if (!getUserIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, userId_);
+      if (!getIpBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, ip_);
       }
       if (!getDeviceIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, deviceId_);
@@ -606,6 +844,9 @@ public final class DefaultMsg {
       if (!getPlatformBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, platform_);
       }
+      if (!getAddressBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, address_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -621,8 +862,8 @@ public final class DefaultMsg {
       }
       com.feige.im.pojo.proto.DefaultMsg.Auth other = (com.feige.im.pojo.proto.DefaultMsg.Auth) obj;
 
-      if (!getUserId()
-          .equals(other.getUserId())) return false;
+      if (!getIp()
+          .equals(other.getIp())) return false;
       if (!getDeviceId()
           .equals(other.getDeviceId())) return false;
       if (!getDeviceName()
@@ -637,6 +878,8 @@ public final class DefaultMsg {
           .equals(other.getToken())) return false;
       if (!getPlatform()
           .equals(other.getPlatform())) return false;
+      if (!getAddress()
+          .equals(other.getAddress())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -648,8 +891,8 @@ public final class DefaultMsg {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + USERID_FIELD_NUMBER;
-      hash = (53 * hash) + getUserId().hashCode();
+      hash = (37 * hash) + IP_FIELD_NUMBER;
+      hash = (53 * hash) + getIp().hashCode();
       hash = (37 * hash) + DEVICEID_FIELD_NUMBER;
       hash = (53 * hash) + getDeviceId().hashCode();
       hash = (37 * hash) + DEVICENAME_FIELD_NUMBER;
@@ -664,6 +907,8 @@ public final class DefaultMsg {
       hash = (53 * hash) + getToken().hashCode();
       hash = (37 * hash) + PLATFORM_FIELD_NUMBER;
       hash = (53 * hash) + getPlatform().hashCode();
+      hash = (37 * hash) + ADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getAddress().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -797,7 +1042,7 @@ public final class DefaultMsg {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        userId_ = "";
+        ip_ = "";
 
         deviceId_ = "";
 
@@ -812,6 +1057,8 @@ public final class DefaultMsg {
         token_ = "";
 
         platform_ = "";
+
+        address_ = "";
 
         return this;
       }
@@ -839,7 +1086,7 @@ public final class DefaultMsg {
       @java.lang.Override
       public com.feige.im.pojo.proto.DefaultMsg.Auth buildPartial() {
         com.feige.im.pojo.proto.DefaultMsg.Auth result = new com.feige.im.pojo.proto.DefaultMsg.Auth(this);
-        result.userId_ = userId_;
+        result.ip_ = ip_;
         result.deviceId_ = deviceId_;
         result.deviceName_ = deviceName_;
         result.version_ = version_;
@@ -847,6 +1094,7 @@ public final class DefaultMsg {
         result.language_ = language_;
         result.token_ = token_;
         result.platform_ = platform_;
+        result.address_ = address_;
         onBuilt();
         return result;
       }
@@ -895,8 +1143,8 @@ public final class DefaultMsg {
 
       public Builder mergeFrom(com.feige.im.pojo.proto.DefaultMsg.Auth other) {
         if (other == com.feige.im.pojo.proto.DefaultMsg.Auth.getDefaultInstance()) return this;
-        if (!other.getUserId().isEmpty()) {
-          userId_ = other.userId_;
+        if (!other.getIp().isEmpty()) {
+          ip_ = other.ip_;
           onChanged();
         }
         if (!other.getDeviceId().isEmpty()) {
@@ -925,6 +1173,10 @@ public final class DefaultMsg {
         }
         if (!other.getPlatform().isEmpty()) {
           platform_ = other.platform_;
+          onChanged();
+        }
+        if (!other.getAddress().isEmpty()) {
+          address_ = other.address_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -956,84 +1208,114 @@ public final class DefaultMsg {
         return this;
       }
 
-      private java.lang.Object userId_ = "";
+      private java.lang.Object ip_ = "";
       /**
-       * <code>string userId = 1;</code>
-       * @return The userId.
+       * <pre>
+       **
+       *登录IP
+       * </pre>
+       *
+       * <code>string ip = 1;</code>
+       * @return The ip.
        */
-      public java.lang.String getUserId() {
-        java.lang.Object ref = userId_;
+      public java.lang.String getIp() {
+        java.lang.Object ref = ip_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          userId_ = s;
+          ip_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>string userId = 1;</code>
-       * @return The bytes for userId.
+       * <pre>
+       **
+       *登录IP
+       * </pre>
+       *
+       * <code>string ip = 1;</code>
+       * @return The bytes for ip.
        */
       public com.google.protobuf.ByteString
-          getUserIdBytes() {
-        java.lang.Object ref = userId_;
+          getIpBytes() {
+        java.lang.Object ref = ip_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          userId_ = b;
+          ip_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>string userId = 1;</code>
-       * @param value The userId to set.
+       * <pre>
+       **
+       *登录IP
+       * </pre>
+       *
+       * <code>string ip = 1;</code>
+       * @param value The ip to set.
        * @return This builder for chaining.
        */
-      public Builder setUserId(
+      public Builder setIp(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        userId_ = value;
+        ip_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string userId = 1;</code>
+       * <pre>
+       **
+       *登录IP
+       * </pre>
+       *
+       * <code>string ip = 1;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserId() {
+      public Builder clearIp() {
         
-        userId_ = getDefaultInstance().getUserId();
+        ip_ = getDefaultInstance().getIp();
         onChanged();
         return this;
       }
       /**
-       * <code>string userId = 1;</code>
-       * @param value The bytes for userId to set.
+       * <pre>
+       **
+       *登录IP
+       * </pre>
+       *
+       * <code>string ip = 1;</code>
+       * @param value The bytes for ip to set.
        * @return This builder for chaining.
        */
-      public Builder setUserIdBytes(
+      public Builder setIpBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        userId_ = value;
+        ip_ = value;
         onChanged();
         return this;
       }
 
       private java.lang.Object deviceId_ = "";
       /**
+       * <pre>
+       **
+       *设备ID
+       * </pre>
+       *
        * <code>string deviceId = 2;</code>
        * @return The deviceId.
        */
@@ -1050,6 +1332,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *设备ID
+       * </pre>
+       *
        * <code>string deviceId = 2;</code>
        * @return The bytes for deviceId.
        */
@@ -1067,6 +1354,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *设备ID
+       * </pre>
+       *
        * <code>string deviceId = 2;</code>
        * @param value The deviceId to set.
        * @return This builder for chaining.
@@ -1082,6 +1374,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *设备ID
+       * </pre>
+       *
        * <code>string deviceId = 2;</code>
        * @return This builder for chaining.
        */
@@ -1092,6 +1389,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *设备ID
+       * </pre>
+       *
        * <code>string deviceId = 2;</code>
        * @param value The bytes for deviceId to set.
        * @return This builder for chaining.
@@ -1110,6 +1412,11 @@ public final class DefaultMsg {
 
       private java.lang.Object deviceName_ = "";
       /**
+       * <pre>
+       **
+       *设备名字
+       * </pre>
+       *
        * <code>string deviceName = 3;</code>
        * @return The deviceName.
        */
@@ -1126,6 +1433,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *设备名字
+       * </pre>
+       *
        * <code>string deviceName = 3;</code>
        * @return The bytes for deviceName.
        */
@@ -1143,6 +1455,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *设备名字
+       * </pre>
+       *
        * <code>string deviceName = 3;</code>
        * @param value The deviceName to set.
        * @return This builder for chaining.
@@ -1158,6 +1475,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *设备名字
+       * </pre>
+       *
        * <code>string deviceName = 3;</code>
        * @return This builder for chaining.
        */
@@ -1168,6 +1490,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *设备名字
+       * </pre>
+       *
        * <code>string deviceName = 3;</code>
        * @param value The bytes for deviceName to set.
        * @return This builder for chaining.
@@ -1186,6 +1513,11 @@ public final class DefaultMsg {
 
       private java.lang.Object version_ = "";
       /**
+       * <pre>
+       **
+       *APP版本
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @return The version.
        */
@@ -1202,6 +1534,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *APP版本
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @return The bytes for version.
        */
@@ -1219,6 +1556,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *APP版本
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @param value The version to set.
        * @return This builder for chaining.
@@ -1234,6 +1576,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *APP版本
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @return This builder for chaining.
        */
@@ -1244,6 +1591,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *APP版本
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @param value The bytes for version to set.
        * @return This builder for chaining.
@@ -1262,6 +1614,11 @@ public final class DefaultMsg {
 
       private java.lang.Object osVersion_ = "";
       /**
+       * <pre>
+       **
+       *系统版本
+       * </pre>
+       *
        * <code>string osVersion = 5;</code>
        * @return The osVersion.
        */
@@ -1278,6 +1635,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *系统版本
+       * </pre>
+       *
        * <code>string osVersion = 5;</code>
        * @return The bytes for osVersion.
        */
@@ -1295,6 +1657,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *系统版本
+       * </pre>
+       *
        * <code>string osVersion = 5;</code>
        * @param value The osVersion to set.
        * @return This builder for chaining.
@@ -1310,6 +1677,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *系统版本
+       * </pre>
+       *
        * <code>string osVersion = 5;</code>
        * @return This builder for chaining.
        */
@@ -1320,6 +1692,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *系统版本
+       * </pre>
+       *
        * <code>string osVersion = 5;</code>
        * @param value The bytes for osVersion to set.
        * @return This builder for chaining.
@@ -1338,6 +1715,11 @@ public final class DefaultMsg {
 
       private java.lang.Object language_ = "";
       /**
+       * <pre>
+       **
+       *语言
+       * </pre>
+       *
        * <code>string language = 6;</code>
        * @return The language.
        */
@@ -1354,6 +1736,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *语言
+       * </pre>
+       *
        * <code>string language = 6;</code>
        * @return The bytes for language.
        */
@@ -1371,6 +1758,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *语言
+       * </pre>
+       *
        * <code>string language = 6;</code>
        * @param value The language to set.
        * @return This builder for chaining.
@@ -1386,6 +1778,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *语言
+       * </pre>
+       *
        * <code>string language = 6;</code>
        * @return This builder for chaining.
        */
@@ -1396,6 +1793,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *语言
+       * </pre>
+       *
        * <code>string language = 6;</code>
        * @param value The bytes for language to set.
        * @return This builder for chaining.
@@ -1414,6 +1816,11 @@ public final class DefaultMsg {
 
       private java.lang.Object token_ = "";
       /**
+       * <pre>
+       **
+       *登录token，没有token时可用作userId
+       * </pre>
+       *
        * <code>string token = 7;</code>
        * @return The token.
        */
@@ -1430,6 +1837,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *登录token，没有token时可用作userId
+       * </pre>
+       *
        * <code>string token = 7;</code>
        * @return The bytes for token.
        */
@@ -1447,6 +1859,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *登录token，没有token时可用作userId
+       * </pre>
+       *
        * <code>string token = 7;</code>
        * @param value The token to set.
        * @return This builder for chaining.
@@ -1462,6 +1879,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *登录token，没有token时可用作userId
+       * </pre>
+       *
        * <code>string token = 7;</code>
        * @return This builder for chaining.
        */
@@ -1472,6 +1894,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *登录token，没有token时可用作userId
+       * </pre>
+       *
        * <code>string token = 7;</code>
        * @param value The bytes for token to set.
        * @return This builder for chaining.
@@ -1490,6 +1917,11 @@ public final class DefaultMsg {
 
       private java.lang.Object platform_ = "";
       /**
+       * <pre>
+       **
+       *平台名
+       * </pre>
+       *
        * <code>string platform = 8;</code>
        * @return The platform.
        */
@@ -1506,6 +1938,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *平台名
+       * </pre>
+       *
        * <code>string platform = 8;</code>
        * @return The bytes for platform.
        */
@@ -1523,6 +1960,11 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       **
+       *平台名
+       * </pre>
+       *
        * <code>string platform = 8;</code>
        * @param value The platform to set.
        * @return This builder for chaining.
@@ -1538,6 +1980,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *平台名
+       * </pre>
+       *
        * <code>string platform = 8;</code>
        * @return This builder for chaining.
        */
@@ -1548,6 +1995,11 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       **
+       *平台名
+       * </pre>
+       *
        * <code>string platform = 8;</code>
        * @param value The bytes for platform to set.
        * @return This builder for chaining.
@@ -1560,6 +2012,107 @@ public final class DefaultMsg {
   checkByteStringIsUtf8(value);
         
         platform_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object address_ = "";
+      /**
+       * <pre>
+       **
+       *地址
+       * </pre>
+       *
+       * <code>string address = 9;</code>
+       * @return The address.
+       */
+      public java.lang.String getAddress() {
+        java.lang.Object ref = address_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          address_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *地址
+       * </pre>
+       *
+       * <code>string address = 9;</code>
+       * @return The bytes for address.
+       */
+      public com.google.protobuf.ByteString
+          getAddressBytes() {
+        java.lang.Object ref = address_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          address_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *地址
+       * </pre>
+       *
+       * <code>string address = 9;</code>
+       * @param value The address to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        address_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *地址
+       * </pre>
+       *
+       * <code>string address = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAddress() {
+        
+        address_ = getDefaultInstance().getAddress();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *地址
+       * </pre>
+       *
+       * <code>string address = 9;</code>
+       * @param value The bytes for address to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        address_ = value;
         onChanged();
         return this;
       }
@@ -1623,43 +2176,10 @@ public final class DefaultMsg {
     /**
      * <pre>
      **
-     *消息ID
-     * </pre>
-     *
-     * <code>int64 id = 1;</code>
-     * @return The id.
-     */
-    long getId();
-
-    /**
-     * <pre>
-     **
-     *用户ID
-     * </pre>
-     *
-     * <code>string userId = 2;</code>
-     * @return The userId.
-     */
-    java.lang.String getUserId();
-    /**
-     * <pre>
-     **
-     *用户ID
-     * </pre>
-     *
-     * <code>string userId = 2;</code>
-     * @return The bytes for userId.
-     */
-    com.google.protobuf.ByteString
-        getUserIdBytes();
-
-    /**
-     * <pre>
-     **
      *账号登录的IP
      * </pre>
      *
-     * <code>string ip = 3;</code>
+     * <code>string ip = 1;</code>
      * @return The ip.
      */
     java.lang.String getIp();
@@ -1669,7 +2189,7 @@ public final class DefaultMsg {
      *账号登录的IP
      * </pre>
      *
-     * <code>string ip = 3;</code>
+     * <code>string ip = 1;</code>
      * @return The bytes for ip.
      */
     com.google.protobuf.ByteString
@@ -1681,7 +2201,7 @@ public final class DefaultMsg {
      *账号登录的地址
      * </pre>
      *
-     * <code>string address = 4;</code>
+     * <code>string address = 2;</code>
      * @return The address.
      */
     java.lang.String getAddress();
@@ -1691,7 +2211,7 @@ public final class DefaultMsg {
      *账号登录的地址
      * </pre>
      *
-     * <code>string address = 4;</code>
+     * <code>string address = 2;</code>
      * @return The bytes for address.
      */
     com.google.protobuf.ByteString
@@ -1700,20 +2220,64 @@ public final class DefaultMsg {
     /**
      * <pre>
      **
-     *账号登录的时间
+     *提示内容
      * </pre>
      *
-     * <code>string timestamp = 7;</code>
+     * <code>string content = 3;</code>
+     * @return The content.
+     */
+    java.lang.String getContent();
+    /**
+     * <pre>
+     **
+     *提示内容
+     * </pre>
+     *
+     * <code>string content = 3;</code>
+     * @return The bytes for content.
+     */
+    com.google.protobuf.ByteString
+        getContentBytes();
+
+    /**
+     * <pre>
+     **
+     *设备名
+     * </pre>
+     *
+     * <code>string deviceName = 4;</code>
+     * @return The deviceName.
+     */
+    java.lang.String getDeviceName();
+    /**
+     * <pre>
+     **
+     *设备名
+     * </pre>
+     *
+     * <code>string deviceName = 4;</code>
+     * @return The bytes for deviceName.
+     */
+    com.google.protobuf.ByteString
+        getDeviceNameBytes();
+
+    /**
+     * <pre>
+     **
+     *时间
+     * </pre>
+     *
+     * <code>string timestamp = 5;</code>
      * @return The timestamp.
      */
     java.lang.String getTimestamp();
     /**
      * <pre>
      **
-     *账号登录的时间
+     *时间
      * </pre>
      *
-     * <code>string timestamp = 7;</code>
+     * <code>string timestamp = 5;</code>
      * @return The bytes for timestamp.
      */
     com.google.protobuf.ByteString
@@ -1732,9 +2296,10 @@ public final class DefaultMsg {
       super(builder);
     }
     private Forced() {
-      userId_ = "";
       ip_ = "";
       address_ = "";
+      content_ = "";
+      deviceName_ = "";
       timestamp_ = "";
     }
 
@@ -1768,30 +2333,31 @@ public final class DefaultMsg {
             case 0:
               done = true;
               break;
-            case 8: {
-
-              id_ = input.readInt64();
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              userId_ = s;
-              break;
-            }
-            case 26: {
+            case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
               ip_ = s;
               break;
             }
-            case 34: {
+            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
               address_ = s;
               break;
             }
-            case 58: {
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              content_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              deviceName_ = s;
+              break;
+            }
+            case 42: {
               java.lang.String s = input.readStringRequireUtf8();
 
               timestamp_ = s;
@@ -1829,68 +2395,7 @@ public final class DefaultMsg {
               com.feige.im.pojo.proto.DefaultMsg.Forced.class, com.feige.im.pojo.proto.DefaultMsg.Forced.Builder.class);
     }
 
-    public static final int ID_FIELD_NUMBER = 1;
-    private long id_;
-    /**
-     * <pre>
-     **
-     *消息ID
-     * </pre>
-     *
-     * <code>int64 id = 1;</code>
-     * @return The id.
-     */
-    public long getId() {
-      return id_;
-    }
-
-    public static final int USERID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object userId_;
-    /**
-     * <pre>
-     **
-     *用户ID
-     * </pre>
-     *
-     * <code>string userId = 2;</code>
-     * @return The userId.
-     */
-    public java.lang.String getUserId() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        userId_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     **
-     *用户ID
-     * </pre>
-     *
-     * <code>string userId = 2;</code>
-     * @return The bytes for userId.
-     */
-    public com.google.protobuf.ByteString
-        getUserIdBytes() {
-      java.lang.Object ref = userId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        userId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int IP_FIELD_NUMBER = 3;
+    public static final int IP_FIELD_NUMBER = 1;
     private volatile java.lang.Object ip_;
     /**
      * <pre>
@@ -1898,7 +2403,7 @@ public final class DefaultMsg {
      *账号登录的IP
      * </pre>
      *
-     * <code>string ip = 3;</code>
+     * <code>string ip = 1;</code>
      * @return The ip.
      */
     public java.lang.String getIp() {
@@ -1919,7 +2424,7 @@ public final class DefaultMsg {
      *账号登录的IP
      * </pre>
      *
-     * <code>string ip = 3;</code>
+     * <code>string ip = 1;</code>
      * @return The bytes for ip.
      */
     public com.google.protobuf.ByteString
@@ -1936,7 +2441,7 @@ public final class DefaultMsg {
       }
     }
 
-    public static final int ADDRESS_FIELD_NUMBER = 4;
+    public static final int ADDRESS_FIELD_NUMBER = 2;
     private volatile java.lang.Object address_;
     /**
      * <pre>
@@ -1944,7 +2449,7 @@ public final class DefaultMsg {
      *账号登录的地址
      * </pre>
      *
-     * <code>string address = 4;</code>
+     * <code>string address = 2;</code>
      * @return The address.
      */
     public java.lang.String getAddress() {
@@ -1965,7 +2470,7 @@ public final class DefaultMsg {
      *账号登录的地址
      * </pre>
      *
-     * <code>string address = 4;</code>
+     * <code>string address = 2;</code>
      * @return The bytes for address.
      */
     public com.google.protobuf.ByteString
@@ -1982,15 +2487,107 @@ public final class DefaultMsg {
       }
     }
 
-    public static final int TIMESTAMP_FIELD_NUMBER = 7;
+    public static final int CONTENT_FIELD_NUMBER = 3;
+    private volatile java.lang.Object content_;
+    /**
+     * <pre>
+     **
+     *提示内容
+     * </pre>
+     *
+     * <code>string content = 3;</code>
+     * @return The content.
+     */
+    public java.lang.String getContent() {
+      java.lang.Object ref = content_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        content_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *提示内容
+     * </pre>
+     *
+     * <code>string content = 3;</code>
+     * @return The bytes for content.
+     */
+    public com.google.protobuf.ByteString
+        getContentBytes() {
+      java.lang.Object ref = content_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        content_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DEVICENAME_FIELD_NUMBER = 4;
+    private volatile java.lang.Object deviceName_;
+    /**
+     * <pre>
+     **
+     *设备名
+     * </pre>
+     *
+     * <code>string deviceName = 4;</code>
+     * @return The deviceName.
+     */
+    public java.lang.String getDeviceName() {
+      java.lang.Object ref = deviceName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        deviceName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *设备名
+     * </pre>
+     *
+     * <code>string deviceName = 4;</code>
+     * @return The bytes for deviceName.
+     */
+    public com.google.protobuf.ByteString
+        getDeviceNameBytes() {
+      java.lang.Object ref = deviceName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        deviceName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TIMESTAMP_FIELD_NUMBER = 5;
     private volatile java.lang.Object timestamp_;
     /**
      * <pre>
      **
-     *账号登录的时间
+     *时间
      * </pre>
      *
-     * <code>string timestamp = 7;</code>
+     * <code>string timestamp = 5;</code>
      * @return The timestamp.
      */
     public java.lang.String getTimestamp() {
@@ -2008,10 +2605,10 @@ public final class DefaultMsg {
     /**
      * <pre>
      **
-     *账号登录的时间
+     *时间
      * </pre>
      *
-     * <code>string timestamp = 7;</code>
+     * <code>string timestamp = 5;</code>
      * @return The bytes for timestamp.
      */
     public com.google.protobuf.ByteString
@@ -2042,20 +2639,20 @@ public final class DefaultMsg {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (id_ != 0L) {
-        output.writeInt64(1, id_);
-      }
-      if (!getUserIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, userId_);
-      }
       if (!getIpBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, ip_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, ip_);
       }
       if (!getAddressBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, address_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, address_);
+      }
+      if (!getContentBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, content_);
+      }
+      if (!getDeviceNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, deviceName_);
       }
       if (!getTimestampBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, timestamp_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, timestamp_);
       }
       unknownFields.writeTo(output);
     }
@@ -2066,21 +2663,20 @@ public final class DefaultMsg {
       if (size != -1) return size;
 
       size = 0;
-      if (id_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, id_);
-      }
-      if (!getUserIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, userId_);
-      }
       if (!getIpBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, ip_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, ip_);
       }
       if (!getAddressBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, address_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, address_);
+      }
+      if (!getContentBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, content_);
+      }
+      if (!getDeviceNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, deviceName_);
       }
       if (!getTimestampBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, timestamp_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, timestamp_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2097,14 +2693,14 @@ public final class DefaultMsg {
       }
       com.feige.im.pojo.proto.DefaultMsg.Forced other = (com.feige.im.pojo.proto.DefaultMsg.Forced) obj;
 
-      if (getId()
-          != other.getId()) return false;
-      if (!getUserId()
-          .equals(other.getUserId())) return false;
       if (!getIp()
           .equals(other.getIp())) return false;
       if (!getAddress()
           .equals(other.getAddress())) return false;
+      if (!getContent()
+          .equals(other.getContent())) return false;
+      if (!getDeviceName()
+          .equals(other.getDeviceName())) return false;
       if (!getTimestamp()
           .equals(other.getTimestamp())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -2118,15 +2714,14 @@ public final class DefaultMsg {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + ID_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getId());
-      hash = (37 * hash) + USERID_FIELD_NUMBER;
-      hash = (53 * hash) + getUserId().hashCode();
       hash = (37 * hash) + IP_FIELD_NUMBER;
       hash = (53 * hash) + getIp().hashCode();
       hash = (37 * hash) + ADDRESS_FIELD_NUMBER;
       hash = (53 * hash) + getAddress().hashCode();
+      hash = (37 * hash) + CONTENT_FIELD_NUMBER;
+      hash = (53 * hash) + getContent().hashCode();
+      hash = (37 * hash) + DEVICENAME_FIELD_NUMBER;
+      hash = (53 * hash) + getDeviceName().hashCode();
       hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + getTimestamp().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -2262,13 +2857,13 @@ public final class DefaultMsg {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        id_ = 0L;
-
-        userId_ = "";
-
         ip_ = "";
 
         address_ = "";
+
+        content_ = "";
+
+        deviceName_ = "";
 
         timestamp_ = "";
 
@@ -2298,10 +2893,10 @@ public final class DefaultMsg {
       @java.lang.Override
       public com.feige.im.pojo.proto.DefaultMsg.Forced buildPartial() {
         com.feige.im.pojo.proto.DefaultMsg.Forced result = new com.feige.im.pojo.proto.DefaultMsg.Forced(this);
-        result.id_ = id_;
-        result.userId_ = userId_;
         result.ip_ = ip_;
         result.address_ = address_;
+        result.content_ = content_;
+        result.deviceName_ = deviceName_;
         result.timestamp_ = timestamp_;
         onBuilt();
         return result;
@@ -2351,19 +2946,20 @@ public final class DefaultMsg {
 
       public Builder mergeFrom(com.feige.im.pojo.proto.DefaultMsg.Forced other) {
         if (other == com.feige.im.pojo.proto.DefaultMsg.Forced.getDefaultInstance()) return this;
-        if (other.getId() != 0L) {
-          setId(other.getId());
-        }
-        if (!other.getUserId().isEmpty()) {
-          userId_ = other.userId_;
-          onChanged();
-        }
         if (!other.getIp().isEmpty()) {
           ip_ = other.ip_;
           onChanged();
         }
         if (!other.getAddress().isEmpty()) {
           address_ = other.address_;
+          onChanged();
+        }
+        if (!other.getContent().isEmpty()) {
+          content_ = other.content_;
+          onChanged();
+        }
+        if (!other.getDeviceName().isEmpty()) {
+          deviceName_ = other.deviceName_;
           onChanged();
         }
         if (!other.getTimestamp().isEmpty()) {
@@ -2399,152 +2995,6 @@ public final class DefaultMsg {
         return this;
       }
 
-      private long id_ ;
-      /**
-       * <pre>
-       **
-       *消息ID
-       * </pre>
-       *
-       * <code>int64 id = 1;</code>
-       * @return The id.
-       */
-      public long getId() {
-        return id_;
-      }
-      /**
-       * <pre>
-       **
-       *消息ID
-       * </pre>
-       *
-       * <code>int64 id = 1;</code>
-       * @param value The id to set.
-       * @return This builder for chaining.
-       */
-      public Builder setId(long value) {
-        
-        id_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       **
-       *消息ID
-       * </pre>
-       *
-       * <code>int64 id = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearId() {
-        
-        id_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object userId_ = "";
-      /**
-       * <pre>
-       **
-       *用户ID
-       * </pre>
-       *
-       * <code>string userId = 2;</code>
-       * @return The userId.
-       */
-      public java.lang.String getUserId() {
-        java.lang.Object ref = userId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          userId_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       **
-       *用户ID
-       * </pre>
-       *
-       * <code>string userId = 2;</code>
-       * @return The bytes for userId.
-       */
-      public com.google.protobuf.ByteString
-          getUserIdBytes() {
-        java.lang.Object ref = userId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          userId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       **
-       *用户ID
-       * </pre>
-       *
-       * <code>string userId = 2;</code>
-       * @param value The userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       **
-       *用户ID
-       * </pre>
-       *
-       * <code>string userId = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUserId() {
-        
-        userId_ = getDefaultInstance().getUserId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       **
-       *用户ID
-       * </pre>
-       *
-       * <code>string userId = 2;</code>
-       * @param value The bytes for userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object ip_ = "";
       /**
        * <pre>
@@ -2552,7 +3002,7 @@ public final class DefaultMsg {
        *账号登录的IP
        * </pre>
        *
-       * <code>string ip = 3;</code>
+       * <code>string ip = 1;</code>
        * @return The ip.
        */
       public java.lang.String getIp() {
@@ -2573,7 +3023,7 @@ public final class DefaultMsg {
        *账号登录的IP
        * </pre>
        *
-       * <code>string ip = 3;</code>
+       * <code>string ip = 1;</code>
        * @return The bytes for ip.
        */
       public com.google.protobuf.ByteString
@@ -2595,7 +3045,7 @@ public final class DefaultMsg {
        *账号登录的IP
        * </pre>
        *
-       * <code>string ip = 3;</code>
+       * <code>string ip = 1;</code>
        * @param value The ip to set.
        * @return This builder for chaining.
        */
@@ -2615,7 +3065,7 @@ public final class DefaultMsg {
        *账号登录的IP
        * </pre>
        *
-       * <code>string ip = 3;</code>
+       * <code>string ip = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearIp() {
@@ -2630,7 +3080,7 @@ public final class DefaultMsg {
        *账号登录的IP
        * </pre>
        *
-       * <code>string ip = 3;</code>
+       * <code>string ip = 1;</code>
        * @param value The bytes for ip to set.
        * @return This builder for chaining.
        */
@@ -2653,7 +3103,7 @@ public final class DefaultMsg {
        *账号登录的地址
        * </pre>
        *
-       * <code>string address = 4;</code>
+       * <code>string address = 2;</code>
        * @return The address.
        */
       public java.lang.String getAddress() {
@@ -2674,7 +3124,7 @@ public final class DefaultMsg {
        *账号登录的地址
        * </pre>
        *
-       * <code>string address = 4;</code>
+       * <code>string address = 2;</code>
        * @return The bytes for address.
        */
       public com.google.protobuf.ByteString
@@ -2696,7 +3146,7 @@ public final class DefaultMsg {
        *账号登录的地址
        * </pre>
        *
-       * <code>string address = 4;</code>
+       * <code>string address = 2;</code>
        * @param value The address to set.
        * @return This builder for chaining.
        */
@@ -2716,7 +3166,7 @@ public final class DefaultMsg {
        *账号登录的地址
        * </pre>
        *
-       * <code>string address = 4;</code>
+       * <code>string address = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearAddress() {
@@ -2731,7 +3181,7 @@ public final class DefaultMsg {
        *账号登录的地址
        * </pre>
        *
-       * <code>string address = 4;</code>
+       * <code>string address = 2;</code>
        * @param value The bytes for address to set.
        * @return This builder for chaining.
        */
@@ -2747,14 +3197,216 @@ public final class DefaultMsg {
         return this;
       }
 
+      private java.lang.Object content_ = "";
+      /**
+       * <pre>
+       **
+       *提示内容
+       * </pre>
+       *
+       * <code>string content = 3;</code>
+       * @return The content.
+       */
+      public java.lang.String getContent() {
+        java.lang.Object ref = content_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          content_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *提示内容
+       * </pre>
+       *
+       * <code>string content = 3;</code>
+       * @return The bytes for content.
+       */
+      public com.google.protobuf.ByteString
+          getContentBytes() {
+        java.lang.Object ref = content_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          content_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *提示内容
+       * </pre>
+       *
+       * <code>string content = 3;</code>
+       * @param value The content to set.
+       * @return This builder for chaining.
+       */
+      public Builder setContent(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        content_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *提示内容
+       * </pre>
+       *
+       * <code>string content = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearContent() {
+        
+        content_ = getDefaultInstance().getContent();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *提示内容
+       * </pre>
+       *
+       * <code>string content = 3;</code>
+       * @param value The bytes for content to set.
+       * @return This builder for chaining.
+       */
+      public Builder setContentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        content_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object deviceName_ = "";
+      /**
+       * <pre>
+       **
+       *设备名
+       * </pre>
+       *
+       * <code>string deviceName = 4;</code>
+       * @return The deviceName.
+       */
+      public java.lang.String getDeviceName() {
+        java.lang.Object ref = deviceName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          deviceName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *设备名
+       * </pre>
+       *
+       * <code>string deviceName = 4;</code>
+       * @return The bytes for deviceName.
+       */
+      public com.google.protobuf.ByteString
+          getDeviceNameBytes() {
+        java.lang.Object ref = deviceName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          deviceName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *设备名
+       * </pre>
+       *
+       * <code>string deviceName = 4;</code>
+       * @param value The deviceName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDeviceName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        deviceName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *设备名
+       * </pre>
+       *
+       * <code>string deviceName = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDeviceName() {
+        
+        deviceName_ = getDefaultInstance().getDeviceName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *设备名
+       * </pre>
+       *
+       * <code>string deviceName = 4;</code>
+       * @param value The bytes for deviceName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDeviceNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        deviceName_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object timestamp_ = "";
       /**
        * <pre>
        **
-       *账号登录的时间
+       *时间
        * </pre>
        *
-       * <code>string timestamp = 7;</code>
+       * <code>string timestamp = 5;</code>
        * @return The timestamp.
        */
       public java.lang.String getTimestamp() {
@@ -2772,10 +3424,10 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *账号登录的时间
+       *时间
        * </pre>
        *
-       * <code>string timestamp = 7;</code>
+       * <code>string timestamp = 5;</code>
        * @return The bytes for timestamp.
        */
       public com.google.protobuf.ByteString
@@ -2794,10 +3446,10 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *账号登录的时间
+       *时间
        * </pre>
        *
-       * <code>string timestamp = 7;</code>
+       * <code>string timestamp = 5;</code>
        * @param value The timestamp to set.
        * @return This builder for chaining.
        */
@@ -2814,10 +3466,10 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *账号登录的时间
+       *时间
        * </pre>
        *
-       * <code>string timestamp = 7;</code>
+       * <code>string timestamp = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
@@ -2829,10 +3481,10 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *账号登录的时间
+       *时间
        * </pre>
        *
-       * <code>string timestamp = 7;</code>
+       * <code>string timestamp = 5;</code>
        * @param value The bytes for timestamp to set.
        * @return This builder for chaining.
        */
@@ -2995,7 +3647,7 @@ public final class DefaultMsg {
     /**
      * <pre>
      **
-     *消息类型 私聊/群聊/...
+     *消息类型 图片/语音/...
      * </pre>
      *
      * <code>uint32 msgType = 6;</code>
@@ -3028,13 +3680,13 @@ public final class DefaultMsg {
     /**
      * <pre>
      **
-     *消息类型
+     *消息状态
      * </pre>
      *
-     * <code>uint32 contentType = 8;</code>
-     * @return The contentType.
+     * <code>uint32 status = 8;</code>
+     * @return The status.
      */
-    int getContentType();
+    int getStatus();
 
     /**
      * <pre>
@@ -3149,7 +3801,7 @@ public final class DefaultMsg {
             }
             case 64: {
 
-              contentType_ = input.readUInt32();
+              status_ = input.readUInt32();
               break;
             }
             case 74: {
@@ -3363,7 +4015,7 @@ public final class DefaultMsg {
     /**
      * <pre>
      **
-     *消息类型 私聊/群聊/...
+     *消息类型 图片/语音/...
      * </pre>
      *
      * <code>uint32 msgType = 6;</code>
@@ -3419,19 +4071,19 @@ public final class DefaultMsg {
       }
     }
 
-    public static final int CONTENTTYPE_FIELD_NUMBER = 8;
-    private int contentType_;
+    public static final int STATUS_FIELD_NUMBER = 8;
+    private int status_;
     /**
      * <pre>
      **
-     *消息类型
+     *消息状态
      * </pre>
      *
-     * <code>uint32 contentType = 8;</code>
-     * @return The contentType.
+     * <code>uint32 status = 8;</code>
+     * @return The status.
      */
-    public int getContentType() {
-      return contentType_;
+    public int getStatus() {
+      return status_;
     }
 
     public static final int EXTRA_FIELD_NUMBER = 9;
@@ -3515,8 +4167,8 @@ public final class DefaultMsg {
       if (!getTimestampBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, timestamp_);
       }
-      if (contentType_ != 0) {
-        output.writeUInt32(8, contentType_);
+      if (status_ != 0) {
+        output.writeUInt32(8, status_);
       }
       if (!getExtraBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 9, extra_);
@@ -3554,9 +4206,9 @@ public final class DefaultMsg {
       if (!getTimestampBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, timestamp_);
       }
-      if (contentType_ != 0) {
+      if (status_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(8, contentType_);
+          .computeUInt32Size(8, status_);
       }
       if (!getExtraBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, extra_);
@@ -3590,8 +4242,8 @@ public final class DefaultMsg {
           != other.getMsgType()) return false;
       if (!getTimestamp()
           .equals(other.getTimestamp())) return false;
-      if (getContentType()
-          != other.getContentType()) return false;
+      if (getStatus()
+          != other.getStatus()) return false;
       if (!getExtra()
           .equals(other.getExtra())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -3620,8 +4272,8 @@ public final class DefaultMsg {
       hash = (53 * hash) + getMsgType();
       hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + getTimestamp().hashCode();
-      hash = (37 * hash) + CONTENTTYPE_FIELD_NUMBER;
-      hash = (53 * hash) + getContentType();
+      hash = (37 * hash) + STATUS_FIELD_NUMBER;
+      hash = (53 * hash) + getStatus();
       hash = (37 * hash) + EXTRA_FIELD_NUMBER;
       hash = (53 * hash) + getExtra().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -3771,7 +4423,7 @@ public final class DefaultMsg {
 
         timestamp_ = "";
 
-        contentType_ = 0;
+        status_ = 0;
 
         extra_ = "";
 
@@ -3808,7 +4460,7 @@ public final class DefaultMsg {
         result.format_ = format_;
         result.msgType_ = msgType_;
         result.timestamp_ = timestamp_;
-        result.contentType_ = contentType_;
+        result.status_ = status_;
         result.extra_ = extra_;
         onBuilt();
         return result;
@@ -3883,8 +4535,8 @@ public final class DefaultMsg {
           timestamp_ = other.timestamp_;
           onChanged();
         }
-        if (other.getContentType() != 0) {
-          setContentType(other.getContentType());
+        if (other.getStatus() != 0) {
+          setStatus(other.getStatus());
         }
         if (!other.getExtra().isEmpty()) {
           extra_ = other.extra_;
@@ -4316,7 +4968,7 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *消息类型 私聊/群聊/...
+       *消息类型 图片/语音/...
        * </pre>
        *
        * <code>uint32 msgType = 6;</code>
@@ -4328,7 +4980,7 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *消息类型 私聊/群聊/...
+       *消息类型 图片/语音/...
        * </pre>
        *
        * <code>uint32 msgType = 6;</code>
@@ -4344,7 +4996,7 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *消息类型 私聊/群聊/...
+       *消息类型 图片/语音/...
        * </pre>
        *
        * <code>uint32 msgType = 6;</code>
@@ -4458,47 +5110,47 @@ public final class DefaultMsg {
         return this;
       }
 
-      private int contentType_ ;
+      private int status_ ;
       /**
        * <pre>
        **
-       *消息类型
+       *消息状态
        * </pre>
        *
-       * <code>uint32 contentType = 8;</code>
-       * @return The contentType.
+       * <code>uint32 status = 8;</code>
+       * @return The status.
        */
-      public int getContentType() {
-        return contentType_;
+      public int getStatus() {
+        return status_;
       }
       /**
        * <pre>
        **
-       *消息类型
+       *消息状态
        * </pre>
        *
-       * <code>uint32 contentType = 8;</code>
-       * @param value The contentType to set.
+       * <code>uint32 status = 8;</code>
+       * @param value The status to set.
        * @return This builder for chaining.
        */
-      public Builder setContentType(int value) {
+      public Builder setStatus(int value) {
         
-        contentType_ = value;
+        status_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
        **
-       *消息类型
+       *消息状态
        * </pre>
        *
-       * <code>uint32 contentType = 8;</code>
+       * <code>uint32 status = 8;</code>
        * @return This builder for chaining.
        */
-      public Builder clearContentType() {
+      public Builder clearStatus() {
         
-        contentType_ = 0;
+        status_ = 0;
         onChanged();
         return this;
       }
@@ -4651,6 +5303,704 @@ public final class DefaultMsg {
 
     @java.lang.Override
     public com.feige.im.pojo.proto.DefaultMsg.Msg getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface TransportMsgOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.feige.im.pojo.proto.TransportMsg)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>uint32 type = 1;</code>
+     * @return The type.
+     */
+    int getType();
+
+    /**
+     * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+     * @return Whether the msg field is set.
+     */
+    boolean hasMsg();
+    /**
+     * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+     * @return The msg.
+     */
+    com.feige.im.pojo.proto.DefaultMsg.Msg getMsg();
+    /**
+     * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+     */
+    com.feige.im.pojo.proto.DefaultMsg.MsgOrBuilder getMsgOrBuilder();
+  }
+  /**
+   * <pre>
+   **
+   *传输消息
+   *type 1私聊消息2群聊消息
+   * </pre>
+   *
+   * Protobuf type {@code com.feige.im.pojo.proto.TransportMsg}
+   */
+  public  static final class TransportMsg extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.feige.im.pojo.proto.TransportMsg)
+      TransportMsgOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TransportMsg.newBuilder() to construct.
+    private TransportMsg(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TransportMsg() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransportMsg();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TransportMsg(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              type_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.feige.im.pojo.proto.DefaultMsg.Msg.Builder subBuilder = null;
+              if (msg_ != null) {
+                subBuilder = msg_.toBuilder();
+              }
+              msg_ = input.readMessage(com.feige.im.pojo.proto.DefaultMsg.Msg.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(msg_);
+                msg_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_TransportMsg_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_TransportMsg_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.feige.im.pojo.proto.DefaultMsg.TransportMsg.class, com.feige.im.pojo.proto.DefaultMsg.TransportMsg.Builder.class);
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private int type_;
+    /**
+     * <code>uint32 type = 1;</code>
+     * @return The type.
+     */
+    public int getType() {
+      return type_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 2;
+    private com.feige.im.pojo.proto.DefaultMsg.Msg msg_;
+    /**
+     * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+     * @return Whether the msg field is set.
+     */
+    public boolean hasMsg() {
+      return msg_ != null;
+    }
+    /**
+     * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+     * @return The msg.
+     */
+    public com.feige.im.pojo.proto.DefaultMsg.Msg getMsg() {
+      return msg_ == null ? com.feige.im.pojo.proto.DefaultMsg.Msg.getDefaultInstance() : msg_;
+    }
+    /**
+     * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+     */
+    public com.feige.im.pojo.proto.DefaultMsg.MsgOrBuilder getMsgOrBuilder() {
+      return getMsg();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (type_ != 0) {
+        output.writeUInt32(1, type_);
+      }
+      if (msg_ != null) {
+        output.writeMessage(2, getMsg());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (type_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, type_);
+      }
+      if (msg_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getMsg());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.feige.im.pojo.proto.DefaultMsg.TransportMsg)) {
+        return super.equals(obj);
+      }
+      com.feige.im.pojo.proto.DefaultMsg.TransportMsg other = (com.feige.im.pojo.proto.DefaultMsg.TransportMsg) obj;
+
+      if (getType()
+          != other.getType()) return false;
+      if (hasMsg() != other.hasMsg()) return false;
+      if (hasMsg()) {
+        if (!getMsg()
+            .equals(other.getMsg())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + getType();
+      if (hasMsg()) {
+        hash = (37 * hash) + MSG_FIELD_NUMBER;
+        hash = (53 * hash) + getMsg().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.feige.im.pojo.proto.DefaultMsg.TransportMsg prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     **
+     *传输消息
+     *type 1私聊消息2群聊消息
+     * </pre>
+     *
+     * Protobuf type {@code com.feige.im.pojo.proto.TransportMsg}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.feige.im.pojo.proto.TransportMsg)
+        com.feige.im.pojo.proto.DefaultMsg.TransportMsgOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_TransportMsg_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_TransportMsg_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.feige.im.pojo.proto.DefaultMsg.TransportMsg.class, com.feige.im.pojo.proto.DefaultMsg.TransportMsg.Builder.class);
+      }
+
+      // Construct using com.feige.im.pojo.proto.DefaultMsg.TransportMsg.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        type_ = 0;
+
+        if (msgBuilder_ == null) {
+          msg_ = null;
+        } else {
+          msg_ = null;
+          msgBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_TransportMsg_descriptor;
+      }
+
+      @java.lang.Override
+      public com.feige.im.pojo.proto.DefaultMsg.TransportMsg getDefaultInstanceForType() {
+        return com.feige.im.pojo.proto.DefaultMsg.TransportMsg.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.feige.im.pojo.proto.DefaultMsg.TransportMsg build() {
+        com.feige.im.pojo.proto.DefaultMsg.TransportMsg result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.feige.im.pojo.proto.DefaultMsg.TransportMsg buildPartial() {
+        com.feige.im.pojo.proto.DefaultMsg.TransportMsg result = new com.feige.im.pojo.proto.DefaultMsg.TransportMsg(this);
+        result.type_ = type_;
+        if (msgBuilder_ == null) {
+          result.msg_ = msg_;
+        } else {
+          result.msg_ = msgBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.feige.im.pojo.proto.DefaultMsg.TransportMsg) {
+          return mergeFrom((com.feige.im.pojo.proto.DefaultMsg.TransportMsg)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.feige.im.pojo.proto.DefaultMsg.TransportMsg other) {
+        if (other == com.feige.im.pojo.proto.DefaultMsg.TransportMsg.getDefaultInstance()) return this;
+        if (other.getType() != 0) {
+          setType(other.getType());
+        }
+        if (other.hasMsg()) {
+          mergeMsg(other.getMsg());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.feige.im.pojo.proto.DefaultMsg.TransportMsg parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.feige.im.pojo.proto.DefaultMsg.TransportMsg) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int type_ ;
+      /**
+       * <code>uint32 type = 1;</code>
+       * @return The type.
+       */
+      public int getType() {
+        return type_;
+      }
+      /**
+       * <code>uint32 type = 1;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setType(int value) {
+        
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 type = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearType() {
+        
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.feige.im.pojo.proto.DefaultMsg.Msg msg_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.feige.im.pojo.proto.DefaultMsg.Msg, com.feige.im.pojo.proto.DefaultMsg.Msg.Builder, com.feige.im.pojo.proto.DefaultMsg.MsgOrBuilder> msgBuilder_;
+      /**
+       * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+       * @return Whether the msg field is set.
+       */
+      public boolean hasMsg() {
+        return msgBuilder_ != null || msg_ != null;
+      }
+      /**
+       * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+       * @return The msg.
+       */
+      public com.feige.im.pojo.proto.DefaultMsg.Msg getMsg() {
+        if (msgBuilder_ == null) {
+          return msg_ == null ? com.feige.im.pojo.proto.DefaultMsg.Msg.getDefaultInstance() : msg_;
+        } else {
+          return msgBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+       */
+      public Builder setMsg(com.feige.im.pojo.proto.DefaultMsg.Msg value) {
+        if (msgBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          msg_ = value;
+          onChanged();
+        } else {
+          msgBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+       */
+      public Builder setMsg(
+          com.feige.im.pojo.proto.DefaultMsg.Msg.Builder builderForValue) {
+        if (msgBuilder_ == null) {
+          msg_ = builderForValue.build();
+          onChanged();
+        } else {
+          msgBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+       */
+      public Builder mergeMsg(com.feige.im.pojo.proto.DefaultMsg.Msg value) {
+        if (msgBuilder_ == null) {
+          if (msg_ != null) {
+            msg_ =
+              com.feige.im.pojo.proto.DefaultMsg.Msg.newBuilder(msg_).mergeFrom(value).buildPartial();
+          } else {
+            msg_ = value;
+          }
+          onChanged();
+        } else {
+          msgBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+       */
+      public Builder clearMsg() {
+        if (msgBuilder_ == null) {
+          msg_ = null;
+          onChanged();
+        } else {
+          msg_ = null;
+          msgBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+       */
+      public com.feige.im.pojo.proto.DefaultMsg.Msg.Builder getMsgBuilder() {
+        
+        onChanged();
+        return getMsgFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+       */
+      public com.feige.im.pojo.proto.DefaultMsg.MsgOrBuilder getMsgOrBuilder() {
+        if (msgBuilder_ != null) {
+          return msgBuilder_.getMessageOrBuilder();
+        } else {
+          return msg_ == null ?
+              com.feige.im.pojo.proto.DefaultMsg.Msg.getDefaultInstance() : msg_;
+        }
+      }
+      /**
+       * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.feige.im.pojo.proto.DefaultMsg.Msg, com.feige.im.pojo.proto.DefaultMsg.Msg.Builder, com.feige.im.pojo.proto.DefaultMsg.MsgOrBuilder> 
+          getMsgFieldBuilder() {
+        if (msgBuilder_ == null) {
+          msgBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.feige.im.pojo.proto.DefaultMsg.Msg, com.feige.im.pojo.proto.DefaultMsg.Msg.Builder, com.feige.im.pojo.proto.DefaultMsg.MsgOrBuilder>(
+                  getMsg(),
+                  getParentForChildren(),
+                  isClean());
+          msg_ = null;
+        }
+        return msgBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.feige.im.pojo.proto.TransportMsg)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.feige.im.pojo.proto.TransportMsg)
+    private static final com.feige.im.pojo.proto.DefaultMsg.TransportMsg DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.feige.im.pojo.proto.DefaultMsg.TransportMsg();
+    }
+
+    public static com.feige.im.pojo.proto.DefaultMsg.TransportMsg getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TransportMsg>
+        PARSER = new com.google.protobuf.AbstractParser<TransportMsg>() {
+      @java.lang.Override
+      public TransportMsg parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TransportMsg(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TransportMsg> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TransportMsg> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.feige.im.pojo.proto.DefaultMsg.TransportMsg getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -6934,6 +8284,11 @@ public final class DefaultMsg {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_feige_im_pojo_proto_Msg_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_feige_im_pojo_proto_TransportMsg_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_feige_im_pojo_proto_TransportMsg_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_feige_im_pojo_proto_Ping_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -6963,20 +8318,22 @@ public final class DefaultMsg {
   static {
     java.lang.String[] descriptorData = {
       "\n\020DefaultMsg.proto\022\027com.feige.im.pojo.pr" +
-      "oto\"\223\001\n\004Auth\022\016\n\006userId\030\001 \001(\t\022\020\n\010deviceId" +
-      "\030\002 \001(\t\022\022\n\ndeviceName\030\003 \001(\t\022\017\n\007version\030\004 " +
-      "\001(\t\022\021\n\tosVersion\030\005 \001(\t\022\020\n\010language\030\006 \001(\t" +
-      "\022\r\n\005token\030\007 \001(\t\022\020\n\010platform\030\010 \001(\t\"T\n\006For" +
-      "ced\022\n\n\002id\030\001 \001(\003\022\016\n\006userId\030\002 \001(\t\022\n\n\002ip\030\003 " +
-      "\001(\t\022\017\n\007address\030\004 \001(\t\022\021\n\ttimestamp\030\007 \001(\t\"" +
-      "\240\001\n\003Msg\022\n\n\002id\030\001 \001(\003\022\020\n\010senderId\030\002 \001(\t\022\022\n" +
-      "\nreceiverId\030\003 \001(\t\022\017\n\007content\030\004 \001(\t\022\016\n\006fo" +
-      "rmat\030\005 \001(\005\022\017\n\007msgType\030\006 \001(\r\022\021\n\ttimestamp" +
-      "\030\007 \001(\t\022\023\n\013contentType\030\010 \001(\r\022\r\n\005extra\030\t \001" +
-      "(\t\"\024\n\004Ping\022\014\n\004ping\030\001 \001(\005\"\024\n\004Pong\022\014\n\004pong" +
-      "\030\001 \001(\r\"\036\n\013ClusterAuth\022\017\n\007nodeKey\030\001 \001(\t\"!" +
-      "\n\003Ack\022\n\n\002id\030\001 \001(\t\022\016\n\006status\030\002 \001(\tB\014B\nDef" +
-      "aultMsgb\006proto3"
+      "oto\"\240\001\n\004Auth\022\n\n\002ip\030\001 \001(\t\022\020\n\010deviceId\030\002 \001" +
+      "(\t\022\022\n\ndeviceName\030\003 \001(\t\022\017\n\007version\030\004 \001(\t\022" +
+      "\021\n\tosVersion\030\005 \001(\t\022\020\n\010language\030\006 \001(\t\022\r\n\005" +
+      "token\030\007 \001(\t\022\020\n\010platform\030\010 \001(\t\022\017\n\007address" +
+      "\030\t \001(\t\"]\n\006Forced\022\n\n\002ip\030\001 \001(\t\022\017\n\007address\030" +
+      "\002 \001(\t\022\017\n\007content\030\003 \001(\t\022\022\n\ndeviceName\030\004 \001" +
+      "(\t\022\021\n\ttimestamp\030\005 \001(\t\"\233\001\n\003Msg\022\n\n\002id\030\001 \001(" +
+      "\003\022\020\n\010senderId\030\002 \001(\t\022\022\n\nreceiverId\030\003 \001(\t\022" +
+      "\017\n\007content\030\004 \001(\t\022\016\n\006format\030\005 \001(\005\022\017\n\007msgT" +
+      "ype\030\006 \001(\r\022\021\n\ttimestamp\030\007 \001(\t\022\016\n\006status\030\010" +
+      " \001(\r\022\r\n\005extra\030\t \001(\t\"G\n\014TransportMsg\022\014\n\004t" +
+      "ype\030\001 \001(\r\022)\n\003msg\030\002 \001(\0132\034.com.feige.im.po" +
+      "jo.proto.Msg\"\024\n\004Ping\022\014\n\004ping\030\001 \001(\005\"\024\n\004Po" +
+      "ng\022\014\n\004pong\030\001 \001(\r\"\036\n\013ClusterAuth\022\017\n\007nodeK" +
+      "ey\030\001 \001(\t\"!\n\003Ack\022\n\n\002id\030\001 \001(\t\022\016\n\006status\030\002 " +
+      "\001(\tB\014B\nDefaultMsgb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -6987,39 +8344,45 @@ public final class DefaultMsg {
     internal_static_com_feige_im_pojo_proto_Auth_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_Auth_descriptor,
-        new java.lang.String[] { "UserId", "DeviceId", "DeviceName", "Version", "OsVersion", "Language", "Token", "Platform", });
+        new java.lang.String[] { "Ip", "DeviceId", "DeviceName", "Version", "OsVersion", "Language", "Token", "Platform", "Address", });
     internal_static_com_feige_im_pojo_proto_Forced_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_feige_im_pojo_proto_Forced_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_Forced_descriptor,
-        new java.lang.String[] { "Id", "UserId", "Ip", "Address", "Timestamp", });
+        new java.lang.String[] { "Ip", "Address", "Content", "DeviceName", "Timestamp", });
     internal_static_com_feige_im_pojo_proto_Msg_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_com_feige_im_pojo_proto_Msg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_Msg_descriptor,
-        new java.lang.String[] { "Id", "SenderId", "ReceiverId", "Content", "Format", "MsgType", "Timestamp", "ContentType", "Extra", });
-    internal_static_com_feige_im_pojo_proto_Ping_descriptor =
+        new java.lang.String[] { "Id", "SenderId", "ReceiverId", "Content", "Format", "MsgType", "Timestamp", "Status", "Extra", });
+    internal_static_com_feige_im_pojo_proto_TransportMsg_descriptor =
       getDescriptor().getMessageTypes().get(3);
+    internal_static_com_feige_im_pojo_proto_TransportMsg_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_feige_im_pojo_proto_TransportMsg_descriptor,
+        new java.lang.String[] { "Type", "Msg", });
+    internal_static_com_feige_im_pojo_proto_Ping_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_com_feige_im_pojo_proto_Ping_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_Ping_descriptor,
         new java.lang.String[] { "Ping", });
     internal_static_com_feige_im_pojo_proto_Pong_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_com_feige_im_pojo_proto_Pong_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_Pong_descriptor,
         new java.lang.String[] { "Pong", });
     internal_static_com_feige_im_pojo_proto_ClusterAuth_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_com_feige_im_pojo_proto_ClusterAuth_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_ClusterAuth_descriptor,
         new java.lang.String[] { "NodeKey", });
     internal_static_com_feige_im_pojo_proto_Ack_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_com_feige_im_pojo_proto_Ack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_Ack_descriptor,

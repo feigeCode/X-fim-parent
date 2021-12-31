@@ -5,6 +5,8 @@ import com.feige.im.handler.server.ClusterMsgForwardProcessor;
 import com.feige.im.handler.server.DefaultClusterMsgForwardProcessor;
 import com.feige.im.handler.DefaultMsgProcessor;
 
+import com.feige.im.parser.Parser;
+import com.feige.im.service.impl.ImBusinessServiceImpl;
 import com.feige.im.task.ClusterTask;
 import com.feige.im.server.ImServer;
 
@@ -18,8 +20,10 @@ import java.io.File;
  */
 public class ClusterTest2 {
     public static void main(String[] args) {
-        ClusterMsgForwardProcessor defaultClusterMsgForwardProcessor = new DefaultClusterMsgForwardProcessor(new DefaultMsgProcessor());
-        DefaultClientMsgProcessor defaultClientMsgProcessor = new DefaultClientMsgProcessor();
+        Parser.registerDefaultParsing();
+        ImBusinessServiceImpl imBusinessService = new ImBusinessServiceImpl();
+        ClusterMsgForwardProcessor defaultClusterMsgForwardProcessor = new DefaultClusterMsgForwardProcessor(new DefaultMsgProcessor(),imBusinessService);
+        DefaultClientMsgProcessor defaultClientMsgProcessor = new DefaultClientMsgProcessor(imBusinessService);
         ClusterTask clusterTask = new ClusterTask(defaultClientMsgProcessor);
         ImServer.start(new File("E:\\project\\im\\xiaofei-im-parent\\conf\\xiaofei-im2.properties"),defaultClusterMsgForwardProcessor, clusterTask);
     }

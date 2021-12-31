@@ -15,6 +15,7 @@ import io.netty.channel.Channel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 
 
 /**
@@ -52,7 +53,7 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
                 processor.process(key, channel, msg,null);
                 break;
             case EXCEPTION:
-                System.out.println("发生异常");
+                LOG.error("发生异常：",cause);
                 break;
         }
     }
@@ -110,35 +111,38 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
      * @return: void
      */
     private void msgForward(Channel channel, Message msg){
-        String receiverId = this.getReceiverId(msg);
-        if (StringUtil.isBlank(receiverId)){
+        List<String> receiverIds = this.getReceiverIds(msg);
+        if (receiverIds == null || receiverIds.isEmpty()){
             return;
         }
-        // 通过一致性hash算法判断该用户所在的机器
-        String nodeKey = this.route.getRoute(receiverId);
-        // 本机的nodeKey
-        String myNodeKey = CONFIG.getNodeKey();
-        if (StringUtil.isEmpty(myNodeKey)){
-            LOG.error("{}为空，请检查配置是否正确",myNodeKey);
-            return;
-        }
-        if (myNodeKey.equals(nodeKey)){
-            // 如果在本机，则往下走
-            processor.process(ProcessorEnum.READ, channel, msg,null);
-        }else {
-            // 不在本机则转发到用户所在的机器
-            clusterChannel.write(nodeKey,msg);
+        for (String receiverId : receiverIds) {
+            // 获取该用户所在的机器
+            String nodeKey = this.route.getRoute(receiverId);
+            // 本机的nodeKey
+            String myNodeKey = CONFIG.getNodeKey();
+            if (StringUtil.isEmpty(myNodeKey)){
+                LOG.error("myNodeKey为空，请检查配置是否正确");
+                return;
+            }
+            if (myNodeKey.equals(nodeKey)){
+                // 如果在本机，则往下走
+                processor.process(ProcessorEnum.READ, channel, msg,null);
+            }else {
+                // 不在本机则转发到用户所在的机器
+                clusterChannel.write(nodeKey,msg);
+            }
         }
     }
 
-    /**
-     * @description: 获取消息接收者ID，通过接收者ID判断用户所在的主机，便于转发消息
-     * @author: feige
-     * @date: 2021/11/14 16:47
-     * @param	message	用户自定义消息
-     * @return: java.lang.String
-     */
-    public abstract String getReceiverId(Message message);
+
+     /**
+      * @description: 获取消息接收者ID，通过接收者ID判断用户所在的主机，便于转发消息
+      * @author: feige
+      * @date: 2021/12/31 14:14
+      * @param	message	用户自定义消息
+      * @return: java.util.List<java.lang.String>
+      */
+    public abstract List<String> getReceiverIds(Message message);
 
 
 }

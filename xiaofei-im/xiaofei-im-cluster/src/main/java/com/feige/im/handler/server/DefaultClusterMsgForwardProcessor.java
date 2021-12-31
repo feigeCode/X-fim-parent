@@ -3,7 +3,11 @@ package com.feige.im.handler.server;
 import com.feige.im.handler.MsgProcessor;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.DefaultMsg;
+import com.feige.im.service.ImBusinessService;
 import com.google.protobuf.Message;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author feige<br />
@@ -12,16 +16,29 @@ import com.google.protobuf.Message;
  * @date: 2021/11/14 16:33<br/>
  */
 public class DefaultClusterMsgForwardProcessor extends ClusterMsgForwardProcessor{
-    public DefaultClusterMsgForwardProcessor(MsgProcessor processor) {
+
+    private final ImBusinessService imBusinessService;
+
+    public DefaultClusterMsgForwardProcessor(MsgProcessor processor,ImBusinessService imBusinessService) {
         super(processor);
+        this.imBusinessService = imBusinessService;
     }
 
     @Override
-    public String getReceiverId(Message message) {
-        if (message instanceof DefaultMsg.Msg){
-            DefaultMsg.Msg msg = Parser.getT(DefaultMsg.Msg.class, message);
-            return msg.getReceiverId();
+    public List<String> getReceiverIds(Message message) {
+        List<String> receiverIds = new ArrayList<>();
+        if (message instanceof DefaultMsg.TransportMsg){
+            DefaultMsg.TransportMsg transportMsg = Parser.getT(DefaultMsg.TransportMsg.class, message);
+            DefaultMsg.Msg msg = transportMsg.getMsg();
+            int type = transportMsg.getType();
+            String receiverId = msg.getReceiverId();
+            if (type == 1){
+                receiverIds.add(receiverId);
+            }else if (type == 2){
+                // 群成员ID
+                return imBusinessService.getUserIdsByGroupId(receiverId);
+            }
         }
-        return null;
+        return receiverIds;
     }
 }

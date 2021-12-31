@@ -5,16 +5,22 @@ import com.feige.im.constant.ProcessorEnum;
 import com.feige.im.group.MyChannelGroup;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.DefaultMsg;
+import com.feige.im.service.ImBusinessService;
+import com.feige.im.service.impl.ImBusinessServiceImpl;
+import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.channel.Channel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+
 
 /**
  * @author feige<br />
@@ -25,6 +31,17 @@ import java.util.Objects;
 public class DefaultMsgProcessor implements MsgProcessor {
     private static final Logger LOG = LogManager.getLogger(DefaultMsgProcessor.class);
     private static final MyChannelGroup channelGroup = MyChannelGroup.getInstance();
+    private ImBusinessService imBusinessService;
+    private ScheduledExecutorService executor;
+
+    public DefaultMsgProcessor(ImBusinessService imBusinessService) {
+        this.imBusinessService = imBusinessService;
+        this.executor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() / 2,new NameThreadFactory("im-business-task-"));
+    }
+
+    public DefaultMsgProcessor() {
+        this.imBusinessService = new ImBusinessServiceImpl();
+    }
 
     @Override
     public void process(ProcessorEnum key, Channel channel, Message message, Throwable cause) {
@@ -37,27 +54,43 @@ public class DefaultMsgProcessor implements MsgProcessor {
                 if (Objects.isNull(message)) {
                     return;
                 }
-                if (message instanceof DefaultMsg.Msg){
-                    DefaultMsg.Msg msg = Parser.getT(DefaultMsg.Msg.class, message);
-                    String receiverId = msg.getReceiverId();
-                    channelGroup.write(receiverId,msg);
+                // 消息持久化
+                if (executor != null){
+                    executor.execute(() -> {
+                        imBusinessService.persistentMsg(message);
+                    });
                 }
-
+                if (message instanceof DefaultMsg.TransportMsg){
+                    DefaultMsg.TransportMsg transportMsg = Parser.getT(DefaultMsg.TransportMsg.class, message);
+                    DefaultMsg.Msg msg = transportMsg.getMsg();
+                    int type = transportMsg.getType();
+                    String receiverId = msg.getReceiverId();
+                    if (type == 1){
+                        channelGroup.write(receiverId,transportMsg);
+                    }else if (type == 2){
+                        // 群消息转发
+                        if (executor != null){
+                            executor.execute(() -> sentGroupMsg(receiverId,transportMsg));
+                        }else {
+                            sentGroupMsg(receiverId,transportMsg);
+                        }
+                    }
+                }
                 if (message instanceof DefaultMsg.Auth){
                     DefaultMsg.Auth msg = Parser.getT(DefaultMsg.Auth.class, message);
-                    channel.attr(ChannelAttr.USER_ID).set(msg.getUserId());
+                    channel.attr(ChannelAttr.USER_ID).set(msg.getToken());
                     channel.attr(ChannelAttr.PLATFORM).set(msg.getPlatform());
                     channel.attr(ChannelAttr.DEVICE_ID).set(msg.getDeviceId());
                     channel.attr(ChannelAttr.LANGUAGE).set(msg.getLanguage());
                     // 控制其他设备下线
-                    Collection<Channel> channels = channelGroup.getChannels(msg.getUserId(), msg.getPlatform());
+                    Collection<Channel> channels = channelGroup.getChannels(msg.getToken(), msg.getPlatform());
                     if (!channels.isEmpty()) {
                         channels.forEach(ch -> {
                             DefaultMsg.Forced forced = DefaultMsg.Forced.newBuilder()
-                                    .setId(1L)
-                                    .setUserId(msg.getUserId())
-                                    .setIp("127.0.0.1")
-                                    .setAddress("四川省成都市双流区")
+                                    .setIp(msg.getIp())
+                                    .setAddress(msg.getAddress())
+                                    .setContent("你的账号已在另一个地方登录")
+                                    .setDeviceName(msg.getDeviceName())
                                     .setTimestamp(String.valueOf(new Date().getTime()))
                                     .build();
                             ch.writeAndFlush(forced);
@@ -76,5 +109,31 @@ public class DefaultMsgProcessor implements MsgProcessor {
         }
 
 
+    }
+
+    /**
+     * 发送群消息
+     * @param groupId 群ID
+     * @param msg 消息
+     */
+    public void sentGroupMsg(String groupId, Message msg){
+        List<String> userIds = imBusinessService.getUserIdsByGroupId(groupId);
+        if (userIds != null){
+            for (String userId : userIds) {
+                if (groupId.equals(userId)){
+                    continue;
+                }
+                channelGroup.write(userId,msg);
+            }
+        }
+    }
+
+
+    public ImBusinessService getImBusinessService() {
+        return imBusinessService;
+    }
+
+    public void setImBusinessService(ImBusinessService imBusinessService) {
+        this.imBusinessService = imBusinessService;
     }
 }

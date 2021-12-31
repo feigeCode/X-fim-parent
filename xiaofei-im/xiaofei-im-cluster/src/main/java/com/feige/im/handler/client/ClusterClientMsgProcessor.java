@@ -12,6 +12,7 @@ import io.netty.channel.Channel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +31,7 @@ public abstract class ClusterClientMsgProcessor implements MsgProcessor {
     private static final MyChannelGroup CHANNEL_GROUP = MyChannelGroup.getInstance();
 
 
+
     @Override
     public void process(ProcessorEnum key, Channel channel, Message msg, Throwable cause) {
         LOG.info("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(msg));
@@ -46,7 +48,7 @@ public abstract class ClusterClientMsgProcessor implements MsgProcessor {
                 clusterChannel.remove(channel);
                 break;
             case EXCEPTION:
-                System.out.println("发生异常");
+                LOG.error("发生异常：",cause);
                 break;
         }
     }
@@ -75,11 +77,13 @@ public abstract class ClusterClientMsgProcessor implements MsgProcessor {
             channel.writeAndFlush(ImConst.PONG_MSG);
             return;
         }
-        String receiverId = this.getReceiverId(msg);
-        if (StringUtil.isBlank(receiverId)){
+        List<String> receiverIds = this.getReceiverIds(msg);
+        if (receiverIds == null || receiverIds.isEmpty()){
             return;
         }
-        CHANNEL_GROUP.write(receiverId,msg);
+        for (String receiverId : receiverIds) {
+            CHANNEL_GROUP.write(receiverId,msg);
+        }
     }
 
 
@@ -90,6 +94,6 @@ public abstract class ClusterClientMsgProcessor implements MsgProcessor {
      * @param	message	用户自定义消息
      * @return: java.lang.String
      */
-    public abstract String getReceiverId(Message message);
+    public abstract List<String> getReceiverIds(Message message);
 
 }
