@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.InetAddress;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.function.Consumer;
@@ -46,20 +47,21 @@ public class ClusterTask implements Consumer<Integer> {
         ScheduledExecutorService executor = null;
         try {
             executor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() / 2,new NameThreadFactory("cluster-task-"));
-            executor.execute(new ImRegistry(localAddress.getHostAddress(),port));
             List<ServerInstance> allServerInstances = providerService.getAllServerInstances();
-            List<String> collect = allServerInstances
-                    .stream()
-                    .map(s -> s.getIp() + ":" + s.getPort())
-                    .collect(Collectors.toList());
-            iRoutes.add(collect);
+            final CountDownLatch countDownLatch = new CountDownLatch(allServerInstances.size());
             for (ServerInstance serverInstance : allServerInstances) {
                 // 去除自己
                 if (localAddress.getHostAddress().equals(serverInstance.getIp()) && port.equals(serverInstance.getPort())){
                     continue;
                 }
-                executor.execute(() -> ImClient.connect(serverInstance.getIp(),serverInstance.getPort(),msgProcessor));
+                executor.execute(() -> {
+                    ImClient.connect(serverInstance.getIp(),serverInstance.getPort(),msgProcessor);
+                    countDownLatch.countDown();
+                });
             }
+            // 等待链接建立完成之后注册自己
+            countDownLatch.await();
+            executor.execute(new ImRegistry(localAddress.getHostAddress(),port));
         } catch (Exception e) {
             LOG.error("cluster task fail:",e);
         } finally {
