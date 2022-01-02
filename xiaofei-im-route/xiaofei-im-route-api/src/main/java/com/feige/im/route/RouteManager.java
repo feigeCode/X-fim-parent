@@ -14,22 +14,22 @@ import java.util.ServiceLoader;
 public class RouteManager {
 
     private static  final ServiceLoader<IRoute> iRoutes = ServiceLoader.load(IRoute.class);;
-    public static final List<IRoute> ROUTES = new ArrayList<>();
+    private static volatile IRoute route;
 
     public static IRoute getIRoutes(){
-        if (ROUTES.isEmpty()){
+        if (route == null){
             synchronized (RouteManager.class){
-                if (ROUTES.isEmpty()) {
+                if (route == null) {
                     Iterator<IRoute> iterator = iRoutes.iterator();
                     if (iterator.hasNext()){
-                        ROUTES.add(iterator.next());
+                        route = iterator.next();
                     }
                 }
             }
         }
-        if (ROUTES.size() > 0){
-            return ROUTES.get(0);
+        if (route == null){
+            throw new IllegalArgumentException("未发现任何的路由实现类，请检查META-INF/services下的配置文件");
         }
-        throw new IllegalArgumentException("未发现任何的路由实现类，请检查META-INF/services下的配置文件");
+        return route;
     }
 }

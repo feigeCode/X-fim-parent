@@ -13,22 +13,22 @@ import java.util.ServiceLoader;
  */
 public class DiscoveryManager {
     private static  final ServiceLoader<ProviderService> providerServices = ServiceLoader.load(ProviderService.class);;
-    public static final List<ProviderService> PROVIDER_SERVICES = new ArrayList<>();
+    private static volatile ProviderService providerService;
 
     public static ProviderService getProviderService(){
-        if (PROVIDER_SERVICES.isEmpty()){
+        if (providerService == null){
             synchronized (DiscoveryManager.class){
-                if (PROVIDER_SERVICES.isEmpty()) {
+                if (providerService == null) {
                     Iterator<ProviderService> iterator = providerServices.iterator();
                     if (iterator.hasNext()){
-                        PROVIDER_SERVICES.add(iterator.next());
+                        providerService = iterator.next();
                     }
                 }
             }
         }
-        if (PROVIDER_SERVICES.size() > 0){
-            return PROVIDER_SERVICES.get(0);
+        if (providerService == null){
+            throw new IllegalArgumentException("未发现任何的注册中心实现类，请检查META-INF/services下的配置文件");
         }
-        throw new IllegalArgumentException("未发现任何的注册中心实现类，请检查META-INF/services下的配置文件");
+        return providerService;
     }
 }
