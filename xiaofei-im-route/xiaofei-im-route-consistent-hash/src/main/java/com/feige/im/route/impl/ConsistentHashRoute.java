@@ -23,10 +23,10 @@ public class ConsistentHashRoute implements IRoute {
     private TreeMap<Integer, String> MAP;
 
     public static void main(String[] args) {
-        String[] strings = {"10.1.204.70:8001", "10.1.204.70:8002","10.1.204.70:8003"};
+        String[] strings = {"192.168.0.104:8001", "192.168.0.104:8002","192.168.0.104:8003"};
         ConsistentHashRoute consistentHashRoute = new ConsistentHashRoute(strings);
         String route1 = consistentHashRoute.getRoute("1");
-        String route2 = consistentHashRoute.getRoute("0");
+        String route2 = consistentHashRoute.getRoute("2");
         String route3 = consistentHashRoute.getRoute("34353");
         System.out.println(route1);
         System.out.println(route2);

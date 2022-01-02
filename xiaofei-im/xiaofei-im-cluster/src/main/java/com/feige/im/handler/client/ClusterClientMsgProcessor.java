@@ -60,7 +60,7 @@ public abstract class ClusterClientMsgProcessor implements MsgProcessor {
     }
 
     /**
-     * @description: 客户端接收来自服务端的消息，服务端把消息推送到接收者
+     * @description: 客户端接收来自服务端的消息，客户端把消息交给服务端，服务端再把消息推送到接收者
      * @author: feige
      * @date: 2021/11/14 18:04
      * @param	channel

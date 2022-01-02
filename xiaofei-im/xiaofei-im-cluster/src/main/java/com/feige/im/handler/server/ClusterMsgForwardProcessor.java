@@ -15,7 +15,9 @@ import io.netty.channel.Channel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -43,7 +45,7 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
         LOG.info("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(msg));
         switch (key){
             case ACTIVE:
-                LOG.info("server：连接进入{}",() -> "");
+                LOG.info("server：连接进入channelId={}",() -> channel.id().asShortText());
                 break;
             case READ:
                 msgHandler(channel,msg);
@@ -111,6 +113,7 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
      * @return: void
      */
     private void msgForward(Channel channel, Message msg){
+        Set<String> nodeKesSet = new HashSet<>();
         List<String> receiverIds = this.getReceiverIds(msg);
         if (receiverIds == null || receiverIds.isEmpty()){
             return;
@@ -128,6 +131,12 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
                 // 如果在本机，则往下走
                 processor.process(ProcessorEnum.READ, channel, msg,null);
             }else {
+                // 存在多个用户在同一台机器，转发一次即可
+                nodeKesSet.add(nodeKey);
+            }
+        }
+        if (!nodeKesSet.isEmpty()){
+            for (String nodeKey : nodeKesSet) {
                 // 不在本机则转发到用户所在的机器
                 clusterChannel.write(nodeKey,msg);
             }

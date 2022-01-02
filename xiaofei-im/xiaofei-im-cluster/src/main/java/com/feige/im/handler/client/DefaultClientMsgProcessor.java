@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class DefaultClientMsgProcessor extends ClusterClientMsgProcessor {
 
-    private ImBusinessService imBusinessService;
+    private final ImBusinessService imBusinessService;
 
     public DefaultClientMsgProcessor(ImBusinessService imBusinessService) {
         this.imBusinessService = imBusinessService;
