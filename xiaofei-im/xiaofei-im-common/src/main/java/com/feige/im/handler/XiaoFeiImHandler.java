@@ -2,12 +2,12 @@ package com.feige.im.handler;
 
 import com.feige.im.constant.ChannelAttr;
 import com.feige.im.constant.ProcessorEnum;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.google.protobuf.Message;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -25,7 +25,7 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
         this.processor = msgProcessor;
     }
 
-    private static final Logger log = LogManager.getLogger(XiaoFeiImHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
@@ -40,7 +40,7 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        log.info("channelId = {}的连接不活跃",ctx.channel().attr(ChannelAttr.ID));
+        LOG.info("channelId = {}的连接不活跃",ctx.channel().attr(ChannelAttr.ID));
         if (ctx.channel().attr(ChannelAttr.USER_ID) == null){
             return;
         }
@@ -51,7 +51,7 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error(cause.getMessage(),cause);
+        LOG.error(cause.getMessage(),cause);
         processor.process(ProcessorEnum.EXCEPTION,ctx.channel(),null,cause);
     }
 }

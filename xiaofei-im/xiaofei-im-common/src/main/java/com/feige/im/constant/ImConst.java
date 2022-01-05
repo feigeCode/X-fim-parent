@@ -41,6 +41,7 @@ public interface ImConst {
     String SERVER_PORT = "server.port";
 
 
+    String DEFAULT_LOG_NAME = "java";
 
 
 

@@ -5,12 +5,12 @@ import com.feige.im.constant.ImConst;
 import com.feige.im.constant.ProcessorEnum;
 import com.feige.im.group.MyChannelGroup;
 import com.feige.im.handler.MsgProcessor;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.channel.Channel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class ClusterClientMsgProcessor implements MsgProcessor {
 
-    private static final Logger LOG = LogManager.getLogger(ClusterClientMsgProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
     // 管理的是集群客户端的连接
     private static final ClusterChannel clusterChannel = ClusterChannel.getINSTANCE();
     // 管理的是用户客户端的连接
@@ -34,7 +34,7 @@ public abstract class ClusterClientMsgProcessor implements MsgProcessor {
 
     @Override
     public void process(ProcessorEnum key, Channel channel, Message msg, Throwable cause) {
-        LOG.info("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(msg));
+        LOG.debugInfo("key={},channelId={},msg={}",key, channel.id().asShortText(), StringUtil.protoMsgFormat(msg));
         switch (key){
             case ACTIVE:
                 Executors.newScheduledThreadPool(2).schedule(() -> {
@@ -54,7 +54,7 @@ public abstract class ClusterClientMsgProcessor implements MsgProcessor {
     }
 
     public void init(Channel channel){
-        LOG.info("client：连接进入{}",() -> "");
+        LOG.debugInfo("client：连接进入");
         ClusterInitializer initializer = new ClusterInitializer(channel);
         initializer.init();
     }
@@ -73,7 +73,7 @@ public abstract class ClusterClientMsgProcessor implements MsgProcessor {
         }
         // 客户端发送心跳
         if (msg instanceof DefaultMsg.Ping){
-            LOG.info("客户端发送心跳{}",() -> "");
+            LOG.debugInfo("客户端发送心跳");
             channel.writeAndFlush(ImConst.PONG_MSG);
             return;
         }

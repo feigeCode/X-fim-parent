@@ -24,13 +24,9 @@
             <artifactId>netty-all</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
+            <groupId>com.feige</groupId>
+            <artifactId>xiaofei-im-log4j2</artifactId>
+            <version>${xiaofei.im.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.protobuf</groupId>

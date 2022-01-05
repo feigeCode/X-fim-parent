@@ -5,6 +5,8 @@ import com.feige.im.config.ImConfig;
 import com.feige.im.constant.ImConst;
 import com.feige.im.handler.DefaultMsgProcessor;
 import com.feige.im.handler.MsgProcessor;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.utils.AssertUtil;
@@ -16,8 +18,6 @@ import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  */
 public class ImServer {
 
-    private static final Logger LOG = LogManager.getLogger(ImServer.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
     private static final ImConfig CONFIG = ImConfig.getInstance();
 
     private final int port;
@@ -142,7 +142,11 @@ public class ImServer {
                 .childHandler(new NettyServerInitializer(processor))
                 .bind().syncUninterruptibly();
         channelFuture.channel().newSucceededFuture().addListener(future -> {
-            LOG.info("netty websocket server in {} port start finish....", this.port);
+            if (future.isSuccess()) {
+                LOG.info("netty websocket server in {} port start finish....", this.port);
+            }else {
+                LOG.error("netty websocket server in {} port start fail....", this.port);
+            }
         });
         channelFuture.channel().closeFuture().addListener(future -> this.destroy());
         // 集群模式下需要和其他节点建立连接

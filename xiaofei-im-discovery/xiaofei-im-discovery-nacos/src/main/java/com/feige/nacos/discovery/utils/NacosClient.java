@@ -3,8 +3,8 @@ package com.feige.nacos.discovery.utils;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 
 /**
  * @author feige<br />
@@ -14,13 +14,13 @@ import org.apache.logging.log4j.Logger;
  */
 public class NacosClient {
 
-    private static final Logger LOG = LogManager.getLogger(NacosClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
 
     public static NamingService getNamingService(){
         try {
             return NamingFactory.createNamingService("127.0.0.1:8848");
         } catch (NacosException e) {
-            LOG.error(e);
+            LOG.error("nacos error:",e);
         }
         return null;
     }

@@ -3,12 +3,12 @@ package com.feige.im.handler.client;
 import com.feige.im.channel.ClusterChannel;
 import com.feige.im.config.ImConfig;
 import com.feige.im.constant.ChannelAttr;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.StringUtil;
 import io.netty.channel.Channel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.net.InetSocketAddress;
 
@@ -19,7 +19,7 @@ import java.net.InetSocketAddress;
  * @date: 2021/11/11 22:09<br/>
  */
 public class ClusterInitializer {
-    private static final Logger LOG = LogManager.getLogger(ClusterInitializer.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
     private static final ClusterChannel CLUSTER_CHANNEL = ClusterChannel.getINSTANCE();
     private static final ImConfig CONFIG = ImConfig.getInstance();
 
@@ -46,9 +46,9 @@ public class ClusterInitializer {
         DefaultMsg.ClusterAuth clusterAuth = DefaultMsg.ClusterAuth.newBuilder()
                 .setNodeKey(CONFIG.getNodeKey())
                 .build();
-        LOG.info("开始发送集群连接消息{}",() -> StringUtil.protoMsgFormat(clusterAuth));
+        LOG.debugInfo("开始发送集群连接消息{}",StringUtil.protoMsgFormat(clusterAuth));
         this.channel.writeAndFlush(clusterAuth);
-        LOG.info("集群连接消息发送完成{}",() -> "");
+        LOG.debugInfo("集群连接消息发送完成");
     }
 
     /**

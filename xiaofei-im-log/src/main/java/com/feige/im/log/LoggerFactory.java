@@ -1,5 +1,7 @@
 package com.feige.im.log;
 
+import com.feige.im.log.impl.jul.JavaLoggingAdapter;
+
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
@@ -20,7 +22,8 @@ public final class LoggerFactory {
         }
 
         if (LOGGER == null){
-            throw new RuntimeException("未发现任何的路由实现类，请检查META-INF/services下的配置文件");
+            // 默认使用的日志
+            LOGGER = new JavaLoggingAdapter();
         }
     }
 

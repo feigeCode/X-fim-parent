@@ -1,6 +1,8 @@
 package com.feige.im.client;
 
 import com.feige.im.handler.MsgProcessor;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.OsUtil;
 import io.netty.bootstrap.Bootstrap;
@@ -12,8 +14,6 @@ import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.net.InetSocketAddress;
 
@@ -27,7 +27,7 @@ import java.net.InetSocketAddress;
  */
 public class ImClient {
 
-    public static final Logger LOG = LogManager.getLogger(ImClient.class);
+    public static final Logger LOG = LoggerFactory.getLogger();
     private final int port;
     private final String ip;
     private final EventLoopGroup wordGroup;
@@ -62,7 +62,11 @@ public class ImClient {
                 .connect(new InetSocketAddress(ip, port)).syncUninterruptibly();
         channelFuture.channel().closeFuture().addListener(future -> this.destroy());
         channelFuture.channel().newSucceededFuture().addListener(future -> {
-            LOG.info("与ip={},port={}的主机建立连接成功！",ip,port);
+            if (future.isSuccess()) {
+                LOG.info("与ip={},port={}的主机建立连接成功！",ip,port);
+            }else {
+                LOG.error("与ip={},port={}的主机建立连接失败！",ip,port);
+            }
         });
         this.channel = channelFuture.channel();
 

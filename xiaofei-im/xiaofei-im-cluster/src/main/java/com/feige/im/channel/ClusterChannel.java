@@ -1,14 +1,14 @@
 package com.feige.im.channel;
 
 import com.feige.im.constant.ChannelAttr;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.util.Attribute;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 
 import java.util.Map;
@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ClusterChannel {
 
-    private static final Logger LOG = LogManager.getLogger(ClusterChannel.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
 
     private static final Map<String, Channel> MAP = new ConcurrentHashMap<>();
     // 监听连接关闭
@@ -76,7 +76,7 @@ public class ClusterChannel {
         }
         channel.closeFuture().addListener(remover);
         MAP.put(key,channel);
-        LOG.info("nodeKey={}的连接已加入管理，当前共管理{}个连接",() -> key, MAP::size);
+        LOG.debugInfo("nodeKey={}的连接已加入管理，当前共管理{}个连接",key, MAP.size());
     }
 
     public void remove(Channel channel){
@@ -85,7 +85,7 @@ public class ClusterChannel {
             return;
         }
         MAP.remove(key);
-        LOG.info("nodeKey={}的连接从管理中移除，当前共管理{}个连接",() -> key, MAP::size);
+        LOG.debugInfo("nodeKey={}的连接从管理中移除，当前共管理{}个连接",key, MAP.size());
     }
 
 
@@ -99,13 +99,13 @@ public class ClusterChannel {
      * @return: void
      */
     public void write(String key, Message msg){
-        LOG.info("msg={}的消息开始转发到nodeKey={}的节点", () -> StringUtil.protoMsgFormat(msg),() -> key);
+        LOG.debugInfo("msg={}的消息开始转发到nodeKey={}的节点", StringUtil.protoMsgFormat(msg),key);
         Channel channel = MAP.get(key);
         if (StringUtil.isEmpty(channel)){
             LOG.warn("nodeKey={}的连接未发现在集合中，消息转发失败！",key);
             return;
         }
         channel.writeAndFlush(msg);
-        LOG.info("msg={}的消息已转发到nodeKey={}的节点", () -> StringUtil.protoMsgFormat(msg),() -> key);
+        LOG.debugInfo("msg={}的消息已转发到nodeKey={}的节点", StringUtil.protoMsgFormat(msg), key);
     }
 }

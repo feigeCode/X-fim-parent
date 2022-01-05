@@ -5,6 +5,8 @@ import com.feige.im.config.ImConfig;
 import com.feige.im.constant.ChannelAttr;
 import com.feige.im.constant.ProcessorEnum;
 import com.feige.im.handler.MsgProcessor;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.route.IRoute;
@@ -12,8 +14,6 @@ import com.feige.im.route.RouteManager;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.channel.Channel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.Set;
  */
 public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
 
-    private static final Logger LOG = LogManager.getLogger(ClusterMsgForwardProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
     private static final ClusterChannel clusterChannel = ClusterChannel.getINSTANCE();
     private static final ImConfig CONFIG = ImConfig.getInstance();
     private final MsgProcessor processor;
@@ -42,10 +42,10 @@ public abstract class ClusterMsgForwardProcessor implements MsgProcessor {
 
     @Override
     public void process(ProcessorEnum key, Channel channel, Message msg, Throwable cause) {
-        LOG.info("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(msg));
+        LOG.debugInfo("key={},channelId={},msg={}",key,channel.id().asShortText(),StringUtil.protoMsgFormat(msg));
         switch (key){
             case ACTIVE:
-                LOG.info("server：连接进入channelId={}",() -> channel.id().asShortText());
+                LOG.debugInfo("server：连接进入channelId={}",channel.id().asShortText());
                 break;
             case READ:
                 msgHandler(channel,msg);

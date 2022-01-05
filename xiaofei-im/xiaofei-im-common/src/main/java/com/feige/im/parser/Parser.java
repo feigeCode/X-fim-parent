@@ -1,10 +1,10 @@
 package com.feige.im.parser;
 
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.google.protobuf.Message;
 import io.netty.buffer.ByteBufInputStream;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 import java.util.Objects;
@@ -23,7 +23,7 @@ public class Parser {
         Message process(ByteBufInputStream in) throws Exception;
     }
 
-    private static final Logger LOG =  LogManager.getLogger(Parser.class);
+    private static final Logger LOG =  LoggerFactory.getLogger();
 
     public static final Map<Integer,DeserializationHandler> DESERIALIZATION_MAP = new ConcurrentHashMap<>();
     public static final Map<Class<? extends Message>,Integer> MSG_KEY_MAP = new ConcurrentHashMap<>();

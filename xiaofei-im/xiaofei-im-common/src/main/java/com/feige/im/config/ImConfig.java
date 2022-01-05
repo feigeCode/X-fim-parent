@@ -2,9 +2,9 @@ package com.feige.im.config;
 
 
 import com.feige.im.constant.ImConst;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.utils.AssertUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +20,7 @@ import java.util.Properties;
  */
 public class ImConfig extends Properties {
 
-    private static final Logger LOG = LogManager.getLogger(ImConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
 
     private ImConfig(){
     }
@@ -59,7 +59,7 @@ public class ImConfig extends Properties {
             LOG.info("配置文件路径为：{}", file.getAbsolutePath());
             this.loadProperties(new FileInputStream(file));
         } catch (IOException e) {
-            LOG.error(e);
+            LOG.error("加载配置文件失败：",e);
         }
     }
 
@@ -76,7 +76,7 @@ public class ImConfig extends Properties {
             this.load(is);
             LOG.info("加载配置文件完成");
         } catch (IOException e) {
-            LOG.error(e);
+            LOG.error("加载配置文件失败：",e);
         }
     }
 

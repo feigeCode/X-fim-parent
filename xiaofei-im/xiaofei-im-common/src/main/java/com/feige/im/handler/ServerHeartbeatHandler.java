@@ -2,6 +2,8 @@ package com.feige.im.handler;
 
 import com.feige.im.constant.ChannelAttr;
 import com.feige.im.constant.ImConst;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.utils.StringUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -9,8 +11,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.Attribute;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ import java.util.Objects;
 @ChannelHandler.Sharable
 public class ServerHeartbeatHandler extends ChannelInboundHandlerAdapter {
 
-    Logger log = LogManager.getLogger(ServerHeartbeatHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -34,7 +34,7 @@ public class ServerHeartbeatHandler extends ChannelInboundHandlerAdapter {
             if (event.state() == IdleState.WRITER_IDLE ){
                 if (StringUtil.isEmpty(userId) && StringUtil.isEmpty(nodeKey)){
                     ctx.channel().close();
-                    log.warn("{} 关闭未绑定ID的连接.",ctx.channel().id().asShortText());
+                    LOG.warn("{} 关闭未绑定ID的连接.",ctx.channel().id().asShortText());
                     return;
                 }
                 // 发送心跳
@@ -45,11 +45,11 @@ public class ServerHeartbeatHandler extends ChannelInboundHandlerAdapter {
                     attr.set(attr.get() + 1);
                 }
                 if (!StringUtil.isEmpty(userId)){
-                    log.info("发送心跳，userId={}",() -> userId);
+                    LOG.debugInfo("发送心跳，userId={}", userId);
                 }
 
                 if (!StringUtil.isEmpty(nodeKey)){
-                    log.info("发送心跳，nodeKey={}",() -> nodeKey);
+                    LOG.debugInfo("发送心跳，nodeKey={}", nodeKey);
                 }
                 ctx.channel().writeAndFlush(ImConst.PING_MSG);
                 return;
@@ -58,11 +58,11 @@ public class ServerHeartbeatHandler extends ChannelInboundHandlerAdapter {
             if (event.state() == IdleState.READER_IDLE && !Objects.isNull(pingCount) && pingCount >= ImConst.PONG_TIME_OUT_COUNT) {
                 ctx.close();
                 if (!StringUtil.isEmpty(userId)){
-                    log.warn("userId = {} pong timeout.",userId);
+                    LOG.warn("userId = {} pong timeout.",userId);
                 }
 
                 if (!StringUtil.isEmpty(nodeKey)){
-                    log.warn("nodeKey = {} pong timeout.",nodeKey);
+                    LOG.warn("nodeKey = {} pong timeout.",nodeKey);
                 }
             }
         } else {

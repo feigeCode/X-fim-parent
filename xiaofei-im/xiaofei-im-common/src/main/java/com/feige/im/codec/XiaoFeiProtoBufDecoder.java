@@ -2,6 +2,8 @@ package com.feige.im.codec;
 
 import com.feige.im.constant.ChannelAttr;
 import com.feige.im.constant.ImConst;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.parser.Parser;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
@@ -11,8 +13,6 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 @ChannelHandler.Sharable
 public class XiaoFeiProtoBufDecoder extends MessageToMessageDecoder<BinaryWebSocketFrame> {
-    private static final Logger LOG = LogManager.getLogger(XiaoFeiProtoBufDecoder.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
 
     @Override
     protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
@@ -35,7 +35,7 @@ public class XiaoFeiProtoBufDecoder extends MessageToMessageDecoder<BinaryWebSoc
         byte type = buf.readByte();
         // 心跳
         if (ImConst.PONG_MSG_TYPE == type){
-            LOG.info("收到心跳{}",() -> StringUtil.protoMsgFormat(ImConst.PONG_MSG));
+            LOG.debugInfo("收到心跳{}",StringUtil.protoMsgFormat(ImConst.PONG_MSG));
             out.add(ImConst.PONG_MSG);
             return;
         }

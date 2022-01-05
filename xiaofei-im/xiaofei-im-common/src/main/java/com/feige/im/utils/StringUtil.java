@@ -68,4 +68,7 @@ public class StringUtil {
         return result;
     }
 
+    public static boolean isNotBlank(CharSequence sequence) {
+        return !isBlank(sequence);
+    }
 }

@@ -3,6 +3,8 @@ package com.feige.im.handler;
 import com.feige.im.constant.ChannelAttr;
 import com.feige.im.constant.ProcessorEnum;
 import com.feige.im.group.MyChannelGroup;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.service.ImBusinessService;
@@ -11,8 +13,6 @@ import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.channel.Channel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Date;
@@ -29,7 +29,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  * @date: 2021/10/10 13:24<br/>
  */
 public class DefaultMsgProcessor implements MsgProcessor {
-    private static final Logger LOG = LogManager.getLogger(DefaultMsgProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
     private static final MyChannelGroup channelGroup = MyChannelGroup.getInstance();
     private ImBusinessService imBusinessService;
     private ScheduledExecutorService executor;
@@ -45,7 +45,7 @@ public class DefaultMsgProcessor implements MsgProcessor {
 
     @Override
     public void process(ProcessorEnum key, Channel channel, Message message, Throwable cause) {
-        LOG.info("key={},channelId={},msg={}",() -> key,() -> channel.id().asShortText(),() -> StringUtil.protoMsgFormat(message));
+        LOG.debugInfo("key={},channelId={},msg={}", key,channel.id().asShortText(),StringUtil.protoMsgFormat(message));
         switch (key){
             case ACTIVE:
                 LOG.info("有新的连接进入ShortId={}",channel.id().asShortText());

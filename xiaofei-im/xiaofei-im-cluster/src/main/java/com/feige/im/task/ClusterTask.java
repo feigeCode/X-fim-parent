@@ -5,13 +5,13 @@ import com.feige.discovery.ProviderService;
 import com.feige.discovery.pojo.ServerInstance;
 import com.feige.im.client.ImClient;
 import com.feige.im.handler.MsgProcessor;
+import com.feige.im.log.Logger;
+import com.feige.im.log.LoggerFactory;
 import com.feige.im.route.IRoute;
 import com.feige.im.route.RouteManager;
 import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.IpUtil;
 import com.feige.im.utils.NameThreadFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.net.InetAddress;
 import java.util.List;
@@ -19,7 +19,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * @author feige<br />
@@ -29,7 +28,7 @@ import java.util.stream.Collectors;
  */
 public class ClusterTask implements Consumer<Integer> {
 
-    private static final Logger LOG = LogManager.getLogger(ClusterTask.class);
+    private static final Logger LOG = LoggerFactory.getLogger();
 
     private final MsgProcessor msgProcessor;
 
