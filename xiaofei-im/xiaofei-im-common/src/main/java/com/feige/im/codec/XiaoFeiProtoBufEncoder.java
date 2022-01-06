@@ -17,15 +17,10 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @Description: proto 编码器<br/>
  * @date: 2021/10/7 12:35<br/>
  */
-@ChannelHandler.Sharable
 public class XiaoFeiProtoBufEncoder extends MessageToByteEncoder<Message> {
 
     private static final Logger LOG = LoggerFactory.getLogger();
-    public static XiaoFeiProtoBufEncoder INSTANCE = new XiaoFeiProtoBufEncoder();
 
-    private XiaoFeiProtoBufEncoder(){
-
-    }
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf buf) throws Exception {

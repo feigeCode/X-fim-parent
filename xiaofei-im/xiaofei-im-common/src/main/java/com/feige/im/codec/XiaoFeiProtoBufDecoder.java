@@ -21,14 +21,8 @@ import java.util.Objects;
  * @Description: proto 解码器<br/>
  * @date: 2021/10/7 12:35<br/>
  */
-@ChannelHandler.Sharable
 public class XiaoFeiProtoBufDecoder extends ByteToMessageDecoder {
     private static final Logger LOG = LoggerFactory.getLogger();
-    public static XiaoFeiProtoBufDecoder INSTANCE = new XiaoFeiProtoBufDecoder();
-
-    private XiaoFeiProtoBufDecoder(){
-
-    }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) throws Exception {
