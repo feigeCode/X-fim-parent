@@ -58,7 +58,7 @@ public class ImClient {
         ChannelFuture channelFuture = new Bootstrap()
                 .channel(socketChannelClass)
                 .group(this.wordGroup)
-                .handler(new NettyClientInitializer(processor, ip, port))
+                .handler(new NettyClientInitializer(processor))
                 .connect(new InetSocketAddress(ip, port)).syncUninterruptibly();
         channelFuture.channel().closeFuture().addListener(future -> this.destroy());
         channelFuture.channel().newSucceededFuture().addListener(future -> {

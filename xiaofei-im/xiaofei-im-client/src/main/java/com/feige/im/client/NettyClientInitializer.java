@@ -16,13 +16,9 @@ import io.netty.channel.socket.SocketChannel;
  */
 public class NettyClientInitializer extends ChannelInitializer<SocketChannel> {
     private final MsgProcessor processor;
-    private final String ip;
-    private final int port;
 
-    public NettyClientInitializer(MsgProcessor processor, String ip, int port) {
+    public NettyClientInitializer(MsgProcessor processor) {
         this.processor = processor;
-        this.ip = ip;
-        this.port = port;
     }
 
     @Override
