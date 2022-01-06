@@ -43,8 +43,8 @@ public class NettyClientInitializer extends ChannelInitializer<SocketChannel> {
         //基于http协议，所以要有http编码解码器
         pipeline.addLast(new HttpClientCodec());
         // 自定义proto编解码器
-        pipeline.addLast(new XiaoFeiProtoBufDecoder());
-        pipeline.addLast(new XiaoFeiProtoBufEncoder());
+        pipeline.addLast(XiaoFeiProtoBufDecoder.INSTANCE);
+        pipeline.addLast(XiaoFeiProtoBufEncoder.INSTANCE);
         //对写大数据的支持
         pipeline.addLast(new ChunkedWriteHandler());
         //对httpMessage进行聚合，聚合成FullHttpRequest或FullHttpResponse

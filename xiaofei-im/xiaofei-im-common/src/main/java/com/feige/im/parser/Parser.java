@@ -20,7 +20,7 @@ public class Parser {
 
     @FunctionalInterface
     public interface DeserializationHandler{
-        Message process(ByteBufInputStream in) throws Exception;
+        Message process(byte[] bytes) throws Exception;
     }
 
     private static final Logger LOG =  LoggerFactory.getLogger();
@@ -49,11 +49,11 @@ public class Parser {
         return clazz.cast(msg);
     }
 
-    public static Message getMessage(Integer key, ByteBufInputStream in){
+    public static Message getMessage(Integer key, byte[] bytes){
         DeserializationHandler handler = DESERIALIZATION_MAP.get(key);
         if (Objects.nonNull(handler)){
             try {
-                return handler.process(in);
+                return handler.process(bytes);
             } catch (Exception e) {
                 LOG.error(e.getMessage(),e);
             }

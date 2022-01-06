@@ -18,9 +18,9 @@ public interface ImConst {
     /**
      * 心跳类型消息
      */
-    byte PING_MSG_TYPE = 1;
+    int PING_MSG_TYPE = 1;
 
-    byte PONG_MSG_TYPE = 0;
+    int PONG_MSG_TYPE = 0;
 
     DefaultMsg.Ping PING_MSG = DefaultMsg.Ping.newBuilder().setPing(1).build();
 
