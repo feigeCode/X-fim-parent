@@ -1,6 +1,6 @@
 package com.feige.im.client;
 
-import com.feige.im.handler.MsgProcessor;
+import com.feige.im.handler.MsgListener;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.utils.NameThreadFactory;
@@ -32,13 +32,13 @@ public class ImClient {
     private final String ip;
     private final EventLoopGroup wordGroup;
     private final Class<? extends SocketChannel> socketChannelClass;
-    private final MsgProcessor processor;
+    private final MsgListener listener;
     private Channel channel;
 
-    public ImClient( String ip,int port, MsgProcessor processor) {
+    public ImClient( String ip,int port, MsgListener listener) {
         this.ip = ip;
         this.port = port;
-        this.processor = processor;
+        this.listener = listener;
         if (OsUtil.isLinux()) {
             this.wordGroup = new EpollEventLoopGroup(new NameThreadFactory("client-nio-work-"));
             this.socketChannelClass = EpollSocketChannel.class;
@@ -48,8 +48,8 @@ public class ImClient {
         }
     }
 
-    public static ImClient connect(String ip, int port, MsgProcessor processor) {
-        ImClient imClient = new ImClient(ip, port, processor);
+    public static ImClient connect(String ip, int port, MsgListener listener) {
+        ImClient imClient = new ImClient(ip, port, listener);
         imClient.createClient();
         return imClient;
     }
@@ -58,7 +58,7 @@ public class ImClient {
         ChannelFuture channelFuture = new Bootstrap()
                 .channel(socketChannelClass)
                 .group(this.wordGroup)
-                .handler(new NettyClientInitializer(processor))
+                .handler(new NettyClientInitializer(listener))
                 .connect(new InetSocketAddress(ip, port)).syncUninterruptibly();
         channelFuture.channel().closeFuture().addListener(future -> this.destroy());
         channelFuture.channel().newSucceededFuture().addListener(future -> {
@@ -94,7 +94,7 @@ public class ImClient {
         return ip;
     }
 
-    public MsgProcessor getProcessor() {
-        return processor;
+    public MsgListener getListener() {
+        return listener;
     }
 }

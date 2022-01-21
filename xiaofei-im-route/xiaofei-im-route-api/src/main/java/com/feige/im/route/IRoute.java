@@ -18,7 +18,7 @@ public interface IRoute {
     void add(Collection<String> servers);
 
     default String getRoute(List<String> servers,String key){
-        return null;
+        return getRoute(key);
     };
 
     /**

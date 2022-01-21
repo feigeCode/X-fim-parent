@@ -4,7 +4,7 @@ import com.feige.discovery.DiscoveryManager;
 import com.feige.discovery.ProviderService;
 import com.feige.discovery.pojo.ServerInstance;
 import com.feige.im.client.ImClient;
-import com.feige.im.handler.MsgProcessor;
+import com.feige.im.handler.MsgListener;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.route.IRoute;
@@ -30,10 +30,10 @@ public class ClusterTask implements Consumer<Integer> {
 
     private static final Logger LOG = LoggerFactory.getLogger();
 
-    private final MsgProcessor msgProcessor;
+    private final MsgListener msgListener;
 
-    public ClusterTask(MsgProcessor msgProcessor) {
-        this.msgProcessor = msgProcessor;
+    public ClusterTask(MsgListener msgListener) {
+        this.msgListener = msgListener;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ClusterTask implements Consumer<Integer> {
                     continue;
                 }
                 executor.execute(() -> {
-                    ImClient.connect(serverInstance.getIp(),serverInstance.getPort(),msgProcessor);
+                    ImClient.connect(serverInstance.getIp(),serverInstance.getPort(),msgListener);
                     countDownLatch.countDown();
                 });
             }

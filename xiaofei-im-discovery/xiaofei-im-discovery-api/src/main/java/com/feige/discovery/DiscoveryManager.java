@@ -1,5 +1,9 @@
 package com.feige.discovery;
 
+import sun.security.jca.Providers;
+
+import javax.xml.ws.Provider;
+import java.sql.DriverManager;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 

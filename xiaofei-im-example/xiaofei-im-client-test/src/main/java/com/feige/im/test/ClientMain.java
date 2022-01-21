@@ -1,9 +1,12 @@
 package com.feige.im.test;
 
 import com.feige.im.client.ImClient;
+import com.feige.im.handler.MsgListener;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.DefaultMsg;
+import com.google.protobuf.Message;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,8 +22,26 @@ public class ClientMain {
 
     public static void main(String[] args) throws IOException {
         Parser.registerDefaultParsing();
-        ImClient localhost = ImClient.connect("127.0.0.1", 8001, (key, channel, msg,throwable) -> {
-            System.out.println(msg);
+        ImClient localhost = ImClient.connect("10.1.204.70", 8001, new MsgListener() {
+            @Override
+            public void active(ChannelHandlerContext ctx) {
+
+            }
+
+            @Override
+            public void read(ChannelHandlerContext ctx, Message msg) {
+
+            }
+
+            @Override
+            public void inactive(ChannelHandlerContext ctx) {
+
+            }
+
+            @Override
+            public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+
+            }
         });
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         while (true){
@@ -51,7 +72,7 @@ public class ClientMain {
                         .setTimestamp(String.valueOf(System.currentTimeMillis()))
                         .build();
                 DefaultMsg.TransportMsg transportMsg = DefaultMsg.TransportMsg.newBuilder()
-                        .setType(1)
+                        .setType(DefaultMsg.TransportMsg.MsgType.PRIVATE)
                         .setMsg(msg)
                         .build();
                 channel.writeAndFlush(transportMsg);

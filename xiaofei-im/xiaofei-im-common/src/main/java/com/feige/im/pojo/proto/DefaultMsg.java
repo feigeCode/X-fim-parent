@@ -5313,22 +5313,47 @@ public final class DefaultMsg {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint32 type = 1;</code>
+     * <pre>
+     *消息类型
+     * </pre>
+     *
+     * <code>.com.feige.im.pojo.proto.TransportMsg.MsgType type = 1;</code>
+     * @return The enum numeric value on the wire for type.
+     */
+    int getTypeValue();
+    /**
+     * <pre>
+     *消息类型
+     * </pre>
+     *
+     * <code>.com.feige.im.pojo.proto.TransportMsg.MsgType type = 1;</code>
      * @return The type.
      */
-    int getType();
+    com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType getType();
 
     /**
+     * <pre>
+     *消息
+     * </pre>
+     *
      * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
      * @return Whether the msg field is set.
      */
     boolean hasMsg();
     /**
+     * <pre>
+     *消息
+     * </pre>
+     *
      * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
      * @return The msg.
      */
     com.feige.im.pojo.proto.DefaultMsg.Msg getMsg();
     /**
+     * <pre>
+     *消息
+     * </pre>
+     *
      * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
      */
     com.feige.im.pojo.proto.DefaultMsg.MsgOrBuilder getMsgOrBuilder();
@@ -5352,6 +5377,7 @@ public final class DefaultMsg {
       super(builder);
     }
     private TransportMsg() {
+      type_ = 0;
     }
 
     @java.lang.Override
@@ -5385,8 +5411,9 @@ public final class DefaultMsg {
               done = true;
               break;
             case 8: {
+              int rawValue = input.readEnum();
 
-              type_ = input.readUInt32();
+              type_ = rawValue;
               break;
             }
             case 18: {
@@ -5434,19 +5461,160 @@ public final class DefaultMsg {
               com.feige.im.pojo.proto.DefaultMsg.TransportMsg.class, com.feige.im.pojo.proto.DefaultMsg.TransportMsg.Builder.class);
     }
 
+    /**
+     * Protobuf enum {@code com.feige.im.pojo.proto.TransportMsg.MsgType}
+     */
+    public enum MsgType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <pre>
+       *私聊
+       * </pre>
+       *
+       * <code>PRIVATE = 0;</code>
+       */
+      PRIVATE(0),
+      /**
+       * <pre>
+       *群聊
+       * </pre>
+       *
+       * <code>GROUP = 1;</code>
+       */
+      GROUP(1),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <pre>
+       *私聊
+       * </pre>
+       *
+       * <code>PRIVATE = 0;</code>
+       */
+      public static final int PRIVATE_VALUE = 0;
+      /**
+       * <pre>
+       *群聊
+       * </pre>
+       *
+       * <code>GROUP = 1;</code>
+       */
+      public static final int GROUP_VALUE = 1;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static MsgType valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static MsgType forNumber(int value) {
+        switch (value) {
+          case 0: return PRIVATE;
+          case 1: return GROUP;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<MsgType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          MsgType> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<MsgType>() {
+              public MsgType findValueByNumber(int number) {
+                return MsgType.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.feige.im.pojo.proto.DefaultMsg.TransportMsg.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final MsgType[] VALUES = values();
+
+      public static MsgType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private MsgType(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:com.feige.im.pojo.proto.TransportMsg.MsgType)
+    }
+
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
-     * <code>uint32 type = 1;</code>
+     * <pre>
+     *消息类型
+     * </pre>
+     *
+     * <code>.com.feige.im.pojo.proto.TransportMsg.MsgType type = 1;</code>
+     * @return The enum numeric value on the wire for type.
+     */
+    public int getTypeValue() {
+      return type_;
+    }
+    /**
+     * <pre>
+     *消息类型
+     * </pre>
+     *
+     * <code>.com.feige.im.pojo.proto.TransportMsg.MsgType type = 1;</code>
      * @return The type.
      */
-    public int getType() {
-      return type_;
+    public com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType getType() {
+      @SuppressWarnings("deprecation")
+      com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType result = com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType.valueOf(type_);
+      return result == null ? com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType.UNRECOGNIZED : result;
     }
 
     public static final int MSG_FIELD_NUMBER = 2;
     private com.feige.im.pojo.proto.DefaultMsg.Msg msg_;
     /**
+     * <pre>
+     *消息
+     * </pre>
+     *
      * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
      * @return Whether the msg field is set.
      */
@@ -5454,6 +5622,10 @@ public final class DefaultMsg {
       return msg_ != null;
     }
     /**
+     * <pre>
+     *消息
+     * </pre>
+     *
      * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
      * @return The msg.
      */
@@ -5461,6 +5633,10 @@ public final class DefaultMsg {
       return msg_ == null ? com.feige.im.pojo.proto.DefaultMsg.Msg.getDefaultInstance() : msg_;
     }
     /**
+     * <pre>
+     *消息
+     * </pre>
+     *
      * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
      */
     public com.feige.im.pojo.proto.DefaultMsg.MsgOrBuilder getMsgOrBuilder() {
@@ -5481,8 +5657,8 @@ public final class DefaultMsg {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (type_ != 0) {
-        output.writeUInt32(1, type_);
+      if (type_ != com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType.PRIVATE.getNumber()) {
+        output.writeEnum(1, type_);
       }
       if (msg_ != null) {
         output.writeMessage(2, getMsg());
@@ -5496,9 +5672,9 @@ public final class DefaultMsg {
       if (size != -1) return size;
 
       size = 0;
-      if (type_ != 0) {
+      if (type_ != com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType.PRIVATE.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, type_);
+          .computeEnumSize(1, type_);
       }
       if (msg_ != null) {
         size += com.google.protobuf.CodedOutputStream
@@ -5519,8 +5695,7 @@ public final class DefaultMsg {
       }
       com.feige.im.pojo.proto.DefaultMsg.TransportMsg other = (com.feige.im.pojo.proto.DefaultMsg.TransportMsg) obj;
 
-      if (getType()
-          != other.getType()) return false;
+      if (type_ != other.type_) return false;
       if (hasMsg() != other.hasMsg()) return false;
       if (hasMsg()) {
         if (!getMsg()
@@ -5538,7 +5713,7 @@ public final class DefaultMsg {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
-      hash = (53 * hash) + getType();
+      hash = (53 * hash) + type_;
       if (hasMsg()) {
         hash = (37 * hash) + MSG_FIELD_NUMBER;
         hash = (53 * hash) + getMsg().hashCode();
@@ -5770,8 +5945,8 @@ public final class DefaultMsg {
 
       public Builder mergeFrom(com.feige.im.pojo.proto.DefaultMsg.TransportMsg other) {
         if (other == com.feige.im.pojo.proto.DefaultMsg.TransportMsg.getDefaultInstance()) return this;
-        if (other.getType() != 0) {
-          setType(other.getType());
+        if (other.type_ != 0) {
+          setTypeValue(other.getTypeValue());
         }
         if (other.hasMsg()) {
           mergeMsg(other.getMsg());
@@ -5805,27 +5980,69 @@ public final class DefaultMsg {
         return this;
       }
 
-      private int type_ ;
+      private int type_ = 0;
       /**
-       * <code>uint32 type = 1;</code>
-       * @return The type.
+       * <pre>
+       *消息类型
+       * </pre>
+       *
+       * <code>.com.feige.im.pojo.proto.TransportMsg.MsgType type = 1;</code>
+       * @return The enum numeric value on the wire for type.
        */
-      public int getType() {
+      public int getTypeValue() {
         return type_;
       }
       /**
-       * <code>uint32 type = 1;</code>
-       * @param value The type to set.
+       * <pre>
+       *消息类型
+       * </pre>
+       *
+       * <code>.com.feige.im.pojo.proto.TransportMsg.MsgType type = 1;</code>
+       * @param value The enum numeric value on the wire for type to set.
        * @return This builder for chaining.
        */
-      public Builder setType(int value) {
-        
+      public Builder setTypeValue(int value) {
         type_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>uint32 type = 1;</code>
+       * <pre>
+       *消息类型
+       * </pre>
+       *
+       * <code>.com.feige.im.pojo.proto.TransportMsg.MsgType type = 1;</code>
+       * @return The type.
+       */
+      public com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType getType() {
+        @SuppressWarnings("deprecation")
+        com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType result = com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType.valueOf(type_);
+        return result == null ? com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       *消息类型
+       * </pre>
+       *
+       * <code>.com.feige.im.pojo.proto.TransportMsg.MsgType type = 1;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setType(com.feige.im.pojo.proto.DefaultMsg.TransportMsg.MsgType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        type_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *消息类型
+       * </pre>
+       *
+       * <code>.com.feige.im.pojo.proto.TransportMsg.MsgType type = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearType() {
@@ -5839,6 +6056,10 @@ public final class DefaultMsg {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.feige.im.pojo.proto.DefaultMsg.Msg, com.feige.im.pojo.proto.DefaultMsg.Msg.Builder, com.feige.im.pojo.proto.DefaultMsg.MsgOrBuilder> msgBuilder_;
       /**
+       * <pre>
+       *消息
+       * </pre>
+       *
        * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
        * @return Whether the msg field is set.
        */
@@ -5846,6 +6067,10 @@ public final class DefaultMsg {
         return msgBuilder_ != null || msg_ != null;
       }
       /**
+       * <pre>
+       *消息
+       * </pre>
+       *
        * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
        * @return The msg.
        */
@@ -5857,6 +6082,10 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       *消息
+       * </pre>
+       *
        * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
        */
       public Builder setMsg(com.feige.im.pojo.proto.DefaultMsg.Msg value) {
@@ -5873,6 +6102,10 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       *消息
+       * </pre>
+       *
        * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
        */
       public Builder setMsg(
@@ -5887,6 +6120,10 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       *消息
+       * </pre>
+       *
        * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
        */
       public Builder mergeMsg(com.feige.im.pojo.proto.DefaultMsg.Msg value) {
@@ -5905,6 +6142,10 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       *消息
+       * </pre>
+       *
        * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
        */
       public Builder clearMsg() {
@@ -5919,6 +6160,10 @@ public final class DefaultMsg {
         return this;
       }
       /**
+       * <pre>
+       *消息
+       * </pre>
+       *
        * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
        */
       public com.feige.im.pojo.proto.DefaultMsg.Msg.Builder getMsgBuilder() {
@@ -5927,6 +6172,10 @@ public final class DefaultMsg {
         return getMsgFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       *消息
+       * </pre>
+       *
        * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
        */
       public com.feige.im.pojo.proto.DefaultMsg.MsgOrBuilder getMsgOrBuilder() {
@@ -5938,6 +6187,10 @@ public final class DefaultMsg {
         }
       }
       /**
+       * <pre>
+       *消息
+       * </pre>
+       *
        * <code>.com.feige.im.pojo.proto.Msg msg = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -7554,720 +7807,6 @@ public final class DefaultMsg {
 
   }
 
-  public interface AckOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.feige.im.pojo.proto.Ack)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>string id = 1;</code>
-     * @return The id.
-     */
-    java.lang.String getId();
-    /**
-     * <code>string id = 1;</code>
-     * @return The bytes for id.
-     */
-    com.google.protobuf.ByteString
-        getIdBytes();
-
-    /**
-     * <code>string status = 2;</code>
-     * @return The status.
-     */
-    java.lang.String getStatus();
-    /**
-     * <code>string status = 2;</code>
-     * @return The bytes for status.
-     */
-    com.google.protobuf.ByteString
-        getStatusBytes();
-  }
-  /**
-   * Protobuf type {@code com.feige.im.pojo.proto.Ack}
-   */
-  public  static final class Ack extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:com.feige.im.pojo.proto.Ack)
-      AckOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use Ack.newBuilder() to construct.
-    private Ack(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private Ack() {
-      id_ = "";
-      status_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new Ack();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private Ack(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              id_ = s;
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              status_ = s;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_Ack_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_Ack_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.feige.im.pojo.proto.DefaultMsg.Ack.class, com.feige.im.pojo.proto.DefaultMsg.Ack.Builder.class);
-    }
-
-    public static final int ID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object id_;
-    /**
-     * <code>string id = 1;</code>
-     * @return The id.
-     */
-    public java.lang.String getId() {
-      java.lang.Object ref = id_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        id_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string id = 1;</code>
-     * @return The bytes for id.
-     */
-    public com.google.protobuf.ByteString
-        getIdBytes() {
-      java.lang.Object ref = id_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        id_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int STATUS_FIELD_NUMBER = 2;
-    private volatile java.lang.Object status_;
-    /**
-     * <code>string status = 2;</code>
-     * @return The status.
-     */
-    public java.lang.String getStatus() {
-      java.lang.Object ref = status_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        status_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string status = 2;</code>
-     * @return The bytes for status.
-     */
-    public com.google.protobuf.ByteString
-        getStatusBytes() {
-      java.lang.Object ref = status_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        status_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
-      }
-      if (!getStatusBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, status_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
-      }
-      if (!getStatusBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, status_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.feige.im.pojo.proto.DefaultMsg.Ack)) {
-        return super.equals(obj);
-      }
-      com.feige.im.pojo.proto.DefaultMsg.Ack other = (com.feige.im.pojo.proto.DefaultMsg.Ack) obj;
-
-      if (!getId()
-          .equals(other.getId())) return false;
-      if (!getStatus()
-          .equals(other.getStatus())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + ID_FIELD_NUMBER;
-      hash = (53 * hash) + getId().hashCode();
-      hash = (37 * hash) + STATUS_FIELD_NUMBER;
-      hash = (53 * hash) + getStatus().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.feige.im.pojo.proto.DefaultMsg.Ack prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.feige.im.pojo.proto.Ack}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.feige.im.pojo.proto.Ack)
-        com.feige.im.pojo.proto.DefaultMsg.AckOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_Ack_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_Ack_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.feige.im.pojo.proto.DefaultMsg.Ack.class, com.feige.im.pojo.proto.DefaultMsg.Ack.Builder.class);
-      }
-
-      // Construct using com.feige.im.pojo.proto.DefaultMsg.Ack.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        id_ = "";
-
-        status_ = "";
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_Ack_descriptor;
-      }
-
-      @java.lang.Override
-      public com.feige.im.pojo.proto.DefaultMsg.Ack getDefaultInstanceForType() {
-        return com.feige.im.pojo.proto.DefaultMsg.Ack.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public com.feige.im.pojo.proto.DefaultMsg.Ack build() {
-        com.feige.im.pojo.proto.DefaultMsg.Ack result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public com.feige.im.pojo.proto.DefaultMsg.Ack buildPartial() {
-        com.feige.im.pojo.proto.DefaultMsg.Ack result = new com.feige.im.pojo.proto.DefaultMsg.Ack(this);
-        result.id_ = id_;
-        result.status_ = status_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.feige.im.pojo.proto.DefaultMsg.Ack) {
-          return mergeFrom((com.feige.im.pojo.proto.DefaultMsg.Ack)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.feige.im.pojo.proto.DefaultMsg.Ack other) {
-        if (other == com.feige.im.pojo.proto.DefaultMsg.Ack.getDefaultInstance()) return this;
-        if (!other.getId().isEmpty()) {
-          id_ = other.id_;
-          onChanged();
-        }
-        if (!other.getStatus().isEmpty()) {
-          status_ = other.status_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.feige.im.pojo.proto.DefaultMsg.Ack parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.feige.im.pojo.proto.DefaultMsg.Ack) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object id_ = "";
-      /**
-       * <code>string id = 1;</code>
-       * @return The id.
-       */
-      public java.lang.String getId() {
-        java.lang.Object ref = id_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          id_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string id = 1;</code>
-       * @return The bytes for id.
-       */
-      public com.google.protobuf.ByteString
-          getIdBytes() {
-        java.lang.Object ref = id_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          id_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string id = 1;</code>
-       * @param value The id to set.
-       * @return This builder for chaining.
-       */
-      public Builder setId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        id_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string id = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearId() {
-        
-        id_ = getDefaultInstance().getId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string id = 1;</code>
-       * @param value The bytes for id to set.
-       * @return This builder for chaining.
-       */
-      public Builder setIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        id_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object status_ = "";
-      /**
-       * <code>string status = 2;</code>
-       * @return The status.
-       */
-      public java.lang.String getStatus() {
-        java.lang.Object ref = status_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          status_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string status = 2;</code>
-       * @return The bytes for status.
-       */
-      public com.google.protobuf.ByteString
-          getStatusBytes() {
-        java.lang.Object ref = status_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          status_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string status = 2;</code>
-       * @param value The status to set.
-       * @return This builder for chaining.
-       */
-      public Builder setStatus(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        status_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string status = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearStatus() {
-        
-        status_ = getDefaultInstance().getStatus();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string status = 2;</code>
-       * @param value The bytes for status to set.
-       * @return This builder for chaining.
-       */
-      public Builder setStatusBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        status_ = value;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:com.feige.im.pojo.proto.Ack)
-    }
-
-    // @@protoc_insertion_point(class_scope:com.feige.im.pojo.proto.Ack)
-    private static final com.feige.im.pojo.proto.DefaultMsg.Ack DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.feige.im.pojo.proto.DefaultMsg.Ack();
-    }
-
-    public static com.feige.im.pojo.proto.DefaultMsg.Ack getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<Ack>
-        PARSER = new com.google.protobuf.AbstractParser<Ack>() {
-      @java.lang.Override
-      public Ack parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Ack(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<Ack> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Ack> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.feige.im.pojo.proto.DefaultMsg.Ack getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_feige_im_pojo_proto_Auth_descriptor;
   private static final 
@@ -8303,11 +7842,6 @@ public final class DefaultMsg {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_feige_im_pojo_proto_ClusterAuth_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_feige_im_pojo_proto_Ack_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_feige_im_pojo_proto_Ack_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -8328,12 +7862,13 @@ public final class DefaultMsg {
       "\003\022\020\n\010senderId\030\002 \001(\t\022\022\n\nreceiverId\030\003 \001(\t\022" +
       "\017\n\007content\030\004 \001(\t\022\016\n\006format\030\005 \001(\005\022\017\n\007msgT" +
       "ype\030\006 \001(\r\022\021\n\ttimestamp\030\007 \001(\t\022\016\n\006status\030\010" +
-      " \001(\r\022\r\n\005extra\030\t \001(\t\"G\n\014TransportMsg\022\014\n\004t" +
-      "ype\030\001 \001(\r\022)\n\003msg\030\002 \001(\0132\034.com.feige.im.po" +
-      "jo.proto.Msg\"\024\n\004Ping\022\014\n\004ping\030\001 \001(\005\"\024\n\004Po" +
-      "ng\022\014\n\004pong\030\001 \001(\r\"\036\n\013ClusterAuth\022\017\n\007nodeK" +
-      "ey\030\001 \001(\t\"!\n\003Ack\022\n\n\002id\030\001 \001(\t\022\016\n\006status\030\002 " +
-      "\001(\tB\014B\nDefaultMsgb\006proto3"
+      " \001(\r\022\r\n\005extra\030\t \001(\t\"\231\001\n\014TransportMsg\022;\n\004" +
+      "type\030\001 \001(\0162-.com.feige.im.pojo.proto.Tra" +
+      "nsportMsg.MsgType\022)\n\003msg\030\002 \001(\0132\034.com.fei" +
+      "ge.im.pojo.proto.Msg\"!\n\007MsgType\022\013\n\007PRIVA" +
+      "TE\020\000\022\t\n\005GROUP\020\001\"\024\n\004Ping\022\014\n\004ping\030\001 \001(\005\"\024\n" +
+      "\004Pong\022\014\n\004pong\030\001 \001(\r\"\036\n\013ClusterAuth\022\017\n\007no" +
+      "deKey\030\001 \001(\tB\014B\nDefaultMsgb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -8381,12 +7916,6 @@ public final class DefaultMsg {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_ClusterAuth_descriptor,
         new java.lang.String[] { "NodeKey", });
-    internal_static_com_feige_im_pojo_proto_Ack_descriptor =
-      getDescriptor().getMessageTypes().get(7);
-    internal_static_com_feige_im_pojo_proto_Ack_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_feige_im_pojo_proto_Ack_descriptor,
-        new java.lang.String[] { "Id", "Status", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

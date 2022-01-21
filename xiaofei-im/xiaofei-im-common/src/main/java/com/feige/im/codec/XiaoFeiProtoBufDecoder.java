@@ -8,7 +8,6 @@ import com.feige.im.parser.Parser;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
@@ -26,7 +25,7 @@ public class XiaoFeiProtoBufDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) throws Exception {
-        // 重置心跳超时次数
+        // 重置心跳 超时次数
         ctx.channel().attr(ChannelAttr.PING_COUNT).set(null);
 
         // 标记当前读取的索引

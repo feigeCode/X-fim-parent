@@ -1,7 +1,5 @@
 package com.feige.im.handler;
 
-import com.feige.im.constant.ChannelAttr;
-import com.feige.im.constant.ProcessorEnum;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.google.protobuf.Message;
@@ -19,39 +17,33 @@ import io.netty.channel.SimpleChannelInboundHandler;
 @ChannelHandler.Sharable
 public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
 
-    private final MsgProcessor processor;
+    private final MsgListener msgListener;
 
-    public XiaoFeiImHandler(MsgProcessor msgProcessor){
-        this.processor = msgProcessor;
+    public XiaoFeiImHandler(MsgListener msgListener){
+        this.msgListener = msgListener;
     }
 
     private static final Logger LOG = LoggerFactory.getLogger();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-        processor.process(ProcessorEnum.READ,ctx.channel(),msg,null);
+        msgListener.read(ctx,msg);
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.channel().attr(ChannelAttr.ID).set(ctx.channel().id().asShortText());
-        processor.process(ProcessorEnum.ACTIVE,ctx.channel(),null,null);
+        msgListener.active(ctx);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        LOG.info("channelId = {}的连接不活跃",ctx.channel().attr(ChannelAttr.ID));
-        if (ctx.channel().attr(ChannelAttr.USER_ID) == null){
-            return;
-        }
-        processor.process(ProcessorEnum.INACTIVE,ctx.channel(), null,null);
+        msgListener.inactive(ctx);
 
     }
 
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        LOG.error(cause.getMessage(),cause);
-        processor.process(ProcessorEnum.EXCEPTION,ctx.channel(),null,cause);
+        msgListener.exceptionCaught(ctx,cause);
     }
 }

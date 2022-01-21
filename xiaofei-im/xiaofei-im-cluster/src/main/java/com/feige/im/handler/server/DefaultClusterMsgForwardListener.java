@@ -1,6 +1,6 @@
 package com.feige.im.handler.server;
 
-import com.feige.im.handler.MsgProcessor;
+import com.feige.im.handler.MsgListener;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.service.ImBusinessService;
@@ -11,16 +11,15 @@ import java.util.List;
 
 /**
  * @author feige<br />
- * @ClassName: DefaultClusterMsgForwardProcessor <br/>
+ * @ClassName: DefaultClusterMsgForwardListener <br/>
  * @Description: <br/>
- * @date: 2021/11/14 16:33<br/>
+ * @date: 2022/1/21 14:14<br/>
  */
-public class DefaultClusterMsgForwardProcessor extends ClusterMsgForwardProcessor{
-
+public class DefaultClusterMsgForwardListener extends ClusterMsgForwardListener{
     private final ImBusinessService imBusinessService;
 
-    public DefaultClusterMsgForwardProcessor(MsgProcessor processor,ImBusinessService imBusinessService) {
-        super(processor);
+    public DefaultClusterMsgForwardListener(MsgListener msgListener, ImBusinessService imBusinessService) {
+        super(msgListener);
         this.imBusinessService = imBusinessService;
     }
 
@@ -30,11 +29,11 @@ public class DefaultClusterMsgForwardProcessor extends ClusterMsgForwardProcesso
         if (message instanceof DefaultMsg.TransportMsg){
             DefaultMsg.TransportMsg transportMsg = Parser.getT(DefaultMsg.TransportMsg.class, message);
             DefaultMsg.Msg msg = transportMsg.getMsg();
-            int type = transportMsg.getType();
+            DefaultMsg.TransportMsg.MsgType type = transportMsg.getType();
             String receiverId = msg.getReceiverId();
-            if (type == 1){
+            if (type == DefaultMsg.TransportMsg.MsgType.PRIVATE){
                 receiverIds.add(receiverId);
-            }else if (type == 2){
+            }else if (type == DefaultMsg.TransportMsg.MsgType.GROUP){
                 // 群成员ID
                 return imBusinessService.getUserIdsByGroupId(receiverId);
             }

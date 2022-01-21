@@ -124,8 +124,25 @@ message Msg{
 type 1私聊消息2群聊消息
  */
 message TransportMsg {
-  uint32 type = 1;
+  /*
+  消息类型
+   */
+  MsgType type = 1;
+  /*
+  消息
+   */
   Msg msg = 2;
+
+  enum MsgType {
+    /*
+    私聊
+     */
+    PRIVATE = 0;
+    /*
+    群聊
+     */
+    GROUP = 1;
+  }
 }
 
 /**
@@ -145,8 +162,3 @@ message ClusterAuth {
   string nodeKey = 1;
 }
 
-
-message Ack {
-  string id = 1;
-  string status = 2;
-}

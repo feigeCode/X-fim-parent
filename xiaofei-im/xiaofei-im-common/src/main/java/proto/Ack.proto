@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package com.feige.im.pojo.proto;
+
+option java_outer_classname = "Ack";
+
+message AckMsg {
+  int64 id = 1;
+  /*
+  消息状态
+   */
+  Status status = 2;
+
+  /*
+  发送者
+   */
+  string senderId = 3;
+
+  /*
+  接收者
+   */
+  string receiverId = 4;
+
+  /*
+  消息类型
+   */
+  MsgType msgType = 5;
+
+  /*
+  确认消息ID
+   */
+  int64 ackMsgId = 8;
+
+  /*
+  发送时间
+   */
+  uint64 timestamp = 6;
+
+
+  enum MsgType {
+    /*
+    私聊
+     */
+    PRIVATE = 0;
+    /*
+    群聊
+     */
+    GROUP = 1;
+  }
+
+  enum Status {
+    // 已送达
+    DELIVERED = 0;
+
+    // 已读
+    READ = 1;
+  }
+}

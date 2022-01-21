@@ -2,7 +2,7 @@ package com.feige.im.client;
 
 import com.feige.im.codec.XiaoFeiProtoBufDecoder;
 import com.feige.im.codec.XiaoFeiProtoBufEncoder;
-import com.feige.im.handler.MsgProcessor;
+import com.feige.im.handler.MsgListener;
 import com.feige.im.handler.XiaoFeiImHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -15,10 +15,10 @@ import io.netty.channel.socket.SocketChannel;
  * @date: 2021/11/7 18:34<br/>
  */
 public class NettyClientInitializer extends ChannelInitializer<SocketChannel> {
-    private final MsgProcessor processor;
+    private final MsgListener listener;
 
-    public NettyClientInitializer(MsgProcessor processor) {
-        this.processor = processor;
+    public NettyClientInitializer(MsgListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -29,6 +29,6 @@ public class NettyClientInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new XiaoFeiProtoBufEncoder());
 
         // 自定义的handler
-        pipeline.addLast(new XiaoFeiImHandler(processor));
+        pipeline.addLast(new XiaoFeiImHandler(listener));
     }
 }

@@ -20,19 +20,15 @@ import java.net.InetSocketAddress;
  */
 public class ClusterInitializer {
     private static final Logger LOG = LoggerFactory.getLogger();
-    private static final ClusterChannel CLUSTER_CHANNEL = ClusterChannel.getINSTANCE();
-    private static final ImConfig CONFIG = ImConfig.getInstance();
-
-    private final Channel channel;
-    public ClusterInitializer(Channel channel) {
-        this.channel = channel;
-    }
-
+    private final ClusterChannel CLUSTER_CHANNEL = ClusterChannel.getINSTANCE();
+    private final ImConfig CONFIG = ImConfig.getInstance();
+    private InetSocketAddress socketAddress;
+    private Channel channel;
     /**
      * 初始化操作
      */
     public void init() {
-        InetSocketAddress socketAddress = (InetSocketAddress) this.channel.remoteAddress();
+        this.socketAddress = (InetSocketAddress) this.channel.remoteAddress();
         String nodeKey = getNodeKey(socketAddress);
         this.channel.attr(ChannelAttr.NODE_KEY).set(nodeKey);
         CLUSTER_CHANNEL.add(this.channel);
@@ -61,4 +57,12 @@ public class ClusterInitializer {
         return socketAddress.getAddress().getHostAddress() + ":" + socketAddress.getPort();
     }
 
+
+    public InetSocketAddress getInetSocketAddress() {
+        return socketAddress;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
 }

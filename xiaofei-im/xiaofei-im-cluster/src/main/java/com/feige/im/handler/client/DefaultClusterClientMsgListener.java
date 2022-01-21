@@ -14,11 +14,11 @@ import java.util.List;
  * @Description: <br/>
  * @date: 2021/11/14 17:19<br/>
  */
-public class DefaultClientMsgProcessor extends ClusterClientMsgProcessor {
+public class DefaultClusterClientMsgListener extends ClusterClientMsgListener {
 
     private final ImBusinessService imBusinessService;
 
-    public DefaultClientMsgProcessor(ImBusinessService imBusinessService) {
+    public DefaultClusterClientMsgListener(ImBusinessService imBusinessService) {
         this.imBusinessService = imBusinessService;
     }
 
@@ -28,11 +28,11 @@ public class DefaultClientMsgProcessor extends ClusterClientMsgProcessor {
         if (message instanceof DefaultMsg.TransportMsg){
             DefaultMsg.TransportMsg transportMsg = Parser.getT(DefaultMsg.TransportMsg.class, message);
             DefaultMsg.Msg msg = transportMsg.getMsg();
-            int type = transportMsg.getType();
+            DefaultMsg.TransportMsg.MsgType type = transportMsg.getType();
             String receiverId = msg.getReceiverId();
-            if (type == 1){
+            if (type == DefaultMsg.TransportMsg.MsgType.PRIVATE){
                 receiverIds.add(receiverId);
-            }else if (type == 2){
+            }else if (type == DefaultMsg.TransportMsg.MsgType.GROUP){
                 // 群成员ID
                 return imBusinessService.getUserIdsByGroupId(receiverId);
             }

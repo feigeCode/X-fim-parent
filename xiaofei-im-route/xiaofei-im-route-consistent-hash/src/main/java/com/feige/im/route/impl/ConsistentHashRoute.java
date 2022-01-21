@@ -75,7 +75,10 @@ public class ConsistentHashRoute implements IRoute {
 
     @Override
     public String getRoute(String key) {
+        System.out.println(MAP);
         SortedMap<Integer, String> sortedMap = MAP.tailMap(hash(key));
+        System.out.println(hash(key));
+        System.out.println(sortedMap);
         if (!sortedMap.isEmpty()) {
             return sortedMap.get(sortedMap.firstKey());
         }

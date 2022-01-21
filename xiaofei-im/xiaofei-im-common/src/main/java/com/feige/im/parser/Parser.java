@@ -2,9 +2,9 @@ package com.feige.im.parser;
 
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
+import com.feige.im.pojo.proto.Ack;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.google.protobuf.Message;
-import io.netty.buffer.ByteBufInputStream;
 
 import java.util.Map;
 import java.util.Objects;
@@ -71,5 +71,6 @@ public class Parser {
         add(3,DefaultMsg.Msg.class, DefaultMsg.Msg::parseFrom);
         add(4, DefaultMsg.Forced.class, DefaultMsg.Forced::parseFrom);
         add(6,DefaultMsg.TransportMsg.class,DefaultMsg.TransportMsg::parseFrom);
+        add(999, Ack.AckMsg.class,Ack.AckMsg::parseFrom);
     }
 }

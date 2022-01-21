@@ -1,6 +1,7 @@
 package com.feige.im.service;
 
 import com.google.protobuf.Message;
+import io.netty.channel.Channel;
 
 import java.util.List;
 
@@ -14,10 +15,10 @@ public interface ImBusinessService {
 
     /**
      * 持久化消息
-     * @param message
+     * @param msg
      * @return
      */
-    long persistentMsg(Message message);
+    long persistentMsg(Message msg);
 
     /**
      * 通过群组ID获取群成员
@@ -25,6 +26,13 @@ public interface ImBusinessService {
      * @return
      */
     List<String> getUserIdsByGroupId(String GroupId);
+
+    /**
+     * 认证，用户和channel进行绑定
+     * @param channel 用户的channel
+     * @param auth 认证信息
+     */
+    void authenticate(Channel channel, Message auth);
 
 
 }
