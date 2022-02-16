@@ -3,6 +3,8 @@ package com.feige.im.sender;
 import com.google.protobuf.Message;
 import io.netty.channel.Channel;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * @author feige<br />
  * @ClassName: PushManager <br/>
@@ -25,7 +27,13 @@ public class PushManager {
         if (channel == null || !channel.isActive() || !channel.isOpen()) {
             return false;
         }
-        channel.writeAndFlush(message);
-        return true;
+        final AtomicBoolean flag = new AtomicBoolean(false);
+        channel
+                .writeAndFlush(message)
+                .addListener((f) -> {
+                    boolean success = f.isSuccess();
+                    flag.set(success);
+                });
+        return flag.get();
     }
 }
