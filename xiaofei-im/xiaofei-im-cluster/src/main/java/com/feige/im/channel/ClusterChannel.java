@@ -27,12 +27,9 @@ public class ClusterChannel {
 
     private static final Map<String, Channel> MAP = new ConcurrentHashMap<>();
     // 监听连接关闭
-    private transient final ChannelFutureListener remover = new ChannelFutureListener() {
-        @Override
-        public void operationComplete(ChannelFuture future) throws Exception {
-            future.removeListener(this);
-            remove(future.channel());
-        }
+    private transient final ChannelFutureListener remover = future -> {
+        future.removeListener(INSTANCE.remover);
+        remove(future.channel());
     };
 
     private static final ClusterChannel INSTANCE = new ClusterChannel();
@@ -42,7 +39,7 @@ public class ClusterChannel {
     }
 
 
-    public static ClusterChannel getINSTANCE() {
+    public static ClusterChannel getInstance() {
         return INSTANCE;
     }
 

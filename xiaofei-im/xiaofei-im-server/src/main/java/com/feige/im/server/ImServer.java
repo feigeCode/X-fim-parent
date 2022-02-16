@@ -8,7 +8,7 @@ import com.feige.im.handler.MsgListener;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.parser.Parser;
-import com.feige.im.pojo.proto.DefaultMsg;
+import com.feige.im.pojo.proto.Cluster;
 import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.OsUtil;
@@ -177,7 +177,7 @@ public class ImServer {
     public void clusterConnect(){
         if (consumer != null){
             LOG.info("集群任务开始");
-            Parser.add(5, DefaultMsg.ClusterAuth.class,DefaultMsg.ClusterAuth::parseFrom);
+            Parser.add(5, Cluster.Node.class,Cluster.Node::parseFrom);
             consumer.accept(this.port);
         }
     }

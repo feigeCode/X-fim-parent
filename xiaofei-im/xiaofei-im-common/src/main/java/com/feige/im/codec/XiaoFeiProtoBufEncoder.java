@@ -4,10 +4,9 @@ import com.feige.im.constant.ImConst;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.parser.Parser;
-import com.feige.im.pojo.proto.DefaultMsg;
+import com.feige.im.pojo.proto.HeartBeat;
 import com.google.protobuf.Message;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
@@ -36,9 +35,9 @@ public class XiaoFeiProtoBufEncoder extends MessageToByteEncoder<Message> {
             buffer.writeInt(msgLength);
 
             // 写入消息key
-            if (msg instanceof DefaultMsg.Pong){
+            if (msg instanceof HeartBeat.Pong){
                 buffer.writeInt(ImConst.PONG_MSG_TYPE);
-            } else if (msg instanceof DefaultMsg.Ping){
+            } else if (msg instanceof HeartBeat.Ping){
                 buffer.writeInt(ImConst.PING_MSG_TYPE);
             }else {
                 Integer key = Parser.getKey(msg.getClass());

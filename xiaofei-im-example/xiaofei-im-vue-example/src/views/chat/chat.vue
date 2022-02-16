@@ -80,3 +80,4 @@ export default {
   .chat-box
     flex: 1
 </style>
+

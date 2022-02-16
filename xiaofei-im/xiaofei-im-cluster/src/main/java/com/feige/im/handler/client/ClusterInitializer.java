@@ -5,7 +5,7 @@ import com.feige.im.config.ImConfig;
 import com.feige.im.constant.ChannelAttr;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
-import com.feige.im.pojo.proto.DefaultMsg;
+import com.feige.im.pojo.proto.Cluster;
 import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.StringUtil;
 import io.netty.channel.Channel;
@@ -20,7 +20,7 @@ import java.net.InetSocketAddress;
  */
 public class ClusterInitializer {
     private static final Logger LOG = LoggerFactory.getLogger();
-    private final ClusterChannel CLUSTER_CHANNEL = ClusterChannel.getINSTANCE();
+    private final ClusterChannel CLUSTER_CHANNEL = ClusterChannel.getInstance();
     private final ImConfig CONFIG = ImConfig.getInstance();
     private InetSocketAddress socketAddress;
     private Channel channel;
@@ -39,7 +39,7 @@ public class ClusterInitializer {
      * 发送集群连接消息
      */
     public void sendClusterConnectMsg(){
-        DefaultMsg.ClusterAuth clusterAuth = DefaultMsg.ClusterAuth.newBuilder()
+        Cluster.Node clusterAuth = Cluster.Node.newBuilder()
                 .setNodeKey(CONFIG.getNodeKey())
                 .build();
         LOG.debugInfo("开始发送集群连接消息{}",StringUtil.protoMsgFormat(clusterAuth));

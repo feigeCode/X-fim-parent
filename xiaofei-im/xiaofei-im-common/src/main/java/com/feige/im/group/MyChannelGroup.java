@@ -32,12 +32,9 @@ public class MyChannelGroup {
     private static final Map<String,Collection<Channel>> MAP = new ConcurrentHashMap<>();
     private static final Collection<Channel> EMPTY_LIST = new ConcurrentLinkedQueue<>();
     // 监听连接关闭
-    private transient final ChannelFutureListener remover = new ChannelFutureListener() {
-        @Override
-        public void operationComplete(ChannelFuture future) throws Exception {
-            future.removeListener(this);
-            remove(future.channel());
-        }
+    private transient final ChannelFutureListener remover = future -> {
+        future.removeListener(INSTANCE.remover);
+        remove(future.channel());
     };
 
     private MyChannelGroup(){

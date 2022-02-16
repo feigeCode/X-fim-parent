@@ -263,6 +263,14 @@ public final class Ack {
        * <code>GROUP = 1;</code>
        */
       GROUP(1),
+      /**
+       * <pre>
+       *其他
+       * </pre>
+       *
+       * <code>OTHER = 2;</code>
+       */
+      OTHER(2),
       UNRECOGNIZED(-1),
       ;
 
@@ -282,6 +290,14 @@ public final class Ack {
        * <code>GROUP = 1;</code>
        */
       public static final int GROUP_VALUE = 1;
+      /**
+       * <pre>
+       *其他
+       * </pre>
+       *
+       * <code>OTHER = 2;</code>
+       */
+      public static final int OTHER_VALUE = 2;
 
 
       public final int getNumber() {
@@ -310,6 +326,7 @@ public final class Ack {
         switch (value) {
           case 0: return PRIVATE;
           case 1: return GROUP;
+          case 2: return OTHER;
           default: return null;
         }
       }
@@ -369,39 +386,55 @@ public final class Ack {
         implements com.google.protobuf.ProtocolMessageEnum {
       /**
        * <pre>
+       * 已发送
+       * </pre>
+       *
+       * <code>HAVE_SENT = 0;</code>
+       */
+      HAVE_SENT(0),
+      /**
+       * <pre>
        * 已送达
        * </pre>
        *
-       * <code>DELIVERED = 0;</code>
+       * <code>ARRIVED = 1;</code>
        */
-      DELIVERED(0),
+      ARRIVED(1),
       /**
        * <pre>
        * 已读
        * </pre>
        *
-       * <code>READ = 1;</code>
+       * <code>HAVE_READ = 2;</code>
        */
-      READ(1),
+      HAVE_READ(2),
       UNRECOGNIZED(-1),
       ;
 
       /**
        * <pre>
+       * 已发送
+       * </pre>
+       *
+       * <code>HAVE_SENT = 0;</code>
+       */
+      public static final int HAVE_SENT_VALUE = 0;
+      /**
+       * <pre>
        * 已送达
        * </pre>
        *
-       * <code>DELIVERED = 0;</code>
+       * <code>ARRIVED = 1;</code>
        */
-      public static final int DELIVERED_VALUE = 0;
+      public static final int ARRIVED_VALUE = 1;
       /**
        * <pre>
        * 已读
        * </pre>
        *
-       * <code>READ = 1;</code>
+       * <code>HAVE_READ = 2;</code>
        */
-      public static final int READ_VALUE = 1;
+      public static final int HAVE_READ_VALUE = 2;
 
 
       public final int getNumber() {
@@ -428,8 +461,9 @@ public final class Ack {
        */
       public static Status forNumber(int value) {
         switch (value) {
-          case 0: return DELIVERED;
-          case 1: return READ;
+          case 0: return HAVE_SENT;
+          case 1: return ARRIVED;
+          case 2: return HAVE_READ;
           default: return null;
         }
       }
@@ -679,7 +713,7 @@ public final class Ack {
       if (id_ != 0L) {
         output.writeInt64(1, id_);
       }
-      if (status_ != com.feige.im.pojo.proto.Ack.AckMsg.Status.DELIVERED.getNumber()) {
+      if (status_ != com.feige.im.pojo.proto.Ack.AckMsg.Status.HAVE_SENT.getNumber()) {
         output.writeEnum(2, status_);
       }
       if (!getSenderIdBytes().isEmpty()) {
@@ -710,7 +744,7 @@ public final class Ack {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(1, id_);
       }
-      if (status_ != com.feige.im.pojo.proto.Ack.AckMsg.Status.DELIVERED.getNumber()) {
+      if (status_ != com.feige.im.pojo.proto.Ack.AckMsg.Status.HAVE_SENT.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, status_);
       }
@@ -1583,15 +1617,16 @@ public final class Ack {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\tAck.proto\022\027com.feige.im.pojo.proto\"\227\002\n" +
+      "\n\tAck.proto\022\027com.feige.im.pojo.proto\"\264\002\n" +
       "\006AckMsg\022\n\n\002id\030\001 \001(\003\0226\n\006status\030\002 \001(\0162&.co" +
       "m.feige.im.pojo.proto.AckMsg.Status\022\020\n\010s" +
       "enderId\030\003 \001(\t\022\022\n\nreceiverId\030\004 \001(\t\0228\n\007msg" +
       "Type\030\005 \001(\0162\'.com.feige.im.pojo.proto.Ack" +
       "Msg.MsgType\022\020\n\010ackMsgId\030\010 \001(\003\022\021\n\ttimesta" +
-      "mp\030\006 \001(\004\"!\n\007MsgType\022\013\n\007PRIVATE\020\000\022\t\n\005GROU" +
-      "P\020\001\"!\n\006Status\022\r\n\tDELIVERED\020\000\022\010\n\004READ\020\001B\005" +
-      "B\003Ackb\006proto3"
+      "mp\030\006 \001(\004\",\n\007MsgType\022\013\n\007PRIVATE\020\000\022\t\n\005GROU" +
+      "P\020\001\022\t\n\005OTHER\020\002\"3\n\006Status\022\r\n\tHAVE_SENT\020\000\022" +
+      "\013\n\007ARRIVED\020\001\022\r\n\tHAVE_READ\020\002B\005B\003Ackb\006prot" +
+      "o3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

@@ -29,6 +29,8 @@
         <module>xiaofei-im-example/xiaofei-im-feixin</module>
         <module>xiaofei-im-log</module>
         <module>xiaofei-im-log4j2</module>
+        <module>xiaofei-im-client-sdk</module>
+        <module>xiaofei-im-client-sdk/xiaofei-im-java-sdk</module>
     </modules>
 
     <properties>

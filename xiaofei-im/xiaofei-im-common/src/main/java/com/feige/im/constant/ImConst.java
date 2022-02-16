@@ -1,6 +1,6 @@
 package com.feige.im.constant;
 
-import com.feige.im.pojo.proto.DefaultMsg;
+import com.feige.im.pojo.proto.HeartBeat;
 
 /**
  * @author feige<br />
@@ -22,9 +22,9 @@ public interface ImConst {
 
     int PONG_MSG_TYPE = 0;
 
-    DefaultMsg.Ping PING_MSG = DefaultMsg.Ping.newBuilder().setPing(1).build();
+    HeartBeat.Ping PING_MSG = HeartBeat.Ping.newBuilder().setPing(1).build();
 
-    DefaultMsg.Pong PONG_MSG = DefaultMsg.Pong.newBuilder().setPong(0).build();
+    HeartBeat.Pong PONG_MSG = HeartBeat.Pong.newBuilder().setPong(0).build();
 
 
     String ANDROID = "android";

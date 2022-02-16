@@ -7,7 +7,7 @@ import com.feige.im.group.MyChannelGroup;
 import com.feige.im.handler.MsgListener;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
-import com.feige.im.pojo.proto.DefaultMsg;
+import com.feige.im.pojo.proto.HeartBeat;
 import com.feige.im.utils.ScheduledThreadPoolExecutorUtil;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
@@ -29,7 +29,7 @@ public abstract class ClusterClientMsgListener implements MsgListener {
 
     private static final Logger LOG = LoggerFactory.getLogger();
     // 管理的是集群客户端的连接
-    private final ClusterChannel clusterChannel = ClusterChannel.getINSTANCE();
+    private final ClusterChannel clusterChannel = ClusterChannel.getInstance();
     // 管理的是用户客户端的连接
     private final MyChannelGroup CHANNEL_GROUP = MyChannelGroup.getInstance();
 
@@ -81,7 +81,7 @@ public abstract class ClusterClientMsgListener implements MsgListener {
             return;
         }
         // 客户端发送心跳
-        if (msg instanceof DefaultMsg.Ping){
+        if (msg instanceof HeartBeat.Ping){
             LOG.debugInfo("客户端发送心跳");
             channel.writeAndFlush(ImConst.PONG_MSG);
             return;

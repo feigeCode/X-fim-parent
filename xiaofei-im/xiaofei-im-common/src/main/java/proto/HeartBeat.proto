@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package com.feige.im.pojo.proto;
+
+option java_outer_classname = "HeartBeat";
+
+/**
+心跳消息
+ */
+message Ping {
+  int32 ping = 1;
+}
+
+
+message Pong {
+  uint32 pong = 1;
+}
+

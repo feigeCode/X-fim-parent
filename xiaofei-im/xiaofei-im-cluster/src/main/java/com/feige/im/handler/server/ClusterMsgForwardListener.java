@@ -7,6 +7,7 @@ import com.feige.im.handler.MsgListener;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.parser.Parser;
+import com.feige.im.pojo.proto.Cluster;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.route.IRoute;
 import com.feige.im.route.RouteManager;
@@ -27,7 +28,7 @@ import java.util.Set;
  */
 public abstract class ClusterMsgForwardListener implements MsgListener {
     private static final Logger LOG = LoggerFactory.getLogger();
-    private final ClusterChannel clusterChannel = ClusterChannel.getINSTANCE();
+    private final ClusterChannel clusterChannel = ClusterChannel.getInstance();
     private final ImConfig CONFIG = ImConfig.getInstance();
     private final MsgListener msgListener;
     private final IRoute route;
@@ -70,7 +71,7 @@ public abstract class ClusterMsgForwardListener implements MsgListener {
             return;
         }
         // 集群连接消息请求
-        if (msg instanceof DefaultMsg.ClusterAuth){
+        if (msg instanceof Cluster.Node){
             clusterHandler(ctx.channel(), msg);
             return;
         }
@@ -91,7 +92,7 @@ public abstract class ClusterMsgForwardListener implements MsgListener {
      * @param msg
      */
     private void clusterHandler(Channel channel,Message msg){
-        DefaultMsg.ClusterAuth clusterAuth = Parser.getT(DefaultMsg.ClusterAuth.class, msg);
+        Cluster.Node clusterAuth = Parser.getT(Cluster.Node.class, msg);
         if (!StringUtil.isEmpty(clusterAuth) && !StringUtil.isEmpty(clusterAuth.getNodeKey())){
             String nodeKey = clusterAuth.getNodeKey();
             channel.attr(ChannelAttr.NODE_KEY).set(nodeKey);

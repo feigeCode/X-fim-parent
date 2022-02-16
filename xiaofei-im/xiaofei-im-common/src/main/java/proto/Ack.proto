@@ -46,13 +46,20 @@ message AckMsg {
     群聊
      */
     GROUP = 1;
+    /*
+    其他
+     */
+    OTHER = 2;
   }
 
   enum Status {
+    // 已发送
+    HAVE_SENT = 0;
+
     // 已送达
-    DELIVERED = 0;
+    ARRIVED = 1;
 
     // 已读
-    READ = 1;
+    HAVE_READ = 2;
   }
 }

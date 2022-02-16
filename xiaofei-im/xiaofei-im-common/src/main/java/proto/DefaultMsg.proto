@@ -121,7 +121,6 @@ message Msg{
 }
 /**
 传输消息
-type 1私聊消息2群聊消息
  */
 message TransportMsg {
   /*
@@ -142,23 +141,10 @@ message TransportMsg {
     群聊
      */
     GROUP = 1;
+    /*
+    其他
+     */
+    OTHER = 2;
   }
-}
-
-/**
-心跳消息
- */
-message Ping {
-  int32 ping = 1;
-}
-
-
-message Pong {
-  uint32 pong = 1;
-}
-
-
-message ClusterAuth {
-  string nodeKey = 1;
 }
 

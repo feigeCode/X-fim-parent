@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package com.feige.im.pojo.proto;
+
+option java_outer_classname = "Cluster";
+
+
+message Node {
+  string nodeKey = 1;
+}

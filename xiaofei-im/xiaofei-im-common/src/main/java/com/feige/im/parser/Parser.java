@@ -28,6 +28,11 @@ public class Parser {
     public static final Map<Integer,DeserializationHandler> DESERIALIZATION_MAP = new ConcurrentHashMap<>();
     public static final Map<Class<? extends Message>,Integer> MSG_KEY_MAP = new ConcurrentHashMap<>();
 
+    static {
+        // ack消息
+        add(999, Ack.AckMsg.class,Ack.AckMsg::parseFrom);
+    }
+
 
     public static void add(Integer key, Class<? extends Message> t,DeserializationHandler handler){
         if (!Objects.isNull(key) && (key.equals(1) || key.equals(0))){
@@ -68,9 +73,7 @@ public class Parser {
 
     public static void registerDefaultParsing(){
         add(2, DefaultMsg.Auth.class, DefaultMsg.Auth::parseFrom);
-        add(3,DefaultMsg.Msg.class, DefaultMsg.Msg::parseFrom);
-        add(4, DefaultMsg.Forced.class, DefaultMsg.Forced::parseFrom);
-        add(6,DefaultMsg.TransportMsg.class,DefaultMsg.TransportMsg::parseFrom);
-        add(999, Ack.AckMsg.class,Ack.AckMsg::parseFrom);
+        add(3, DefaultMsg.Forced.class, DefaultMsg.Forced::parseFrom);
+        add(4,DefaultMsg.TransportMsg.class,DefaultMsg.TransportMsg::parseFrom);
     }
 }
