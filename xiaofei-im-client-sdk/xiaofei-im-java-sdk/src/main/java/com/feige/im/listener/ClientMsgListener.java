@@ -1,15 +1,13 @@
-package com.feige.im.handler;
+package com.feige.im.listener;
 
+import com.feige.im.handler.MsgListener;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.Ack;
-import com.feige.im.receiver.ProcessMsg;
 import com.feige.im.sender.WaitingAckTimerHandler;
 import com.google.protobuf.Message;
 import io.netty.channel.ChannelHandlerContext;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Objects;
 
 /**
  * @author feige<br />
@@ -17,11 +15,9 @@ import java.util.concurrent.atomic.AtomicLong;
  * @Description: <br/>
  * @date: 2022/2/5 20:44<br/>
  */
-public abstract class ClientMsgListener implements MsgListener{
+public abstract class ClientMsgListener implements MsgListener {
 
-    // 收到消息的最后一个ID
-    private final AtomicLong LAST_ID = new AtomicLong();
-    private final Map<Long, Message> MSG_CONTAINER = new ConcurrentHashMap<>();
+
 
     @Override
     public void active(ChannelHandlerContext ctx) {
@@ -34,10 +30,10 @@ public abstract class ClientMsgListener implements MsgListener{
             Ack.AckMsg ackMsg = Parser.getT(Ack.AckMsg.class, msg);
             WaitingAckTimerHandler.remove(ackMsg.getAckMsgId());
         }else {
-            ProcessMsg processMsg = getProcessMsg(msg);
-            if (processMsg != null){
-                processMsg.doArrivedAck(ctx);
+            if(Objects.isNull(ctx) || Objects.isNull(msg)){
+                return;
             }
+            msgHandler(ctx, msg);
         }
     }
 
@@ -51,6 +47,11 @@ public abstract class ClientMsgListener implements MsgListener{
 
     }
 
-    public abstract ProcessMsg getProcessMsg(Message msg);
+    /**
+     * 处理接收到的消息
+     * @param ctx channel上下文
+     * @param msg 接收到的消息
+     */
+    public abstract void msgHandler(ChannelHandlerContext ctx, Message msg);
 
 }

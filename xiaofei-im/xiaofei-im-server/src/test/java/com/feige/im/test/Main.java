@@ -17,6 +17,6 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) {
         Parser.registerDefaultParsing();
-        ImServer.start(new File("E:\\project\\im\\xiaofei-im-parent\\conf\\xiaofei-im.properties"));
+        ImServer.start(new File("E:\\project\\im\\beifen\\xiaofei-im-parent\\conf\\xiaofei-im.properties"));
     }
 }

@@ -5,6 +5,7 @@ import com.feige.im.group.MyChannelGroup;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.parser.Parser;
+import com.feige.im.pojo.proto.Ack;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.service.ImBusinessService;
 import com.feige.im.service.impl.ImBusinessServiceImpl;
@@ -50,6 +51,11 @@ public class DefaultMsgListener implements MsgListener{
             return;
         }
 
+        if (message instanceof Ack.AckMsg) {
+            Ack.AckMsg ackMsg = Parser.getT(Ack.AckMsg.class, message);
+            String receiverId = ackMsg.getReceiverId();
+            channelGroup.write(receiverId,ackMsg);
+        }
         if (message instanceof DefaultMsg.TransportMsg){
             DefaultMsg.TransportMsg transportMsg = Parser.getT(DefaultMsg.TransportMsg.class, message);
             DefaultMsg.Msg msg = transportMsg.getMsg();

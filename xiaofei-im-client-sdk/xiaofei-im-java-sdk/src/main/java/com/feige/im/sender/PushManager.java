@@ -15,25 +15,15 @@ public class PushManager {
 
     private static Channel channel;
 
-    private PushManager(){
-
-    }
-
     public static void setChannel(Channel channel){
         PushManager.channel = channel;
     }
 
-    public static boolean pushMsg(Message message){
+    public static boolean push(Message message){
         if (channel == null || !channel.isActive() || !channel.isOpen()) {
             return false;
         }
-        final AtomicBoolean flag = new AtomicBoolean(false);
-        channel
-                .writeAndFlush(message)
-                .addListener((f) -> {
-                    boolean success = f.isSuccess();
-                    flag.set(success);
-                });
-        return flag.get();
+        channel.writeAndFlush(message);
+        return true;
     }
 }

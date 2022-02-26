@@ -20,6 +20,12 @@ public class Parser {
 
     @FunctionalInterface
     public interface DeserializationHandler{
+        /**
+         * 消息转换
+         * @param bytes 字节数组
+         * @return
+         * @throws Exception
+         */
         Message process(byte[] bytes) throws Exception;
     }
 

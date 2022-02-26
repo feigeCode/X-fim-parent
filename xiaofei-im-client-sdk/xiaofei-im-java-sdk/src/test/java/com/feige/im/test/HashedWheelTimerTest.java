@@ -11,9 +11,6 @@ import com.feige.im.sender.WaitingAckTimerHandler;
 public class HashedWheelTimerTest {
 
     public static void main(String[] args) {
-        WaitingAckTimerHandler.add(new WaitingAckTimerHandler.WaitingAckTimer(1L,null));
-        WaitingAckTimerHandler.add(new WaitingAckTimerHandler.WaitingAckTimer(2L,null));
-        WaitingAckTimerHandler.add(new WaitingAckTimerHandler.WaitingAckTimer(3L,null));
-        WaitingAckTimerHandler.remove(3L);
+
     }
 }

@@ -1,5 +1,7 @@
 package com.feige.im.sender;
 
+import com.feige.im.listener.MsgStatusListener;
+import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.ScheduledThreadPoolExecutorUtil;
 import com.google.protobuf.Message;
@@ -27,38 +29,48 @@ public class WaitingAckTimerHandler {
 
     public static final Duration DURATION = Duration.ofSeconds(5);
 
+    private static MsgStatusListener statusListener;
+
     public static void add(WaitingAckTimer waitingAckTimer){
-        WAITING_ACK_TIMER_CONTAINER.putIfAbsent(waitingAckTimer.msgId, waitingAckTimer);
+        WAITING_ACK_TIMER_CONTAINER.put(waitingAckTimer.msgId, waitingAckTimer);
     }
 
-    public static WaitingAckTimer remove(Long msgId){
+    public static void remove(Long msgId){
         WaitingAckTimer waitingAckTimer = WAITING_ACK_TIMER_CONTAINER.remove(msgId);
         waitingAckTimer.cancel();
-        return waitingAckTimer;
+        // 消息已送达
+        statusListener.hasMsgArrived(msgId);
     }
 
+    public static MsgStatusListener getStatusListener() {
+        AssertUtil.notNull(statusListener,"statusListener");
+        return statusListener;
+    }
+
+    public static void setStatusListener(MsgStatusListener statusListener) {
+        AssertUtil.notNull(statusListener,"statusListener");
+        WaitingAckTimerHandler.statusListener = statusListener;
+    }
+
+    public static WaitingAckTimer getWaitingAckTimer(Long msgId){
+        return new WaitingAckTimer(msgId);
+    }
 
     public static class WaitingAckTimer {
 
         private Long msgId;
 
-        private Message message;
-
         private Timeout timeout;
 
-        public WaitingAckTimer(Long msgId, Message message) {
+        public WaitingAckTimer(Long msgId) {
             this.msgId = msgId;
-            this.message = message;
             createTimeout();
         }
 
         public void createTimeout(){
             this.timeout = TIMER.newTimeout(ignore -> EXECUTOR_UTIL.execute(() -> {
-                boolean isSuccess = PushManager.pushMsg(message);
-                if (isSuccess){
-                    WaitingAckTimer waitingAckTimer = remove(this.msgId);
-                    add(new WaitingAckTimer(waitingAckTimer.msgId,waitingAckTimer.message));
-                }
+                // 超时未收到ack的消息
+                statusListener.timeoutMsg(this.msgId);
             }), DURATION.toMillis(), TimeUnit.MILLISECONDS);
         }
 
@@ -76,14 +88,6 @@ public class WaitingAckTimerHandler {
 
         public void setMsgId(Long msgId) {
             this.msgId = msgId;
-        }
-
-        public Message getMessage() {
-            return message;
-        }
-
-        public void setMessage(Message message) {
-            this.message = message;
         }
 
         public Timeout getTimeout() {
