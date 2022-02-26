@@ -1,8 +1,8 @@
 package com.feige.im.cluster.test;
 
 import com.feige.im.handler.DefaultMsgListener;
-import com.feige.im.handler.client.DefaultClusterClientMsgListener;
-import com.feige.im.handler.server.DefaultClusterMsgForwardListener;
+import com.feige.im.handler.client.ClusterClientMsgListener;
+import com.feige.im.handler.server.ClusterMsgForwardListener;
 
 import com.feige.im.parser.Parser;
 import com.feige.im.service.impl.ImBusinessServiceImpl;
@@ -21,8 +21,8 @@ public class ClusterTest2 {
     public static void main(String[] args) {
         Parser.registerDefaultParsing();
         ImBusinessServiceImpl imBusinessService = new ImBusinessServiceImpl();
-        DefaultClusterMsgForwardListener defaultClusterMsgForwardProcessor = new DefaultClusterMsgForwardListener(new DefaultMsgListener(),imBusinessService);
-        DefaultClusterClientMsgListener defaultClientMsgProcessor = new DefaultClusterClientMsgListener(imBusinessService);
+        ClusterMsgForwardListener defaultClusterMsgForwardProcessor = new ClusterMsgForwardListener(new DefaultMsgListener(),imBusinessService);
+        ClusterClientMsgListener defaultClientMsgProcessor = new ClusterClientMsgListener(imBusinessService);
         ClusterTask clusterTask = new ClusterTask(defaultClientMsgProcessor);
         ImServer.start(new File("E:\\project\\im\\xiaofei-im-parent\\conf\\xiaofei-im2.properties"),defaultClusterMsgForwardProcessor, clusterTask);
     }

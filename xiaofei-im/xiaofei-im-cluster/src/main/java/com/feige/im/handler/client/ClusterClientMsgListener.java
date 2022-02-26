@@ -7,7 +7,9 @@ import com.feige.im.group.MyChannelGroup;
 import com.feige.im.handler.MsgListener;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
+import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.HeartBeat;
+import com.feige.im.service.ImBusinessService;
 import com.feige.im.utils.ScheduledThreadPoolExecutorUtil;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
@@ -25,18 +27,28 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Description: <br/>
  * @date: 2022/1/21 14:04<br/>
  */
-public abstract class ClusterClientMsgListener implements MsgListener {
+public class ClusterClientMsgListener implements MsgListener {
 
     private static final Logger LOG = LoggerFactory.getLogger();
-    // 管理的是集群客户端的连接
+    /**
+     * 管理的是集群客户端的连接
+     */
     private final ClusterChannel clusterChannel = ClusterChannel.getInstance();
-    // 管理的是用户客户端的连接
+    /**
+     * 管理的是用户客户端的连接
+     */
     private final MyChannelGroup CHANNEL_GROUP = MyChannelGroup.getInstance();
 
     private final ClusterInitializer initializer = new ClusterInitializer();
     private final ScheduledThreadPoolExecutorUtil EXECUTOR_SERVICE =  ScheduledThreadPoolExecutorUtil.getInstance();
 
     private final AtomicInteger RETRY_COUNT = new AtomicInteger(0);
+
+    private final ImBusinessService imBusinessService;
+
+    public ClusterClientMsgListener(ImBusinessService imBusinessService) {
+        this.imBusinessService = imBusinessService;
+    }
 
     @Override
     public void active(ChannelHandlerContext ctx) {
@@ -86,7 +98,8 @@ public abstract class ClusterClientMsgListener implements MsgListener {
             channel.writeAndFlush(ImConst.PONG_MSG);
             return;
         }
-        List<String> receiverIds = this.getReceiverIds(msg);
+        // 获取接受者ID
+        List<String> receiverIds = Parser.getReceiverIds(msg, imBusinessService);
         if (receiverIds == null || receiverIds.isEmpty()){
             return;
         }
@@ -110,13 +123,4 @@ public abstract class ClusterClientMsgListener implements MsgListener {
 
     }
 
-
-    /**
-     * @description: 获取消息接收者ID，通过接收者ID推送消息
-     * @author: feige
-     * @date: 2021/11/14 16:47
-     * @param	message	用户自定义消息
-     * @return: java.lang.String
-     */
-    public abstract List<String> getReceiverIds(Message message);
 }

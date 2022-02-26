@@ -11,6 +11,7 @@ import com.feige.im.pojo.proto.Cluster;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.route.IRoute;
 import com.feige.im.route.RouteManager;
+import com.feige.im.service.ImBusinessService;
 import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.channel.Channel;
@@ -26,15 +27,17 @@ import java.util.Set;
  * @Description: <br/>
  * @date: 2022/1/21 14:08<br/>
  */
-public abstract class ClusterMsgForwardListener implements MsgListener {
+public class ClusterMsgForwardListener implements MsgListener {
     private static final Logger LOG = LoggerFactory.getLogger();
     private final ClusterChannel clusterChannel = ClusterChannel.getInstance();
     private final ImConfig CONFIG = ImConfig.getInstance();
     private final MsgListener msgListener;
     private final IRoute route;
+    private final ImBusinessService imBusinessService;
 
-    public ClusterMsgForwardListener(MsgListener msgListener) {
+    public ClusterMsgForwardListener(MsgListener msgListener, ImBusinessService imBusinessService) {
         this.msgListener = msgListener;
+        this.imBusinessService = imBusinessService;
         this.route = RouteManager.getIRoutes();
     }
 
@@ -111,7 +114,7 @@ public abstract class ClusterMsgForwardListener implements MsgListener {
      */
     private void msgForward(ChannelHandlerContext ctx, Message msg){
         Set<String> nodeKesSet = new HashSet<>();
-        List<String> receiverIds = this.getReceiverIds(msg);
+        List<String> receiverIds = Parser.getReceiverIds(msg, imBusinessService);
         if (receiverIds == null || receiverIds.isEmpty()){
             return;
         }
@@ -140,13 +143,4 @@ public abstract class ClusterMsgForwardListener implements MsgListener {
         }
     }
 
-
-    /**
-     * @description: 获取消息接收者ID，通过接收者ID判断用户所在的主机，便于转发消息
-     * @author: feige
-     * @date: 2021/12/31 14:14
-     * @param	message	用户自定义消息
-     * @return: java.util.List<java.lang.String>
-     */
-    public abstract List<String> getReceiverIds(Message message);
 }
