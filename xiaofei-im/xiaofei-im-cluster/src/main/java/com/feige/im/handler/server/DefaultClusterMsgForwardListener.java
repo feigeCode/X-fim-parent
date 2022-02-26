@@ -2,6 +2,7 @@ package com.feige.im.handler.server;
 
 import com.feige.im.handler.MsgListener;
 import com.feige.im.parser.Parser;
+import com.feige.im.pojo.proto.Ack;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.service.ImBusinessService;
 import com.google.protobuf.Message;
@@ -37,6 +38,11 @@ public class DefaultClusterMsgForwardListener extends ClusterMsgForwardListener{
                 // 群成员ID
                 return imBusinessService.getUserIdsByGroupId(receiverId);
             }
+        }
+
+        if (message instanceof Ack.AckMsg){
+            Ack.AckMsg ackMsg = Parser.getT(Ack.AckMsg.class, message);
+            receiverIds.add(ackMsg.getReceiverId());
         }
         return receiverIds;
     }
