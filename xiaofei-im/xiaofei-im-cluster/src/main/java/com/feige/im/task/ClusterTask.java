@@ -11,13 +11,11 @@ import com.feige.im.route.IRoute;
 import com.feige.im.route.RouteManager;
 import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.IpUtil;
-import com.feige.im.utils.NameThreadFactory;
+import com.feige.im.utils.ScheduledThreadPoolExecutorUtil;
 
 import java.net.InetAddress;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.function.Consumer;
 
 /**
@@ -29,6 +27,7 @@ import java.util.function.Consumer;
 public class ClusterTask implements Consumer<Integer> {
 
     private static final Logger LOG = LoggerFactory.getLogger();
+    private static final ScheduledThreadPoolExecutorUtil EXECUTOR_UTIL = ScheduledThreadPoolExecutorUtil.getInstance();
 
     private final MsgListener msgListener;
 
@@ -43,9 +42,7 @@ public class ClusterTask implements Consumer<Integer> {
         IRoute iRoutes = RouteManager.getIRoutes();
         ProviderService providerService = DiscoveryManager.getProviderService();
         providerService.subscribe(iRoutes::add);
-        ScheduledExecutorService executor = null;
         try {
-            executor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() / 2,new NameThreadFactory("cluster-task-"));
             List<ServerInstance> allServerInstances = providerService.getAllServerInstances();
             final CountDownLatch countDownLatch = new CountDownLatch(allServerInstances.size());
             for (ServerInstance serverInstance : allServerInstances) {
@@ -53,20 +50,16 @@ public class ClusterTask implements Consumer<Integer> {
                 if (localAddress.getHostAddress().equals(serverInstance.getIp()) && port.equals(serverInstance.getPort())){
                     continue;
                 }
-                executor.execute(() -> {
+                EXECUTOR_UTIL.execute(() -> {
                     ImClient.connect(serverInstance.getIp(),serverInstance.getPort(),msgListener);
                     countDownLatch.countDown();
                 });
             }
             // 等待链接建立完成之后注册自己
             countDownLatch.await();
-            executor.execute(new ImRegistry(localAddress.getHostAddress(),port));
+            EXECUTOR_UTIL.execute(new ImRegistry(localAddress.getHostAddress(),port));
         } catch (Exception e) {
             LOG.error("cluster task fail:",e);
-        } finally {
-            if (executor != null){
-                executor.shutdown();
-            }
         }
     }
 }
