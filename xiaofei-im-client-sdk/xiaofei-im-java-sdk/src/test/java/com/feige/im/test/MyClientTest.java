@@ -26,7 +26,7 @@ import java.util.Scanner;
 public class MyClientTest {
 
     public static final Logger LOG = LoggerFactory.getLogger();
-    public static final String IP = "localhost";
+    public static final String IP = "192.168.0.103";
     public static final int PORT = 8001;
     public static final String SENDER_ID = "my";
     public static final String RECEIVER_ID = "receiver";

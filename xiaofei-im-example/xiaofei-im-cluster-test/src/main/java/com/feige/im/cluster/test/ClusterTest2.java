@@ -24,6 +24,6 @@ public class ClusterTest2 {
         ClusterMsgForwardListener defaultClusterMsgForwardProcessor = new ClusterMsgForwardListener(new DefaultMsgListener(),imBusinessService);
         ClusterClientMsgListener defaultClientMsgProcessor = new ClusterClientMsgListener(imBusinessService);
         ClusterTask clusterTask = new ClusterTask(defaultClientMsgProcessor);
-        ImServer.start(new File("E:\\project\\im\\xiaofei-im-parent\\conf\\xiaofei-im2.properties"),defaultClusterMsgForwardProcessor, clusterTask);
+        ImServer.start(new File("E:\\project\\im\\beifen\\xiaofei-im-parent\\conf\\xiaofei-im2.properties"),defaultClusterMsgForwardProcessor, clusterTask);
     }
 }

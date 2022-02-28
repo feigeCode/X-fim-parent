@@ -1,8 +1,10 @@
 package com.feige.im.listener;
 
+import com.feige.im.constant.ImConst;
 import com.feige.im.handler.MsgListener;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.Ack;
+import com.feige.im.pojo.proto.HeartBeat;
 import com.feige.im.sender.WaitingAckTimerHandler;
 import com.google.protobuf.Message;
 import io.netty.channel.ChannelHandlerContext;
@@ -29,6 +31,8 @@ public abstract class ClientMsgListener implements MsgListener {
         if (msg instanceof Ack.AckMsg) {
             Ack.AckMsg ackMsg = Parser.getT(Ack.AckMsg.class, msg);
             WaitingAckTimerHandler.remove(ackMsg.getAckMsgId());
+        }else if(msg instanceof HeartBeat.Ping){
+            ctx.writeAndFlush(ImConst.PONG_MSG);
         }else {
             if(Objects.isNull(ctx) || Objects.isNull(msg)){
                 return;

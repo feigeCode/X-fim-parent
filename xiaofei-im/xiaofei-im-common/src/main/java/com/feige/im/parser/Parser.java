@@ -4,6 +4,7 @@ import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.pojo.proto.Ack;
 import com.feige.im.pojo.proto.DefaultMsg;
+import com.feige.im.pojo.proto.HeartBeat;
 import com.feige.im.service.ImBusinessService;
 import com.google.protobuf.Message;
 
@@ -97,6 +98,9 @@ public class Parser {
      * @return
      */
     public static List<String> getReceiverIds(Message message, ImBusinessService imBusinessService){
+        if (message instanceof HeartBeat.Pong || message instanceof HeartBeat.Ping){
+            return Collections.emptyList();
+        }
         Class<? extends Message> messageClass = message.getClass();
         ReceiverIdsHandler receiverIdsHandler = RECEIVER_IDS_MAP.get(messageClass);
         if (Objects.isNull(receiverIdsHandler)){
