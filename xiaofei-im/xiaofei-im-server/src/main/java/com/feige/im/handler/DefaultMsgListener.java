@@ -5,7 +5,6 @@ import com.feige.im.group.MyChannelGroup;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.parser.Parser;
-import com.feige.im.pojo.proto.Ack;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.service.ImBusinessService;
 import com.feige.im.service.impl.ImBusinessServiceImpl;
@@ -26,13 +25,12 @@ import java.util.Objects;
 public class DefaultMsgListener implements MsgListener{
 
     private static final Logger LOG = LoggerFactory.getLogger();
-    private static final MyChannelGroup channelGroup = MyChannelGroup.getInstance();
+    private static final MyChannelGroup CHANNEL_GROUP = MyChannelGroup.getInstance();
     private ImBusinessService imBusinessService;
-    private ScheduledThreadPoolExecutorUtil executor;
+    private static final ScheduledThreadPoolExecutorUtil EXECUTOR = ScheduledThreadPoolExecutorUtil.getInstance();;
 
     public DefaultMsgListener(ImBusinessService imBusinessService) {
         this.imBusinessService = imBusinessService;
-        this.executor = ScheduledThreadPoolExecutorUtil.getInstance();
     }
 
     public DefaultMsgListener() {
@@ -51,63 +49,35 @@ public class DefaultMsgListener implements MsgListener{
             return;
         }
 
-        if (message instanceof Ack.AckMsg) {
-            Ack.AckMsg ackMsg = Parser.getT(Ack.AckMsg.class, message);
-            String receiverId = ackMsg.getReceiverId();
-            channelGroup.write(receiverId,ackMsg);
-        }
-        if (message instanceof DefaultMsg.TransportMsg){
-            DefaultMsg.TransportMsg transportMsg = Parser.getT(DefaultMsg.TransportMsg.class, message);
-            DefaultMsg.Msg msg = transportMsg.getMsg();
-            // 消息持久化
-            if (executor != null){
-                executor.execute(() -> imBusinessService.persistentMsg(message));
-            }
-            DefaultMsg.TransportMsg.MsgType type = transportMsg.getType();
-            String receiverId = msg.getReceiverId();
-            if (type == DefaultMsg.TransportMsg.MsgType.PRIVATE){
-                channelGroup.write(receiverId,transportMsg);
-            }else if (type == DefaultMsg.TransportMsg.MsgType.GROUP){
-                // 群消息转发
-                if (executor != null){
-                    executor.execute(() -> sentGroupMsg(receiverId,transportMsg));
-                }else {
-                    sentGroupMsg(receiverId,transportMsg);
-                }
-            }
-        }
         if (message instanceof DefaultMsg.Auth){
             imBusinessService.authenticate(channel,message);
+            return;
         }
+
+        EXECUTOR.execute(() -> {
+            imBusinessService.persistentMsg(message);
+            List<String> receiverIds = Parser.getReceiverIds(message, imBusinessService);
+            receiverIds.forEach(receiverId -> {
+                if (!receiverId.equals(channel.attr(ChannelAttr.USER_ID).get())){
+                    CHANNEL_GROUP.write(receiverId,message);
+                }
+            });
+        });
+
+
+
+
     }
 
     @Override
     public void inactive(ChannelHandlerContext ctx) {
         LOG.info("channelId = {}的连接不活跃",ctx.channel().attr(ChannelAttr.ID));
-        channelGroup.remove(ctx.channel());
+        CHANNEL_GROUP.remove(ctx.channel());
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         LOG.error(cause.getMessage(),cause);
-    }
-
-
-    /**
-     * 发送群消息
-     * @param groupId 群ID
-     * @param msg 消息
-     */
-    public void sentGroupMsg(String groupId, Message msg){
-        List<String> userIds = imBusinessService.getUserIdsByGroupId(groupId);
-        if (userIds != null){
-            for (String userId : userIds) {
-                if (groupId.equals(userId)){
-                    continue;
-                }
-                channelGroup.write(userId,msg);
-            }
-        }
     }
 
 

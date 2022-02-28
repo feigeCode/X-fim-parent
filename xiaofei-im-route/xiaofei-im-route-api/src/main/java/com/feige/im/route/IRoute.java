@@ -15,27 +15,29 @@ public interface IRoute {
      * 添加集群服务节点IP
      * @param servers
      */
-    void add(Collection<String> servers);
+    default void add(Collection<String> servers){
 
-    default String getRoute(List<String> servers,String key){
-        return getRoute(key);
-    };
+    }
 
     /**
-     * 通过接收者获取对方所在节点的IP
-     * @param key
+     * 用户上线
+     * @param userId 用户ID
+     * @param address 上线的机器地址
+     */
+    void online(String userId, String address);
+
+
+    /**
+     * 通过用户ID获取到用户所在机器的地址，用户转发消息
+     * @param userId 用户ID
      * @return
      */
-    String getRoute(String key);
+    String getRoute(String userId);
 
     /**
-     * 移除IP
-     * @param server
+     * 用户下线
+     * @param userId 用户ID
      */
-    void remove(String server);
+    void offline(String userId);
 
-    default int hash(String str){
-        int hashCode = str.hashCode();
-        return hashCode >= 0 ? hashCode : Math.abs(hashCode);
-    }
 }

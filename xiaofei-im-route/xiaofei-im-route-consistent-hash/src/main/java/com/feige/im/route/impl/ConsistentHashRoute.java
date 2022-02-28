@@ -7,6 +7,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author feige<br />
@@ -20,11 +24,14 @@ public class ConsistentHashRoute implements IRoute {
     public static final int VIRTUAL_NODE_COUNT = 5;
 
 
-    private TreeMap<Integer, String> MAP;
+    private TreeMap<Integer, String> map;
+    private volatile boolean flag = true;
+    private final Object lock = new Object();
 
     public static void main(String[] args) {
         String[] strings = {"192.168.0.104:8001", "192.168.0.104:8002","192.168.0.104:8003"};
-        ConsistentHashRoute consistentHashRoute = new ConsistentHashRoute(strings);
+        ConsistentHashRoute consistentHashRoute = new ConsistentHashRoute();
+        consistentHashRoute.add(strings);
         String route1 = consistentHashRoute.getRoute("1");
         String route2 = consistentHashRoute.getRoute("2");
         String route3 = consistentHashRoute.getRoute("34353");
@@ -32,34 +39,35 @@ public class ConsistentHashRoute implements IRoute {
         System.out.println(route2);
         System.out.println(route3);
 
-    }
-
-    public ConsistentHashRoute(){
 
     }
 
-    public ConsistentHashRoute(Collection<String> servers){
-        add(servers);
-    }
-
-    public ConsistentHashRoute(String[] servers){
-        add(servers);
-    }
 
 
     @Override
     public void add(Collection<String> servers){
-        synchronized (this){
-            TreeMap<Integer, String> treeMap = new TreeMap<>();
-            for (String server : servers) {
-                treeMap.put(hash(server),server);
-                for (int i = 0; i < VIRTUAL_NODE_COUNT; i++) {
-                    treeMap.put(hash("vir:" + server + ":node" + i),server);
+        synchronized (lock){
+            try {
+                flag = false;
+                TreeMap<Integer, String> treeMap = new TreeMap<>();
+                for (String server : servers) {
+                    treeMap.put(hash(server),server);
+                    for (int i = 0; i < VIRTUAL_NODE_COUNT; i++) {
+                        treeMap.put(hash("vir:" + server + ":node" + i),server);
+                    }
                 }
+                this.map = treeMap;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                flag = true;
             }
-
-            this.MAP = treeMap;
         }
+    }
+
+    @Override
+    public void online(String userId, String address) {
+
     }
 
     public void add(String[] servers){
@@ -68,44 +76,45 @@ public class ConsistentHashRoute implements IRoute {
 
 
     @Override
-    public String getRoute(List<String> servers, String key) {
-        add(servers);
-        return getRoute(key);
+    public String getRoute(String userId) {
+        if (!flag){
+            synchronized (lock){
+                return compute(userId);
+            }
+        }
+        return compute(userId);
     }
 
-    @Override
-    public String getRoute(String key) {
-        System.out.println(MAP);
-        SortedMap<Integer, String> sortedMap = MAP.tailMap(hash(key));
-        System.out.println(hash(key));
-        System.out.println(sortedMap);
+    /**
+     * 计算用户所在的机器
+     * @param userId
+     * @return
+     */
+    private String compute(String userId){
+        SortedMap<Integer, String> sortedMap = map.tailMap(hash(userId));
         if (!sortedMap.isEmpty()) {
             return sortedMap.get(sortedMap.firstKey());
         }
-        return MAP.firstEntry().getValue();
+        return map.firstEntry().getValue();
     }
 
     @Override
-    public void remove(String server) {
-        synchronized (this){
-            MAP.remove(hash(server));
-            for (int i = 0; i < VIRTUAL_NODE_COUNT; i++) {
-                MAP.remove(hash("vir:" + server + ":node" + i));
-            }
-        }
+    public void offline(String userId) {
+
     }
+
 
     /**
      * FNV1_32_HASH算法
      * @param str
      * @return
      */
-    @Override
     public int hash(String str) {
         final int p = 16777619;
         int hash = (int)2166136261L;
-        for (int i = 0; i < str.length(); i++)
+        for (int i = 0; i < str.length(); i++) {
             hash = (hash ^ str.charAt(i)) * p;
+        }
         hash += hash << 13;
         hash ^= hash >> 7;
         hash += hash << 3;
@@ -113,8 +122,9 @@ public class ConsistentHashRoute implements IRoute {
         hash += hash << 5;
 
         // 如果算出来的值为负数则取其绝对值
-        if (hash < 0)
+        if (hash < 0) {
             hash = Math.abs(hash);
+        }
         return hash;
     }
 }
