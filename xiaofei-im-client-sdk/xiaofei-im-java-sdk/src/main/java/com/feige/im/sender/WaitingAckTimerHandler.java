@@ -32,7 +32,7 @@ public class WaitingAckTimerHandler {
     private static MsgStatusListener statusListener;
 
     public static void add(WaitingAckTimer waitingAckTimer){
-        WAITING_ACK_TIMER_CONTAINER.put(waitingAckTimer.msgId, waitingAckTimer);
+        WAITING_ACK_TIMER_CONTAINER.put(waitingAckTimer.getMsgId(), waitingAckTimer);
     }
 
     public static void remove(Long msgId){
