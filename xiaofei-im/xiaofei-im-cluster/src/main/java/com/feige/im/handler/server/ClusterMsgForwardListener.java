@@ -101,6 +101,12 @@ public class ClusterMsgForwardListener implements MsgListener {
             channel.attr(ChannelAttr.NODE_KEY).set(nodeKey);
             // 集群模式下管理管理各主机的Channel，方便通信
             clusterChannel.add(channel);
+            // 集群连接ack确认
+            Cluster.InternalAck internalAck = Cluster.InternalAck
+                    .newBuilder()
+                    .setNodeKey(CONFIG.getNodeKey())
+                    .build();
+            clusterChannel.write(nodeKey, internalAck);
         }
     }
 

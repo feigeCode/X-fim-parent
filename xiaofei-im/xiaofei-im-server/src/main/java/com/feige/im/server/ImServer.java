@@ -178,6 +178,7 @@ public class ImServer {
         if (consumer != null){
             LOG.info("集群任务开始");
             Parser.add(5, Cluster.Node.class,Cluster.Node::parseFrom);
+            Parser.add(6, Cluster.InternalAck.class,Cluster.InternalAck::parseFrom);
             consumer.accept(this.port);
         }
     }

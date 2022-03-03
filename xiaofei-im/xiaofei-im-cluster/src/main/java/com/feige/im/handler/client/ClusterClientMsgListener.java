@@ -8,6 +8,7 @@ import com.feige.im.handler.MsgListener;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.parser.Parser;
+import com.feige.im.pojo.proto.Cluster;
 import com.feige.im.pojo.proto.HeartBeat;
 import com.feige.im.service.ImBusinessService;
 import com.feige.im.utils.ScheduledThreadPoolExecutorUtil;
@@ -33,14 +34,14 @@ public class ClusterClientMsgListener implements MsgListener {
     /**
      * 管理的是集群客户端的连接
      */
-    private final ClusterChannel clusterChannel = ClusterChannel.getInstance();
+    private static final ClusterChannel CLUSTER_CHANNEL = ClusterChannel.getInstance();
     /**
      * 管理的是用户客户端的连接
      */
-    private final MyChannelGroup CHANNEL_GROUP = MyChannelGroup.getInstance();
+    private static final MyChannelGroup CHANNEL_GROUP = MyChannelGroup.getInstance();
 
     private final ClusterInitializer initializer = new ClusterInitializer();
-    private final ScheduledThreadPoolExecutorUtil EXECUTOR_SERVICE =  ScheduledThreadPoolExecutorUtil.getInstance();
+    private static final ScheduledThreadPoolExecutorUtil EXECUTOR_SERVICE =  ScheduledThreadPoolExecutorUtil.getInstance();
 
     private final AtomicInteger RETRY_COUNT = new AtomicInteger(0);
 
@@ -52,9 +53,12 @@ public class ClusterClientMsgListener implements MsgListener {
 
     @Override
     public void active(ChannelHandlerContext ctx) {
-        EXECUTOR_SERVICE.schedule(() -> {
-            init(ctx.channel());
-        },5, TimeUnit.SECONDS);
+        synchronized (this){
+            if (!CLUSTER_CHANNEL.containsKey(ClusterInitializer.getNodeKey(((InetSocketAddress) ctx.channel().remoteAddress())))){
+                EXECUTOR_SERVICE.schedule(() -> init(ctx.channel()),1, TimeUnit.SECONDS);
+            }
+        }
+
     }
 
     @Override
@@ -64,9 +68,9 @@ public class ClusterClientMsgListener implements MsgListener {
 
     @Override
     public void inactive(ChannelHandlerContext ctx) {
-        clusterChannel.remove(ctx.channel());
+        CLUSTER_CHANNEL.remove(ctx.channel());
         // 重连
-        retry();
+        //retry();
     }
 
     @Override
@@ -90,6 +94,13 @@ public class ClusterClientMsgListener implements MsgListener {
      */
     public void msgHandler(Channel channel, Message msg){
         if (StringUtil.isEmpty(msg)){
+            return;
+        }
+
+        if (msg instanceof Cluster.InternalAck){
+            Cluster.InternalAck internalAck = Parser.getT(Cluster.InternalAck.class, msg);
+            LOG.info("集群连接ACK确认nodeKey = {}", internalAck.getNodeKey());
+            ClusterInitializer.remove(internalAck.getNodeKey());
             return;
         }
         // 客户端发送心跳

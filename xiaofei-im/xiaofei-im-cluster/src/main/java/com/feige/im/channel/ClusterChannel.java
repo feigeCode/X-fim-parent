@@ -105,4 +105,8 @@ public class ClusterChannel {
         channel.writeAndFlush(msg);
         LOG.debugInfo("msg={}的消息已转发到nodeKey={}的节点", StringUtil.protoMsgFormat(msg), key);
     }
+
+    public boolean containsKey(String nodeKey){
+        return MAP.containsKey(nodeKey);
+    }
 }

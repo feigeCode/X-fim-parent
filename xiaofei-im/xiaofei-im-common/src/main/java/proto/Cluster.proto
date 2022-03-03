@@ -8,3 +8,9 @@ option java_outer_classname = "Cluster";
 message Node {
   string nodeKey = 1;
 }
+/*
+独立出来，方便后期扩展
+ */
+message InternalAck {
+  string nodeKey = 1;
+}

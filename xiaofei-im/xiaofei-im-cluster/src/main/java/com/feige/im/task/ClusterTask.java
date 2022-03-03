@@ -5,10 +5,12 @@ import com.feige.discovery.ProviderService;
 import com.feige.discovery.pojo.ServerInstance;
 import com.feige.im.client.ImClient;
 import com.feige.im.handler.MsgListener;
+import com.feige.im.handler.client.ClusterClientMsgListener;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.route.IRoute;
 import com.feige.im.route.RouteManager;
+import com.feige.im.service.ImBusinessService;
 import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.IpUtil;
 import com.feige.im.utils.ScheduledThreadPoolExecutorUtil;
@@ -29,10 +31,10 @@ public class ClusterTask implements Consumer<Integer> {
     private static final Logger LOG = LoggerFactory.getLogger();
     private static final ScheduledThreadPoolExecutorUtil EXECUTOR_UTIL = ScheduledThreadPoolExecutorUtil.getInstance();
 
-    private final MsgListener msgListener;
+    private final ImBusinessService imBusinessService;
 
-    public ClusterTask(MsgListener msgListener) {
-        this.msgListener = msgListener;
+    public ClusterTask(ImBusinessService imBusinessService) {
+        this.imBusinessService = imBusinessService;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class ClusterTask implements Consumer<Integer> {
                     continue;
                 }
                 EXECUTOR_UTIL.execute(() -> {
-                    ImClient.connect(serverInstance.getIp(),serverInstance.getPort(),msgListener);
+                    ImClient.connect(serverInstance.getIp(),serverInstance.getPort(),new ClusterClientMsgListener(imBusinessService));
                     countDownLatch.countDown();
                 });
             }

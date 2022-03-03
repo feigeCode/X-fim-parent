@@ -580,11 +580,582 @@ public final class Cluster {
 
   }
 
+  public interface InternalAckOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.feige.im.pojo.proto.InternalAck)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string nodeKey = 1;</code>
+     * @return The nodeKey.
+     */
+    java.lang.String getNodeKey();
+    /**
+     * <code>string nodeKey = 1;</code>
+     * @return The bytes for nodeKey.
+     */
+    com.google.protobuf.ByteString
+        getNodeKeyBytes();
+  }
+  /**
+   * Protobuf type {@code com.feige.im.pojo.proto.InternalAck}
+   */
+  public  static final class InternalAck extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.feige.im.pojo.proto.InternalAck)
+      InternalAckOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use InternalAck.newBuilder() to construct.
+    private InternalAck(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private InternalAck() {
+      nodeKey_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new InternalAck();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private InternalAck(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              nodeKey_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.feige.im.pojo.proto.Cluster.internal_static_com_feige_im_pojo_proto_InternalAck_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.feige.im.pojo.proto.Cluster.internal_static_com_feige_im_pojo_proto_InternalAck_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.feige.im.pojo.proto.Cluster.InternalAck.class, com.feige.im.pojo.proto.Cluster.InternalAck.Builder.class);
+    }
+
+    public static final int NODEKEY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object nodeKey_;
+    /**
+     * <code>string nodeKey = 1;</code>
+     * @return The nodeKey.
+     */
+    public java.lang.String getNodeKey() {
+      java.lang.Object ref = nodeKey_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        nodeKey_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string nodeKey = 1;</code>
+     * @return The bytes for nodeKey.
+     */
+    public com.google.protobuf.ByteString
+        getNodeKeyBytes() {
+      java.lang.Object ref = nodeKey_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nodeKey_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getNodeKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, nodeKey_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getNodeKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, nodeKey_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.feige.im.pojo.proto.Cluster.InternalAck)) {
+        return super.equals(obj);
+      }
+      com.feige.im.pojo.proto.Cluster.InternalAck other = (com.feige.im.pojo.proto.Cluster.InternalAck) obj;
+
+      if (!getNodeKey()
+          .equals(other.getNodeKey())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + NODEKEY_FIELD_NUMBER;
+      hash = (53 * hash) + getNodeKey().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.feige.im.pojo.proto.Cluster.InternalAck parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.feige.im.pojo.proto.Cluster.InternalAck prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.feige.im.pojo.proto.InternalAck}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.feige.im.pojo.proto.InternalAck)
+        com.feige.im.pojo.proto.Cluster.InternalAckOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.feige.im.pojo.proto.Cluster.internal_static_com_feige_im_pojo_proto_InternalAck_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.feige.im.pojo.proto.Cluster.internal_static_com_feige_im_pojo_proto_InternalAck_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.feige.im.pojo.proto.Cluster.InternalAck.class, com.feige.im.pojo.proto.Cluster.InternalAck.Builder.class);
+      }
+
+      // Construct using com.feige.im.pojo.proto.Cluster.InternalAck.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        nodeKey_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.feige.im.pojo.proto.Cluster.internal_static_com_feige_im_pojo_proto_InternalAck_descriptor;
+      }
+
+      @java.lang.Override
+      public com.feige.im.pojo.proto.Cluster.InternalAck getDefaultInstanceForType() {
+        return com.feige.im.pojo.proto.Cluster.InternalAck.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.feige.im.pojo.proto.Cluster.InternalAck build() {
+        com.feige.im.pojo.proto.Cluster.InternalAck result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.feige.im.pojo.proto.Cluster.InternalAck buildPartial() {
+        com.feige.im.pojo.proto.Cluster.InternalAck result = new com.feige.im.pojo.proto.Cluster.InternalAck(this);
+        result.nodeKey_ = nodeKey_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.feige.im.pojo.proto.Cluster.InternalAck) {
+          return mergeFrom((com.feige.im.pojo.proto.Cluster.InternalAck)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.feige.im.pojo.proto.Cluster.InternalAck other) {
+        if (other == com.feige.im.pojo.proto.Cluster.InternalAck.getDefaultInstance()) return this;
+        if (!other.getNodeKey().isEmpty()) {
+          nodeKey_ = other.nodeKey_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.feige.im.pojo.proto.Cluster.InternalAck parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.feige.im.pojo.proto.Cluster.InternalAck) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object nodeKey_ = "";
+      /**
+       * <code>string nodeKey = 1;</code>
+       * @return The nodeKey.
+       */
+      public java.lang.String getNodeKey() {
+        java.lang.Object ref = nodeKey_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          nodeKey_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string nodeKey = 1;</code>
+       * @return The bytes for nodeKey.
+       */
+      public com.google.protobuf.ByteString
+          getNodeKeyBytes() {
+        java.lang.Object ref = nodeKey_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nodeKey_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string nodeKey = 1;</code>
+       * @param value The nodeKey to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        nodeKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string nodeKey = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNodeKey() {
+        
+        nodeKey_ = getDefaultInstance().getNodeKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string nodeKey = 1;</code>
+       * @param value The bytes for nodeKey to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        nodeKey_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.feige.im.pojo.proto.InternalAck)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.feige.im.pojo.proto.InternalAck)
+    private static final com.feige.im.pojo.proto.Cluster.InternalAck DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.feige.im.pojo.proto.Cluster.InternalAck();
+    }
+
+    public static com.feige.im.pojo.proto.Cluster.InternalAck getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<InternalAck>
+        PARSER = new com.google.protobuf.AbstractParser<InternalAck>() {
+      @java.lang.Override
+      public InternalAck parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new InternalAck(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<InternalAck> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<InternalAck> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.feige.im.pojo.proto.Cluster.InternalAck getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_feige_im_pojo_proto_Node_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_feige_im_pojo_proto_Node_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_feige_im_pojo_proto_InternalAck_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_feige_im_pojo_proto_InternalAck_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -595,8 +1166,8 @@ public final class Cluster {
   static {
     java.lang.String[] descriptorData = {
       "\n\rCluster.proto\022\027com.feige.im.pojo.proto" +
-      "\"\027\n\004Node\022\017\n\007nodeKey\030\001 \001(\tB\tB\007Clusterb\006pr" +
-      "oto3"
+      "\"\027\n\004Node\022\017\n\007nodeKey\030\001 \001(\t\"\036\n\013InternalAck" +
+      "\022\017\n\007nodeKey\030\001 \001(\tB\tB\007Clusterb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -607,6 +1178,12 @@ public final class Cluster {
     internal_static_com_feige_im_pojo_proto_Node_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_Node_descriptor,
+        new java.lang.String[] { "NodeKey", });
+    internal_static_com_feige_im_pojo_proto_InternalAck_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_com_feige_im_pojo_proto_InternalAck_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_feige_im_pojo_proto_InternalAck_descriptor,
         new java.lang.String[] { "NodeKey", });
   }
 
