@@ -42,7 +42,7 @@
         <hutool.version>5.5.1</hutool.version>
         <zxing.version>3.3.3</zxing.version>
         <protobuf.java.version>3.11.1</protobuf.java.version>
-        <log4j2.version>2.17.1</log4j2.version>
+        <log4j2.version>2.17.0</log4j2.version>
         <curator.version>4.0.1</curator.version>
         <mybatis-plus.version>3.0.5</mybatis-plus.version>
         <velocity.version>2.0</velocity.version>
@@ -57,7 +57,7 @@
         <jwt.version>0.7.0</jwt.version>
         <nacos-client.version>2.0.3</nacos-client.version>
         <yaml.version>1.25</yaml.version>
-        <slf4j.log4j12.version>2.0.0-alpha1</slf4j.log4j12.version>
+        <slf4j.log4j12.version>1.7.32</slf4j.log4j12.version>
     </properties>
 
     <dependencyManagement>
