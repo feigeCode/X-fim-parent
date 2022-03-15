@@ -15,14 +15,18 @@ public final class LoggerFactory {
 
     private static Logger LOGGER;
     static {
-        ServiceLoader<Logger> loggerLoader = ServiceLoader.load(Logger.class);
-        Iterator<Logger> iterator = loggerLoader.iterator();
-        if (iterator.hasNext()) {
-            LOGGER = iterator.next();
-        }
+        try {
+            ServiceLoader<Logger> loggerLoader = ServiceLoader.load(Logger.class);
+            Iterator<Logger> iterator = loggerLoader.iterator();
+            if (iterator.hasNext()) {
+                LOGGER = iterator.next();
+            }
 
-        if (LOGGER == null){
-            // 默认使用的日志
+            if (LOGGER == null){
+                // 默认使用的日志
+                LOGGER = new JavaLoggingAdapter();
+            }
+        } catch (Exception e) {
             LOGGER = new JavaLoggingAdapter();
         }
     }

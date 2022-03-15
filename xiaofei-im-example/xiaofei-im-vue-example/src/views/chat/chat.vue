@@ -39,7 +39,9 @@ export default {
   },
   methods: {
     onBind(){
-      this.$xfIm.connect(this.receiveHandler,this.senderId,null);
+
+      const authMsg = this.$fim.login({token: this.senderId, language: "zh-cn", address: '四川省成都市', ip: "127.0.0.1"});
+      localStorage.setItem("auth", JSON.stringify(authMsg))
     },
     receiveHandler(msg) {
       console.log(msg)

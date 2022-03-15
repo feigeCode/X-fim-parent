@@ -2,3 +2,7 @@
 
 
 .\node_modules\.bin\pbjs -t json  ..\..\xiaofei-im\xiaofei-im-common\src\main\java\proto\DefaultMsg.proto > DefaultMsg.json
+
+
+
+protoc --js_out=import_style=commonjs,binary:. .\proto_person.proto
