@@ -1,7 +1,7 @@
 import "./HeartBeat_pb"
 import './Ack_pb'
 import "./DefaultMsg_pb";
-import { BinaryWriter, BinaryReader } from "google-protobuf";
+import { BinaryReader } from "google-protobuf";
 
 
 // APP的版本
@@ -12,8 +12,6 @@ const APP_PLATFORM = "web";
 // APP包名
 const APP_PACKAGE = "com.feige.im";
 
-// 数据头长度
-const DATA_HEADER_LENGTH = 4;
 // 消息key长度
 const MSG_KEY_LENGTH = 4;
 // 消息包名前缀
@@ -21,7 +19,8 @@ const DEFAULT_MSG_PACKAGE_PREFIX = proto.com.feige.im.pojo.proto;
 // 心跳消息
 const PONG = 0;
 const PING = 1;
-const PONG_MSG = new DEFAULT_MSG_PACKAGE_PREFIX.Pong().setPong(0).serializeBinary();
+const PONG_MSG = new DEFAULT_MSG_PACKAGE_PREFIX.Pong([1]);
+
 // 授权消息，服务端socket绑定用户
 const AUTH = 2;
 // 普通消息
@@ -49,9 +48,9 @@ XIAOFEI_IM.retryEvent = function(msg) {
 
 XIAOFEI_IM.onOpen = function (ev, getAuthMsg) {
     console.log("onOpen", ev);
-    setInterval(() => {
-        XIAOFEI_IM.login(getAuthMsg());
-    }, 2000)
+    // setInterval(() => {
+    //     XIAOFEI_IM.login(getAuthMsg());
+    // }, 2000)
     againTimer && clearInterval(againTimer)
 };
 
@@ -67,7 +66,6 @@ XIAOFEI_IM.onClose = function (ev) {
 
 XIAOFEI_IM.onMessage = function (data) {
     const br = BinaryReader.alloc(data)
-    let msgLength = undefined;
     let msgKey = undefined;
     let body = undefined;
     while (br.nextField()) {
@@ -77,12 +75,9 @@ XIAOFEI_IM.onMessage = function (data) {
         let field = br.getFieldNumber();
         switch (field) {
             case 1:
-                msgLength = br.readInt32();
-                break;
-            case 2:
                 msgKey = br.readInt32();
                 break;
-            case 3:
+            case 2:
                 body = br.readBytes()
                 break;
             default:
@@ -91,7 +86,7 @@ XIAOFEI_IM.onMessage = function (data) {
         }
     }
     let msg = undefined;
-    if (msgLength === PING) {
+    if (msgKey === PING) {
         // 回复心跳
         this.pong();
         return;
@@ -104,17 +99,16 @@ XIAOFEI_IM.onMessage = function (data) {
     }else {
         msg = body;
     }
-    this.msgCallback(msgLength, msgKey, msg);
+    this.msgCallback(msgKey, msg);
 };
 
 XIAOFEI_IM.sendMsg = function (body, key) {
     if (this.socketTask.readyState === 1) {
-        const msgLength = body.length + DATA_HEADER_LENGTH + MSG_KEY_LENGTH;
-        const bw = new BinaryWriter();
-        bw.writeInt32(1, msgLength);
-        bw.writeInt32(2,key);
-        bw.writeBytes(3,body)
-        this.socketTask.send(bw.getResultBuffer());
+        const binary = body.serializeBinary();
+        const data = new Uint8Array(binary.length + MSG_KEY_LENGTH);
+        data.set(toBytesInt32(key), 0);
+        data.set(binary, MSG_KEY_LENGTH);
+        this.socketTask.send(data);
     }else {
         console.log("建立连接中...")
     }
@@ -131,26 +125,29 @@ XIAOFEI_IM.close = function() {
 }
 
 
-XIAOFEI_IM.msgCallback = function (msgLength, msgKey, body) {
-    console.log("msgLength=", msgLength,"msgKey=", msgKey, "body=",body);
+XIAOFEI_IM.msgCallback = function (msgKey, body) {
+    console.log("msgKey=", msgKey, "body=",body);
 }
 
 XIAOFEI_IM.login = function (authPayLoad) {
     const deviceId = generateUUID();
     const browser = getBrowser();
-    authPayLoad.deviceId = deviceId;
-    authPayLoad.deviceName = browser.name;
-    authPayLoad.version = APP_VERSION;
-    authPayLoad.osVersion = browser.version;
-    authPayLoad.platform = APP_PLATFORM;
-    const auth = new DEFAULT_MSG_PACKAGE_PREFIX.Auth(authPayLoad).serializeBinary();
+    const auth = new DEFAULT_MSG_PACKAGE_PREFIX.Auth()
+        .setAddress(authPayLoad.address)
+        .setDeviceid(deviceId)
+        .setDevicename(browser.name)
+        .setIp(authPayLoad.ip)
+        .setLanguage(authPayLoad.language)
+        .setOsversion(browser.version)
+        .setVersion(APP_VERSION)
+        .setPlatform(APP_PLATFORM)
+        .setToken(authPayLoad.token);
     this.sendMsg(auth, AUTH);
     return authPayLoad;
 }
 
 
 XIAOFEI_IM.reconnect = function () {
-    return ;
     if (normalStop){
         return;
     }
@@ -206,4 +203,28 @@ export function generateUUID() {
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
     return uuid.replace(/-/g, '');
+}
+
+export function toBytesInt32 (num) {
+    // an Int32 takes 4 bytes
+    const arr = new ArrayBuffer(4);
+    const view = new DataView(arr);
+    // byteOffset = 0; littleEndian = false
+    view.setUint32(0, num, false);
+
+    return new Uint8Array(arr);
+}
+
+/**
+ * 原生的位运算
+ * @param num
+ * @returns {Uint8Array}
+ */
+export function toBytesInt32Primitive (num) {
+    return new Uint8Array([
+        (num & 0xff000000) >> 24,
+        (num & 0x00ff0000) >> 16,
+        (num & 0x0000ff00) >> 8,
+        (num & 0x000000ff)
+    ]);
 }
