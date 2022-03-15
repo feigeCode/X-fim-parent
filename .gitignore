@@ -27,3 +27,5 @@ node_modules
 dist
 .gitee
 target
+
+logs

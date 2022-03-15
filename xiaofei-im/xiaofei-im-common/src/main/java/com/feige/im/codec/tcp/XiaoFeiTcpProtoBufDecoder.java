@@ -1,5 +1,6 @@
-package com.feige.im.codec;
+package com.feige.im.codec.tcp;
 
+import com.feige.im.codec.MsgCodecUtil;
 import com.feige.im.constant.ChannelAttr;
 import com.feige.im.constant.ImConst;
 import com.feige.im.log.Logger;
@@ -16,11 +17,11 @@ import java.util.Objects;
 
 /**
  * @author feige<br />
- * @ClassName: XiaoFeiProtoBufDecoder <br/>
+ * @ClassName: XiaoFeiTcpProtoBufDecoder <br/>
  * @Description: proto 解码器<br/>
  * @date: 2021/10/7 12:35<br/>
  */
-public class XiaoFeiProtoBufDecoder extends ByteToMessageDecoder {
+public class XiaoFeiTcpProtoBufDecoder extends ByteToMessageDecoder {
     private static final Logger LOG = LoggerFactory.getLogger();
 
     @Override
@@ -51,31 +52,6 @@ public class XiaoFeiProtoBufDecoder extends ByteToMessageDecoder {
             return;
         }
 
-        // 消息的key
-        int key = buf.readInt();
-
-        // 读取内容
-        byte[] content = new byte[msgLength];
-        buf.readBytes(content);
-
-        // 心跳
-        if (ImConst.PONG_MSG_TYPE == key){
-            LOG.debugInfo("收到心跳{}",StringUtil.protoMsgFormat(ImConst.PONG_MSG));
-            out.add(ImConst.PONG_MSG);
-            return;
-        }
-
-        // 集群模式下，客户端发送心跳需要
-        if (ImConst.PING_MSG_TYPE == key){
-            out.add(ImConst.PING_MSG);
-            return;
-        }
-
-        // 解析消息
-        Message message = Parser.getMessage(key,content);
-        if (!Objects.isNull(message)){
-            LOG.debugInfo("received message content length = {}, msgKey = {}", msgLength, key);
-            out.add(message);
-        }
+        MsgCodecUtil.msgDecoder(buf, out, msgLength);
     }
 }

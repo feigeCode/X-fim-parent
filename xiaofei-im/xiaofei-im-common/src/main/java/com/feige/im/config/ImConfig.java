@@ -113,9 +113,9 @@ public class ImConfig extends Properties {
      */
     public String getNodeKey(){
         String serverIp = getProperty(ImConst.SERVER_IP);
-        String serverPort = getProperty(ImConst.SERVER_PORT);
-        AssertUtil.notBlank(serverIp,"server.ip");
-        AssertUtil.notBlank(serverPort,"server.port");
+        String serverPort = getProperty(ImConst.TCP_SERVER_PORT);
+        AssertUtil.notBlank(serverIp, ImConst.SERVER_IP);
+        AssertUtil.notBlank(serverPort, ImConst.TCP_SERVER_PORT);
         return serverIp + ":" + serverPort;
     }
 

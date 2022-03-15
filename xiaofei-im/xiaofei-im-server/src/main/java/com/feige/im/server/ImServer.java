@@ -12,11 +12,16 @@ import com.feige.im.pojo.proto.Cluster;
 import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.OsUtil;
+import com.feige.im.utils.StringUtil;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
+import io.netty.channel.epoll.EpollDatagramChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.DatagramChannel;
+import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.io.File;
@@ -35,29 +40,76 @@ public class ImServer {
     private static final Logger LOG = LoggerFactory.getLogger();
     private static final ImConfig CONFIG = ImConfig.getInstance();
 
-    private final int port;
-    private final EventLoopGroup bossGroup;
-    private final EventLoopGroup workGroup;
-    private final Class<? extends ServerChannel> serverChannel;
+    private int tcpPort;
+    private EventLoopGroup tcpBossGroup;
+    private EventLoopGroup tcpWorkGroup;
+    private Class<? extends ServerChannel> tcpServerChannel;
+
+    private int wsPort;
+    private EventLoopGroup wsBossGroup;
+    private EventLoopGroup wsWorkGroup;
+    private Class<? extends ServerChannel> wsServerChannel;
+
+    private int udpPort;
+    private EventLoopGroup udpGroup;
+    private Class<? extends DatagramChannel> udpChannel;
+
     private final MsgListener listener;
     private final Consumer<Integer> consumer;
 
 
 
-    private ImServer(int port, MsgListener listener, Consumer<Integer> consumer){
-        this.port = port;
+    private ImServer(MsgListener listener, Consumer<Integer> consumer){
         this.listener = listener;
         this.consumer = consumer;
+    }
+
+
+    public void initTcp(){
+        String port = CONFIG.getConfigByKey(ImConst.TCP_SERVER_PORT);
+        AssertUtil.notBlank(port,"tcp port");
+        this.tcpPort = Integer.parseInt(port);
         if (OsUtil.isLinux()){
-            this.bossGroup = new EpollEventLoopGroup(new NameThreadFactory("server-nio-boss-"));
-            this.workGroup = new EpollEventLoopGroup(new NameThreadFactory("server-nio-work-"));
-            this.serverChannel = EpollServerSocketChannel.class;
+            this.tcpBossGroup = new EpollEventLoopGroup(new NameThreadFactory("tcp-server-epoll-boss-"));
+            this.tcpWorkGroup = new EpollEventLoopGroup(new NameThreadFactory("tcp-server-epoll-work-"));
+            this.tcpServerChannel = EpollServerSocketChannel.class;
         }else {
-            this.bossGroup = new NioEventLoopGroup(new NameThreadFactory("server-nio-boss-"));
-            this.workGroup = new NioEventLoopGroup(new NameThreadFactory("server-nio-work-"));
-            this.serverChannel = NioServerSocketChannel.class;
+            this.tcpBossGroup = new NioEventLoopGroup(new NameThreadFactory("tcp-server-nio-boss-"));
+            this.tcpWorkGroup = new NioEventLoopGroup(new NameThreadFactory("tcp-server-nio-work-"));
+            this.tcpServerChannel = NioServerSocketChannel.class;
         }
     }
+
+
+    public void initWs(){
+        String port = CONFIG.getConfigByKey(ImConst.WS_SERVER_PORT);
+        AssertUtil.notBlank(port,"ws port");
+        this.wsPort = Integer.parseInt(port);
+        if (OsUtil.isLinux()){
+            this.wsBossGroup = new EpollEventLoopGroup(new NameThreadFactory("ws-server-epoll-boss-"));
+            this.wsWorkGroup = new EpollEventLoopGroup(new NameThreadFactory("ws-server-epoll-work-"));
+            this.wsServerChannel = EpollServerSocketChannel.class;
+        }else {
+            this.wsBossGroup = new NioEventLoopGroup(new NameThreadFactory("ws-server-nio-boss-"));
+            this.wsWorkGroup = new NioEventLoopGroup(new NameThreadFactory("ws-server-nio-work-"));
+            this.wsServerChannel = NioServerSocketChannel.class;
+        }
+    }
+
+
+    public void initUdp(){
+        String port = CONFIG.getConfigByKey(ImConst.UDP_SERVER_PORT);
+        AssertUtil.notBlank(port,"udp port");
+        this.udpPort = Integer.parseInt(port);
+        if (OsUtil.isLinux()){
+            this.udpGroup = new EpollEventLoopGroup(new NameThreadFactory("udp-server-epoll-boss-"));
+            this.udpChannel = EpollDatagramChannel.class;
+        }else {
+            this.udpGroup = new NioEventLoopGroup(new NameThreadFactory("udp-server-nio-boss-"));
+            this.udpChannel = NioDatagramChannel.class;
+        }
+    }
+
 
 
 
@@ -88,7 +140,7 @@ public class ImServer {
      * @author: feige
      * @date: 2021/11/14 16:16
      * @param	file 配置文件对象
-     * @param	processor	消息监听器
+     * @param	listener	消息监听器
      * @param	consumer	集群任务
      * @return: void
      */
@@ -102,7 +154,7 @@ public class ImServer {
      * @author: feige
      * @date: 2021/11/14 16:16
      * @param	is 配置文件流
-     * @param	processor	消息监听器
+     * @param	listener	消息监听器
      * @param	consumer	集群任务
      * @return: void
      */
@@ -120,51 +172,120 @@ public class ImServer {
      * @return: void
      */
     public static void start0(MsgListener listener, Consumer<Integer> consumer){
-        String port = CONFIG.getConfigByKey(ImConst.SERVER_PORT);
-        AssertUtil.notBlank(port,"port");
-        ImServer imServer = new ImServer(Integer.parseInt(port), listener,consumer);
-        imServer.createServer();
+        ImServer imServer = new ImServer(listener,consumer);
+        String openProtocol = CONFIG.getConfigByKey(ImConst.OPEN_PROTOCOL);
+        if (StringUtil.isBlank(openProtocol)){
+            openProtocol = ImConst.ALL;
+        }
+        if (ImConst.ALL.equals(openProtocol) || openProtocol.toLowerCase().contains(ImConst.TCP)){
+            imServer.initTcp();
+            imServer.createTcpServer();
+        }
+        if (ImConst.ALL.equals(openProtocol) || openProtocol.toLowerCase().contains(ImConst.WS)){
+            imServer.initWs();
+            imServer.createWsServer();
+        }
+        if (ImConst.ALL.equals(openProtocol) || openProtocol.toLowerCase().contains(ImConst.UDP)){
+            imServer.initUdp();
+            imServer.createUdpServer();
+        }
+
     }
 
     /**
-     * @description: 创建启动器
+     * @description: 创建Tcp启动器
      * @author: feige
      * @date: 2021/11/14 16:19
      * @return: void
      */
-    public void createServer() {
+    public void createTcpServer() {
         ChannelFuture channelFuture = new ServerBootstrap()
-                .group(bossGroup, workGroup)
+                .group(tcpBossGroup, tcpWorkGroup)
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .localAddress(port)
-                .channel(serverChannel)
-                .childHandler(new NettyServerInitializer(listener))
+                .localAddress(tcpPort)
+                .channel(tcpServerChannel)
+                .childHandler(new TcpServerInitializer(listener))
                 .bind().syncUninterruptibly();
         channelFuture.channel().newSucceededFuture().addListener(future -> {
             if (future.isSuccess()) {
-                LOG.info("netty websocket server in {} port start finish....", this.port);
+                LOG.info("netty tcp server in {} port start finish....", this.tcpPort);
             }else {
-                LOG.error("netty websocket server in {} port start fail....", this.port);
+                LOG.error("netty tcp server in {} port start fail....", this.tcpPort);
             }
         });
-        channelFuture.channel().closeFuture().addListener(future -> this.destroy());
+        channelFuture.channel().closeFuture().addListener(future -> this.destroy(tcpBossGroup,tcpWorkGroup));
+        // 集群模式下需要和其他节点建立连接
+        clusterConnect();
+    }
+
+    /**
+     * @description: 创建Ws启动器
+     * @author: feige
+     * @date: 2021/11/14 16:19
+     * @return: void
+     */
+    public void createWsServer() {
+        ChannelFuture channelFuture = new ServerBootstrap()
+                .group(wsBossGroup, wsWorkGroup)
+                .childOption(ChannelOption.TCP_NODELAY, true)
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .localAddress(wsPort)
+                .channel(wsServerChannel)
+                .childHandler(new WsServerInitializer(listener))
+                .bind().syncUninterruptibly();
+        channelFuture.channel().newSucceededFuture().addListener(future -> {
+            if (future.isSuccess()) {
+                LOG.info("netty websocket server in {} port start finish....", this.wsPort);
+            }else {
+                LOG.error("netty websocket server in {} port start fail....", this.wsPort);
+            }
+        });
+        channelFuture.channel().closeFuture().addListener(future -> this.destroy(wsBossGroup,wsWorkGroup));
+        // 集群模式下需要和其他节点建立连接
+        clusterConnect();
+    }
+
+    /**
+     * @description: 创建Udp启动器
+     * @author: feige
+     * @date: 2021/11/14 16:19
+     * @return: void
+     */
+    public void createUdpServer(){
+        ChannelFuture channelFuture = new Bootstrap()
+                .group(udpGroup)
+                .channel(udpChannel)
+                .option(ChannelOption.SO_BROADCAST, true)
+                .handler(new UdpServerInitializer(listener))
+                .localAddress(this.udpPort)
+                .bind().syncUninterruptibly();
+        channelFuture.channel().newSucceededFuture().addListener(future -> {
+            if (future.isSuccess()) {
+                LOG.info("netty udp server in {} port start finish....", this.udpPort);
+            }else {
+                LOG.error("netty udp server in {} port start fail....", this.udpPort);
+            }
+        });
+        channelFuture.channel().closeFuture().addListener(future -> this.destroy(udpGroup,null));
         // 集群模式下需要和其他节点建立连接
         clusterConnect();
     }
 
    /**
     * @description: 关闭资源
+    * @param bossGroup
+    * @param workGroup
     * @author: feige
     * @date: 2021/11/14 16:19
     * @return: void
     */
-    public void destroy(){
-        if (this.bossGroup != null){
-            this.bossGroup.shutdownGracefully();
+    public void destroy(EventLoopGroup bossGroup,EventLoopGroup workGroup){
+        if (bossGroup != null && !(bossGroup.isShuttingDown() && bossGroup.isShutdown() && bossGroup.isTerminated())){
+            bossGroup.shutdownGracefully();
         }
-        if (this.workGroup != null){
-            this.workGroup.shutdownGracefully();
+        if (workGroup != null && !(workGroup.isShuttingDown() && workGroup.isShutdown() && workGroup.isTerminated())){
+            workGroup.shutdownGracefully();
         }
     }
 
@@ -179,7 +300,7 @@ public class ImServer {
             LOG.info("集群任务开始");
             Parser.add(5, Cluster.Node.class,Cluster.Node::parseFrom);
             Parser.add(6, Cluster.InternalAck.class,Cluster.InternalAck::parseFrom);
-            consumer.accept(this.port);
+            consumer.accept(this.tcpPort);
         }
     }
 

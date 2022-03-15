@@ -25,10 +25,10 @@ import java.util.Scanner;
 public class ReceiverClientTest {
 
     public static final Logger LOG = LoggerFactory.getLogger();
-    public static final String IP = "192.168.0.103";
-    public static final int PORT = 8002;
+    public static final String IP = "10.1.121.155";
+    public static final int PORT = 8001;
     public static final String SENDER_ID = "receiver";
-    public static final String RECEIVER_ID = "my";
+    public static final String RECEIVER_ID = "mymy";
 
 
     public static void main(String[] args) {

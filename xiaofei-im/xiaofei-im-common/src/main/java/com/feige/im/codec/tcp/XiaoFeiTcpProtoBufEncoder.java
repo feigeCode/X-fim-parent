@@ -1,5 +1,6 @@
-package com.feige.im.codec;
+package com.feige.im.codec.tcp;
 
+import com.feige.im.codec.MsgCodecUtil;
 import com.feige.im.constant.ImConst;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
@@ -12,11 +13,11 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 /**
  * @author feige<br />
- * @ClassName: XiaoFeiProtoBufEncoder <br/>
+ * @ClassName: XiaoFeiTcpProtoBufEncoder <br/>
  * @Description: proto 编码器<br/>
  * @date: 2021/10/7 12:35<br/>
  */
-public class XiaoFeiProtoBufEncoder extends MessageToByteEncoder<Message> {
+public class XiaoFeiTcpProtoBufEncoder extends MessageToByteEncoder<Message> {
 
     private static final Logger LOG = LoggerFactory.getLogger();
 
@@ -25,24 +26,20 @@ public class XiaoFeiProtoBufEncoder extends MessageToByteEncoder<Message> {
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf buf) throws Exception {
 
         try {
+
             byte[] bytes = msg.toByteArray();
             int msgLength = bytes.length;
 
+
             // 申请buffer
-            ByteBuf buffer = ctx.channel().config().getAllocator().buffer(msgLength + 8);
+            ByteBuf buffer = ctx.alloc().buffer(msgLength + 8);
 
             // 写入消息长度
             buffer.writeInt(msgLength);
 
             // 写入消息key
-            if (msg instanceof HeartBeat.Pong){
-                buffer.writeInt(ImConst.PONG_MSG_TYPE);
-            } else if (msg instanceof HeartBeat.Ping){
-                buffer.writeInt(ImConst.PING_MSG_TYPE);
-            }else {
-                Integer key = Parser.getKey(msg.getClass());
-                buffer.writeInt(key);
-            }
+            MsgCodecUtil.msgEncoder(buffer, msg);
+
             // 写入消息
             buffer.writeBytes(bytes);
 

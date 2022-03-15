@@ -34,12 +34,24 @@ public interface ImConst {
     String WEB = "web";
 
 
+    String ALL = "all";
+    String TCP = "tcp";
+    String WS = "ws";
+    String UDP = "udp";
+    String HTTP = "http";
+
+
     /**
      * 配置信息
      */
-    String SERVER_IP = "server.ip";
-    String SERVER_PORT = "server.port";
-
+    String SERVER_IP = "xiaofei.im.server.ip";
+    String TCP_SERVER_PORT = "xiaofei.im.server.tcp.port";
+    String WS_SERVER_PORT = "xiaofei.im.server.ws.port";
+    String UDP_SERVER_PORT = "xiaofei.im.server.udp.port";
+    /**
+     * 开启哪些协议all,tcp,udp,ws,http，默认all
+     */
+    String OPEN_PROTOCOL = "xiaofei.im.open.protocol";
 
     String DEFAULT_LOG_NAME = "java";
 
