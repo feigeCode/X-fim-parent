@@ -53,6 +53,10 @@ public interface ImConst {
      */
     String OPEN_PROTOCOL = "xiaofei.im.open.protocol";
 
+    // websocketPath
+    String WS_PATH = "xiaofei.im.server.ws.path";
+    String DEFAULT_WS_PATH = "/";
+
     String DEFAULT_LOG_NAME = "java";
 
 

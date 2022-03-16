@@ -7,7 +7,12 @@ import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.pojo.proto.HeartBeat;
 import com.feige.im.service.ImBusinessService;
 import com.google.protobuf.Message;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +29,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Parser {
 
     @FunctionalInterface
-    public interface DeserializationHandler{
+    public interface WsAuthMsgConverter {
+        /**
+         * ws授权消息转换
+         * @param handshakeComplete
+         * @return
+         */
+        Message convert(WebSocketServerProtocolHandler.HandshakeComplete handshakeComplete);
+    }
+
+
+    @FunctionalInterface
+    public interface DeserializationHandler {
         /**
          * 消息转换
          * @param bytes 字节数组
@@ -36,7 +52,7 @@ public class Parser {
 
 
     @FunctionalInterface
-    public interface ReceiverIdsHandler{
+    public interface ReceiverIdsHandler {
 
         /**
          * 通过消息获取接收者ID，返回一个列表考虑了群聊
@@ -53,7 +69,36 @@ public class Parser {
     public static final Map<Integer,DeserializationHandler> DESERIALIZATION_MAP = new ConcurrentHashMap<>();
     public static final Map<Class<? extends Message>,Integer> MSG_KEY_MAP = new ConcurrentHashMap<>();
     public static final Map<Class<? extends Message>, ReceiverIdsHandler> RECEIVER_IDS_MAP = new ConcurrentHashMap<>();
-
+    public static WsAuthMsgConverter WS_AUTH_MSG_CONVERTER = (handshakeComplete) -> {
+        String uri = handshakeComplete.requestUri();
+        QueryStringDecoder queryString = new QueryStringDecoder(uri, StandardCharsets.UTF_8);
+        Map<String, List<String>> parameters = queryString.parameters();
+        List<String> address = parameters.get("address");
+        List<String> osVersion = parameters.get("osVersion");
+        List<String> deviceName = parameters.get("deviceName");
+        List<String> language = parameters.get("language");
+        List<String> deviceId = parameters.get("deviceId");
+        List<String> ip = parameters.get("ip");
+        List<String> version = parameters.get("version");
+        List<String> platform = parameters.get("platform");
+        List<String> token = parameters.get("token");
+        try {
+            return DefaultMsg.Auth.newBuilder()
+                    .setAddress(address.get(0))
+                    .setDeviceName(deviceName.get(0))
+                    .setLanguage(language.get(0))
+                    .setOsVersion(osVersion.get(0))
+                    .setDeviceId(deviceId.get(0))
+                    .setIp(ip.get(0))
+                    .setVersion(version.get(0))
+                    .setPlatform(platform.get(0))
+                    .setToken(token.get(0))
+                    .build();
+        }catch (Exception e){
+            LOG.error("authenticate error:",e);
+        }
+        return null;
+    };
 
     static {
         // ack消息
@@ -126,6 +171,16 @@ public class Parser {
         }
         LOG.error("未找到key = {}的解析器，请查看客户端发送的数据类型标识是否和当前解析器匹配",key);
         return null;
+    }
+
+    /**
+     * 设置ws授权消息转换器
+     * @param wsAuthMsgConverter
+     */
+    public static void setWsAuthMsgConvert(WsAuthMsgConverter wsAuthMsgConverter){
+        if (wsAuthMsgConverter != null){
+            WS_AUTH_MSG_CONVERTER = wsAuthMsgConverter;
+        }
     }
 
     public static Integer getKey(Class<? extends Message> t){

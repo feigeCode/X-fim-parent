@@ -226,13 +226,17 @@ public class ImServer {
      * @return: void
      */
     public void createWsServer() {
+        String wsPath = CONFIG.getConfigByKey(ImConst.WS_PATH);
+        if (StringUtil.isBlank(wsPath)){
+            wsPath = ImConst.DEFAULT_WS_PATH;
+        }
         ChannelFuture channelFuture = new ServerBootstrap()
                 .group(wsBossGroup, wsWorkGroup)
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .localAddress(wsPort)
                 .channel(wsServerChannel)
-                .childHandler(new WsServerInitializer(listener))
+                .childHandler(new WsServerInitializer(listener, wsPath))
                 .bind().syncUninterruptibly();
         channelFuture.channel().newSucceededFuture().addListener(future -> {
             if (future.isSuccess()) {
@@ -242,8 +246,6 @@ public class ImServer {
             }
         });
         channelFuture.channel().closeFuture().addListener(future -> this.destroy(wsBossGroup,wsWorkGroup));
-        // 集群模式下需要和其他节点建立连接
-        clusterConnect();
     }
 
     /**
@@ -268,8 +270,6 @@ public class ImServer {
             }
         });
         channelFuture.channel().closeFuture().addListener(future -> this.destroy(udpGroup,null));
-        // 集群模式下需要和其他节点建立连接
-        clusterConnect();
     }
 
    /**

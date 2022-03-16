@@ -4,6 +4,7 @@ import com.feige.im.codec.ws.XiaoFeiWsMsgDecoder;
 import com.feige.im.codec.ws.XiaoFeiWsMsgEncoder;
 import com.feige.im.handler.MsgListener;
 import com.feige.im.handler.ServerHeartbeatHandler;
+import com.feige.im.handler.WsAuthenticateHandler;
 import com.feige.im.handler.XiaoFeiImHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -26,9 +27,11 @@ public class WsServerInitializer extends ChannelInitializer<SocketChannel> {
 
 
     private final MsgListener listener;
+    private final String wsPath;
 
-    public WsServerInitializer(MsgListener listener){
+    public WsServerInitializer(MsgListener listener, String wsPath){
         this.listener = listener;
+        this.wsPath = wsPath;
     }
 
     @Override
@@ -46,7 +49,10 @@ public class WsServerInitializer extends ChannelInitializer<SocketChannel> {
         //本handler会帮你处理一些繁重的的复杂的事
         //会帮你处理握手动作：handshaking(close,ping,pong)ping + pong = 心跳
         //对于websocket来讲，都是以frames进行传输的，不同的数据类型对应的frames也不同
-        pipeline.addLast(new WebSocketServerProtocolHandler("/"));
+        pipeline.addLast(new WebSocketServerProtocolHandler(wsPath, null, true, 65536, false, true));
+
+        // ws认证
+        pipeline.addLast(new WsAuthenticateHandler(listener));
 
         // 自定义消息编解码
         pipeline.addLast(new XiaoFeiWsMsgEncoder());

@@ -20,6 +20,8 @@
 import chatList from '@/components/chatlist/chatlist'
 import message from '@/components/message/message'
 import XiaofeiText from '@/components/text/xiaofei-text'
+import {createSocket} from "@/xiaofei-im/xiaofei-im-js-sdk";
+import Vue from 'vue';
 export default {
   name: 'chat',
   components: {
@@ -35,13 +37,10 @@ export default {
   },
   created() {
     this.$store.dispatch('initData')
-
   },
   methods: {
     onBind(){
-
-      const authMsg = this.$fim.login({token: this.senderId, language: "zh-cn", address: '四川省成都市', ip: "127.0.0.1"});
-      localStorage.setItem("auth", JSON.stringify(authMsg))
+      Vue.prototype.$fim = createSocket({token: this.senderId, language: "zh-cn", address: '四川省成都市', ip: "127.0.0.1"})
     },
     receiveHandler(msg) {
       console.log(msg)

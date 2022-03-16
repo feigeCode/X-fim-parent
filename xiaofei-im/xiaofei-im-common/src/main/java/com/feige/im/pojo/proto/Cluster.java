@@ -597,6 +597,10 @@ public final class Cluster {
         getNodeKeyBytes();
   }
   /**
+   * <pre>
+   *独立出来，方便后期扩展
+   * </pre>
+   *
    * Protobuf type {@code com.feige.im.pojo.proto.InternalAck}
    */
   public  static final class InternalAck extends
@@ -871,6 +875,10 @@ public final class Cluster {
       return builder;
     }
     /**
+     * <pre>
+     *独立出来，方便后期扩展
+     * </pre>
+     *
      * Protobuf type {@code com.feige.im.pojo.proto.InternalAck}
      */
     public static final class Builder extends

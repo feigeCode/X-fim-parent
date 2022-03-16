@@ -23,7 +23,6 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
         this.msgListener = msgListener;
     }
 
-    private static final Logger LOG = LoggerFactory.getLogger();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {

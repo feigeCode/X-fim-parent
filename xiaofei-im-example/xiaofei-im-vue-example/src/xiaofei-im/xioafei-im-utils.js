@@ -5,33 +5,33 @@ import { BinaryReader } from "google-protobuf";
 
 
 // APP的版本
-const APP_VERSION = "1.0.0";
+export const APP_VERSION = "1.0.0";
 // 平台
-const APP_PLATFORM = "web";
+export const APP_PLATFORM = "web";
 
 // APP包名
-const APP_PACKAGE = "com.feige.im";
+export const APP_PACKAGE = "com.feige.im";
 
 // 消息key长度
-const MSG_KEY_LENGTH = 4;
+export const MSG_KEY_LENGTH = 4;
 // 消息包名前缀
-const DEFAULT_MSG_PACKAGE_PREFIX = proto.com.feige.im.pojo.proto;
+export const DEFAULT_MSG_PACKAGE_PREFIX = proto.com.feige.im.pojo.proto;
 // 心跳消息
-const PONG = 0;
-const PING = 1;
-const PONG_MSG = new DEFAULT_MSG_PACKAGE_PREFIX.Pong([1]);
+export const PONG = 0;
+export const PING = 1;
+export const PONG_MSG = new DEFAULT_MSG_PACKAGE_PREFIX.Pong([1]);
 
 // 授权消息，服务端socket绑定用户
-const AUTH = 2;
+export const AUTH = 2;
 // 普通消息
-const MESSAGE = 3;
+export const MESSAGE = 3;
 // 被服务端强制下线
-const FORCED_OFFLINE = 4;
+export const FORCED_OFFLINE = 4;
 // ack消息
-const ACK = 999;
+export const ACK = 999;
 
 // 非正常关闭需要重连
-let normalStop = true;
+export let normalStop = true;
 
 //断线重连定时器
 let  againTimer = null;
@@ -46,11 +46,8 @@ XIAOFEI_IM.retryEvent = function(msg) {
     console.log(msg)
 }
 
-XIAOFEI_IM.onOpen = function (ev, getAuthMsg) {
+XIAOFEI_IM.onOpen = function (ev) {
     console.log("onOpen", ev);
-    // setInterval(() => {
-    //     XIAOFEI_IM.login(getAuthMsg());
-    // }, 2000)
     againTimer && clearInterval(againTimer)
 };
 
@@ -132,6 +129,7 @@ XIAOFEI_IM.msgCallback = function (msgKey, body) {
 XIAOFEI_IM.login = function (authPayLoad) {
     const deviceId = generateUUID();
     const browser = getBrowser();
+
     const auth = new DEFAULT_MSG_PACKAGE_PREFIX.Auth()
         .setAddress(authPayLoad.address)
         .setDeviceid(deviceId)
@@ -227,4 +225,42 @@ export function toBytesInt32Primitive (num) {
         (num & 0x0000ff00) >> 8,
         (num & 0x000000ff)
     ]);
+}
+
+/**
+ * url参数组装
+ * @param url url
+ * @param params 参数
+ */
+export function urlParamsAssemble(url, params){
+    if (isEmpty(url) || isEmpty(params)){
+        return url;
+    }
+    let _url = "?"
+    Object.getOwnPropertyNames(params).forEach(key => {
+        _url += key + "=" + params[key] + "&";
+    })
+
+    _url = _url.substring(0, _url.length - 1);
+    return url + _url;
+}
+
+/**
+ * 判空
+ * @param value
+ * @returns {boolean}
+ */
+export function isEmpty(value){
+    if(value === undefined || value == null){
+        return true;
+    }
+    if(typeof value == "string"){
+        return value === '';
+    }else if(typeof value == "object"){
+        return JSON.stringify(value) === "{}";
+    }
+    if(Array.isArray(value)){
+        return value.length <= 0;
+    }
+    return false;
 }
