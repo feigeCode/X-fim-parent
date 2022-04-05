@@ -3562,28 +3562,61 @@ public final class DefaultMsg {
      *消息ID
      * </pre>
      *
-     * <code>int64 id = 1;</code>
+     * <code>string id = 1;</code>
      * @return The id.
      */
-    long getId();
+    java.lang.String getId();
+    /**
+     * <pre>
+     **
+     *消息ID
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
 
     /**
      * <pre>
      **
-     *发送者ID
+     *好友关系ID
      * </pre>
      *
-     * <code>string senderId = 2;</code>
+     * <code>string friendRelationId = 2;</code>
+     * @return The friendRelationId.
+     */
+    java.lang.String getFriendRelationId();
+    /**
+     * <pre>
+     **
+     *好友关系ID
+     * </pre>
+     *
+     * <code>string friendRelationId = 2;</code>
+     * @return The bytes for friendRelationId.
+     */
+    com.google.protobuf.ByteString
+        getFriendRelationIdBytes();
+
+    /**
+     * <pre>
+     **
+     *好友关系ID
+     * </pre>
+     *
+     * <code>string senderId = 3;</code>
      * @return The senderId.
      */
     java.lang.String getSenderId();
     /**
      * <pre>
      **
-     *发送者ID
+     *好友关系ID
      * </pre>
      *
-     * <code>string senderId = 2;</code>
+     * <code>string senderId = 3;</code>
      * @return The bytes for senderId.
      */
     com.google.protobuf.ByteString
@@ -3595,7 +3628,7 @@ public final class DefaultMsg {
      *消息接收者ID
      * </pre>
      *
-     * <code>string receiverId = 3;</code>
+     * <code>string receiverId = 4;</code>
      * @return The receiverId.
      */
     java.lang.String getReceiverId();
@@ -3605,7 +3638,7 @@ public final class DefaultMsg {
      *消息接收者ID
      * </pre>
      *
-     * <code>string receiverId = 3;</code>
+     * <code>string receiverId = 4;</code>
      * @return The bytes for receiverId.
      */
     com.google.protobuf.ByteString
@@ -3617,7 +3650,7 @@ public final class DefaultMsg {
      *消息内容
      * </pre>
      *
-     * <code>string content = 4;</code>
+     * <code>string content = 5;</code>
      * @return The content.
      */
     java.lang.String getContent();
@@ -3627,7 +3660,7 @@ public final class DefaultMsg {
      *消息内容
      * </pre>
      *
-     * <code>string content = 4;</code>
+     * <code>string content = 5;</code>
      * @return The bytes for content.
      */
     com.google.protobuf.ByteString
@@ -3639,7 +3672,7 @@ public final class DefaultMsg {
      *消息格式 txt/json/html/...
      * </pre>
      *
-     * <code>int32 format = 5;</code>
+     * <code>int32 format = 6;</code>
      * @return The format.
      */
     int getFormat();
@@ -3650,7 +3683,7 @@ public final class DefaultMsg {
      *消息类型 图片/语音/...
      * </pre>
      *
-     * <code>uint32 msgType = 6;</code>
+     * <code>uint32 msgType = 7;</code>
      * @return The msgType.
      */
     int getMsgType();
@@ -3661,21 +3694,21 @@ public final class DefaultMsg {
      *时间
      * </pre>
      *
-     * <code>string timestamp = 7;</code>
-     * @return The timestamp.
+     * <code>string gmtCreate = 8;</code>
+     * @return The gmtCreate.
      */
-    java.lang.String getTimestamp();
+    java.lang.String getGmtCreate();
     /**
      * <pre>
      **
      *时间
      * </pre>
      *
-     * <code>string timestamp = 7;</code>
-     * @return The bytes for timestamp.
+     * <code>string gmtCreate = 8;</code>
+     * @return The bytes for gmtCreate.
      */
     com.google.protobuf.ByteString
-        getTimestampBytes();
+        getGmtCreateBytes();
 
     /**
      * <pre>
@@ -3683,7 +3716,7 @@ public final class DefaultMsg {
      *消息状态
      * </pre>
      *
-     * <code>uint32 status = 8;</code>
+     * <code>uint32 status = 9;</code>
      * @return The status.
      */
     int getStatus();
@@ -3694,7 +3727,7 @@ public final class DefaultMsg {
      *额外消息
      * </pre>
      *
-     * <code>string extra = 9;</code>
+     * <code>string extra = 10;</code>
      * @return The extra.
      */
     java.lang.String getExtra();
@@ -3704,7 +3737,7 @@ public final class DefaultMsg {
      *额外消息
      * </pre>
      *
-     * <code>string extra = 9;</code>
+     * <code>string extra = 10;</code>
      * @return The bytes for extra.
      */
     com.google.protobuf.ByteString
@@ -3723,10 +3756,12 @@ public final class DefaultMsg {
       super(builder);
     }
     private Msg() {
+      id_ = "";
+      friendRelationId_ = "";
       senderId_ = "";
       receiverId_ = "";
       content_ = "";
-      timestamp_ = "";
+      gmtCreate_ = "";
       extra_ = "";
     }
 
@@ -3760,51 +3795,58 @@ public final class DefaultMsg {
             case 0:
               done = true;
               break;
-            case 8: {
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              id_ = input.readInt64();
+              id_ = s;
               break;
             }
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              senderId_ = s;
+              friendRelationId_ = s;
               break;
             }
             case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              receiverId_ = s;
+              senderId_ = s;
               break;
             }
             case 34: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              content_ = s;
+              receiverId_ = s;
               break;
             }
-            case 40: {
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              format_ = input.readInt32();
+              content_ = s;
               break;
             }
             case 48: {
 
+              format_ = input.readInt32();
+              break;
+            }
+            case 56: {
+
               msgType_ = input.readUInt32();
               break;
             }
-            case 58: {
+            case 66: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              timestamp_ = s;
+              gmtCreate_ = s;
               break;
             }
-            case 64: {
+            case 72: {
 
               status_ = input.readUInt32();
               break;
             }
-            case 74: {
+            case 82: {
               java.lang.String s = input.readStringRequireUtf8();
 
               extra_ = s;
@@ -3843,29 +3885,106 @@ public final class DefaultMsg {
     }
 
     public static final int ID_FIELD_NUMBER = 1;
-    private long id_;
+    private volatile java.lang.Object id_;
     /**
      * <pre>
      **
      *消息ID
      * </pre>
      *
-     * <code>int64 id = 1;</code>
+     * <code>string id = 1;</code>
      * @return The id.
      */
-    public long getId() {
-      return id_;
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *消息ID
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
-    public static final int SENDERID_FIELD_NUMBER = 2;
+    public static final int FRIENDRELATIONID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object friendRelationId_;
+    /**
+     * <pre>
+     **
+     *好友关系ID
+     * </pre>
+     *
+     * <code>string friendRelationId = 2;</code>
+     * @return The friendRelationId.
+     */
+    public java.lang.String getFriendRelationId() {
+      java.lang.Object ref = friendRelationId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        friendRelationId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *好友关系ID
+     * </pre>
+     *
+     * <code>string friendRelationId = 2;</code>
+     * @return The bytes for friendRelationId.
+     */
+    public com.google.protobuf.ByteString
+        getFriendRelationIdBytes() {
+      java.lang.Object ref = friendRelationId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        friendRelationId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SENDERID_FIELD_NUMBER = 3;
     private volatile java.lang.Object senderId_;
     /**
      * <pre>
      **
-     *发送者ID
+     *好友关系ID
      * </pre>
      *
-     * <code>string senderId = 2;</code>
+     * <code>string senderId = 3;</code>
      * @return The senderId.
      */
     public java.lang.String getSenderId() {
@@ -3883,10 +4002,10 @@ public final class DefaultMsg {
     /**
      * <pre>
      **
-     *发送者ID
+     *好友关系ID
      * </pre>
      *
-     * <code>string senderId = 2;</code>
+     * <code>string senderId = 3;</code>
      * @return The bytes for senderId.
      */
     public com.google.protobuf.ByteString
@@ -3903,7 +4022,7 @@ public final class DefaultMsg {
       }
     }
 
-    public static final int RECEIVERID_FIELD_NUMBER = 3;
+    public static final int RECEIVERID_FIELD_NUMBER = 4;
     private volatile java.lang.Object receiverId_;
     /**
      * <pre>
@@ -3911,7 +4030,7 @@ public final class DefaultMsg {
      *消息接收者ID
      * </pre>
      *
-     * <code>string receiverId = 3;</code>
+     * <code>string receiverId = 4;</code>
      * @return The receiverId.
      */
     public java.lang.String getReceiverId() {
@@ -3932,7 +4051,7 @@ public final class DefaultMsg {
      *消息接收者ID
      * </pre>
      *
-     * <code>string receiverId = 3;</code>
+     * <code>string receiverId = 4;</code>
      * @return The bytes for receiverId.
      */
     public com.google.protobuf.ByteString
@@ -3949,7 +4068,7 @@ public final class DefaultMsg {
       }
     }
 
-    public static final int CONTENT_FIELD_NUMBER = 4;
+    public static final int CONTENT_FIELD_NUMBER = 5;
     private volatile java.lang.Object content_;
     /**
      * <pre>
@@ -3957,7 +4076,7 @@ public final class DefaultMsg {
      *消息内容
      * </pre>
      *
-     * <code>string content = 4;</code>
+     * <code>string content = 5;</code>
      * @return The content.
      */
     public java.lang.String getContent() {
@@ -3978,7 +4097,7 @@ public final class DefaultMsg {
      *消息内容
      * </pre>
      *
-     * <code>string content = 4;</code>
+     * <code>string content = 5;</code>
      * @return The bytes for content.
      */
     public com.google.protobuf.ByteString
@@ -3995,7 +4114,7 @@ public final class DefaultMsg {
       }
     }
 
-    public static final int FORMAT_FIELD_NUMBER = 5;
+    public static final int FORMAT_FIELD_NUMBER = 6;
     private int format_;
     /**
      * <pre>
@@ -4003,14 +4122,14 @@ public final class DefaultMsg {
      *消息格式 txt/json/html/...
      * </pre>
      *
-     * <code>int32 format = 5;</code>
+     * <code>int32 format = 6;</code>
      * @return The format.
      */
     public int getFormat() {
       return format_;
     }
 
-    public static final int MSGTYPE_FIELD_NUMBER = 6;
+    public static final int MSGTYPE_FIELD_NUMBER = 7;
     private int msgType_;
     /**
      * <pre>
@@ -4018,33 +4137,33 @@ public final class DefaultMsg {
      *消息类型 图片/语音/...
      * </pre>
      *
-     * <code>uint32 msgType = 6;</code>
+     * <code>uint32 msgType = 7;</code>
      * @return The msgType.
      */
     public int getMsgType() {
       return msgType_;
     }
 
-    public static final int TIMESTAMP_FIELD_NUMBER = 7;
-    private volatile java.lang.Object timestamp_;
+    public static final int GMTCREATE_FIELD_NUMBER = 8;
+    private volatile java.lang.Object gmtCreate_;
     /**
      * <pre>
      **
      *时间
      * </pre>
      *
-     * <code>string timestamp = 7;</code>
-     * @return The timestamp.
+     * <code>string gmtCreate = 8;</code>
+     * @return The gmtCreate.
      */
-    public java.lang.String getTimestamp() {
-      java.lang.Object ref = timestamp_;
+    public java.lang.String getGmtCreate() {
+      java.lang.Object ref = gmtCreate_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        timestamp_ = s;
+        gmtCreate_ = s;
         return s;
       }
     }
@@ -4054,24 +4173,24 @@ public final class DefaultMsg {
      *时间
      * </pre>
      *
-     * <code>string timestamp = 7;</code>
-     * @return The bytes for timestamp.
+     * <code>string gmtCreate = 8;</code>
+     * @return The bytes for gmtCreate.
      */
     public com.google.protobuf.ByteString
-        getTimestampBytes() {
-      java.lang.Object ref = timestamp_;
+        getGmtCreateBytes() {
+      java.lang.Object ref = gmtCreate_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        timestamp_ = b;
+        gmtCreate_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int STATUS_FIELD_NUMBER = 8;
+    public static final int STATUS_FIELD_NUMBER = 9;
     private int status_;
     /**
      * <pre>
@@ -4079,14 +4198,14 @@ public final class DefaultMsg {
      *消息状态
      * </pre>
      *
-     * <code>uint32 status = 8;</code>
+     * <code>uint32 status = 9;</code>
      * @return The status.
      */
     public int getStatus() {
       return status_;
     }
 
-    public static final int EXTRA_FIELD_NUMBER = 9;
+    public static final int EXTRA_FIELD_NUMBER = 10;
     private volatile java.lang.Object extra_;
     /**
      * <pre>
@@ -4094,7 +4213,7 @@ public final class DefaultMsg {
      *额外消息
      * </pre>
      *
-     * <code>string extra = 9;</code>
+     * <code>string extra = 10;</code>
      * @return The extra.
      */
     public java.lang.String getExtra() {
@@ -4115,7 +4234,7 @@ public final class DefaultMsg {
      *额外消息
      * </pre>
      *
-     * <code>string extra = 9;</code>
+     * <code>string extra = 10;</code>
      * @return The bytes for extra.
      */
     public com.google.protobuf.ByteString
@@ -4146,32 +4265,35 @@ public final class DefaultMsg {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (id_ != 0L) {
-        output.writeInt64(1, id_);
+      if (!getIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
+      }
+      if (!getFriendRelationIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, friendRelationId_);
       }
       if (!getSenderIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, senderId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, senderId_);
       }
       if (!getReceiverIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, receiverId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, receiverId_);
       }
       if (!getContentBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, content_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, content_);
       }
       if (format_ != 0) {
-        output.writeInt32(5, format_);
+        output.writeInt32(6, format_);
       }
       if (msgType_ != 0) {
-        output.writeUInt32(6, msgType_);
+        output.writeUInt32(7, msgType_);
       }
-      if (!getTimestampBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, timestamp_);
+      if (!getGmtCreateBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, gmtCreate_);
       }
       if (status_ != 0) {
-        output.writeUInt32(8, status_);
+        output.writeUInt32(9, status_);
       }
       if (!getExtraBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, extra_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, extra_);
       }
       unknownFields.writeTo(output);
     }
@@ -4182,36 +4304,38 @@ public final class DefaultMsg {
       if (size != -1) return size;
 
       size = 0;
-      if (id_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, id_);
+      if (!getIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
+      }
+      if (!getFriendRelationIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, friendRelationId_);
       }
       if (!getSenderIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, senderId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, senderId_);
       }
       if (!getReceiverIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, receiverId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, receiverId_);
       }
       if (!getContentBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, content_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, content_);
       }
       if (format_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, format_);
+          .computeInt32Size(6, format_);
       }
       if (msgType_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(6, msgType_);
+          .computeUInt32Size(7, msgType_);
       }
-      if (!getTimestampBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, timestamp_);
+      if (!getGmtCreateBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, gmtCreate_);
       }
       if (status_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(8, status_);
+          .computeUInt32Size(9, status_);
       }
       if (!getExtraBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, extra_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, extra_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4228,8 +4352,10 @@ public final class DefaultMsg {
       }
       com.feige.im.pojo.proto.DefaultMsg.Msg other = (com.feige.im.pojo.proto.DefaultMsg.Msg) obj;
 
-      if (getId()
-          != other.getId()) return false;
+      if (!getId()
+          .equals(other.getId())) return false;
+      if (!getFriendRelationId()
+          .equals(other.getFriendRelationId())) return false;
       if (!getSenderId()
           .equals(other.getSenderId())) return false;
       if (!getReceiverId()
@@ -4240,8 +4366,8 @@ public final class DefaultMsg {
           != other.getFormat()) return false;
       if (getMsgType()
           != other.getMsgType()) return false;
-      if (!getTimestamp()
-          .equals(other.getTimestamp())) return false;
+      if (!getGmtCreate()
+          .equals(other.getGmtCreate())) return false;
       if (getStatus()
           != other.getStatus()) return false;
       if (!getExtra()
@@ -4258,8 +4384,9 @@ public final class DefaultMsg {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + ID_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getId());
+      hash = (53 * hash) + getId().hashCode();
+      hash = (37 * hash) + FRIENDRELATIONID_FIELD_NUMBER;
+      hash = (53 * hash) + getFriendRelationId().hashCode();
       hash = (37 * hash) + SENDERID_FIELD_NUMBER;
       hash = (53 * hash) + getSenderId().hashCode();
       hash = (37 * hash) + RECEIVERID_FIELD_NUMBER;
@@ -4270,8 +4397,8 @@ public final class DefaultMsg {
       hash = (53 * hash) + getFormat();
       hash = (37 * hash) + MSGTYPE_FIELD_NUMBER;
       hash = (53 * hash) + getMsgType();
-      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
-      hash = (53 * hash) + getTimestamp().hashCode();
+      hash = (37 * hash) + GMTCREATE_FIELD_NUMBER;
+      hash = (53 * hash) + getGmtCreate().hashCode();
       hash = (37 * hash) + STATUS_FIELD_NUMBER;
       hash = (53 * hash) + getStatus();
       hash = (37 * hash) + EXTRA_FIELD_NUMBER;
@@ -4409,7 +4536,9 @@ public final class DefaultMsg {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        id_ = 0L;
+        id_ = "";
+
+        friendRelationId_ = "";
 
         senderId_ = "";
 
@@ -4421,7 +4550,7 @@ public final class DefaultMsg {
 
         msgType_ = 0;
 
-        timestamp_ = "";
+        gmtCreate_ = "";
 
         status_ = 0;
 
@@ -4454,12 +4583,13 @@ public final class DefaultMsg {
       public com.feige.im.pojo.proto.DefaultMsg.Msg buildPartial() {
         com.feige.im.pojo.proto.DefaultMsg.Msg result = new com.feige.im.pojo.proto.DefaultMsg.Msg(this);
         result.id_ = id_;
+        result.friendRelationId_ = friendRelationId_;
         result.senderId_ = senderId_;
         result.receiverId_ = receiverId_;
         result.content_ = content_;
         result.format_ = format_;
         result.msgType_ = msgType_;
-        result.timestamp_ = timestamp_;
+        result.gmtCreate_ = gmtCreate_;
         result.status_ = status_;
         result.extra_ = extra_;
         onBuilt();
@@ -4510,8 +4640,13 @@ public final class DefaultMsg {
 
       public Builder mergeFrom(com.feige.im.pojo.proto.DefaultMsg.Msg other) {
         if (other == com.feige.im.pojo.proto.DefaultMsg.Msg.getDefaultInstance()) return this;
-        if (other.getId() != 0L) {
-          setId(other.getId());
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
+          onChanged();
+        }
+        if (!other.getFriendRelationId().isEmpty()) {
+          friendRelationId_ = other.friendRelationId_;
+          onChanged();
         }
         if (!other.getSenderId().isEmpty()) {
           senderId_ = other.senderId_;
@@ -4531,8 +4666,8 @@ public final class DefaultMsg {
         if (other.getMsgType() != 0) {
           setMsgType(other.getMsgType());
         }
-        if (!other.getTimestamp().isEmpty()) {
-          timestamp_ = other.timestamp_;
+        if (!other.getGmtCreate().isEmpty()) {
+          gmtCreate_ = other.gmtCreate_;
           onChanged();
         }
         if (other.getStatus() != 0) {
@@ -4571,18 +4706,27 @@ public final class DefaultMsg {
         return this;
       }
 
-      private long id_ ;
+      private java.lang.Object id_ = "";
       /**
        * <pre>
        **
        *消息ID
        * </pre>
        *
-       * <code>int64 id = 1;</code>
+       * <code>string id = 1;</code>
        * @return The id.
        */
-      public long getId() {
-        return id_;
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
        * <pre>
@@ -4590,12 +4734,38 @@ public final class DefaultMsg {
        *消息ID
        * </pre>
        *
-       * <code>int64 id = 1;</code>
+       * <code>string id = 1;</code>
+       * @return The bytes for id.
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *消息ID
+       * </pre>
+       *
+       * <code>string id = 1;</code>
        * @param value The id to set.
        * @return This builder for chaining.
        */
-      public Builder setId(long value) {
-        
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         id_ = value;
         onChanged();
         return this;
@@ -4606,12 +4776,134 @@ public final class DefaultMsg {
        *消息ID
        * </pre>
        *
-       * <code>int64 id = 1;</code>
+       * <code>string id = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearId() {
         
-        id_ = 0L;
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *消息ID
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        id_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object friendRelationId_ = "";
+      /**
+       * <pre>
+       **
+       *好友关系ID
+       * </pre>
+       *
+       * <code>string friendRelationId = 2;</code>
+       * @return The friendRelationId.
+       */
+      public java.lang.String getFriendRelationId() {
+        java.lang.Object ref = friendRelationId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          friendRelationId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *好友关系ID
+       * </pre>
+       *
+       * <code>string friendRelationId = 2;</code>
+       * @return The bytes for friendRelationId.
+       */
+      public com.google.protobuf.ByteString
+          getFriendRelationIdBytes() {
+        java.lang.Object ref = friendRelationId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          friendRelationId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *好友关系ID
+       * </pre>
+       *
+       * <code>string friendRelationId = 2;</code>
+       * @param value The friendRelationId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFriendRelationId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        friendRelationId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *好友关系ID
+       * </pre>
+       *
+       * <code>string friendRelationId = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFriendRelationId() {
+        
+        friendRelationId_ = getDefaultInstance().getFriendRelationId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *好友关系ID
+       * </pre>
+       *
+       * <code>string friendRelationId = 2;</code>
+       * @param value The bytes for friendRelationId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFriendRelationIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        friendRelationId_ = value;
         onChanged();
         return this;
       }
@@ -4620,10 +4912,10 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *发送者ID
+       *好友关系ID
        * </pre>
        *
-       * <code>string senderId = 2;</code>
+       * <code>string senderId = 3;</code>
        * @return The senderId.
        */
       public java.lang.String getSenderId() {
@@ -4641,10 +4933,10 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *发送者ID
+       *好友关系ID
        * </pre>
        *
-       * <code>string senderId = 2;</code>
+       * <code>string senderId = 3;</code>
        * @return The bytes for senderId.
        */
       public com.google.protobuf.ByteString
@@ -4663,10 +4955,10 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *发送者ID
+       *好友关系ID
        * </pre>
        *
-       * <code>string senderId = 2;</code>
+       * <code>string senderId = 3;</code>
        * @param value The senderId to set.
        * @return This builder for chaining.
        */
@@ -4683,10 +4975,10 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *发送者ID
+       *好友关系ID
        * </pre>
        *
-       * <code>string senderId = 2;</code>
+       * <code>string senderId = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearSenderId() {
@@ -4698,10 +4990,10 @@ public final class DefaultMsg {
       /**
        * <pre>
        **
-       *发送者ID
+       *好友关系ID
        * </pre>
        *
-       * <code>string senderId = 2;</code>
+       * <code>string senderId = 3;</code>
        * @param value The bytes for senderId to set.
        * @return This builder for chaining.
        */
@@ -4724,7 +5016,7 @@ public final class DefaultMsg {
        *消息接收者ID
        * </pre>
        *
-       * <code>string receiverId = 3;</code>
+       * <code>string receiverId = 4;</code>
        * @return The receiverId.
        */
       public java.lang.String getReceiverId() {
@@ -4745,7 +5037,7 @@ public final class DefaultMsg {
        *消息接收者ID
        * </pre>
        *
-       * <code>string receiverId = 3;</code>
+       * <code>string receiverId = 4;</code>
        * @return The bytes for receiverId.
        */
       public com.google.protobuf.ByteString
@@ -4767,7 +5059,7 @@ public final class DefaultMsg {
        *消息接收者ID
        * </pre>
        *
-       * <code>string receiverId = 3;</code>
+       * <code>string receiverId = 4;</code>
        * @param value The receiverId to set.
        * @return This builder for chaining.
        */
@@ -4787,7 +5079,7 @@ public final class DefaultMsg {
        *消息接收者ID
        * </pre>
        *
-       * <code>string receiverId = 3;</code>
+       * <code>string receiverId = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearReceiverId() {
@@ -4802,7 +5094,7 @@ public final class DefaultMsg {
        *消息接收者ID
        * </pre>
        *
-       * <code>string receiverId = 3;</code>
+       * <code>string receiverId = 4;</code>
        * @param value The bytes for receiverId to set.
        * @return This builder for chaining.
        */
@@ -4825,7 +5117,7 @@ public final class DefaultMsg {
        *消息内容
        * </pre>
        *
-       * <code>string content = 4;</code>
+       * <code>string content = 5;</code>
        * @return The content.
        */
       public java.lang.String getContent() {
@@ -4846,7 +5138,7 @@ public final class DefaultMsg {
        *消息内容
        * </pre>
        *
-       * <code>string content = 4;</code>
+       * <code>string content = 5;</code>
        * @return The bytes for content.
        */
       public com.google.protobuf.ByteString
@@ -4868,7 +5160,7 @@ public final class DefaultMsg {
        *消息内容
        * </pre>
        *
-       * <code>string content = 4;</code>
+       * <code>string content = 5;</code>
        * @param value The content to set.
        * @return This builder for chaining.
        */
@@ -4888,7 +5180,7 @@ public final class DefaultMsg {
        *消息内容
        * </pre>
        *
-       * <code>string content = 4;</code>
+       * <code>string content = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearContent() {
@@ -4903,7 +5195,7 @@ public final class DefaultMsg {
        *消息内容
        * </pre>
        *
-       * <code>string content = 4;</code>
+       * <code>string content = 5;</code>
        * @param value The bytes for content to set.
        * @return This builder for chaining.
        */
@@ -4926,7 +5218,7 @@ public final class DefaultMsg {
        *消息格式 txt/json/html/...
        * </pre>
        *
-       * <code>int32 format = 5;</code>
+       * <code>int32 format = 6;</code>
        * @return The format.
        */
       public int getFormat() {
@@ -4938,7 +5230,7 @@ public final class DefaultMsg {
        *消息格式 txt/json/html/...
        * </pre>
        *
-       * <code>int32 format = 5;</code>
+       * <code>int32 format = 6;</code>
        * @param value The format to set.
        * @return This builder for chaining.
        */
@@ -4954,7 +5246,7 @@ public final class DefaultMsg {
        *消息格式 txt/json/html/...
        * </pre>
        *
-       * <code>int32 format = 5;</code>
+       * <code>int32 format = 6;</code>
        * @return This builder for chaining.
        */
       public Builder clearFormat() {
@@ -4971,7 +5263,7 @@ public final class DefaultMsg {
        *消息类型 图片/语音/...
        * </pre>
        *
-       * <code>uint32 msgType = 6;</code>
+       * <code>uint32 msgType = 7;</code>
        * @return The msgType.
        */
       public int getMsgType() {
@@ -4983,7 +5275,7 @@ public final class DefaultMsg {
        *消息类型 图片/语音/...
        * </pre>
        *
-       * <code>uint32 msgType = 6;</code>
+       * <code>uint32 msgType = 7;</code>
        * @param value The msgType to set.
        * @return This builder for chaining.
        */
@@ -4999,7 +5291,7 @@ public final class DefaultMsg {
        *消息类型 图片/语音/...
        * </pre>
        *
-       * <code>uint32 msgType = 6;</code>
+       * <code>uint32 msgType = 7;</code>
        * @return This builder for chaining.
        */
       public Builder clearMsgType() {
@@ -5009,23 +5301,23 @@ public final class DefaultMsg {
         return this;
       }
 
-      private java.lang.Object timestamp_ = "";
+      private java.lang.Object gmtCreate_ = "";
       /**
        * <pre>
        **
        *时间
        * </pre>
        *
-       * <code>string timestamp = 7;</code>
-       * @return The timestamp.
+       * <code>string gmtCreate = 8;</code>
+       * @return The gmtCreate.
        */
-      public java.lang.String getTimestamp() {
-        java.lang.Object ref = timestamp_;
+      public java.lang.String getGmtCreate() {
+        java.lang.Object ref = gmtCreate_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          timestamp_ = s;
+          gmtCreate_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5037,17 +5329,17 @@ public final class DefaultMsg {
        *时间
        * </pre>
        *
-       * <code>string timestamp = 7;</code>
-       * @return The bytes for timestamp.
+       * <code>string gmtCreate = 8;</code>
+       * @return The bytes for gmtCreate.
        */
       public com.google.protobuf.ByteString
-          getTimestampBytes() {
-        java.lang.Object ref = timestamp_;
+          getGmtCreateBytes() {
+        java.lang.Object ref = gmtCreate_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          timestamp_ = b;
+          gmtCreate_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -5059,17 +5351,17 @@ public final class DefaultMsg {
        *时间
        * </pre>
        *
-       * <code>string timestamp = 7;</code>
-       * @param value The timestamp to set.
+       * <code>string gmtCreate = 8;</code>
+       * @param value The gmtCreate to set.
        * @return This builder for chaining.
        */
-      public Builder setTimestamp(
+      public Builder setGmtCreate(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        timestamp_ = value;
+        gmtCreate_ = value;
         onChanged();
         return this;
       }
@@ -5079,12 +5371,12 @@ public final class DefaultMsg {
        *时间
        * </pre>
        *
-       * <code>string timestamp = 7;</code>
+       * <code>string gmtCreate = 8;</code>
        * @return This builder for chaining.
        */
-      public Builder clearTimestamp() {
+      public Builder clearGmtCreate() {
         
-        timestamp_ = getDefaultInstance().getTimestamp();
+        gmtCreate_ = getDefaultInstance().getGmtCreate();
         onChanged();
         return this;
       }
@@ -5094,18 +5386,18 @@ public final class DefaultMsg {
        *时间
        * </pre>
        *
-       * <code>string timestamp = 7;</code>
-       * @param value The bytes for timestamp to set.
+       * <code>string gmtCreate = 8;</code>
+       * @param value The bytes for gmtCreate to set.
        * @return This builder for chaining.
        */
-      public Builder setTimestampBytes(
+      public Builder setGmtCreateBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        timestamp_ = value;
+        gmtCreate_ = value;
         onChanged();
         return this;
       }
@@ -5117,7 +5409,7 @@ public final class DefaultMsg {
        *消息状态
        * </pre>
        *
-       * <code>uint32 status = 8;</code>
+       * <code>uint32 status = 9;</code>
        * @return The status.
        */
       public int getStatus() {
@@ -5129,7 +5421,7 @@ public final class DefaultMsg {
        *消息状态
        * </pre>
        *
-       * <code>uint32 status = 8;</code>
+       * <code>uint32 status = 9;</code>
        * @param value The status to set.
        * @return This builder for chaining.
        */
@@ -5145,7 +5437,7 @@ public final class DefaultMsg {
        *消息状态
        * </pre>
        *
-       * <code>uint32 status = 8;</code>
+       * <code>uint32 status = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearStatus() {
@@ -5162,7 +5454,7 @@ public final class DefaultMsg {
        *额外消息
        * </pre>
        *
-       * <code>string extra = 9;</code>
+       * <code>string extra = 10;</code>
        * @return The extra.
        */
       public java.lang.String getExtra() {
@@ -5183,7 +5475,7 @@ public final class DefaultMsg {
        *额外消息
        * </pre>
        *
-       * <code>string extra = 9;</code>
+       * <code>string extra = 10;</code>
        * @return The bytes for extra.
        */
       public com.google.protobuf.ByteString
@@ -5205,7 +5497,7 @@ public final class DefaultMsg {
        *额外消息
        * </pre>
        *
-       * <code>string extra = 9;</code>
+       * <code>string extra = 10;</code>
        * @param value The extra to set.
        * @return This builder for chaining.
        */
@@ -5225,7 +5517,7 @@ public final class DefaultMsg {
        *额外消息
        * </pre>
        *
-       * <code>string extra = 9;</code>
+       * <code>string extra = 10;</code>
        * @return This builder for chaining.
        */
       public Builder clearExtra() {
@@ -5240,7 +5532,7 @@ public final class DefaultMsg {
        *额外消息
        * </pre>
        *
-       * <code>string extra = 9;</code>
+       * <code>string extra = 10;</code>
        * @param value The bytes for extra to set.
        * @return This builder for chaining.
        */
@@ -6310,16 +6602,16 @@ public final class DefaultMsg {
       "token\030\007 \001(\t\022\020\n\010platform\030\010 \001(\t\022\017\n\007address" +
       "\030\t \001(\t\"]\n\006Forced\022\n\n\002ip\030\001 \001(\t\022\017\n\007address\030" +
       "\002 \001(\t\022\017\n\007content\030\003 \001(\t\022\022\n\ndeviceName\030\004 \001" +
-      "(\t\022\021\n\ttimestamp\030\005 \001(\t\"\233\001\n\003Msg\022\n\n\002id\030\001 \001(" +
-      "\003\022\020\n\010senderId\030\002 \001(\t\022\022\n\nreceiverId\030\003 \001(\t\022" +
-      "\017\n\007content\030\004 \001(\t\022\016\n\006format\030\005 \001(\005\022\017\n\007msgT" +
-      "ype\030\006 \001(\r\022\021\n\ttimestamp\030\007 \001(\t\022\016\n\006status\030\010" +
-      " \001(\r\022\r\n\005extra\030\t \001(\t\"\244\001\n\014TransportMsg\022;\n\004" +
-      "type\030\001 \001(\0162-.com.feige.im.pojo.proto.Tra" +
-      "nsportMsg.MsgType\022)\n\003msg\030\002 \001(\0132\034.com.fei" +
-      "ge.im.pojo.proto.Msg\",\n\007MsgType\022\013\n\007PRIVA" +
-      "TE\020\000\022\t\n\005GROUP\020\001\022\t\n\005OTHER\020\002B\014B\nDefaultMsg" +
-      "b\006proto3"
+      "(\t\022\021\n\ttimestamp\030\005 \001(\t\"\265\001\n\003Msg\022\n\n\002id\030\001 \001(" +
+      "\t\022\030\n\020friendRelationId\030\002 \001(\t\022\020\n\010senderId\030" +
+      "\003 \001(\t\022\022\n\nreceiverId\030\004 \001(\t\022\017\n\007content\030\005 \001" +
+      "(\t\022\016\n\006format\030\006 \001(\005\022\017\n\007msgType\030\007 \001(\r\022\021\n\tg" +
+      "mtCreate\030\010 \001(\t\022\016\n\006status\030\t \001(\r\022\r\n\005extra\030" +
+      "\n \001(\t\"\244\001\n\014TransportMsg\022;\n\004type\030\001 \001(\0162-.c" +
+      "om.feige.im.pojo.proto.TransportMsg.MsgT" +
+      "ype\022)\n\003msg\030\002 \001(\0132\034.com.feige.im.pojo.pro" +
+      "to.Msg\",\n\007MsgType\022\013\n\007PRIVATE\020\000\022\t\n\005GROUP\020" +
+      "\001\022\t\n\005OTHER\020\002B\014B\nDefaultMsgb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -6342,7 +6634,7 @@ public final class DefaultMsg {
     internal_static_com_feige_im_pojo_proto_Msg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_Msg_descriptor,
-        new java.lang.String[] { "Id", "SenderId", "ReceiverId", "Content", "Format", "MsgType", "Timestamp", "Status", "Extra", });
+        new java.lang.String[] { "Id", "FriendRelationId", "SenderId", "ReceiverId", "Content", "Format", "MsgType", "GmtCreate", "Status", "Extra", });
     internal_static_com_feige_im_pojo_proto_TransportMsg_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_com_feige_im_pojo_proto_TransportMsg_fieldAccessorTable = new

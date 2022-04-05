@@ -27,30 +27,31 @@ public class ReceiverClientTest {
     public static final Logger LOG = LoggerFactory.getLogger();
     public static final String IP = "10.1.121.155";
     public static final int PORT = 8001;
-    public static final String SENDER_ID = "receiver";
-    public static final String RECEIVER_ID = "mymy";
+    public static final String SENDER_ID = "1391025558363648002";
+    public static final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSMjS2NDQwMjU1tTA2MzYzsTAwMFLSUcpMLFGyMjQzMTcxMTI1N9dRSq0oAAtYGJiYG4MEMlNwas5LzE0FSj6b2f20YyWIX5oL5BoZGFoYmhgbGpoChVJzEzNzQIKm5pYW5pZA3Q6FhXrJ-blKtQDn2l4-mQAAAA.bJ3_BiL6yiNnwLqXGKuysQ4ADJsFlvOjhDiXd7c6Acw";
+    public static final String RECEIVER_ID = "1390961159053549569";
 
 
     public static void main(String[] args) {
         Parser.registerDefaultParsing();
         ClientStarter.start(IP, PORT, new DefaultClientMsgListener(), new MsgStatusListener() {
             @Override
-            public void hasMsgSent(Long msgId) {
+            public void hasMsgSent(String msgId) {
                 LOG.info("有消息发送 msgId = {}", msgId);
             }
 
             @Override
-            public void hasMsgArrived(Long msgId) {
+            public void hasMsgArrived(String msgId) {
                 LOG.info("有消息送达 msgId = {}", msgId);
             }
 
             @Override
-            public void timeoutMsg(Long msgId) {
+            public void timeoutMsg(String msgId) {
                 LOG.info("有超时消息 msgId = {}", msgId);
             }
 
             @Override
-            public void exceptionMsg(Long msgId) {
+            public void exceptionMsg(String msgId) {
                 LOG.info("有异常消息 msgId = {}", msgId);
             }
         });
@@ -73,7 +74,7 @@ public class ReceiverClientTest {
 
     public static DefaultMsg.TransportMsg getMsg(String content){
         DefaultMsg.Msg msg = DefaultMsg.Msg.newBuilder()
-                .setId(SnowflakeIdUtil.generateId())
+                .setId(String.valueOf(SnowflakeIdUtil.generateId()))
                 .setContent(content)
                 .setMsgType(1)
                 .setExtra("extra")
@@ -81,7 +82,7 @@ public class ReceiverClientTest {
                 .setSenderId(SENDER_ID)
                 .setReceiverId(RECEIVER_ID)
                 .setStatus(1)
-                .setTimestamp(String.valueOf(System.currentTimeMillis()))
+                .setGmtCreate(String.valueOf(System.currentTimeMillis()))
                 .build();
         return DefaultMsg.TransportMsg.newBuilder()
                 .setType(DefaultMsg.TransportMsg.MsgType.PRIVATE)
@@ -92,7 +93,7 @@ public class ReceiverClientTest {
     public static void sentAuth(){
         DefaultMsg.Auth auth = DefaultMsg.Auth.newBuilder()
                 .setPlatform("android")
-                .setToken(SENDER_ID)
+                .setToken(TOKEN)
                 .setDeviceName("w")
                 .setDeviceId("1")
                 .setLanguage("en")

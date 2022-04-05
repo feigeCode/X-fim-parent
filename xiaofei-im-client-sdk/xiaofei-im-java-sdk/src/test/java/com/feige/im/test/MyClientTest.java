@@ -11,7 +11,6 @@ import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.receiver.AckFactory;
 import com.feige.im.sender.DefaultPushManager;
 import com.feige.im.sender.PushManager;
-import com.feige.im.sender.WaitingAckTimerHandler;
 import com.feige.im.utils.SnowflakeIdUtil;
 
 import java.util.Scanner;
@@ -36,22 +35,22 @@ public class MyClientTest {
         Parser.registerDefaultParsing();
         ClientStarter.start(IP, PORT, new DefaultClientMsgListener(), new MsgStatusListener() {
             @Override
-            public void hasMsgSent(Long msgId) {
+            public void hasMsgSent(String msgId) {
                 LOG.info("有消息发送 msgId = {}", msgId);
             }
 
             @Override
-            public void hasMsgArrived(Long msgId) {
+            public void hasMsgArrived(String msgId) {
                 LOG.info("有消息送达 msgId = {}", msgId);
             }
 
             @Override
-            public void timeoutMsg(Long msgId) {
+            public void timeoutMsg(String msgId) {
                 LOG.info("有超时消息 msgId = {}", msgId);
             }
 
             @Override
-            public void exceptionMsg(Long msgId) {
+            public void exceptionMsg(String msgId) {
                 LOG.info("有异常消息 msgId = {}", msgId);
             }
         });
@@ -74,7 +73,7 @@ public class MyClientTest {
 
     public static DefaultMsg.TransportMsg getMsg(String content){
         DefaultMsg.Msg msg = DefaultMsg.Msg.newBuilder()
-                .setId(SnowflakeIdUtil.generateId())
+                .setId(String.valueOf(SnowflakeIdUtil.generateId()))
                 .setContent(content)
                 .setMsgType(1)
                 .setExtra("extra")
@@ -82,7 +81,7 @@ public class MyClientTest {
                 .setSenderId(SENDER_ID)
                 .setReceiverId(RECEIVER_ID)
                 .setStatus(1)
-                .setTimestamp(String.valueOf(System.currentTimeMillis()))
+                .setGmtCreate(String.valueOf(System.currentTimeMillis()))
                 .build();
         return DefaultMsg.TransportMsg.newBuilder()
                 .setType(DefaultMsg.TransportMsg.MsgType.PRIVATE)

@@ -25,10 +25,10 @@ public class AckFactory {
     }
 
 
-    public static Ack.AckMsg buildAckMsg(Long msgId, String receiverId, Ack.AckMsg.Status status){
+    public static Ack.AckMsg buildAckMsg(String msgId, String receiverId, Ack.AckMsg.Status status){
         return Ack.AckMsg.newBuilder()
                 .setAckMsgId(msgId)
-                .setId(SnowflakeIdUtil.generateId())
+                .setId(String.valueOf(SnowflakeIdUtil.generateId()))
                 .setMsgType(Ack.AckMsg.MsgType.PRIVATE)
                 .setStatus(status)
                 .setSenderId(getSenderId())
@@ -43,7 +43,7 @@ public class AckFactory {
      * @param receiverId 接收者ID
      * @return
      */
-    public static Ack.AckMsg getHaveSentAck(Long msgId, String receiverId){
+    public static Ack.AckMsg getHaveSentAck(String msgId, String receiverId){
         return buildAckMsg(msgId,receiverId, Ack.AckMsg.Status.HAVE_SENT);
     }
 
@@ -53,7 +53,7 @@ public class AckFactory {
      * @param receiverId 接收者ID
      * @return
      */
-    public static Ack.AckMsg getArrivedAck(Long msgId, String receiverId){
+    public static Ack.AckMsg getArrivedAck(String msgId, String receiverId){
         return buildAckMsg(msgId,receiverId, Ack.AckMsg.Status.ARRIVED);
     }
 
@@ -63,7 +63,7 @@ public class AckFactory {
      * @param receiverId 接收者ID
      * @return
      */
-    public static Ack.AckMsg getHaveReadAck(Long msgId, String receiverId){
+    public static Ack.AckMsg getHaveReadAck(String msgId, String receiverId){
         return buildAckMsg(msgId,receiverId, Ack.AckMsg.Status.HAVE_READ);
     }
 

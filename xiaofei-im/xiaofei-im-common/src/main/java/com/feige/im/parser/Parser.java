@@ -6,6 +6,7 @@ import com.feige.im.pojo.proto.Ack;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.pojo.proto.HeartBeat;
 import com.feige.im.service.ImBusinessService;
+import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.QueryStringDecoder;
@@ -70,29 +71,51 @@ public class Parser {
     public static final Map<Class<? extends Message>,Integer> MSG_KEY_MAP = new ConcurrentHashMap<>();
     public static final Map<Class<? extends Message>, ReceiverIdsHandler> RECEIVER_IDS_MAP = new ConcurrentHashMap<>();
     public static WsAuthMsgConverter WS_AUTH_MSG_CONVERTER = (handshakeComplete) -> {
-        String uri = handshakeComplete.requestUri();
-        QueryStringDecoder queryString = new QueryStringDecoder(uri, StandardCharsets.UTF_8);
-        Map<String, List<String>> parameters = queryString.parameters();
-        List<String> address = parameters.get("address");
-        List<String> osVersion = parameters.get("osVersion");
-        List<String> deviceName = parameters.get("deviceName");
-        List<String> language = parameters.get("language");
-        List<String> deviceId = parameters.get("deviceId");
-        List<String> ip = parameters.get("ip");
-        List<String> version = parameters.get("version");
-        List<String> platform = parameters.get("platform");
-        List<String> token = parameters.get("token");
         try {
+            HttpHeaders headers = handshakeComplete.requestHeaders();
+            String token = headers.get("token");
+            String address;
+            String osVersion;
+            String deviceName;
+            String language;
+            String deviceId;
+            String ip;
+            String version;
+            String platform;
+            if (StringUtil.isBlank(token)){
+                String uri = handshakeComplete.requestUri();
+                QueryStringDecoder queryString = new QueryStringDecoder(uri, StandardCharsets.UTF_8);
+                Map<String, List<String>> parameters = queryString.parameters();
+                address = parameters.get("address").get(0);
+                osVersion = parameters.get("osVersion").get(0);
+                deviceName = parameters.get("deviceName").get(0);
+                language = parameters.get("language").get(0);
+                deviceId = parameters.get("deviceId").get(0);
+                ip = parameters.get("ip").get(0);
+                version = parameters.get("version").get(0);
+                platform = parameters.get("platform").get(0);
+                token = parameters.get("token").get(0);
+            }else {
+                token = headers.get("token");
+                address = headers.get("address");
+                osVersion = headers.get("osVersion");
+                deviceName = headers.get("deviceName");
+                language = headers.get("language");
+                deviceId = headers.get("deviceId");
+                ip = headers.get("ip");
+                version = headers.get("version");
+                platform = headers.get("platform");
+            }
             return DefaultMsg.Auth.newBuilder()
-                    .setAddress(address.get(0))
-                    .setDeviceName(deviceName.get(0))
-                    .setLanguage(language.get(0))
-                    .setOsVersion(osVersion.get(0))
-                    .setDeviceId(deviceId.get(0))
-                    .setIp(ip.get(0))
-                    .setVersion(version.get(0))
-                    .setPlatform(platform.get(0))
-                    .setToken(token.get(0))
+                    .setAddress(address)
+                    .setDeviceName(deviceName)
+                    .setLanguage(language)
+                    .setOsVersion(osVersion)
+                    .setDeviceId(deviceId)
+                    .setIp(ip)
+                    .setVersion(version)
+                    .setPlatform(platform)
+                    .setToken(token)
                     .build();
         }catch (Exception e){
             LOG.error("authenticate error:",e);

@@ -13,7 +13,7 @@ public class DefaultPushManager extends PushManager{
 
 
     public static void pushMsg(DefaultMsg.TransportMsg transportMsg){
-        long msgId = transportMsg.getMsg().getId();
+        String msgId = transportMsg.getMsg().getId();
         MsgStatusListener statusListener = WaitingAckTimerHandler.getStatusListener();
         if (push(transportMsg)) {
             // 消息发送成功，创建等待ack定时器

@@ -29,10 +29,10 @@ public class ConsistentHashRoute implements IRoute {
     private final Object lock = new Object();
 
     public static void main(String[] args) {
-        String[] strings = {"192.168.0.103:8001", "192.168.0.103:8002","192.168.0.104:8003"};
+        String[] strings = {"192.168.0.106:8001", "192.168.0.106:8002","192.168.0.106:8003"};
         ConsistentHashRoute consistentHashRoute = new ConsistentHashRoute();
         consistentHashRoute.add(strings);
-        String route1 = consistentHashRoute.getRoute("my");
+        String route1 = consistentHashRoute.getRoute("mymy");
         String route2 = consistentHashRoute.getRoute("receiver");
         System.out.println(route1);
         System.out.println(route2);

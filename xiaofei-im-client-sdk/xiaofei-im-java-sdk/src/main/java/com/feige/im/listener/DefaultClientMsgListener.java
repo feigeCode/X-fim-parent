@@ -27,7 +27,7 @@ public class DefaultClientMsgListener extends ClientMsgListener{
         if (msg instanceof DefaultMsg.TransportMsg){
             DefaultMsg.TransportMsg transportMsg = Parser.getT(DefaultMsg.TransportMsg.class, msg);
             DefaultMsg.Msg message = transportMsg.getMsg();
-            long id = message.getId();
+            String id = message.getId();
             // 判断消息是否重复发送
             boolean repeat = MsgHandler.isRepeat(id);
             if (repeat){

@@ -19,10 +19,16 @@ public final class Ack {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int64 id = 1;</code>
+     * <code>string id = 1;</code>
      * @return The id.
      */
-    long getId();
+    java.lang.String getId();
+    /**
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
 
     /**
      * <pre>
@@ -107,10 +113,20 @@ public final class Ack {
      *确认消息ID
      * </pre>
      *
-     * <code>int64 ackMsgId = 8;</code>
+     * <code>string ackMsgId = 8;</code>
      * @return The ackMsgId.
      */
-    long getAckMsgId();
+    java.lang.String getAckMsgId();
+    /**
+     * <pre>
+     *确认消息ID
+     * </pre>
+     *
+     * <code>string ackMsgId = 8;</code>
+     * @return The bytes for ackMsgId.
+     */
+    com.google.protobuf.ByteString
+        getAckMsgIdBytes();
 
     /**
      * <pre>
@@ -135,10 +151,12 @@ public final class Ack {
       super(builder);
     }
     private AckMsg() {
+      id_ = "";
       status_ = 0;
       senderId_ = "";
       receiverId_ = "";
       msgType_ = 0;
+      ackMsgId_ = "";
     }
 
     @java.lang.Override
@@ -171,9 +189,10 @@ public final class Ack {
             case 0:
               done = true;
               break;
-            case 8: {
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              id_ = input.readInt64();
+              id_ = s;
               break;
             }
             case 16: {
@@ -205,9 +224,10 @@ public final class Ack {
               timestamp_ = input.readUInt64();
               break;
             }
-            case 64: {
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              ackMsgId_ = input.readInt64();
+              ackMsgId_ = s;
               break;
             }
             default: {
@@ -517,13 +537,39 @@ public final class Ack {
     }
 
     public static final int ID_FIELD_NUMBER = 1;
-    private long id_;
+    private volatile java.lang.Object id_;
     /**
-     * <code>int64 id = 1;</code>
+     * <code>string id = 1;</code>
      * @return The id.
      */
-    public long getId() {
-      return id_;
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int STATUS_FIELD_NUMBER = 2;
@@ -669,17 +715,47 @@ public final class Ack {
     }
 
     public static final int ACKMSGID_FIELD_NUMBER = 8;
-    private long ackMsgId_;
+    private volatile java.lang.Object ackMsgId_;
     /**
      * <pre>
      *确认消息ID
      * </pre>
      *
-     * <code>int64 ackMsgId = 8;</code>
+     * <code>string ackMsgId = 8;</code>
      * @return The ackMsgId.
      */
-    public long getAckMsgId() {
-      return ackMsgId_;
+    public java.lang.String getAckMsgId() {
+      java.lang.Object ref = ackMsgId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ackMsgId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *确认消息ID
+     * </pre>
+     *
+     * <code>string ackMsgId = 8;</code>
+     * @return The bytes for ackMsgId.
+     */
+    public com.google.protobuf.ByteString
+        getAckMsgIdBytes() {
+      java.lang.Object ref = ackMsgId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ackMsgId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int TIMESTAMP_FIELD_NUMBER = 6;
@@ -710,8 +786,8 @@ public final class Ack {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (id_ != 0L) {
-        output.writeInt64(1, id_);
+      if (!getIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
       }
       if (status_ != com.feige.im.pojo.proto.Ack.AckMsg.Status.HAVE_SENT.getNumber()) {
         output.writeEnum(2, status_);
@@ -728,8 +804,8 @@ public final class Ack {
       if (timestamp_ != 0L) {
         output.writeUInt64(6, timestamp_);
       }
-      if (ackMsgId_ != 0L) {
-        output.writeInt64(8, ackMsgId_);
+      if (!getAckMsgIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, ackMsgId_);
       }
       unknownFields.writeTo(output);
     }
@@ -740,9 +816,8 @@ public final class Ack {
       if (size != -1) return size;
 
       size = 0;
-      if (id_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, id_);
+      if (!getIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
       }
       if (status_ != com.feige.im.pojo.proto.Ack.AckMsg.Status.HAVE_SENT.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
@@ -762,9 +837,8 @@ public final class Ack {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(6, timestamp_);
       }
-      if (ackMsgId_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(8, ackMsgId_);
+      if (!getAckMsgIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, ackMsgId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -781,16 +855,16 @@ public final class Ack {
       }
       com.feige.im.pojo.proto.Ack.AckMsg other = (com.feige.im.pojo.proto.Ack.AckMsg) obj;
 
-      if (getId()
-          != other.getId()) return false;
+      if (!getId()
+          .equals(other.getId())) return false;
       if (status_ != other.status_) return false;
       if (!getSenderId()
           .equals(other.getSenderId())) return false;
       if (!getReceiverId()
           .equals(other.getReceiverId())) return false;
       if (msgType_ != other.msgType_) return false;
-      if (getAckMsgId()
-          != other.getAckMsgId()) return false;
+      if (!getAckMsgId()
+          .equals(other.getAckMsgId())) return false;
       if (getTimestamp()
           != other.getTimestamp()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -805,8 +879,7 @@ public final class Ack {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + ID_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getId());
+      hash = (53 * hash) + getId().hashCode();
       hash = (37 * hash) + STATUS_FIELD_NUMBER;
       hash = (53 * hash) + status_;
       hash = (37 * hash) + SENDERID_FIELD_NUMBER;
@@ -816,8 +889,7 @@ public final class Ack {
       hash = (37 * hash) + MSGTYPE_FIELD_NUMBER;
       hash = (53 * hash) + msgType_;
       hash = (37 * hash) + ACKMSGID_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getAckMsgId());
+      hash = (53 * hash) + getAckMsgId().hashCode();
       hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTimestamp());
@@ -954,7 +1026,7 @@ public final class Ack {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        id_ = 0L;
+        id_ = "";
 
         status_ = 0;
 
@@ -964,7 +1036,7 @@ public final class Ack {
 
         msgType_ = 0;
 
-        ackMsgId_ = 0L;
+        ackMsgId_ = "";
 
         timestamp_ = 0L;
 
@@ -1049,8 +1121,9 @@ public final class Ack {
 
       public Builder mergeFrom(com.feige.im.pojo.proto.Ack.AckMsg other) {
         if (other == com.feige.im.pojo.proto.Ack.AckMsg.getDefaultInstance()) return this;
-        if (other.getId() != 0L) {
-          setId(other.getId());
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
+          onChanged();
         }
         if (other.status_ != 0) {
           setStatusValue(other.getStatusValue());
@@ -1066,8 +1139,9 @@ public final class Ack {
         if (other.msgType_ != 0) {
           setMsgTypeValue(other.getMsgTypeValue());
         }
-        if (other.getAckMsgId() != 0L) {
-          setAckMsgId(other.getAckMsgId());
+        if (!other.getAckMsgId().isEmpty()) {
+          ackMsgId_ = other.ackMsgId_;
+          onChanged();
         }
         if (other.getTimestamp() != 0L) {
           setTimestamp(other.getTimestamp());
@@ -1101,32 +1175,78 @@ public final class Ack {
         return this;
       }
 
-      private long id_ ;
+      private java.lang.Object id_ = "";
       /**
-       * <code>int64 id = 1;</code>
+       * <code>string id = 1;</code>
        * @return The id.
        */
-      public long getId() {
-        return id_;
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>int64 id = 1;</code>
+       * <code>string id = 1;</code>
+       * @return The bytes for id.
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string id = 1;</code>
        * @param value The id to set.
        * @return This builder for chaining.
        */
-      public Builder setId(long value) {
-        
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         id_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 id = 1;</code>
+       * <code>string id = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearId() {
         
-        id_ = 0L;
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 1;</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        id_ = value;
         onChanged();
         return this;
       }
@@ -1467,29 +1587,63 @@ public final class Ack {
         return this;
       }
 
-      private long ackMsgId_ ;
+      private java.lang.Object ackMsgId_ = "";
       /**
        * <pre>
        *确认消息ID
        * </pre>
        *
-       * <code>int64 ackMsgId = 8;</code>
+       * <code>string ackMsgId = 8;</code>
        * @return The ackMsgId.
        */
-      public long getAckMsgId() {
-        return ackMsgId_;
+      public java.lang.String getAckMsgId() {
+        java.lang.Object ref = ackMsgId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          ackMsgId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
        * <pre>
        *确认消息ID
        * </pre>
        *
-       * <code>int64 ackMsgId = 8;</code>
+       * <code>string ackMsgId = 8;</code>
+       * @return The bytes for ackMsgId.
+       */
+      public com.google.protobuf.ByteString
+          getAckMsgIdBytes() {
+        java.lang.Object ref = ackMsgId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ackMsgId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *确认消息ID
+       * </pre>
+       *
+       * <code>string ackMsgId = 8;</code>
        * @param value The ackMsgId to set.
        * @return This builder for chaining.
        */
-      public Builder setAckMsgId(long value) {
-        
+      public Builder setAckMsgId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         ackMsgId_ = value;
         onChanged();
         return this;
@@ -1499,12 +1653,32 @@ public final class Ack {
        *确认消息ID
        * </pre>
        *
-       * <code>int64 ackMsgId = 8;</code>
+       * <code>string ackMsgId = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearAckMsgId() {
         
-        ackMsgId_ = 0L;
+        ackMsgId_ = getDefaultInstance().getAckMsgId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *确认消息ID
+       * </pre>
+       *
+       * <code>string ackMsgId = 8;</code>
+       * @param value The bytes for ackMsgId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAckMsgIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        ackMsgId_ = value;
         onChanged();
         return this;
       }
@@ -1618,11 +1792,11 @@ public final class Ack {
   static {
     java.lang.String[] descriptorData = {
       "\n\tAck.proto\022\027com.feige.im.pojo.proto\"\264\002\n" +
-      "\006AckMsg\022\n\n\002id\030\001 \001(\003\0226\n\006status\030\002 \001(\0162&.co" +
+      "\006AckMsg\022\n\n\002id\030\001 \001(\t\0226\n\006status\030\002 \001(\0162&.co" +
       "m.feige.im.pojo.proto.AckMsg.Status\022\020\n\010s" +
       "enderId\030\003 \001(\t\022\022\n\nreceiverId\030\004 \001(\t\0228\n\007msg" +
       "Type\030\005 \001(\0162\'.com.feige.im.pojo.proto.Ack" +
-      "Msg.MsgType\022\020\n\010ackMsgId\030\010 \001(\003\022\021\n\ttimesta" +
+      "Msg.MsgType\022\020\n\010ackMsgId\030\010 \001(\t\022\021\n\ttimesta" +
       "mp\030\006 \001(\004\",\n\007MsgType\022\013\n\007PRIVATE\020\000\022\t\n\005GROU" +
       "P\020\001\022\t\n\005OTHER\020\002\"3\n\006Status\022\r\n\tHAVE_SENT\020\000\022" +
       "\013\n\007ARRIVED\020\001\022\r\n\tHAVE_READ\020\002B\005B\003Ackb\006prot" +

@@ -19,7 +19,7 @@ public class MsgHandler {
      * @param msgId 消息ID
      * @return
      */
-    public static boolean isRepeat(Long msgId){
+    public static boolean isRepeat(String msgId){
         return false;
     }
 

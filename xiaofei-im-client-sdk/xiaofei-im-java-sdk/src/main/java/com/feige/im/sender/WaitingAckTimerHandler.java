@@ -4,7 +4,6 @@ import com.feige.im.listener.MsgStatusListener;
 import com.feige.im.utils.AssertUtil;
 import com.feige.im.utils.NameThreadFactory;
 import com.feige.im.utils.ScheduledThreadPoolExecutorUtil;
-import com.google.protobuf.Message;
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timeout;
 
@@ -23,7 +22,7 @@ public class WaitingAckTimerHandler {
 
     private static final HashedWheelTimer TIMER = new HashedWheelTimer(new NameThreadFactory("waiting-ack-timer-"));
 
-    private static final Map<Long, WaitingAckTimer> WAITING_ACK_TIMER_CONTAINER = new ConcurrentHashMap<>();
+    private static final Map<String, WaitingAckTimer> WAITING_ACK_TIMER_CONTAINER = new ConcurrentHashMap<>();
 
     private static final ScheduledThreadPoolExecutorUtil EXECUTOR_UTIL = ScheduledThreadPoolExecutorUtil.getInstance();
 
@@ -35,7 +34,7 @@ public class WaitingAckTimerHandler {
         WAITING_ACK_TIMER_CONTAINER.put(waitingAckTimer.getMsgId(), waitingAckTimer);
     }
 
-    public static void remove(Long msgId){
+    public static void remove(String msgId){
         WaitingAckTimer waitingAckTimer = WAITING_ACK_TIMER_CONTAINER.remove(msgId);
         waitingAckTimer.cancel();
         // 消息已送达
@@ -52,17 +51,17 @@ public class WaitingAckTimerHandler {
         WaitingAckTimerHandler.statusListener = statusListener;
     }
 
-    public static WaitingAckTimer getWaitingAckTimer(Long msgId){
+    public static WaitingAckTimer getWaitingAckTimer(String msgId){
         return new WaitingAckTimer(msgId);
     }
 
     public static class WaitingAckTimer {
 
-        private Long msgId;
+        private String msgId;
 
         private Timeout timeout;
 
-        public WaitingAckTimer(Long msgId) {
+        public WaitingAckTimer(String msgId) {
             this.msgId = msgId;
             createTimeout();
         }
@@ -82,11 +81,11 @@ public class WaitingAckTimerHandler {
             this.timeout.cancel();
         }
 
-        public Long getMsgId() {
+        public String getMsgId() {
             return msgId;
         }
 
-        public void setMsgId(Long msgId) {
+        public void setMsgId(String msgId) {
             this.msgId = msgId;
         }
 

@@ -62,7 +62,7 @@ public class ClientMain2 {
                 channel.writeAndFlush(auth);
             }else {
                 DefaultMsg.Msg msg = DefaultMsg.Msg.newBuilder()
-                        .setId(123456L)
+                        .setId("123456")
                         .setContent("hello netty!")
                         .setMsgType(1)
                         .setExtra("extra")
@@ -70,7 +70,7 @@ public class ClientMain2 {
                         .setSenderId("34353")
                         .setReceiverId("0")
                         .setStatus(1)
-                        .setTimestamp(String.valueOf(System.currentTimeMillis()))
+                        .setGmtCreate(String.valueOf(System.currentTimeMillis()))
                         .build();
                 DefaultMsg.TransportMsg transportMsg = DefaultMsg.TransportMsg.newBuilder()
                         .setType(DefaultMsg.TransportMsg.MsgType.PRIVATE)

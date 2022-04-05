@@ -5,7 +5,7 @@ package com.feige.im.pojo.proto;
 option java_outer_classname = "Ack";
 
 message AckMsg {
-  int64 id = 1;
+  string id = 1;
   /*
   消息状态
    */
@@ -29,7 +29,7 @@ message AckMsg {
   /*
   确认消息ID
    */
-  int64 ackMsgId = 8;
+  string ackMsgId = 8;
 
   /*
   发送时间

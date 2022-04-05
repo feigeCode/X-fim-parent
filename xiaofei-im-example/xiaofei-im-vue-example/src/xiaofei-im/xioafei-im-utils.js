@@ -88,15 +88,15 @@ XIAOFEI_IM.onMessage = function (data) {
         this.pong();
         return;
     }else if(msgKey === ACK){
-        msg = DEFAULT_MSG_PACKAGE_PREFIX.AckMsg.deserializeBinary(body);
+        msg = DEFAULT_MSG_PACKAGE_PREFIX.AckMsg.deserializeBinary(body).toObject(false);
     }else if(msgKey === MESSAGE){
-        msg = DEFAULT_MSG_PACKAGE_PREFIX.TransportMsg.deserializeBinary(body);
+        msg = DEFAULT_MSG_PACKAGE_PREFIX.TransportMsg.deserializeBinary(body).toObject(false);
     }else if(msgKey === FORCED_OFFLINE){
-        msg = DEFAULT_MSG_PACKAGE_PREFIX.Forced.deserializeBinary(body);
+        msg = DEFAULT_MSG_PACKAGE_PREFIX.Forced.deserializeBinary(body).toObject(false);
     }else {
         msg = body;
     }
-    this.msgCallback(msgKey, msg);
+    this.msgCallback(msgKey,msg);
 };
 
 XIAOFEI_IM.sendMsg = function (body, key) {
