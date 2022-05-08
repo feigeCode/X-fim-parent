@@ -1,5 +1,8 @@
 package com.feige.nacos.discovery.utils;
 
+import com.alibaba.nacos.api.config.ConfigService;
+import com.alibaba.nacos.api.naming.NamingService;
+
 /**
  * @author feige<br />
  * @ClassName: NacosProviderUtil <br/>
@@ -20,5 +23,22 @@ public class NacosProviderUtil {
     public static NacosProvider getNacosProvider(){
         return nacosProvider;
     }
+
+
+    public static NamingService getNamingService(){
+        if (nacosProvider == null){
+            throw new IllegalArgumentException("nacosProvider is null");
+        }
+        return nacosProvider.getNamingService();
+    }
+
+    public static ConfigService getConfigService(){
+        if (nacosProvider == null){
+            throw new IllegalArgumentException("nacosProvider is null");
+        }
+        return nacosProvider.getConfigService();
+    }
+
+
 
 }

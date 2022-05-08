@@ -1,7 +1,6 @@
 package com.feige.nacos.discovery.impl;
 
 import com.alibaba.nacos.api.exception.NacosException;
-import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.feige.discovery.ProviderService;
@@ -26,19 +25,12 @@ public class ProviderServiceImpl implements ProviderService {
 
     private static final Logger LOG = LogManager.getLogger(ProviderServiceImpl.class);
 
-    private final NamingService namingService;
-
-
-    public ProviderServiceImpl() {
-        this.namingService = NacosProviderUtil.getNacosProvider().getNamingService();
-    }
-
     @Override
     public void registerServerInstance(ServerInstance serverInstance) {
         Instance instance = MyBeanUtil.serverInstance2Instance(serverInstance);
         try {
             LOG.info("nacos registry, {} {}:{} register begin", new Object[]{instance.getInstanceId(), instance.getIp(), instance.getPort()});
-            namingService.registerInstance(CLUSTER_NAME,instance);
+            NacosProviderUtil.getNamingService().registerInstance(CLUSTER_NAME,instance);
             LOG.info("nacos registry, {} {}:{} register finished", new Object[]{instance.getInstanceId(), instance.getIp(), instance.getPort()});
         } catch (NacosException e) {
             LOG.error("nacos register failed...",e);
@@ -49,7 +41,7 @@ public class ProviderServiceImpl implements ProviderService {
     public void deregisterServerInstance(ServerInstance serverInstance) {
         Instance instance = MyBeanUtil.serverInstance2Instance(serverInstance);
         try {
-            namingService.deregisterInstance(CLUSTER_NAME,instance);
+            NacosProviderUtil.getNamingService().deregisterInstance(CLUSTER_NAME,instance);
         } catch (NacosException e) {
             LOG.error(e);
         }
@@ -58,7 +50,7 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public List<ServerInstance> getAllServerInstances() {
         try {
-            List<Instance> instanceList = namingService.getAllInstances(CLUSTER_NAME);
+            List<Instance> instanceList = NacosProviderUtil.getNamingService().getAllInstances(CLUSTER_NAME);
             return MyBeanUtil.instances2serverInstances(instanceList);
         } catch (NacosException e) {
             LOG.error(e);
@@ -69,7 +61,7 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public void subscribe(Consumer<List<String>> consumer) {
         try {
-            namingService.subscribe(CLUSTER_NAME,event -> {
+            NacosProviderUtil.getNamingService().subscribe(CLUSTER_NAME,event -> {
                 if (event instanceof NamingEvent){
                     NamingEvent namingEvent = (NamingEvent) event;
                     List<Instance> instances = namingEvent.getInstances();
