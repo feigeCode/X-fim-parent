@@ -7,7 +7,7 @@ import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.feige.discovery.ProviderService;
 import com.feige.discovery.pojo.ServerInstance;
 import com.feige.nacos.discovery.utils.MyBeanUtil;
-import com.feige.nacos.discovery.utils.NacosClient;
+import com.feige.nacos.discovery.utils.NacosProviderUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,7 +30,7 @@ public class ProviderServiceImpl implements ProviderService {
 
 
     public ProviderServiceImpl() {
-        this.namingService = NacosClient.getNamingService();
+        this.namingService = NacosProviderUtil.getNacosProvider().getNamingService();
     }
 
     @Override
