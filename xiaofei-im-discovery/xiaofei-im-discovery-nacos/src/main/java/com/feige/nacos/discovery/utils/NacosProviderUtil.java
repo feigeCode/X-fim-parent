@@ -11,32 +11,31 @@ import com.alibaba.nacos.api.naming.NamingService;
  */
 public class NacosProviderUtil {
 
-    private static NacosProvider nacosProvider = new DefaultNacosProvider();
+    private static NamingService namingService = NacosClient.getNamingService();
 
-    public static void setNacosProvider(NacosProvider nacosProvider){
-        if (nacosProvider == null) {
-            throw new IllegalArgumentException("nacosProvider is null");
+    private static ConfigService configService = NacosClient.getConfigService();
+
+    public static void setNamingService(NamingService namingService){
+        if (namingService == null) {
+            throw new IllegalArgumentException("namingService is null");
         }
-        NacosProviderUtil.nacosProvider = nacosProvider;
+        NacosProviderUtil.namingService = namingService;
     }
 
-    public static NacosProvider getNacosProvider(){
-        return nacosProvider;
+    public static void setConfigService(ConfigService configService){
+        if (configService == null) {
+            throw new IllegalArgumentException("configService is null");
+        }
+        NacosProviderUtil.configService = configService;
     }
 
 
     public static NamingService getNamingService(){
-        if (nacosProvider == null){
-            throw new IllegalArgumentException("nacosProvider is null");
-        }
-        return nacosProvider.getNamingService();
+        return namingService;
     }
 
     public static ConfigService getConfigService(){
-        if (nacosProvider == null){
-            throw new IllegalArgumentException("nacosProvider is null");
-        }
-        return nacosProvider.getConfigService();
+        return configService;
     }
 
 
