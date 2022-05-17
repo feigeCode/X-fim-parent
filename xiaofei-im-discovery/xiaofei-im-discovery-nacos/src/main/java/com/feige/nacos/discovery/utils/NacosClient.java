@@ -21,7 +21,7 @@ public class NacosClient {
     private static final Logger LOG = LoggerFactory.getLogger();
     private static final Properties prop = new Properties();
     static {
-        prop.setProperty("serverAddr", "127.0.0:8848");
+        prop.setProperty("serverAddr", "121.37.216.145:8848");
     }
 
     public static NamingService getNamingService(){
@@ -41,4 +41,23 @@ public class NacosClient {
         }
         return null;
     }
+
+    public static NamingService getNamingService(Properties properties){
+        try {
+            return NamingFactory.createNamingService(properties);
+        } catch (NacosException e) {
+            LOG.error("nacos NamingService error:",e);
+        }
+        return null;
+    }
+
+    public static ConfigService getConfigService(Properties properties){
+        try {
+            return ConfigFactory.createConfigService(properties);
+        } catch (NacosException e) {
+            LOG.error("nacos ConfigService error:",e);
+        }
+        return null;
+    }
+
 }

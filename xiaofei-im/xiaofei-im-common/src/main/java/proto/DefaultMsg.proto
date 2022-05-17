@@ -152,3 +152,45 @@ message TransportMsg {
   }
 }
 
+/**
+通知消息
+ */
+message NotifyMsg {
+  /**
+    *消息ID
+    */
+  string id = 1;
+  
+  /**
+     *课程名或班级名
+     */
+  string name = 2;
+  /**
+     *消息类型（1签到，2资料，3请假）
+     */
+  int32 type = 3;
+  /**
+     *消息内容
+     */
+  string content = 4;
+  /**
+     *是否签收
+     */
+  int32 signFlag = 5;
+  /**
+     *消息状态
+     */
+  uint32 status = 6;
+  /**
+     *额外消息
+     */
+  string extra = 7;
+  /**
+     *时间
+     */
+  string gmtCreate = 8;
+  /**
+     *时间
+     */
+  string gmtModified = 9;
+}

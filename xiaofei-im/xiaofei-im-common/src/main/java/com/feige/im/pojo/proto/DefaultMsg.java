@@ -6566,6 +6566,1871 @@ public final class DefaultMsg {
 
   }
 
+  public interface NotifyMsgOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.feige.im.pojo.proto.NotifyMsg)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     **
+     *消息ID
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <pre>
+     **
+     *消息ID
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <pre>
+     **
+     *课程名或班级名
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The name.
+     */
+    java.lang.String getName();
+    /**
+     * <pre>
+     **
+     *课程名或班级名
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The bytes for name.
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <pre>
+     **
+     *消息类型（1签到，2资料，3请假）
+     * </pre>
+     *
+     * <code>int32 type = 3;</code>
+     * @return The type.
+     */
+    int getType();
+
+    /**
+     * <pre>
+     **
+     *消息内容
+     * </pre>
+     *
+     * <code>string content = 4;</code>
+     * @return The content.
+     */
+    java.lang.String getContent();
+    /**
+     * <pre>
+     **
+     *消息内容
+     * </pre>
+     *
+     * <code>string content = 4;</code>
+     * @return The bytes for content.
+     */
+    com.google.protobuf.ByteString
+        getContentBytes();
+
+    /**
+     * <pre>
+     **
+     *是否签收
+     * </pre>
+     *
+     * <code>int32 signFlag = 5;</code>
+     * @return The signFlag.
+     */
+    int getSignFlag();
+
+    /**
+     * <pre>
+     **
+     *消息状态
+     * </pre>
+     *
+     * <code>uint32 status = 6;</code>
+     * @return The status.
+     */
+    int getStatus();
+
+    /**
+     * <pre>
+     **
+     *额外消息
+     * </pre>
+     *
+     * <code>string extra = 7;</code>
+     * @return The extra.
+     */
+    java.lang.String getExtra();
+    /**
+     * <pre>
+     **
+     *额外消息
+     * </pre>
+     *
+     * <code>string extra = 7;</code>
+     * @return The bytes for extra.
+     */
+    com.google.protobuf.ByteString
+        getExtraBytes();
+
+    /**
+     * <pre>
+     **
+     *时间
+     * </pre>
+     *
+     * <code>string gmtCreate = 8;</code>
+     * @return The gmtCreate.
+     */
+    java.lang.String getGmtCreate();
+    /**
+     * <pre>
+     **
+     *时间
+     * </pre>
+     *
+     * <code>string gmtCreate = 8;</code>
+     * @return The bytes for gmtCreate.
+     */
+    com.google.protobuf.ByteString
+        getGmtCreateBytes();
+
+    /**
+     * <pre>
+     **
+     *时间
+     * </pre>
+     *
+     * <code>string gmtModified = 9;</code>
+     * @return The gmtModified.
+     */
+    java.lang.String getGmtModified();
+    /**
+     * <pre>
+     **
+     *时间
+     * </pre>
+     *
+     * <code>string gmtModified = 9;</code>
+     * @return The bytes for gmtModified.
+     */
+    com.google.protobuf.ByteString
+        getGmtModifiedBytes();
+  }
+  /**
+   * <pre>
+   **
+   *通知消息
+   * </pre>
+   *
+   * Protobuf type {@code com.feige.im.pojo.proto.NotifyMsg}
+   */
+  public  static final class NotifyMsg extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.feige.im.pojo.proto.NotifyMsg)
+      NotifyMsgOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use NotifyMsg.newBuilder() to construct.
+    private NotifyMsg(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private NotifyMsg() {
+      id_ = "";
+      name_ = "";
+      content_ = "";
+      extra_ = "";
+      gmtCreate_ = "";
+      gmtModified_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new NotifyMsg();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NotifyMsg(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              id_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            case 24: {
+
+              type_ = input.readInt32();
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              content_ = s;
+              break;
+            }
+            case 40: {
+
+              signFlag_ = input.readInt32();
+              break;
+            }
+            case 48: {
+
+              status_ = input.readUInt32();
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              extra_ = s;
+              break;
+            }
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              gmtCreate_ = s;
+              break;
+            }
+            case 74: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              gmtModified_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_NotifyMsg_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_NotifyMsg_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.feige.im.pojo.proto.DefaultMsg.NotifyMsg.class, com.feige.im.pojo.proto.DefaultMsg.NotifyMsg.Builder.class);
+    }
+
+    public static final int ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object id_;
+    /**
+     * <pre>
+     **
+     *消息ID
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     * @return The id.
+     */
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *消息ID
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NAME_FIELD_NUMBER = 2;
+    private volatile java.lang.Object name_;
+    /**
+     * <pre>
+     **
+     *课程名或班级名
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The name.
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *课程名或班级名
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The bytes for name.
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 3;
+    private int type_;
+    /**
+     * <pre>
+     **
+     *消息类型（1签到，2资料，3请假）
+     * </pre>
+     *
+     * <code>int32 type = 3;</code>
+     * @return The type.
+     */
+    public int getType() {
+      return type_;
+    }
+
+    public static final int CONTENT_FIELD_NUMBER = 4;
+    private volatile java.lang.Object content_;
+    /**
+     * <pre>
+     **
+     *消息内容
+     * </pre>
+     *
+     * <code>string content = 4;</code>
+     * @return The content.
+     */
+    public java.lang.String getContent() {
+      java.lang.Object ref = content_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        content_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *消息内容
+     * </pre>
+     *
+     * <code>string content = 4;</code>
+     * @return The bytes for content.
+     */
+    public com.google.protobuf.ByteString
+        getContentBytes() {
+      java.lang.Object ref = content_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        content_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SIGNFLAG_FIELD_NUMBER = 5;
+    private int signFlag_;
+    /**
+     * <pre>
+     **
+     *是否签收
+     * </pre>
+     *
+     * <code>int32 signFlag = 5;</code>
+     * @return The signFlag.
+     */
+    public int getSignFlag() {
+      return signFlag_;
+    }
+
+    public static final int STATUS_FIELD_NUMBER = 6;
+    private int status_;
+    /**
+     * <pre>
+     **
+     *消息状态
+     * </pre>
+     *
+     * <code>uint32 status = 6;</code>
+     * @return The status.
+     */
+    public int getStatus() {
+      return status_;
+    }
+
+    public static final int EXTRA_FIELD_NUMBER = 7;
+    private volatile java.lang.Object extra_;
+    /**
+     * <pre>
+     **
+     *额外消息
+     * </pre>
+     *
+     * <code>string extra = 7;</code>
+     * @return The extra.
+     */
+    public java.lang.String getExtra() {
+      java.lang.Object ref = extra_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        extra_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *额外消息
+     * </pre>
+     *
+     * <code>string extra = 7;</code>
+     * @return The bytes for extra.
+     */
+    public com.google.protobuf.ByteString
+        getExtraBytes() {
+      java.lang.Object ref = extra_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        extra_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GMTCREATE_FIELD_NUMBER = 8;
+    private volatile java.lang.Object gmtCreate_;
+    /**
+     * <pre>
+     **
+     *时间
+     * </pre>
+     *
+     * <code>string gmtCreate = 8;</code>
+     * @return The gmtCreate.
+     */
+    public java.lang.String getGmtCreate() {
+      java.lang.Object ref = gmtCreate_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gmtCreate_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *时间
+     * </pre>
+     *
+     * <code>string gmtCreate = 8;</code>
+     * @return The bytes for gmtCreate.
+     */
+    public com.google.protobuf.ByteString
+        getGmtCreateBytes() {
+      java.lang.Object ref = gmtCreate_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gmtCreate_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GMTMODIFIED_FIELD_NUMBER = 9;
+    private volatile java.lang.Object gmtModified_;
+    /**
+     * <pre>
+     **
+     *时间
+     * </pre>
+     *
+     * <code>string gmtModified = 9;</code>
+     * @return The gmtModified.
+     */
+    public java.lang.String getGmtModified() {
+      java.lang.Object ref = gmtModified_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gmtModified_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     **
+     *时间
+     * </pre>
+     *
+     * <code>string gmtModified = 9;</code>
+     * @return The bytes for gmtModified.
+     */
+    public com.google.protobuf.ByteString
+        getGmtModifiedBytes() {
+      java.lang.Object ref = gmtModified_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gmtModified_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
+      }
+      if (type_ != 0) {
+        output.writeInt32(3, type_);
+      }
+      if (!getContentBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, content_);
+      }
+      if (signFlag_ != 0) {
+        output.writeInt32(5, signFlag_);
+      }
+      if (status_ != 0) {
+        output.writeUInt32(6, status_);
+      }
+      if (!getExtraBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, extra_);
+      }
+      if (!getGmtCreateBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, gmtCreate_);
+      }
+      if (!getGmtModifiedBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, gmtModified_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
+      }
+      if (type_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, type_);
+      }
+      if (!getContentBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, content_);
+      }
+      if (signFlag_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, signFlag_);
+      }
+      if (status_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(6, status_);
+      }
+      if (!getExtraBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, extra_);
+      }
+      if (!getGmtCreateBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, gmtCreate_);
+      }
+      if (!getGmtModifiedBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, gmtModified_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.feige.im.pojo.proto.DefaultMsg.NotifyMsg)) {
+        return super.equals(obj);
+      }
+      com.feige.im.pojo.proto.DefaultMsg.NotifyMsg other = (com.feige.im.pojo.proto.DefaultMsg.NotifyMsg) obj;
+
+      if (!getId()
+          .equals(other.getId())) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (getType()
+          != other.getType()) return false;
+      if (!getContent()
+          .equals(other.getContent())) return false;
+      if (getSignFlag()
+          != other.getSignFlag()) return false;
+      if (getStatus()
+          != other.getStatus()) return false;
+      if (!getExtra()
+          .equals(other.getExtra())) return false;
+      if (!getGmtCreate()
+          .equals(other.getGmtCreate())) return false;
+      if (!getGmtModified()
+          .equals(other.getGmtModified())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + getId().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + getType();
+      hash = (37 * hash) + CONTENT_FIELD_NUMBER;
+      hash = (53 * hash) + getContent().hashCode();
+      hash = (37 * hash) + SIGNFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + getSignFlag();
+      hash = (37 * hash) + STATUS_FIELD_NUMBER;
+      hash = (53 * hash) + getStatus();
+      hash = (37 * hash) + EXTRA_FIELD_NUMBER;
+      hash = (53 * hash) + getExtra().hashCode();
+      hash = (37 * hash) + GMTCREATE_FIELD_NUMBER;
+      hash = (53 * hash) + getGmtCreate().hashCode();
+      hash = (37 * hash) + GMTMODIFIED_FIELD_NUMBER;
+      hash = (53 * hash) + getGmtModified().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.feige.im.pojo.proto.DefaultMsg.NotifyMsg prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     **
+     *通知消息
+     * </pre>
+     *
+     * Protobuf type {@code com.feige.im.pojo.proto.NotifyMsg}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.feige.im.pojo.proto.NotifyMsg)
+        com.feige.im.pojo.proto.DefaultMsg.NotifyMsgOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_NotifyMsg_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_NotifyMsg_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.feige.im.pojo.proto.DefaultMsg.NotifyMsg.class, com.feige.im.pojo.proto.DefaultMsg.NotifyMsg.Builder.class);
+      }
+
+      // Construct using com.feige.im.pojo.proto.DefaultMsg.NotifyMsg.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        id_ = "";
+
+        name_ = "";
+
+        type_ = 0;
+
+        content_ = "";
+
+        signFlag_ = 0;
+
+        status_ = 0;
+
+        extra_ = "";
+
+        gmtCreate_ = "";
+
+        gmtModified_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.feige.im.pojo.proto.DefaultMsg.internal_static_com_feige_im_pojo_proto_NotifyMsg_descriptor;
+      }
+
+      @java.lang.Override
+      public com.feige.im.pojo.proto.DefaultMsg.NotifyMsg getDefaultInstanceForType() {
+        return com.feige.im.pojo.proto.DefaultMsg.NotifyMsg.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.feige.im.pojo.proto.DefaultMsg.NotifyMsg build() {
+        com.feige.im.pojo.proto.DefaultMsg.NotifyMsg result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.feige.im.pojo.proto.DefaultMsg.NotifyMsg buildPartial() {
+        com.feige.im.pojo.proto.DefaultMsg.NotifyMsg result = new com.feige.im.pojo.proto.DefaultMsg.NotifyMsg(this);
+        result.id_ = id_;
+        result.name_ = name_;
+        result.type_ = type_;
+        result.content_ = content_;
+        result.signFlag_ = signFlag_;
+        result.status_ = status_;
+        result.extra_ = extra_;
+        result.gmtCreate_ = gmtCreate_;
+        result.gmtModified_ = gmtModified_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.feige.im.pojo.proto.DefaultMsg.NotifyMsg) {
+          return mergeFrom((com.feige.im.pojo.proto.DefaultMsg.NotifyMsg)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.feige.im.pojo.proto.DefaultMsg.NotifyMsg other) {
+        if (other == com.feige.im.pojo.proto.DefaultMsg.NotifyMsg.getDefaultInstance()) return this;
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
+          onChanged();
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (other.getType() != 0) {
+          setType(other.getType());
+        }
+        if (!other.getContent().isEmpty()) {
+          content_ = other.content_;
+          onChanged();
+        }
+        if (other.getSignFlag() != 0) {
+          setSignFlag(other.getSignFlag());
+        }
+        if (other.getStatus() != 0) {
+          setStatus(other.getStatus());
+        }
+        if (!other.getExtra().isEmpty()) {
+          extra_ = other.extra_;
+          onChanged();
+        }
+        if (!other.getGmtCreate().isEmpty()) {
+          gmtCreate_ = other.gmtCreate_;
+          onChanged();
+        }
+        if (!other.getGmtModified().isEmpty()) {
+          gmtModified_ = other.gmtModified_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.feige.im.pojo.proto.DefaultMsg.NotifyMsg parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.feige.im.pojo.proto.DefaultMsg.NotifyMsg) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object id_ = "";
+      /**
+       * <pre>
+       **
+       *消息ID
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @return The id.
+       */
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *消息ID
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @return The bytes for id.
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *消息ID
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *消息ID
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *消息ID
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        id_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <pre>
+       **
+       *课程名或班级名
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @return The name.
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *课程名或班级名
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @return The bytes for name.
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *课程名或班级名
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *课程名或班级名
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *课程名或班级名
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int type_ ;
+      /**
+       * <pre>
+       **
+       *消息类型（1签到，2资料，3请假）
+       * </pre>
+       *
+       * <code>int32 type = 3;</code>
+       * @return The type.
+       */
+      public int getType() {
+        return type_;
+      }
+      /**
+       * <pre>
+       **
+       *消息类型（1签到，2资料，3请假）
+       * </pre>
+       *
+       * <code>int32 type = 3;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setType(int value) {
+        
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *消息类型（1签到，2资料，3请假）
+       * </pre>
+       *
+       * <code>int32 type = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearType() {
+        
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object content_ = "";
+      /**
+       * <pre>
+       **
+       *消息内容
+       * </pre>
+       *
+       * <code>string content = 4;</code>
+       * @return The content.
+       */
+      public java.lang.String getContent() {
+        java.lang.Object ref = content_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          content_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *消息内容
+       * </pre>
+       *
+       * <code>string content = 4;</code>
+       * @return The bytes for content.
+       */
+      public com.google.protobuf.ByteString
+          getContentBytes() {
+        java.lang.Object ref = content_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          content_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *消息内容
+       * </pre>
+       *
+       * <code>string content = 4;</code>
+       * @param value The content to set.
+       * @return This builder for chaining.
+       */
+      public Builder setContent(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        content_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *消息内容
+       * </pre>
+       *
+       * <code>string content = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearContent() {
+        
+        content_ = getDefaultInstance().getContent();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *消息内容
+       * </pre>
+       *
+       * <code>string content = 4;</code>
+       * @param value The bytes for content to set.
+       * @return This builder for chaining.
+       */
+      public Builder setContentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        content_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int signFlag_ ;
+      /**
+       * <pre>
+       **
+       *是否签收
+       * </pre>
+       *
+       * <code>int32 signFlag = 5;</code>
+       * @return The signFlag.
+       */
+      public int getSignFlag() {
+        return signFlag_;
+      }
+      /**
+       * <pre>
+       **
+       *是否签收
+       * </pre>
+       *
+       * <code>int32 signFlag = 5;</code>
+       * @param value The signFlag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSignFlag(int value) {
+        
+        signFlag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *是否签收
+       * </pre>
+       *
+       * <code>int32 signFlag = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSignFlag() {
+        
+        signFlag_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int status_ ;
+      /**
+       * <pre>
+       **
+       *消息状态
+       * </pre>
+       *
+       * <code>uint32 status = 6;</code>
+       * @return The status.
+       */
+      public int getStatus() {
+        return status_;
+      }
+      /**
+       * <pre>
+       **
+       *消息状态
+       * </pre>
+       *
+       * <code>uint32 status = 6;</code>
+       * @param value The status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatus(int value) {
+        
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *消息状态
+       * </pre>
+       *
+       * <code>uint32 status = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStatus() {
+        
+        status_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object extra_ = "";
+      /**
+       * <pre>
+       **
+       *额外消息
+       * </pre>
+       *
+       * <code>string extra = 7;</code>
+       * @return The extra.
+       */
+      public java.lang.String getExtra() {
+        java.lang.Object ref = extra_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          extra_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *额外消息
+       * </pre>
+       *
+       * <code>string extra = 7;</code>
+       * @return The bytes for extra.
+       */
+      public com.google.protobuf.ByteString
+          getExtraBytes() {
+        java.lang.Object ref = extra_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          extra_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *额外消息
+       * </pre>
+       *
+       * <code>string extra = 7;</code>
+       * @param value The extra to set.
+       * @return This builder for chaining.
+       */
+      public Builder setExtra(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        extra_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *额外消息
+       * </pre>
+       *
+       * <code>string extra = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearExtra() {
+        
+        extra_ = getDefaultInstance().getExtra();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *额外消息
+       * </pre>
+       *
+       * <code>string extra = 7;</code>
+       * @param value The bytes for extra to set.
+       * @return This builder for chaining.
+       */
+      public Builder setExtraBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        extra_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gmtCreate_ = "";
+      /**
+       * <pre>
+       **
+       *时间
+       * </pre>
+       *
+       * <code>string gmtCreate = 8;</code>
+       * @return The gmtCreate.
+       */
+      public java.lang.String getGmtCreate() {
+        java.lang.Object ref = gmtCreate_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gmtCreate_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *时间
+       * </pre>
+       *
+       * <code>string gmtCreate = 8;</code>
+       * @return The bytes for gmtCreate.
+       */
+      public com.google.protobuf.ByteString
+          getGmtCreateBytes() {
+        java.lang.Object ref = gmtCreate_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gmtCreate_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *时间
+       * </pre>
+       *
+       * <code>string gmtCreate = 8;</code>
+       * @param value The gmtCreate to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGmtCreate(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gmtCreate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *时间
+       * </pre>
+       *
+       * <code>string gmtCreate = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearGmtCreate() {
+        
+        gmtCreate_ = getDefaultInstance().getGmtCreate();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *时间
+       * </pre>
+       *
+       * <code>string gmtCreate = 8;</code>
+       * @param value The bytes for gmtCreate to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGmtCreateBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gmtCreate_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gmtModified_ = "";
+      /**
+       * <pre>
+       **
+       *时间
+       * </pre>
+       *
+       * <code>string gmtModified = 9;</code>
+       * @return The gmtModified.
+       */
+      public java.lang.String getGmtModified() {
+        java.lang.Object ref = gmtModified_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gmtModified_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *时间
+       * </pre>
+       *
+       * <code>string gmtModified = 9;</code>
+       * @return The bytes for gmtModified.
+       */
+      public com.google.protobuf.ByteString
+          getGmtModifiedBytes() {
+        java.lang.Object ref = gmtModified_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gmtModified_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       **
+       *时间
+       * </pre>
+       *
+       * <code>string gmtModified = 9;</code>
+       * @param value The gmtModified to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGmtModified(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gmtModified_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *时间
+       * </pre>
+       *
+       * <code>string gmtModified = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearGmtModified() {
+        
+        gmtModified_ = getDefaultInstance().getGmtModified();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       **
+       *时间
+       * </pre>
+       *
+       * <code>string gmtModified = 9;</code>
+       * @param value The bytes for gmtModified to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGmtModifiedBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gmtModified_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.feige.im.pojo.proto.NotifyMsg)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.feige.im.pojo.proto.NotifyMsg)
+    private static final com.feige.im.pojo.proto.DefaultMsg.NotifyMsg DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.feige.im.pojo.proto.DefaultMsg.NotifyMsg();
+    }
+
+    public static com.feige.im.pojo.proto.DefaultMsg.NotifyMsg getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<NotifyMsg>
+        PARSER = new com.google.protobuf.AbstractParser<NotifyMsg>() {
+      @java.lang.Override
+      public NotifyMsg parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NotifyMsg(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<NotifyMsg> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NotifyMsg> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.feige.im.pojo.proto.DefaultMsg.NotifyMsg getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_feige_im_pojo_proto_Auth_descriptor;
   private static final 
@@ -6586,6 +8451,11 @@ public final class DefaultMsg {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_feige_im_pojo_proto_TransportMsg_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_feige_im_pojo_proto_NotifyMsg_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_feige_im_pojo_proto_NotifyMsg_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -6611,7 +8481,11 @@ public final class DefaultMsg {
       "om.feige.im.pojo.proto.TransportMsg.MsgT" +
       "ype\022)\n\003msg\030\002 \001(\0132\034.com.feige.im.pojo.pro" +
       "to.Msg\",\n\007MsgType\022\013\n\007PRIVATE\020\000\022\t\n\005GROUP\020" +
-      "\001\022\t\n\005OTHER\020\002B\014B\nDefaultMsgb\006proto3"
+      "\001\022\t\n\005OTHER\020\002\"\235\001\n\tNotifyMsg\022\n\n\002id\030\001 \001(\t\022\014" +
+      "\n\004name\030\002 \001(\t\022\014\n\004type\030\003 \001(\005\022\017\n\007content\030\004 " +
+      "\001(\t\022\020\n\010signFlag\030\005 \001(\005\022\016\n\006status\030\006 \001(\r\022\r\n" +
+      "\005extra\030\007 \001(\t\022\021\n\tgmtCreate\030\010 \001(\t\022\023\n\013gmtMo" +
+      "dified\030\t \001(\tB\014B\nDefaultMsgb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -6641,6 +8515,12 @@ public final class DefaultMsg {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_TransportMsg_descriptor,
         new java.lang.String[] { "Type", "Msg", });
+    internal_static_com_feige_im_pojo_proto_NotifyMsg_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_com_feige_im_pojo_proto_NotifyMsg_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_feige_im_pojo_proto_NotifyMsg_descriptor,
+        new java.lang.String[] { "Id", "Name", "Type", "Content", "SignFlag", "Status", "Extra", "GmtCreate", "GmtModified", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

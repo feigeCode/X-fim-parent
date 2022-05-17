@@ -34,17 +34,7 @@
         </dependency>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>xiaofei-im-route</artifactId>
-            <version>${xiaofei.im.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.feige</groupId>
             <artifactId>xiaofei-im-discovery-api</artifactId>
-            <version>${xiaofei.im.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.feige</groupId>
-            <artifactId>xiaofei-im-discovery-nacos</artifactId>
             <version>${xiaofei.im.version}</version>
         </dependency>
         <dependency>
