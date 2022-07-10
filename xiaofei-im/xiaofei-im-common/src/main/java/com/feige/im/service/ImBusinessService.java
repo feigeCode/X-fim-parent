@@ -2,6 +2,7 @@ package com.feige.im.service;
 
 import com.google.protobuf.Message;
 import io.netty.channel.Channel;
+import sun.java2d.opengl.OGLRenderQueue;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface ImBusinessService {
      * @param msg
      * @return
      */
-    long persistentMsg(Message msg);
+    long persistentMsg(Object msg);
 
     /**
      * 通过群组ID获取群成员
@@ -32,7 +33,7 @@ public interface ImBusinessService {
      * @param channel 用户的channel
      * @param auth 认证信息
      */
-    void authenticate(Channel channel, Message auth);
+    void authenticate(Channel channel, Object auth);
 
 
 }

@@ -56,7 +56,7 @@ public class ClusterInitializer {
         Cluster.Node clusterAuth = Cluster.Node.newBuilder()
                 .setNodeKey(CONFIG.getNodeKey())
                 .build();
-        LOG.debugInfo("开始向nodeKey = {}的主机发送集群连接消息{}",getNodeKey(getInetSocketAddress()),StringUtil.protoMsgFormat(clusterAuth));
+        LOG.debugInfo("开始向nodeKey = {}的主机发送集群连接消息{}",getNodeKey(getInetSocketAddress()),StringUtil.printMsg(clusterAuth));
         this.channel.writeAndFlush(clusterAuth);
         LOG.debugInfo("nodeKey = {}的主机集群连接消息发送完成", getNodeKey(getInetSocketAddress()));
         add(getWaitingAckTimer(getNodeKey(getInetSocketAddress()), clusterAuth));
@@ -112,7 +112,7 @@ public class ClusterInitializer {
         public void createTimeout(){
             this.timeout = TIMER.newTimeout(ignore -> EXECUTOR_UTIL.execute(() -> {
                 // 超时未收到ack的消息
-                LOG.debugInfo("超时未收到集群连接ACK，开始向nodeKey = {}的重发送集群连接消息{}", getNodeKey(), StringUtil.protoMsgFormat(msg));
+                LOG.debugInfo("超时未收到集群连接ACK，开始向nodeKey = {}的重发送集群连接消息{}", getNodeKey(), StringUtil.printMsg(msg));
                 channel.writeAndFlush(this.msg);
                 LOG.debugInfo("nodeKey = {}的主机集群连接消息重发送完成", getNodeKey());
                 add(getWaitingAckTimer(ClusterInitializer.getNodeKey(getInetSocketAddress()), this.msg));

@@ -1,6 +1,7 @@
 package com.feige.im.codec.ws;
 
 import com.feige.im.codec.MsgCodecUtil;
+import com.feige.im.codec.ProtocolHeadLenType;
 import com.feige.im.constant.ChannelAttr;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,15 +24,17 @@ public class XiaoFeiWsMsgDecoder extends MessageToMessageDecoder<BinaryWebSocket
         ctx.channel().attr(ChannelAttr.PING_COUNT).set(null);
 
         ByteBuf buf = msg.content();
+
+        ProtocolHeadLenType ws = ProtocolHeadLenType.WS;
+        int length = ws.getLength();
+
+        // 判断是否能够读取指定长度
+        if (buf.readableBytes() < length){
+            return;
+        }
         // 标记当前读取的索引
         buf.markReaderIndex();
 
-        // 判断是否能够读取指定长度
-        if (buf.readableBytes() < 4){
-            buf.resetReaderIndex();
-            return;
-        }
-
-        MsgCodecUtil.msgDecoder(buf, out, -1);
+        MsgCodecUtil.msgDecoder(buf, out, -1, ws);
     }
 }

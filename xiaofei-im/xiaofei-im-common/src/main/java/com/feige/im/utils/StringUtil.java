@@ -1,6 +1,5 @@
 package com.feige.im.utils;
 
-
 import com.google.protobuf.Message;
 
 /**
@@ -42,12 +41,15 @@ public class StringUtil {
     }
 
 
-    public static String protoMsgFormat(Message message){
+    public static String printMsg(Object message){
         if (isEmpty(message) || isEmpty(message.toString())){
             return EMPTY_STR;
         }
-        String msg = message.toString().trim().replaceAll("\n", ",");
-        return "{" + msg + "}";
+        String msg = message.toString();
+        if (message instanceof Message){
+            msg = "{" + msg.trim().replaceAll("\n", ",") + "}";
+        }
+        return msg;
     }
 
     public static int[] toCodePoints(final CharSequence str) {

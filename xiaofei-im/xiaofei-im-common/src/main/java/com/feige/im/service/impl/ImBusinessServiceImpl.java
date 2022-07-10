@@ -1,7 +1,8 @@
 package com.feige.im.service.impl;
 
 import com.feige.im.constant.ChannelAttr;
-import com.feige.im.group.MyChannelGroup;
+import com.feige.im.group.DefaultChannelContainer;
+import com.feige.im.group.IChannelContainer;
 import com.feige.im.parser.Parser;
 import com.feige.im.pojo.proto.DefaultMsg;
 import com.feige.im.service.ImBusinessService;
@@ -21,10 +22,10 @@ import java.util.List;
  */
 public class ImBusinessServiceImpl implements ImBusinessService {
 
-    private static final MyChannelGroup channelGroup = MyChannelGroup.getInstance();
+    private static final IChannelContainer channelGroup = DefaultChannelContainer.getInstance();
 
     @Override
-    public long persistentMsg(Message msg) {
+    public long persistentMsg(Object msg) {
         return 0;
     }
 
@@ -34,7 +35,7 @@ public class ImBusinessServiceImpl implements ImBusinessService {
     }
 
     @Override
-    public void authenticate(Channel channel, Message auth) {
+    public void authenticate(Channel channel, Object auth) {
         DefaultMsg.Auth msg = Parser.getT(DefaultMsg.Auth.class, auth);
         channel.attr(ChannelAttr.USER_ID).set(msg.getToken());
         channel.attr(ChannelAttr.PLATFORM).set(msg.getPlatform());

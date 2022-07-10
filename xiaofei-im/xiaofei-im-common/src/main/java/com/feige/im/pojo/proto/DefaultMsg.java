@@ -6675,21 +6675,21 @@ public final class DefaultMsg {
      *额外消息
      * </pre>
      *
-     * <code>string extra = 7;</code>
-     * @return The extra.
+     * <code>string extend = 7;</code>
+     * @return The extend.
      */
-    java.lang.String getExtra();
+    java.lang.String getExtend();
     /**
      * <pre>
      **
      *额外消息
      * </pre>
      *
-     * <code>string extra = 7;</code>
-     * @return The bytes for extra.
+     * <code>string extend = 7;</code>
+     * @return The bytes for extend.
      */
     com.google.protobuf.ByteString
-        getExtraBytes();
+        getExtendBytes();
 
     /**
      * <pre>
@@ -6756,7 +6756,7 @@ public final class DefaultMsg {
       id_ = "";
       name_ = "";
       content_ = "";
-      extra_ = "";
+      extend_ = "";
       gmtCreate_ = "";
       gmtModified_ = "";
     }
@@ -6827,7 +6827,7 @@ public final class DefaultMsg {
             case 58: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              extra_ = s;
+              extend_ = s;
               break;
             }
             case 66: {
@@ -7057,26 +7057,26 @@ public final class DefaultMsg {
       return status_;
     }
 
-    public static final int EXTRA_FIELD_NUMBER = 7;
-    private volatile java.lang.Object extra_;
+    public static final int EXTEND_FIELD_NUMBER = 7;
+    private volatile java.lang.Object extend_;
     /**
      * <pre>
      **
      *额外消息
      * </pre>
      *
-     * <code>string extra = 7;</code>
-     * @return The extra.
+     * <code>string extend = 7;</code>
+     * @return The extend.
      */
-    public java.lang.String getExtra() {
-      java.lang.Object ref = extra_;
+    public java.lang.String getExtend() {
+      java.lang.Object ref = extend_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        extra_ = s;
+        extend_ = s;
         return s;
       }
     }
@@ -7086,17 +7086,17 @@ public final class DefaultMsg {
      *额外消息
      * </pre>
      *
-     * <code>string extra = 7;</code>
-     * @return The bytes for extra.
+     * <code>string extend = 7;</code>
+     * @return The bytes for extend.
      */
     public com.google.protobuf.ByteString
-        getExtraBytes() {
-      java.lang.Object ref = extra_;
+        getExtendBytes() {
+      java.lang.Object ref = extend_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        extra_ = b;
+        extend_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -7227,8 +7227,8 @@ public final class DefaultMsg {
       if (status_ != 0) {
         output.writeUInt32(6, status_);
       }
-      if (!getExtraBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, extra_);
+      if (!getExtendBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, extend_);
       }
       if (!getGmtCreateBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, gmtCreate_);
@@ -7266,8 +7266,8 @@ public final class DefaultMsg {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(6, status_);
       }
-      if (!getExtraBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, extra_);
+      if (!getExtendBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, extend_);
       }
       if (!getGmtCreateBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, gmtCreate_);
@@ -7302,8 +7302,8 @@ public final class DefaultMsg {
           != other.getSignFlag()) return false;
       if (getStatus()
           != other.getStatus()) return false;
-      if (!getExtra()
-          .equals(other.getExtra())) return false;
+      if (!getExtend()
+          .equals(other.getExtend())) return false;
       if (!getGmtCreate()
           .equals(other.getGmtCreate())) return false;
       if (!getGmtModified()
@@ -7331,8 +7331,8 @@ public final class DefaultMsg {
       hash = (53 * hash) + getSignFlag();
       hash = (37 * hash) + STATUS_FIELD_NUMBER;
       hash = (53 * hash) + getStatus();
-      hash = (37 * hash) + EXTRA_FIELD_NUMBER;
-      hash = (53 * hash) + getExtra().hashCode();
+      hash = (37 * hash) + EXTEND_FIELD_NUMBER;
+      hash = (53 * hash) + getExtend().hashCode();
       hash = (37 * hash) + GMTCREATE_FIELD_NUMBER;
       hash = (53 * hash) + getGmtCreate().hashCode();
       hash = (37 * hash) + GMTMODIFIED_FIELD_NUMBER;
@@ -7487,7 +7487,7 @@ public final class DefaultMsg {
 
         status_ = 0;
 
-        extra_ = "";
+        extend_ = "";
 
         gmtCreate_ = "";
 
@@ -7525,7 +7525,7 @@ public final class DefaultMsg {
         result.content_ = content_;
         result.signFlag_ = signFlag_;
         result.status_ = status_;
-        result.extra_ = extra_;
+        result.extend_ = extend_;
         result.gmtCreate_ = gmtCreate_;
         result.gmtModified_ = gmtModified_;
         onBuilt();
@@ -7597,8 +7597,8 @@ public final class DefaultMsg {
         if (other.getStatus() != 0) {
           setStatus(other.getStatus());
         }
-        if (!other.getExtra().isEmpty()) {
-          extra_ = other.extra_;
+        if (!other.getExtend().isEmpty()) {
+          extend_ = other.extend_;
           onChanged();
         }
         if (!other.getGmtCreate().isEmpty()) {
@@ -8076,23 +8076,23 @@ public final class DefaultMsg {
         return this;
       }
 
-      private java.lang.Object extra_ = "";
+      private java.lang.Object extend_ = "";
       /**
        * <pre>
        **
        *额外消息
        * </pre>
        *
-       * <code>string extra = 7;</code>
-       * @return The extra.
+       * <code>string extend = 7;</code>
+       * @return The extend.
        */
-      public java.lang.String getExtra() {
-        java.lang.Object ref = extra_;
+      public java.lang.String getExtend() {
+        java.lang.Object ref = extend_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          extra_ = s;
+          extend_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8104,17 +8104,17 @@ public final class DefaultMsg {
        *额外消息
        * </pre>
        *
-       * <code>string extra = 7;</code>
-       * @return The bytes for extra.
+       * <code>string extend = 7;</code>
+       * @return The bytes for extend.
        */
       public com.google.protobuf.ByteString
-          getExtraBytes() {
-        java.lang.Object ref = extra_;
+          getExtendBytes() {
+        java.lang.Object ref = extend_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          extra_ = b;
+          extend_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -8126,17 +8126,17 @@ public final class DefaultMsg {
        *额外消息
        * </pre>
        *
-       * <code>string extra = 7;</code>
-       * @param value The extra to set.
+       * <code>string extend = 7;</code>
+       * @param value The extend to set.
        * @return This builder for chaining.
        */
-      public Builder setExtra(
+      public Builder setExtend(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        extra_ = value;
+        extend_ = value;
         onChanged();
         return this;
       }
@@ -8146,12 +8146,12 @@ public final class DefaultMsg {
        *额外消息
        * </pre>
        *
-       * <code>string extra = 7;</code>
+       * <code>string extend = 7;</code>
        * @return This builder for chaining.
        */
-      public Builder clearExtra() {
+      public Builder clearExtend() {
         
-        extra_ = getDefaultInstance().getExtra();
+        extend_ = getDefaultInstance().getExtend();
         onChanged();
         return this;
       }
@@ -8161,18 +8161,18 @@ public final class DefaultMsg {
        *额外消息
        * </pre>
        *
-       * <code>string extra = 7;</code>
-       * @param value The bytes for extra to set.
+       * <code>string extend = 7;</code>
+       * @param value The bytes for extend to set.
        * @return This builder for chaining.
        */
-      public Builder setExtraBytes(
+      public Builder setExtendBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        extra_ = value;
+        extend_ = value;
         onChanged();
         return this;
       }
@@ -8481,11 +8481,11 @@ public final class DefaultMsg {
       "om.feige.im.pojo.proto.TransportMsg.MsgT" +
       "ype\022)\n\003msg\030\002 \001(\0132\034.com.feige.im.pojo.pro" +
       "to.Msg\",\n\007MsgType\022\013\n\007PRIVATE\020\000\022\t\n\005GROUP\020" +
-      "\001\022\t\n\005OTHER\020\002\"\235\001\n\tNotifyMsg\022\n\n\002id\030\001 \001(\t\022\014" +
+      "\001\022\t\n\005OTHER\020\002\"\236\001\n\tNotifyMsg\022\n\n\002id\030\001 \001(\t\022\014" +
       "\n\004name\030\002 \001(\t\022\014\n\004type\030\003 \001(\005\022\017\n\007content\030\004 " +
-      "\001(\t\022\020\n\010signFlag\030\005 \001(\005\022\016\n\006status\030\006 \001(\r\022\r\n" +
-      "\005extra\030\007 \001(\t\022\021\n\tgmtCreate\030\010 \001(\t\022\023\n\013gmtMo" +
-      "dified\030\t \001(\tB\014B\nDefaultMsgb\006proto3"
+      "\001(\t\022\020\n\010signFlag\030\005 \001(\005\022\016\n\006status\030\006 \001(\r\022\016\n" +
+      "\006extend\030\007 \001(\t\022\021\n\tgmtCreate\030\010 \001(\t\022\023\n\013gmtM" +
+      "odified\030\t \001(\tB\014B\nDefaultMsgb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -8520,7 +8520,7 @@ public final class DefaultMsg {
     internal_static_com_feige_im_pojo_proto_NotifyMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_im_pojo_proto_NotifyMsg_descriptor,
-        new java.lang.String[] { "Id", "Name", "Type", "Content", "SignFlag", "Status", "Extra", "GmtCreate", "GmtModified", });
+        new java.lang.String[] { "Id", "Name", "Type", "Content", "SignFlag", "Status", "Extend", "GmtCreate", "GmtModified", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

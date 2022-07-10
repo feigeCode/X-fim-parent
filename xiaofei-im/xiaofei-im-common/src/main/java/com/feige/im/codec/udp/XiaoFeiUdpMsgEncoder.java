@@ -15,6 +15,6 @@ import java.util.List;
 public class XiaoFeiUdpMsgEncoder extends MessageToMessageEncoder<Message> {
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, List<Object> out) throws Exception {
-
+        // TODO 等待实现
     }
 }

@@ -3,6 +3,7 @@ package com.feige.im.handler.server;
 import com.feige.im.channel.ClusterChannel;
 import com.feige.im.config.ImConfig;
 import com.feige.im.constant.ChannelAttr;
+import com.feige.im.handler.AbstractMsgListener;
 import com.feige.im.handler.MsgListener;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
@@ -16,6 +17,7 @@ import com.feige.im.utils.StringUtil;
 import com.google.protobuf.Message;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.FullHttpRequest;
 
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +29,7 @@ import java.util.Set;
  * @Description: <br/>
  * @date: 2022/1/21 14:08<br/>
  */
-public class ClusterMsgForwardListener implements MsgListener {
+public class ClusterMsgForwardListener extends AbstractMsgListener {
     private static final Logger LOG = LoggerFactory.getLogger();
     private final ClusterChannel clusterChannel = ClusterChannel.getInstance();
     private final ImConfig CONFIG = ImConfig.getInstance();
@@ -42,17 +44,22 @@ public class ClusterMsgForwardListener implements MsgListener {
     }
 
     @Override
-    public void active(ChannelHandlerContext ctx) {
+    public void onActive(ChannelHandlerContext ctx) {
         LOG.debugInfo("server：连接进入channelId={}",ctx.channel().id().asShortText());
     }
 
     @Override
-    public void read(ChannelHandlerContext ctx, Message msg) {
+    public void onReceivedMsg(ChannelHandlerContext ctx, Object msg) {
         msgHandler(ctx, msg);
     }
 
     @Override
-    public void inactive(ChannelHandlerContext ctx) {
+    public void onReceivedRequest(ChannelHandlerContext ctx, FullHttpRequest req) {
+
+    }
+
+    @Override
+    public void onInactive(ChannelHandlerContext ctx) {
         clusterChannel.remove(ctx.channel());
     }
 
@@ -69,7 +76,7 @@ public class ClusterMsgForwardListener implements MsgListener {
      * @param	msg
      * @return: void
      */
-    public void msgHandler(ChannelHandlerContext ctx, Message msg){
+    public void msgHandler(ChannelHandlerContext ctx, Object msg){
         if (StringUtil.isEmpty(msg)){
             return;
         }
@@ -80,7 +87,7 @@ public class ClusterMsgForwardListener implements MsgListener {
         }
 
         if (msg instanceof DefaultMsg.Auth || msg instanceof DefaultMsg.Forced){
-            msgListener.read(ctx,msg);
+            msgListener.onReceive(ctx,msg);
             return;
         }
 
@@ -94,7 +101,7 @@ public class ClusterMsgForwardListener implements MsgListener {
      * @param channel
      * @param msg
      */
-    private void clusterHandler(Channel channel,Message msg){
+    private void clusterHandler(Channel channel, Object msg){
         Cluster.Node clusterAuth = Parser.getT(Cluster.Node.class, msg);
         if (!StringUtil.isEmpty(clusterAuth) && !StringUtil.isEmpty(clusterAuth.getNodeKey())){
             String nodeKey = clusterAuth.getNodeKey();
@@ -118,7 +125,7 @@ public class ClusterMsgForwardListener implements MsgListener {
      * @param	msg	接收到的消息
      * @return: void
      */
-    private void msgForward(ChannelHandlerContext ctx, Message msg){
+    private void msgForward(ChannelHandlerContext ctx, Object msg){
         Set<String> nodeKesSet = new HashSet<>();
         List<String> receiverIds = Parser.getReceiverIds(msg, imBusinessService);
         if (receiverIds == null || receiverIds.isEmpty()){
@@ -135,7 +142,7 @@ public class ClusterMsgForwardListener implements MsgListener {
             }
             if (myNodeKey.equals(nodeKey)){
                 // 如果在本机，则往下走
-                msgListener.read(ctx, msg);
+                msgListener.onReceive(ctx, msg);
             }else {
                 // 存在多个用户在同一台机器，转发一次即可
                 nodeKesSet.add(nodeKey);

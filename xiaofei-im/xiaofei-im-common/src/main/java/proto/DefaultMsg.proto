@@ -184,7 +184,7 @@ message NotifyMsg {
   /**
      *额外消息
      */
-  string extra = 7;
+  string extend = 7;
   /**
      *时间
      */

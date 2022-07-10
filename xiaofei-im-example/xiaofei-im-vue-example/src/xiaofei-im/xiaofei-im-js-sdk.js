@@ -45,3 +45,5 @@ export const createSocket = (authPayLoad) => {
     return XIAOFEI_IM;
 }
 
+JSON.stringify({a : '1'})
+new Uint8Array()

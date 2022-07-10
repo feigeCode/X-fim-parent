@@ -1,5 +1,6 @@
 package com.feige.im.parser;
 
+import com.feige.im.constant.ImConst;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.pojo.proto.Ack;
@@ -12,7 +13,6 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,14 +62,14 @@ public class Parser {
          * @return 返回接受者IDS
          * @throws Exception
          */
-        List<String> apply(Message msg, ImBusinessService imBusinessService) throws Exception;
+        List<String> apply(Object msg, ImBusinessService imBusinessService) throws Exception;
     }
 
     private static final Logger LOG =  LoggerFactory.getLogger();
 
-    public static final Map<Integer,DeserializationHandler> DESERIALIZATION_MAP = new ConcurrentHashMap<>();
-    public static final Map<Class<? extends Message>,Integer> MSG_KEY_MAP = new ConcurrentHashMap<>();
-    public static final Map<Class<? extends Message>, ReceiverIdsHandler> RECEIVER_IDS_MAP = new ConcurrentHashMap<>();
+    protected static final Map<Integer,DeserializationHandler> DESERIALIZATION_MAP = new ConcurrentHashMap<>();
+    protected static final Map<Class<?>,ParserKey> MSG_KEY_MAP = new ConcurrentHashMap<>();
+    protected static final Map<Class<?>, ReceiverIdsHandler> RECEIVER_IDS_MAP = new ConcurrentHashMap<>();
     public static WsAuthMsgConverter WS_AUTH_MSG_CONVERTER = (handshakeComplete) -> {
         try {
             HttpHeaders headers = handshakeComplete.requestHeaders();
@@ -125,7 +125,7 @@ public class Parser {
 
     static {
         // ack消息
-        add(999, Ack.AckMsg.class,Ack.AckMsg::parseFrom, (msg, imBusinessService) -> {
+        add(new ParserKey(999, 1), Ack.AckMsg.class,Ack.AckMsg::parseFrom, (msg, imBusinessService) -> {
             Ack.AckMsg ackMsg = getT(Ack.AckMsg.class, msg);
             List<String> receiverIds = new ArrayList<>();
             receiverIds.add(ackMsg.getReceiverId());
@@ -134,29 +134,33 @@ public class Parser {
     }
 
 
-    public static void add(Integer key, Class<? extends Message> t,DeserializationHandler handler, ReceiverIdsHandler receiverIds){
+    public static void add(ParserKey key, Class<? extends Message> t,DeserializationHandler handler, ReceiverIdsHandler receiverIds){
         add(key, t, handler);
         RECEIVER_IDS_MAP.put(t,receiverIds);
     }
 
-    public static void add(Integer key, Class<? extends Message> t,DeserializationHandler handler){
-        if (Integer.valueOf(1).equals(key) || Integer.valueOf(0).equals(key)){
-            LOG.error("0和1已经被分配为心跳key，请重新分配key！");
-            throw new IllegalArgumentException("0和1已经被分配为心跳key，请重新分配key！");
+    public static void add(ParserKey key, Class<?> t,DeserializationHandler handler){
+        DeserializationHandler deserializationHandler = DESERIALIZATION_MAP.get(key);
+        if (deserializationHandler != null){
+            LOG.error(key + "已被其它解析器占用，请重新分配key！");
+            return;
         }
-        if (!Objects.isNull(key) && !Objects.isNull(t) && !Objects.isNull(handler)){
-            if (DESERIALIZATION_MAP.containsKey(key)){
-                LOG.error("{}该key已被其它解析器占用，请重新分配key！",key);
-                throw new IllegalArgumentException("该key已被其它解析器占用，请重新分配key！");
-            }
-            DESERIALIZATION_MAP.put(key,handler);
+        if (Objects.nonNull(key) && Objects.nonNull(t) && Objects.nonNull(handler)){
+            DESERIALIZATION_MAP.put(key.getUid(),handler);
             MSG_KEY_MAP.put(t,key);
             LOG.info("key = {}, className = {}的解析器已加入map中",key,t.getCanonicalName());
+        }else {
+            LOG.warn("所有参数不能为空，请检查传递的参数！");
         }
     }
 
-    public static <T> T getT(Class<T> clazz,Message msg){
-        return clazz.cast(msg);
+    public static <T> T getT(Class<T> clazz, Object msg){
+        boolean instance = clazz.isInstance(msg);
+        if (instance){
+            return clazz.cast(msg);
+        }else {
+            return null;
+        }
     }
 
     /**
@@ -165,11 +169,11 @@ public class Parser {
      * @param imBusinessService 通过群ID获取群成员列表
      * @return
      */
-    public static List<String> getReceiverIds(Message message, ImBusinessService imBusinessService){
+    public static List<String> getReceiverIds(Object message, ImBusinessService imBusinessService){
         if (message instanceof HeartBeat.Pong || message instanceof HeartBeat.Ping){
             return Collections.emptyList();
         }
-        Class<? extends Message> messageClass = message.getClass();
+        Class<?> messageClass = message.getClass();
         ReceiverIdsHandler receiverIdsHandler = RECEIVER_IDS_MAP.get(messageClass);
         if (Objects.isNull(receiverIdsHandler)){
             LOG.error("未发现消息类型为{}的消息有取消息的函数，请检查是否添加了该函数", messageClass.getCanonicalName());
@@ -206,14 +210,20 @@ public class Parser {
         }
     }
 
-    public static Integer getKey(Class<? extends Message> t){
-        return MSG_KEY_MAP.get(t);
+    public static ParserKey getKey(Object msg){
+        if (msg instanceof HeartBeat.Pong){
+            return new ParserKey(ImConst.PONG_MSG_TYPE, -1);
+        } else if (msg instanceof HeartBeat.Ping){
+            return new ParserKey(ImConst.PING_MSG_TYPE, -1);
+        }else {
+            return MSG_KEY_MAP.get(msg.getClass());
+        }
     }
 
     public static void registerDefaultParsing(){
-        add(2, DefaultMsg.Auth.class, DefaultMsg.Auth::parseFrom);
-        add(3, DefaultMsg.Forced.class, DefaultMsg.Forced::parseFrom);
-        add(4,DefaultMsg.TransportMsg.class,DefaultMsg.TransportMsg::parseFrom, (msg, imBusinessService) -> {
+        add(new ParserKey(2, 1), DefaultMsg.Auth.class, DefaultMsg.Auth::parseFrom);
+        add(new ParserKey(3, 1), DefaultMsg.Forced.class, DefaultMsg.Forced::parseFrom);
+        add(new ParserKey(4, 1),DefaultMsg.TransportMsg.class,DefaultMsg.TransportMsg::parseFrom, (msg, imBusinessService) -> {
             DefaultMsg.TransportMsg transportMsg = getT(DefaultMsg.TransportMsg.class, msg);
             DefaultMsg.Msg msgMsg = transportMsg.getMsg();
             if (Objects.isNull(msgMsg)) {
@@ -231,4 +241,50 @@ public class Parser {
             return receiverIds;
         });
     }
+
+    public static class ParserKey {
+        /**
+         * 类唯一标识
+         */
+        private int uid;
+
+        /**
+         * 所用解析器类型
+         */
+        private int parserType;
+
+        public ParserKey() {
+
+        }
+
+        public ParserKey(int uid, int parserType) {
+            this.uid = uid;
+            this.parserType = parserType;
+        }
+
+        public int getUid() {
+            return uid;
+        }
+
+        public void setUid(int uid) {
+            this.uid = uid;
+        }
+
+        public int getParserType() {
+            return parserType;
+        }
+
+        public void setParserType(int parserType) {
+            this.parserType = parserType;
+        }
+
+        @Override
+        public String toString() {
+            return "ParserKey{" +
+                    "uid=" + uid +
+                    ", parserType=" + parserType +
+                    '}';
+        }
+    }
 }
+

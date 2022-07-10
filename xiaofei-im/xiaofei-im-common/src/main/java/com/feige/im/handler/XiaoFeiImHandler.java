@@ -1,11 +1,9 @@
 package com.feige.im.handler;
 
-import com.feige.im.log.Logger;
-import com.feige.im.log.LoggerFactory;
-import com.google.protobuf.Message;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.ReferenceCountUtil;
 
 
 /**
@@ -15,7 +13,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @date: 2021/10/7 14:46<br/>
  */
 @ChannelHandler.Sharable
-public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
+public class XiaoFeiImHandler extends ChannelInboundHandlerAdapter {
 
     private final MsgListener msgListener;
 
@@ -23,20 +21,25 @@ public class XiaoFeiImHandler extends SimpleChannelInboundHandler<Message> {
         this.msgListener = msgListener;
     }
 
-
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-        msgListener.read(ctx,msg);
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        try {
+            msgListener.onReceive(ctx, msg);
+        }catch (Throwable throwable){
+            msgListener.exceptionCaught(ctx, throwable);
+        }finally {
+            ReferenceCountUtil.release(msg);
+        }
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        msgListener.active(ctx);
+        msgListener.onActive(ctx);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        msgListener.inactive(ctx);
+        msgListener.onInactive(ctx);
 
     }
 

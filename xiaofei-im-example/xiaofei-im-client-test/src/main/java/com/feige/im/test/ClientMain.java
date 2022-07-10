@@ -24,17 +24,17 @@ public class ClientMain {
         Parser.registerDefaultParsing();
         ImClient localhost = ImClient.connect("10.1.204.70", 8001, new MsgListener() {
             @Override
-            public void active(ChannelHandlerContext ctx) {
+            public void onActive(ChannelHandlerContext ctx) {
 
             }
 
             @Override
-            public void read(ChannelHandlerContext ctx, Message msg) {
+            public void onReceive(ChannelHandlerContext ctx, Object msg) {
 
             }
 
             @Override
-            public void inactive(ChannelHandlerContext ctx) {
+            public void onInactive(ChannelHandlerContext ctx) {
 
             }
 

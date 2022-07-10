@@ -3,7 +3,8 @@ package com.feige.im.handler.client;
 import com.feige.im.channel.ClusterChannel;
 import com.feige.im.client.ImClient;
 import com.feige.im.constant.ImConst;
-import com.feige.im.group.MyChannelGroup;
+import com.feige.im.group.DefaultChannelContainer;
+import com.feige.im.group.IChannelContainer;
 import com.feige.im.handler.MsgListener;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
@@ -38,7 +39,7 @@ public class ClusterClientMsgListener implements MsgListener {
     /**
      * 管理的是用户客户端的连接
      */
-    private static final MyChannelGroup CHANNEL_GROUP = MyChannelGroup.getInstance();
+    private static final IChannelContainer CHANNEL_GROUP = DefaultChannelContainer.getInstance();
 
     private final ClusterInitializer initializer = new ClusterInitializer();
     private static final ScheduledThreadPoolExecutorUtil EXECUTOR_SERVICE =  ScheduledThreadPoolExecutorUtil.getInstance();
@@ -52,7 +53,7 @@ public class ClusterClientMsgListener implements MsgListener {
     }
 
     @Override
-    public void active(ChannelHandlerContext ctx) {
+    public void onActive(ChannelHandlerContext ctx) {
         synchronized (this){
             if (!CLUSTER_CHANNEL.containsKey(ClusterInitializer.getNodeKey(((InetSocketAddress) ctx.channel().remoteAddress())))){
                 EXECUTOR_SERVICE.schedule(() -> init(ctx.channel()),1, TimeUnit.SECONDS);
@@ -62,12 +63,12 @@ public class ClusterClientMsgListener implements MsgListener {
     }
 
     @Override
-    public void read(ChannelHandlerContext ctx, Message msg) {
+    public void onReceive(ChannelHandlerContext ctx, Object msg) {
         msgHandler(ctx.channel(),msg);
     }
 
     @Override
-    public void inactive(ChannelHandlerContext ctx) {
+    public void onInactive(ChannelHandlerContext ctx) {
         CLUSTER_CHANNEL.remove(ctx.channel());
         // 重连
         //retry();
@@ -92,7 +93,7 @@ public class ClusterClientMsgListener implements MsgListener {
      * @param	msg
      * @return: void
      */
-    public void msgHandler(Channel channel, Message msg){
+    public void msgHandler(Channel channel, Object msg){
         if (StringUtil.isEmpty(msg)){
             return;
         }

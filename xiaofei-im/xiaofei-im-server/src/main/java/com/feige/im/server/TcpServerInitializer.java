@@ -1,7 +1,7 @@
 package com.feige.im.server;
 
-import com.feige.im.codec.tcp.XiaoFeiTcpProtoBufDecoder;
-import com.feige.im.codec.tcp.XiaoFeiTcpProtoBufEncoder;
+import com.feige.im.codec.tcp.XiaoFeiTcpMsgDecoder;
+import com.feige.im.codec.tcp.XiaoFeiTcpMsgEncoder;
 import com.feige.im.handler.MsgListener;
 import com.feige.im.handler.ServerHeartbeatHandler;
 import com.feige.im.handler.XiaoFeiImHandler;
@@ -28,8 +28,8 @@ public class TcpServerInitializer extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = socketChannel.pipeline();
 
         // 自定义proto编解码器
-        pipeline.addLast(new XiaoFeiTcpProtoBufDecoder());
-        pipeline.addLast(new XiaoFeiTcpProtoBufEncoder());
+        pipeline.addLast(new XiaoFeiTcpMsgDecoder());
+        pipeline.addLast(new XiaoFeiTcpMsgEncoder());
 
         // 心跳
         pipeline.addLast(new IdleStateHandler(45,60,0,TimeUnit.SECONDS));

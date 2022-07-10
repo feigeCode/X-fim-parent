@@ -5,9 +5,7 @@ import com.feige.im.constant.ChannelAttr;
 import com.feige.im.log.Logger;
 import com.feige.im.log.LoggerFactory;
 import com.feige.im.utils.StringUtil;
-import com.google.protobuf.Message;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.util.Attribute;
 
@@ -20,11 +18,11 @@ import java.util.stream.Collectors;
 
 /**
  * @author feige<br />
- * @ClassName: MyChannelGroup <br/>
+ * @ClassName: DefaultChannelContainer <br/>
  * @Description: <br/>
  * @date: 2021/10/7 14:49<br/>
  */
-public class MyChannelGroup {
+public class DefaultChannelContainer implements IChannelContainer{
 
     private static final Logger LOG = LoggerFactory.getLogger();
 
@@ -37,13 +35,13 @@ public class MyChannelGroup {
         remove(future.channel());
     };
 
-    private MyChannelGroup(){
+    private DefaultChannelContainer(){
 
     }
 
-    private static final MyChannelGroup INSTANCE = new MyChannelGroup();
+    private static final DefaultChannelContainer INSTANCE = new DefaultChannelContainer();
 
-    public static MyChannelGroup getInstance() {
+    public static DefaultChannelContainer getInstance() {
         return INSTANCE;
     }
 
@@ -54,7 +52,8 @@ public class MyChannelGroup {
      * @param	channel	当前用户的通道
      * @return: java.lang.String
      */
-    protected String getKey(Channel channel){
+    @Override
+    public String getKey(Channel channel){
         Attribute<String> attr = channel.attr(ChannelAttr.USER_ID);
         if (!Objects.isNull(attr)){
             return attr.get();
@@ -69,6 +68,7 @@ public class MyChannelGroup {
      * @param	channel
      * @return: void
      */
+    @Override
     public void add(Channel channel){
         String key = getKey(channel);
         if (StringUtil.isEmpty(key) || !channel.isActive()){
@@ -97,6 +97,7 @@ public class MyChannelGroup {
      * @param	channel
      * @return: void
      */
+    @Override
     public void remove(Channel channel){
         String key = getKey(channel);
         if (StringUtil.isEmpty(key)){
@@ -117,6 +118,7 @@ public class MyChannelGroup {
      * @param	platform 平台标识
      * @return: java.util.Collection<io.netty.channel.Channel>
      */
+    @Override
     public Collection<Channel> getChannels(String key,String... platform){
         List<String> platforms = Arrays.asList(platform);
         return getChannels(key)
@@ -132,6 +134,7 @@ public class MyChannelGroup {
      * @param	key
      * @return: java.util.Collection<io.netty.channel.Channel>
      */
+    @Override
     public Collection<Channel> getChannels(String key){
         return MAP.getOrDefault(key,EMPTY_LIST);
     }
@@ -144,7 +147,8 @@ public class MyChannelGroup {
      * @param	msg
      * @return: void
      */
-    public void write(String key, Message msg){
+    @Override
+    public void write(String key, Object msg){
         getChannels(key).forEach(channel -> channel.writeAndFlush(msg));
     }
 
@@ -157,14 +161,13 @@ public class MyChannelGroup {
      * @param	predicate 断言规则，用来筛选满足条件的channel
      * @return: void
      */
-    public void write(String key, Message msg, Predicate<Channel> predicate){
+    @Override
+    public void write(String key, Object msg, Predicate<Channel> predicate){
         getChannels(key).stream().filter(predicate).forEach(channel -> channel.writeAndFlush(msg));
     }
 
-
-
-
-
-
-
+    @Override
+    public boolean containsKey(String key) {
+        return MAP.containsKey(key);
+    }
 }

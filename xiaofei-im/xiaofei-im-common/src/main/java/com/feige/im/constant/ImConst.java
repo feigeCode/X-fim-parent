@@ -16,6 +16,36 @@ public interface ImConst {
     int PONG_TIME_OUT_COUNT = 3;
 
     /**
+     * 消息长度所占字节数
+     */
+    int MSG_LENGTH = 4;
+
+    /**
+     * 消息类型所占字节数
+     */
+    int MSG_TYPE_LENGTH = 4;
+
+    /**
+     * 消息解析器类型所占字节数
+     */
+    int MSG_PARSER_TYPE_LENGTH = 4;
+
+    /**
+     * TCP消息头所占字节数，TCP消息：消息长度 + 解析器类型 + class类型 + 具体消息
+     */
+    int TCP_MSG_HEAD_LENGTH = 12;
+
+    /**
+     * WS消息头所占字节数，WS消息：解析器类型 + class类型 + 具体消息
+     */
+    int WS_MSG_HEAD_LENGTH = 8;
+
+    /**
+     * UDP消息头所占字节数，UDP消息：解析器类型 + class类型 + 具体消息
+     */
+    int UDP_MSG_HEAD_LENGTH = 8;
+
+    /**
      * 心跳类型消息
      */
     int PING_MSG_TYPE = 1;

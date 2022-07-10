@@ -1,6 +1,5 @@
 package com.feige.im.handler;
 
-import com.google.protobuf.Message;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -15,7 +14,7 @@ public interface MsgListener {
      *上线
      * @param ctx Channel上下文
      */
-    void active(ChannelHandlerContext ctx);
+    void onActive(ChannelHandlerContext ctx);
 
 
     /**
@@ -23,13 +22,13 @@ public interface MsgListener {
      * @param ctx Channel上下文
      * @param msg 收到的消息
      */
-    void read(ChannelHandlerContext ctx, Message msg);
+    void onReceive(ChannelHandlerContext ctx, Object msg);
 
     /**
      *下线
      * @param ctx Channel上下文
      */
-    void inactive(ChannelHandlerContext ctx);
+    void onInactive(ChannelHandlerContext ctx);
 
     /**
      * 发生异常
