@@ -298,8 +298,8 @@ public class ImServer {
     public void clusterConnect(){
         if (consumer != null){
             LOG.info("集群任务开始");
-            Parser.add(5, Cluster.Node.class,Cluster.Node::parseFrom);
-            Parser.add(6, Cluster.InternalAck.class,Cluster.InternalAck::parseFrom);
+            Parser.add(new Parser.ParserKey(5, 1), Cluster.Node.class,Cluster.Node::parseFrom);
+            Parser.add(new Parser.ParserKey(6, 1), Cluster.InternalAck.class,Cluster.InternalAck::parseFrom);
             consumer.accept(this.tcpPort);
         }
     }

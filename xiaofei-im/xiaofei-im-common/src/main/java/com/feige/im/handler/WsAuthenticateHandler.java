@@ -33,7 +33,7 @@ public class WsAuthenticateHandler extends ChannelInboundHandlerAdapter {
             WebSocketServerProtocolHandler.HandshakeComplete event = (WebSocketServerProtocolHandler.HandshakeComplete) evt;
             Parser.WsAuthMsgConverter converter = Parser.WS_AUTH_MSG_CONVERTER;
             if (converter != null){
-                msgListener.read(ctx, converter.convert(event));
+                msgListener.onReceive(ctx, converter.convert(event));
             }
         } else {
             super.userEventTriggered(ctx, evt);
