@@ -90,7 +90,7 @@ public class MsgCodecUtil {
             }
             if (buffer != null){
                 if (protocolHeadLenType == ProtocolHeadLenType.TCP){
-                    buf.writeBytes(buf);
+                    buf.writeBytes(buffer);
                 }else if (protocolHeadLenType == ProtocolHeadLenType.WS){
                     buf.writeBytes(new BinaryWebSocketFrame(buffer).content());
                 }

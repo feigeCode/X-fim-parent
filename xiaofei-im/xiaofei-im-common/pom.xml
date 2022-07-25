@@ -25,7 +25,7 @@
         </dependency>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>xiaofei-im-log</artifactId>
+            <artifactId>xiaofei-im-log4j2</artifactId>
             <version>${xiaofei.im.version}</version>
         </dependency>
         <dependency>

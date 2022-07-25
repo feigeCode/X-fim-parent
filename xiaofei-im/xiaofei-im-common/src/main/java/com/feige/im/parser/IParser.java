@@ -6,14 +6,7 @@ import io.netty.buffer.ByteBuf;
 
 public interface IParser {
 
-    /**
-     * 获取对应实体对象
-     * @param clazz 实体类
-     * @param msg 消息对象
-     * @param <T> 泛型
-     * @return
-     */
-    <T> T getObject(Class<T> clazz, Object msg);
+
     /**
      * buf转实体对象
      * @param buf buf对象
