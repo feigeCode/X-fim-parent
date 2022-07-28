@@ -58,10 +58,18 @@
         <nacos-client.version>2.0.3</nacos-client.version>
         <yaml.version>1.25</yaml.version>
         <slf4j.log4j12.version>1.7.32</slf4j.log4j12.version>
+        <config.version>1.4.2</config.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- https://mvnrepository.com/artifact/com.typesafe/config -->
+            <dependency>
+                <groupId>com.typesafe</groupId>
+                <artifactId>config</artifactId>
+                <version>${config.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
