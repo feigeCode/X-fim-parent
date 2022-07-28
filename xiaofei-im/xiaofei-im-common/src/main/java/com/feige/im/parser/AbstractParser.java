@@ -11,8 +11,14 @@ public abstract class AbstractParser implements IParser{
 
     protected static final Logger LOG = LoggerFactory.getLogger();
 
-    @Override
-    public <T> T getObject(Class<T> clazz, Object msg){
+    /**
+     * 获取对应实体对象
+     * @param clazz 实体类
+     * @param msg 消息对象
+     * @param <T> 泛型
+     * @return
+     */
+    public static <T> T getObject(Class<T> clazz, Object msg){
         if (clazz.isInstance(msg)){
             return clazz.cast(msg);
         }
