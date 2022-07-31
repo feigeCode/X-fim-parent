@@ -2,7 +2,8 @@
 package com.feige.fim.log.impl.jul;
 
 
-import com.feige.im.log.utils.ConfigUtil;
+
+import com.feige.fim.log.utils.ConfigUtil;
 
 import java.io.File;
 import java.util.Properties;

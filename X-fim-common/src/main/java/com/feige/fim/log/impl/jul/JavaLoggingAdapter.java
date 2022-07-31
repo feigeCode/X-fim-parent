@@ -30,10 +30,8 @@ public class JavaLoggingAdapter extends BaseJulLogger implements Logger {
     private final java.util.logging.Logger julLogger;
     private final Handler logHandler;
 
-    public JavaLoggingAdapter() {
-        String loggerName = "XIAOFEI-IM-JAVA-LOGGER";
+    public JavaLoggingAdapter(String loggerName, String fileNamePattern) {
         this.julLogger = java.util.logging.Logger.getLogger(loggerName);
-        String fileNamePattern = "xiaofei-im.log";
         this.logHandler = makeLoggingHandler(fileNamePattern, julLogger);
     }
 
