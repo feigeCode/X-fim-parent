@@ -1,4 +1,4 @@
-# xiaofei-im-parent
+# X-fim-parent
 
 #### Description
 基于Netty开发的一个高性能的即时通讯(IM)系统

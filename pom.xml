@@ -5,32 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.feige</groupId>
-    <artifactId>xiaofei-im-parent</artifactId>
+    <artifactId>X-fim-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
 
     <modules>
-        <module>xiaofei-im</module>
-        <module>xiaofei-im/xiaofei-im-server</module>
-        <module>xiaofei-im/xiaofei-im-client</module>
-        <module>xiaofei-im/xiaofei-im-common</module>
-        <module>xiaofei-im/xiaofei-im-cluster</module>
-        <module>xiaofei-im-discovery</module>
-        <module>xiaofei-im-discovery/xiaofei-im-discovery-zk</module>
-        <module>xiaofei-im-discovery/xiaofei-im-discovery-api</module>
-        <module>xiaofei-im-discovery/xiaofei-im-discovery-nacos</module>
-        <module>xiaofei-im-route</module>
-        <module>xiaofei-im-route/xiaofei-im-route-api</module>
-        <module>xiaofei-im-route/xiaofei-im-route-consistent-hash</module>
-        <module>xiaofei-im-load-balancer-gatway</module>
-        <module>xiaofei-im-example</module>
-        <module>xiaofei-im-example/xiaofei-im-cluster-test</module>
-        <module>xiaofei-im-example/xiaofei-im-client-test</module>
-        <module>xiaofei-im-example/xiaofei-im-feixin</module>
-        <module>xiaofei-im-log</module>
-        <module>xiaofei-im-log4j2</module>
-        <module>xiaofei-im-client-sdk</module>
-        <module>xiaofei-im-client-sdk/xiaofei-im-java-sdk</module>
+        <module>X-fim-api</module>
+        <module>X-fim-common</module>
+        <module>X-fim-core</module>
+        <module>X-fim-netty</module>
+        <module>X-fim-utils</module>
+        <module>X-fim-nacos</module>
+        <module>X-fim-log4j2</module>
     </modules>
 
     <properties>
