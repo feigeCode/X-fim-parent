@@ -4,5 +4,5 @@ import com.feige.api.log.Logger;
 
 public interface Loggers {
 
-    Logger SRD = LoggerFactory.getLogger("srd-log","srd.log");
+    Logger SRD = LoggerFactoryLoad.getLogger("srd-log","srd.log");
 }
