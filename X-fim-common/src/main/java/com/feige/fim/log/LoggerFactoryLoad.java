@@ -22,16 +22,17 @@ public final class LoggerFactoryLoad {
     // 默认使用的日志
     private static LoggerFactory LOGGER_FACTORY = new JavaLoggerFactory();
 
+    static {
 
-    public static Logger getLogger(String loggerName, String fileNamePattern){
+        load();
+    }
+
+
+    public static synchronized Logger getLogger(String loggerName, String fileNamePattern){
         Logger logger = LOGGER_CACHE.get(loggerName);
         if (logger == null){
-            synchronized (LoggerFactoryLoad.class){
-                if (logger == null){
-                    logger = LOGGER_FACTORY.create(loggerName, fileNamePattern);
-                    LOGGER_CACHE.put(loggerName, logger);
-                }
-            }
+            logger = LOGGER_FACTORY.create(loggerName, fileNamePattern);
+            LOGGER_CACHE.put(loggerName, logger);
         }
         return logger;
     }
@@ -39,11 +40,7 @@ public final class LoggerFactoryLoad {
 
     public static Logger getLogger(Class<?> clazz, String fileNamePattern){
         String loggerName = clazz.getCanonicalName();
-        Logger logger = LOGGER_CACHE.get(loggerName);
-        if (logger == null){
-            logger = LOGGER_FACTORY.create(loggerName, fileNamePattern);
-        }
-        return logger;
+        return getLogger(loggerName, fileNamePattern);
     }
 
     public static synchronized void load(){
