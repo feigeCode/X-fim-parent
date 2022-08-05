@@ -18,9 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class LoggerFactoryLoad {
 
     private static final Map<String, Logger> LOGGER_CACHE = new ConcurrentHashMap<>();
-    
+
     // 默认使用的日志
-    private static LoggerFactory LOGGER_FACTORY = new JavaLoggerFactory();
+    private static LoggerFactory LOGGER_FACTORY = null;
 
     static {
 
@@ -53,9 +53,12 @@ public final class LoggerFactoryLoad {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LOGGER_FACTORY = new JavaLoggerFactory();
         }
         if (lf != null){
             LOGGER_FACTORY = lf;
+        }else {
+            LOGGER_FACTORY = new JavaLoggerFactory();
         }
     }
 

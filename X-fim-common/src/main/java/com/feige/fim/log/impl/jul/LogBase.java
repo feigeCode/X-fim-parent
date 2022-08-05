@@ -3,30 +3,12 @@ package com.feige.fim.log.impl.jul;
 
 
 
-import com.feige.fim.log.utils.ConfigUtil;
+import com.feige.fim.config.Configs;
 
 import java.io.File;
-import java.util.Properties;
 
-/**
- * <p>The base config class for logging.</p>
- *
- * <p>
- * The default log base directory is {@code ${user.home}/logs/csp/}. We can use the {@link #LOG_DIR}
- * property to override it. The default log file name dose not contain pid, but if multi-instances of the same service
- * are running in the same machine, we may want to distinguish the log file by process ID number.
- * In this case, {@link #LOG_NAME_USE_PID} property could be configured as "true" to turn on this switch.
- * </p>
- *
- * @author Carpenter Lee
- * @author Eric Zhao
- */
+
 public class LogBase {
-
-    public static final String LOG_DIR = "xiaofei.im.log.dir";
-    public static final String LOG_NAME_USE_PID = "xiaofei.im.log.use.pid";
-    public static final String LOG_OUTPUT_TYPE = "xiaofei.im.log.output.type";
-    public static final String LOG_CHARSET = "xiaofei.im.log.charset";
 
     /**
      * Output biz log (e.g. RecordLog and CommandCenterLog) to file.
@@ -50,51 +32,55 @@ public class LogBase {
     static {
         try {
             initializeDefault();
-            loadProperties();
+            loadLogConfig();
         } catch (Throwable t) {
             System.err.println("[LogBase] FATAL ERROR when initializing logging config");
             t.printStackTrace();
         }
     }
+    public static String addSeparator(String dir) {
+        if (!dir.endsWith(File.separator)) {
+            dir += File.separator;
+        }
+        return dir;
+    }
 
     private static void initializeDefault() {
         logNameUsePid = false;
         logOutputType = LOG_OUTPUT_TYPE_FILE;
-        logBaseDir = ConfigUtil.addSeparator(System.getProperty(USER_HOME)) + DIR_NAME + File.separator;
+        logBaseDir = addSeparator(System.getProperty(USER_HOME)) + DIR_NAME + File.separator;
         logCharSet = LOG_CHARSET_UTF8;
     }
 
-    private static void loadProperties() {
-        Properties properties = LogConfigLoader.getProperties();
+    private static void loadLogConfig() {
 
-        logOutputType = properties.get(LOG_OUTPUT_TYPE) == null ? logOutputType : properties.getProperty(LOG_OUTPUT_TYPE);
+        logOutputType = Configs.Log.OUTPUT_TYPE == null ? logOutputType : Configs.Log.OUTPUT_TYPE;
         if (!LOG_OUTPUT_TYPE_FILE.equalsIgnoreCase(logOutputType) && !LOG_OUTPUT_TYPE_CONSOLE.equalsIgnoreCase(logOutputType)) {
             logOutputType = LOG_OUTPUT_TYPE_FILE;
         }
-        System.out.println("INFO: XIAOFEI IM log output type is: " + logOutputType);
+        System.out.println("INFO: X-FIM log output type is: " + logOutputType);
 
-        logCharSet = properties.getProperty(LOG_CHARSET) == null ? logCharSet : properties.getProperty(LOG_CHARSET);
-        System.out.println("INFO: XIAOFEI IM log charset is: " + logCharSet);
+        logCharSet = Configs.Log.CHARSET == null ? logCharSet : Configs.Log.CHARSET;
+        System.out.println("INFO: X-FIM log charset is: " + logCharSet);
 
 
-        logBaseDir = properties.getProperty(LOG_DIR) == null ? logBaseDir : properties.getProperty(LOG_DIR);
-        logBaseDir = ConfigUtil.addSeparator(logBaseDir);
+        logBaseDir = Configs.Log.DIR == null ? logBaseDir : Configs.Log.DIR;
+        logBaseDir = addSeparator(logBaseDir);
         File dir = new File(logBaseDir);
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
-                System.err.println("ERROR: create XIAOFEI IM log base directory error: " + logBaseDir);
+                System.err.println("ERROR: create X-FIM log base directory error: " + logBaseDir);
             }
         }
-        System.out.println("INFO: XIAOFEI IM log base directory is: " + logBaseDir);
+        System.out.println("INFO: X-FIM log base directory is: " + logBaseDir);
 
-        String usePid = properties.getProperty(LOG_NAME_USE_PID);
-        logNameUsePid = "true".equalsIgnoreCase(usePid);
-        System.out.println("INFO: XIAOFEI IM log name use pid is: " + logNameUsePid);
+        logNameUsePid = Configs.Log.USE_PID;
+        System.out.println("INFO: X-FIM log name use pid is: " + logNameUsePid);
     }
 
 
     /**
-     * Whether log file name should contain pid. This switch is configured by {@link #LOG_NAME_USE_PID} system property.
+     * Whether log file name should contain pid. This switch is configured by  system property.
      *
      * @return true if log file name should contain pid, return true, otherwise false
      */

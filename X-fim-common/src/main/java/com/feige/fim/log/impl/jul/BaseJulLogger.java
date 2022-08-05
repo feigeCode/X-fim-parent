@@ -1,7 +1,7 @@
 package com.feige.fim.log.impl.jul;
 
 
-import com.feige.fim.log.utils.PidUtil;
+import com.feig.utils.PidUtil;
 
 import java.io.IOException;
 import java.util.logging.Handler;

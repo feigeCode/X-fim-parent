@@ -17,6 +17,11 @@
             <artifactId>X-fim-api</artifactId>
             <version>${xiaofei.im.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>X-fim-utils</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
     </dependencies>
 
 
