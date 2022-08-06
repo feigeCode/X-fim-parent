@@ -16,6 +16,11 @@
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>X-fim-common</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

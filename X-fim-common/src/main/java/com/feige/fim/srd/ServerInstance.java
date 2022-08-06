@@ -1,5 +1,7 @@
 package com.feige.fim.srd;
 
+import com.feige.api.srd.IServerInstance;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +11,7 @@ import java.util.Map;
  * @Description: <br/>
  * @date: 2021/11/11 11:24<br/>
  */
-public class ServerInstance {
+public class ServerInstance implements IServerInstance {
 
     private String instanceId;
     private String ip;
