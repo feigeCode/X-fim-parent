@@ -93,4 +93,10 @@ public interface Logger {
      */
     void debugError(String format, Throwable e);
 
+    /**
+     * 是否开启debug
+     * @return
+     */
+    boolean isEnableDebug();
+
 }

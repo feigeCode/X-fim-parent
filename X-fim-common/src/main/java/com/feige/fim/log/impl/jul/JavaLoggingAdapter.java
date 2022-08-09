@@ -42,7 +42,7 @@ public class JavaLoggingAdapter extends BaseJulLogger implements Logger {
 
     @Override
     public void debugInfo(String format, Object... arguments) {
-        if (julLogger.isLoggable(Level.DEBUG)) {
+        if (this.isEnableDebug()) {
             log(julLogger, logHandler, Level.INFO, format, arguments);
         }
     }
@@ -55,7 +55,7 @@ public class JavaLoggingAdapter extends BaseJulLogger implements Logger {
 
     @Override
     public void debugWarn(String format, Object... arguments) {
-        if (julLogger.isLoggable(Level.DEBUG)) {
+        if (this.isEnableDebug()) {
             log(julLogger, logHandler, Level.WARNING, format, arguments);
         }
     }
@@ -67,7 +67,7 @@ public class JavaLoggingAdapter extends BaseJulLogger implements Logger {
 
     @Override
     public void debugTrace(String format, boolean isDebug, Object... arguments) {
-        if (julLogger.isLoggable(Level.DEBUG)) {
+        if (this.isEnableDebug()) {
             log(julLogger, logHandler, Level.TRACE, format, arguments);
         }
     }
@@ -85,7 +85,7 @@ public class JavaLoggingAdapter extends BaseJulLogger implements Logger {
 
     @Override
     public void debugError(String format, Object... arguments) {
-        if (julLogger.isLoggable(Level.DEBUG)) {
+        if (this.isEnableDebug()) {
             log(julLogger, logHandler, Level.ERROR, format, arguments);
         }
     }
@@ -98,9 +98,14 @@ public class JavaLoggingAdapter extends BaseJulLogger implements Logger {
 
     @Override
     public void debugError(String format, Throwable e) {
-        if (julLogger.isLoggable(Level.DEBUG)) {
+        if (this.isEnableDebug()) {
             log(julLogger, logHandler, Level.ERROR, format, e);
         }
+    }
+
+    @Override
+    public boolean isEnableDebug() {
+        return julLogger.isLoggable(Level.DEBUG);
     }
 
 }
