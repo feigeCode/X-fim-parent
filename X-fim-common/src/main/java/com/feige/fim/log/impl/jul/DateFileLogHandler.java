@@ -102,7 +102,7 @@ class DateFileLogHandler extends Handler {
             File logFile = new File(fileName);
             return logFile.exists();
         } catch (Throwable e) {
-
+            e.printStackTrace();
         }
         return false;
     }
@@ -133,9 +133,7 @@ class DateFileLogHandler extends Handler {
                 handler.setFormatter(this.getFormatter());
                 handler.setLevel(this.getLevel());
             }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SecurityException | IOException e) {
             e.printStackTrace();
         }
     }
