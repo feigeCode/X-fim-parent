@@ -1,6 +1,15 @@
 package com.feige.api.codec;
 
+import com.feige.api.session.ISession;
+
 public interface Encoder {
 
-    IByteBuf encode(Object obj);
+    /**
+     * 编码
+     * @param session
+     * @param byteBuf
+     * @param obj
+     * @return
+     */
+    IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj);
 }
