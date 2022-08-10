@@ -1,4 +1,4 @@
-package com.feige.api.log;
+package com.feige.log;
 
 /**
  * @author feige<br />

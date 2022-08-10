@@ -17,6 +17,7 @@
         <module>X-fim-utils</module>
         <module>X-fim-nacos</module>
         <module>X-fim-log4j2</module>
+        <module>X-fim-log-api</module>
     </modules>
 
     <properties>

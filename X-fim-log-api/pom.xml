@@ -9,14 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>X-fim-utils</artifactId>
+    <artifactId>X-fim-log-api</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.feige</groupId>
-            <artifactId>X-fim-api</artifactId>
-            <version>${xiaofei.im.version}</version>
-        </dependency>
-    </dependencies>
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
 
 </project>

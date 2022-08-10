@@ -1,5 +1,5 @@
 
-package com.feige.fim.log.impl.jul;
+package com.feige.log.impl.jul;
 
 
 

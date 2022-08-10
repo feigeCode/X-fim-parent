@@ -1,8 +1,6 @@
-package com.feige.fim.log;
+package com.feige.log;
 
-import com.feige.api.log.Logger;
-import com.feige.api.log.LoggerFactory;
-import com.feige.fim.log.impl.JavaLoggerFactory;
+import com.feige.log.impl.JavaLoggerFactory;
 
 import java.util.Iterator;
 import java.util.Map;

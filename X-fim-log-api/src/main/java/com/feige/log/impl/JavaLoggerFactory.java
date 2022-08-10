@@ -1,8 +1,8 @@
-package com.feige.fim.log.impl;
+package com.feige.log.impl;
 
-import com.feige.api.log.Logger;
-import com.feige.api.log.LoggerFactory;
-import com.feige.fim.log.impl.jul.JavaLoggingAdapter;
+import com.feige.log.Logger;
+import com.feige.log.LoggerFactory;
+import com.feige.log.impl.jul.JavaLoggingAdapter;
 
 /**
  * @author feige<br />

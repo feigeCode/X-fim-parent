@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.feige.fim.log.impl.jul;
+package com.feige.log.impl.jul;
 
-import com.feige.api.log.Logger;
+import com.feige.log.Logger;
 
 import java.util.logging.Handler;
 

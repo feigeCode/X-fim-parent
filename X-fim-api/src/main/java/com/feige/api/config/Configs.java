@@ -1,12 +1,31 @@
-package com.feige.fim.config;
+package com.feige.api.config;
 
-import com.feig.utils.ConfigUtil;
 import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+
+import java.io.File;
 
 
 public interface Configs {
 
-    Config ROOT = (Config) ConfigUtil.CONFIG.getObject("fim");
+    String CONFIG_FILE_KEY = "fim.path";
+
+    Config CONFIG = loadConfig();
+
+    static Config loadConfig(){
+        Config config = ConfigFactory.load();
+        if (config.hasPath(CONFIG_FILE_KEY)){
+            File file = new File(config.getString(CONFIG_FILE_KEY));
+            if (file.exists()) {
+                Config custom = ConfigFactory.parseFile(file);
+                config = custom.withFallback(config);
+            }
+        }
+        return config;
+    }
+
+    Config ROOT = (Config) Configs.CONFIG.getObject("fim");
+
     /**
      * 日志相关配置
      */

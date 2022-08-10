@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
-public interface IByteBuf {
+public interface IByteBuf extends Comparable<IByteBuf> {
 
     /**
      * Returns the number of bytes (octets) this buffer can contain.

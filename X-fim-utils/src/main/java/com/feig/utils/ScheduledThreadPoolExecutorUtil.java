@@ -1,8 +1,8 @@
 package com.feig.utils;
 
 
-import com.feige.api.log.Logger;
-import com.feige.fim.log.Loggers;
+import com.feige.log.Logger;
+import com.feige.log.Loggers;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;

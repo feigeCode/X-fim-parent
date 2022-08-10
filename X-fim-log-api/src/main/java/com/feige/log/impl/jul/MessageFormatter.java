@@ -15,7 +15,7 @@
  */
 
 // Copyright notice: This code was copied from SLF4J which licensed under the MIT License.
-package com.feige.fim.log.impl.jul;
+package com.feige.log.impl.jul;
 
 
 // contributors: lizongbo: proposed special treatment of array parameter values

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.feige.fim.log.impl.jul;
+package com.feige.log.impl.jul;
 
 import java.io.File;
 import java.io.IOException;

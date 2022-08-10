@@ -12,6 +12,17 @@
     <artifactId>X-fim-api</artifactId>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>X-fim-log-api</artifactId>
+            <version>${xiaofei.im.version}</version>
+        </dependency>
+    </dependencies>
 
 
 </project>

@@ -1,4 +1,4 @@
-package com.feige.api.log;
+package com.feige.log;
 
 /**
  * @author feige<br />
@@ -7,6 +7,6 @@ package com.feige.api.log;
  * @date: 2022/8/1 22:41<br/>
  */
 public interface LoggerFactory {
-    
+
     Logger create(String loggerName, String fileNamePattern);
 }

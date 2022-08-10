@@ -17,6 +17,7 @@
 package com.feige.fim.adapter;
 
 import com.feig.utils.AssertUtil;
+import com.feig.utils.buffer.IByteBufUtil;
 import com.feige.api.codec.IByteBuf;
 import io.netty.buffer.ByteBuf;
 
@@ -419,4 +420,8 @@ public class NettyByteBufAdapter implements IByteBuf {
         buffer.writerIndex(writerIndex);
     }
 
+    @Override
+    public int compareTo(IByteBuf o) {
+        return IByteBufUtil.compare(this, o);
+    }
 }
