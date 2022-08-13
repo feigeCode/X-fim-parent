@@ -1,8 +1,8 @@
 package com.feige.fim.server.tcp;
 
-import com.feig.utils.NameThreadFactory;
-import com.feig.utils.OsUtil;
 import com.feige.api.base.Listener;
+import com.feige.api.constant.Const;
+import com.feige.fim.factory.NettyEventLoopFactory;
 import com.feige.log.Logger;
 import com.feige.api.sc.IServer;
 import com.feige.api.config.Configs;
@@ -12,10 +12,6 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ServerChannel;
-import io.netty.channel.epoll.EpollEventLoopGroup;
-import io.netty.channel.epoll.EpollServerSocketChannel;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.util.Map;
 
@@ -26,18 +22,13 @@ public class NettyTcpServer implements IServer {
     private EventLoopGroup tcpBossGroup;
     private EventLoopGroup tcpWorkGroup;
     private Class<? extends ServerChannel> tcpServerChannel;
+    private boolean isRunning = false;
 
     @Override
     public void init(Map<String, Object> args) {
-        if (OsUtil.isLinux() && Configs.Server.ENABLE_EPOLL){
-            this.tcpBossGroup = new EpollEventLoopGroup(new NameThreadFactory("tcp-server-epoll-boss-"));
-            this.tcpWorkGroup = new EpollEventLoopGroup(new NameThreadFactory("tcp-server-epoll-work-"));
-            this.tcpServerChannel = EpollServerSocketChannel.class;
-        }else {
-            this.tcpBossGroup = new NioEventLoopGroup(new NameThreadFactory("tcp-server-nio-boss-"));
-            this.tcpWorkGroup = new NioEventLoopGroup(new NameThreadFactory("tcp-server-nio-work-"));
-            this.tcpServerChannel = NioServerSocketChannel.class;
-        }
+        this.tcpBossGroup = NettyEventLoopFactory.createEventLoopGroup(Const.DEFAULT_IO_THREADS, "tcp-server-boss-");
+        this.tcpWorkGroup = NettyEventLoopFactory.createEventLoopGroup(Const.DEFAULT_IO_THREADS, "tcp-server-work-");
+        this.tcpServerChannel = NettyEventLoopFactory.createServerSocketChannelClass();
     }
 
     @Override
@@ -53,11 +44,12 @@ public class NettyTcpServer implements IServer {
         if (tcpWorkGroup != null && !(tcpWorkGroup.isShuttingDown() && tcpWorkGroup.isShutdown() && tcpWorkGroup.isTerminated())){
             tcpWorkGroup.shutdownGracefully();
         }
+        this.isRunning = false;
     }
 
     @Override
     public boolean isRunning() {
-        return false;
+        return isRunning;
     }
 
     @Override
@@ -83,6 +75,7 @@ public class NettyTcpServer implements IServer {
                 .bind().syncUninterruptibly();
         channelFuture.channel().newSucceededFuture().addListener(future -> {
             if (future.isSuccess()) {
+                this.isRunning = true;
                 LOG.info("netty tcp server in {} port start finish....", Configs.Server.TCP_PORT);
             }else {
                 LOG.error("netty tcp server in {} port start fail....", Configs.Server.TCP_PORT);
