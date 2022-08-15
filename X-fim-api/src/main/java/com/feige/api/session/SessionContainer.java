@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 public interface SessionContainer {
 
     /**
-     * @description: 获取用户的唯一标识
+     * @description: 获取唯一标识
      * @author: feige
      * @date: 2021/10/9 21:10
      * @param	session	当前用户的通道
@@ -34,10 +34,10 @@ public interface SessionContainer {
     void remove(ISession session);
 
     /**
-     * @description: 通过用户的唯一标识获取对应平台的session
+     * @description: 通过唯一标识获取对应平台的session
      * @author: feige
      * @date: 2021/10/9 22:09
-     * @param	uid	用户唯一标识
+     * @param	uid	唯一标识
      * @param	platform 平台标识
      * @return: java.util.Collection<io.netty.session.ISession>
      */
@@ -46,7 +46,7 @@ public interface SessionContainer {
     };
 
     /**
-     * @description: 获取用户的session
+     * @description: 通过唯一标识获取会话
      * @author: feige
      * @date: 2021/10/9 22:10
      * @param	uid
@@ -65,7 +65,7 @@ public interface SessionContainer {
     void write(String uid, Object msg);
 
     /**
-     * @description: 通过用户唯一标识往符合断言的通道写数据
+     * @description: 通过唯一标识往符合断言的通道写数据
      * @author: feige
      * @date: 2021/10/9 22:12
      * @param	uid 唯一标识
