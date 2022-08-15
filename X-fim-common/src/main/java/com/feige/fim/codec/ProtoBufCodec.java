@@ -6,6 +6,11 @@ import com.feige.api.session.ISession;
 
 public class ProtoBufCodec implements Codec {
 
+    @Override
+    public IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj) {
+        return null;
+    }
+
 
     @Override
     public Object decode(ISession session, IByteBuf byteBuf) {
@@ -13,8 +18,10 @@ public class ProtoBufCodec implements Codec {
     }
 
     @Override
-    public IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj) {
-        return null;
+    public byte getCodecKey() {
+        return 1;
     }
+
+   
 
 }
