@@ -29,9 +29,7 @@ public class CodecLoader {
     public static synchronized void load(){
         try {
             ServiceLoader<Codec> codecs = ServiceLoader.load(Codec.class);
-            codecs.forEach(codec -> {
-                codecMap.put(codec.getCodecKey(), codec);
-            });
+            codecs.forEach(codec -> codecMap.put(codec.getCodecKey(), codec));
         } catch (Exception e) {
             e.printStackTrace();
         }

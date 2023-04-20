@@ -34,7 +34,7 @@ public class NettyEventLoopFactory {
 
     private static boolean enableEpoll() {
         if (Configs.Server.ENABLE_EPOLL && Epoll.isAvailable()) {
-            return OsUtil.isLinux() && Epoll.isAvailable();
+            return OsUtil.isLinux();
         }
         return false;
     }

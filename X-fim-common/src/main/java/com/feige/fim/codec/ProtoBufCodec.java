@@ -8,6 +8,7 @@ public class ProtoBufCodec implements Codec {
 
     @Override
     public IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj) {
+        
         return null;
     }
 

@@ -33,6 +33,7 @@ public class ServerInstance implements IServerInstance {
         this.port = port;
     }
 
+    @Override
     public String getInstanceId() {
         return instanceId;
     }
@@ -41,6 +42,7 @@ public class ServerInstance implements IServerInstance {
         this.instanceId = instanceId;
     }
 
+    @Override
     public String getIp() {
         return ip;
     }
@@ -49,6 +51,7 @@ public class ServerInstance implements IServerInstance {
         this.ip = ip;
     }
 
+    @Override
     public int getPort() {
         return port;
     }
@@ -57,6 +60,7 @@ public class ServerInstance implements IServerInstance {
         this.port = port;
     }
 
+    @Override
     public double getWeight() {
         return weight;
     }
@@ -65,6 +69,7 @@ public class ServerInstance implements IServerInstance {
         this.weight = weight;
     }
 
+    @Override
     public boolean isHealthy() {
         return healthy;
     }
@@ -73,6 +78,7 @@ public class ServerInstance implements IServerInstance {
         this.healthy = healthy;
     }
 
+    @Override
     public boolean isEnabled() {
         return enabled;
     }
@@ -81,6 +87,7 @@ public class ServerInstance implements IServerInstance {
         this.enabled = enabled;
     }
 
+    @Override
     public boolean isEphemeral() {
         return ephemeral;
     }
@@ -89,6 +96,7 @@ public class ServerInstance implements IServerInstance {
         this.ephemeral = ephemeral;
     }
 
+    @Override
     public String getClusterName() {
         return clusterName;
     }
@@ -97,6 +105,7 @@ public class ServerInstance implements IServerInstance {
         this.clusterName = clusterName;
     }
 
+    @Override
     public String getServiceName() {
         return serviceName;
     }
@@ -109,6 +118,7 @@ public class ServerInstance implements IServerInstance {
         return metadata;
     }
 
+    @Override
     public void setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
     }

@@ -33,7 +33,7 @@ public class NettyTcpServer implements IServer {
 
     @Override
     public void start() {
-
+        createTcpServer();
     }
 
     @Override

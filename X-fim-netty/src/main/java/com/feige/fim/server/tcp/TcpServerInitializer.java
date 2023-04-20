@@ -19,6 +19,7 @@ public class TcpServerInitializer extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
 
+        
 
 
         // 心跳
