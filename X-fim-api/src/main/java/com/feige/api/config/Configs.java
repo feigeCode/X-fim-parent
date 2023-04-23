@@ -48,13 +48,21 @@ public interface Configs {
     interface Server {
         Config SERVER = (Config) ROOT.getObject("server");
         boolean ENABLE_EPOLL = SERVER.getBoolean("enable-epoll");
-        boolean ENABLE_TCP = Server.SERVER.getBoolean("enable-tcp");
+        boolean ENABLE_TCP = SERVER.getBoolean("enable-tcp");
         int TCP_PORT = SERVER.getInt("tcp-port");
-        boolean ENABLE_WS = Server.SERVER.getBoolean("enable-ws");
-        boolean ENABLE_HTTP = Server.SERVER.getBoolean("enable-http");
+        boolean ENABLE_WS = SERVER.getBoolean("enable-ws");
+        boolean ENABLE_HTTP = SERVER.getBoolean("enable-http");
         int WS_PORT = SERVER.getInt("ws-port");
-        boolean ENABLE_UDP = Server.SERVER.getBoolean("enable-udp");
+        boolean ENABLE_UDP = SERVER.getBoolean("enable-udp");
         int UDP_PORT = SERVER.getInt("udp-port");
+    }
+
+
+    interface Spi {
+        Config SpiConfig = (Config) ROOT.getObject("spi-config");
+        static String get(String className){
+            return SpiConfig.getString(className);
+        }
     }
 
 }

@@ -1,9 +1,9 @@
 package com.feige.api.srd;
 
 import com.feige.api.base.Listener;
+import com.feige.api.spi.Spi;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * @author feige<br />
@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * @Description: <br/>
  * @date: 2021/11/4 23:26<br/>
  */
-public interface IServiceRegistryAndDiscovery {
+public interface IServiceRegistryAndDiscovery extends Spi {
 
     String CLUSTER_NAME = "XIAOFEI-IM";
 

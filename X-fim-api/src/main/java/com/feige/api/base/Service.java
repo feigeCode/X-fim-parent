@@ -6,24 +6,24 @@ import java.util.Map;
 public interface Service {
 
     /**
-     * 初始化
-     * @param args 参数
+     * initialization
+     * @param args arguments
      */
     void init(Map<String, Object> args);
 
     /**
-     * 启动
+     * start service
      */
     void start();
 
     /**
-     * 停止
+     * stop service
      */
     void stop();
 
     /**
-     * 运行状态
-     * @return
+     * Running state
+     * @return Whether to run
      */
     boolean isRunning();
 

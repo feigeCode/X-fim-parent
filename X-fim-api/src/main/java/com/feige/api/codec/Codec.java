@@ -1,30 +1,24 @@
 package com.feige.api.codec;
 
 import com.feige.api.session.ISession;
+import com.feige.api.spi.Spi;
 
-public interface Codec {
+public interface Codec extends Spi {
 
     /**
-     * 编码
-     * @param session
-     * @param byteBuf
-     * @param obj
-     * @return
+     * Encoding
+     * @param session session
+     * @param byteBuf byte buffer
+     * @param obj object
+     * @return byte buffer
      */
     IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj);
 
     /**
-     * 解码
-     * @param session
-     * @param byteBuf
-     * @return
+     * Decoding
+     * @param session session
+     * @param byteBuf byte buffer
+     * @return object
      */
     Object decode(ISession session, IByteBuf byteBuf);
-
-    /**
-     * 编解密器key
-     * @return
-     */
-    byte getCodecKey();
-
 }

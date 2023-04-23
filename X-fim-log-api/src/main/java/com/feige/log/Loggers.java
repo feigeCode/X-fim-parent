@@ -6,5 +6,6 @@ public interface Loggers {
     Logger TASK = LoggerFactoryLoad.getLogger("task-log","task.log");
     Logger SERVER = LoggerFactoryLoad.getLogger("server-log","server.log");
     Logger CODEC = LoggerFactoryLoad.getLogger("codec-log","codec.log");
+    Logger LOADER = LoggerFactoryLoad.getLogger("loader-log","loader.log");
 
 }

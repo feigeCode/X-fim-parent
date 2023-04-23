@@ -26,8 +26,8 @@ public class NettyTcpServer implements IServer {
 
     @Override
     public void init(Map<String, Object> args) {
-        this.tcpBossGroup = NettyEventLoopFactory.createEventLoopGroup(Const.DEFAULT_IO_THREADS, "tcp-server-boss-");
-        this.tcpWorkGroup = NettyEventLoopFactory.createEventLoopGroup(Const.DEFAULT_IO_THREADS, "tcp-server-work-");
+        this.tcpBossGroup = NettyEventLoopFactory.createEventLoopGroup(Const.DEFAULT_IO_THREADS, "fim-tcp-server-boss-");
+        this.tcpWorkGroup = NettyEventLoopFactory.createEventLoopGroup(Const.DEFAULT_IO_THREADS, "fim-tcp-server-work-");
         this.tcpServerChannel = NettyEventLoopFactory.createServerSocketChannelClass();
     }
 

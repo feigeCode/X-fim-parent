@@ -1,8 +1,21 @@
 package com.feige.api.session;
 
+import com.feige.api.spi.Spi;
+
 import java.net.InetSocketAddress;
 
-public interface ISession {
+public interface ISession extends Spi {
+    /**
+     * 获取session的唯一id
+     * @return
+     */
+    String getId();
+
+    /**
+     * 设置session的唯一id
+     * @param id 唯一ID
+     */
+    void setId(String id);
 
     /**
      * 获取本地地址

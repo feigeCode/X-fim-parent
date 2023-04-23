@@ -1,10 +1,12 @@
 package com.feige.api.session;
 
+import com.feige.api.spi.Spi;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Predicate;
 
-public interface SessionContainer {
+public interface SessionRepository extends Spi {
 
     /**
      * @description: 获取唯一标识

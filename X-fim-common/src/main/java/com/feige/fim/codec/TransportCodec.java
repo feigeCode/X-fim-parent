@@ -4,7 +4,7 @@ import com.feige.api.codec.Codec;
 import com.feige.api.codec.IByteBuf;
 import com.feige.api.session.ISession;
 
-public class ProtoBufCodec implements Codec {
+public class TransportCodec implements Codec {
 
     @Override
     public IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj) {
@@ -18,11 +18,9 @@ public class ProtoBufCodec implements Codec {
         return null;
     }
 
+
     @Override
-    public byte getCodecKey() {
-        return 1;
+    public String getKey() {
+        return null;
     }
-
-   
-
 }
