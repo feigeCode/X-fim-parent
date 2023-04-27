@@ -7,14 +7,14 @@ import com.feige.api.session.ISession;
 public class TransportCodec implements Codec {
 
     @Override
-    public IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj) {
+    public IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj)  throws Exception{
         
         return null;
     }
 
 
     @Override
-    public Object decode(ISession session, IByteBuf byteBuf) {
+    public Object decode(ISession session, IByteBuf byteBuf)  throws Exception{
         return null;
     }
 

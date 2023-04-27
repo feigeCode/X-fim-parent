@@ -36,6 +36,10 @@ public class NettyByteBufAdapter implements IByteBuf {
     }
 
 
+    public static IByteBuf fromByteBuf(ByteBuf byteBuf){
+        return new NettyByteBufAdapter(byteBuf);
+    }
+
     @Override
     public int capacity() {
         return buffer.capacity();

@@ -1,6 +1,7 @@
 package com.feige.fim.server.tcp;
 
 
+import com.feige.api.handler.SessionHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -13,7 +14,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class TcpServerInitializer extends ChannelInitializer<SocketChannel> {
 
+    private final SessionHandler sessionHandler;
 
+    public TcpServerInitializer(SessionHandler sessionHandler) {
+        this.sessionHandler = sessionHandler;
+    }
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {

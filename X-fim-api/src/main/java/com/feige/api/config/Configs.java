@@ -49,6 +49,7 @@ public interface Configs {
         Config SERVER = (Config) ROOT.getObject("server");
         boolean ENABLE_EPOLL = SERVER.getBoolean("enable-epoll");
         boolean ENABLE_TCP = SERVER.getBoolean("enable-tcp");
+        String TCP_IP = SERVER.getString("tcp-ip");
         int TCP_PORT = SERVER.getInt("tcp-port");
         boolean ENABLE_WS = SERVER.getBoolean("enable-ws");
         boolean ENABLE_HTTP = SERVER.getBoolean("enable-http");

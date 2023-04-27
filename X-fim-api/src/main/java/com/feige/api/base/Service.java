@@ -14,7 +14,7 @@ public interface Service {
     /**
      * start service
      */
-    void start();
+    void start() throws Exception;
 
     /**
      * stop service

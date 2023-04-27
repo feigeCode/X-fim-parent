@@ -1,13 +1,13 @@
 package com.feige.fim.server.udp;
 
-import com.feige.api.base.Listener;
+import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.IServer;
 
 import java.util.Map;
 
 public class NettyUdpServer implements IServer {
     @Override
-    public void bind(Listener listener) {
+    public void bind(SessionHandler sessionHandler) {
 
     }
 

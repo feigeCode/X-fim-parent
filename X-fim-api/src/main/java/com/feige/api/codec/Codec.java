@@ -11,14 +11,16 @@ public interface Codec extends Spi {
      * @param byteBuf byte buffer
      * @param obj object
      * @return byte buffer
+     * @throws Exception
      */
-    IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj);
+    IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj) throws Exception;
 
     /**
      * Decoding
      * @param session session
      * @param byteBuf byte buffer
      * @return object
+     * @throws Exception
      */
-    Object decode(ISession session, IByteBuf byteBuf);
+    Object decode(ISession session, IByteBuf byteBuf) throws Exception;
 }
