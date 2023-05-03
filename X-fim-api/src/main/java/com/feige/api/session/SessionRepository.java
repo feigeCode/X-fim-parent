@@ -80,9 +80,10 @@ public interface SessionRepository extends Spi {
     }
 
     /**
-     * 是否包含uid
-     * @param uid
+     * Whether to include session
+     * @param uid USER ID
+     * @param clientType client type
      * @return
      */
-    boolean containsKey(String uid);
+    boolean containsSession(String uid, Integer clientType);
 }

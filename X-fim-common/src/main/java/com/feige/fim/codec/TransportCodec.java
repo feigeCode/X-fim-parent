@@ -8,6 +8,7 @@ public class TransportCodec implements Codec {
 
     @Override
     public IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj)  throws Exception{
+        byteBuf.markReaderIndex();
         
         return null;
     }
@@ -15,6 +16,11 @@ public class TransportCodec implements Codec {
 
     @Override
     public Object decode(ISession session, IByteBuf byteBuf)  throws Exception{
+        byteBuf.markReaderIndex();
+        if (byteBuf.readable()){
+            byte msgType = byteBuf.readByte();
+            
+        }
         return null;
     }
 
