@@ -1,8 +1,6 @@
 package com.feige.fim.codec;
 
 
-import java.util.zip.CRC32;
-
 /**
  * 1、type 1个字节   报文类型
  * 2、bl 4个字节 body长度
@@ -12,6 +10,7 @@ import java.util.zip.CRC32;
  * 6、body 数据
  */
 public class Transport {
+    private byte version;
     private byte type;
     private int bodyLength;
     private byte[] srcId;
@@ -25,18 +24,6 @@ public class Transport {
     
     
     
-    
-    public boolean check(){
-        return getChecksum(body) == cs;
-    }
-    
-    
-    public static long getChecksum(byte[] body){
-        CRC32 crc32 = new CRC32();
-        crc32.update(body, 0, body.length);
-        return crc32.getValue();
-    }
-    
-    
+
     
 }
