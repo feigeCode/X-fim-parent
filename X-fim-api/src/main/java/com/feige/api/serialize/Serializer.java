@@ -19,4 +19,6 @@ public interface Serializer extends Spi {
      * @return object
      */
     Object deserialize(byte[] bytes);
+
+
 }

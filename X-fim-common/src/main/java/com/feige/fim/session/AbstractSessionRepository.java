@@ -1,6 +1,6 @@
 package com.feige.fim.session;
 
-import com.feig.utils.StringUtil;
+import com.feige.fim.utils.StringUtil;
 import com.feige.api.session.ISession;
 import com.feige.api.session.SessionRepository;
 

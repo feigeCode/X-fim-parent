@@ -1,17 +1,24 @@
 package com.feige.fim.spi;
 
-import com.feige.api.config.Configs;
+import com.feige.fim.utils.StringUtil;
+import com.feige.api.annotation.LoadOnlyTheFirstOne;
+import com.feige.fim.config.Configs;
 import com.feige.api.spi.Spi;
-import com.feige.log.Logger;
-import com.feige.log.Loggers;
+import org.slf4j.Logger;
+import com.feige.fim.lg.Loggers;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SpiLoader {
     private static final Logger LOG = Loggers.LOADER;
-    private final Map<String, Map<String, Spi>> spiMap = new ConcurrentHashMap<>();
+    private final Map<String, List<Spi>> spiMap = new ConcurrentHashMap<>();
+    private final Class<Spi> spiClass = Spi.class;
 
     private SpiLoader(){
 
@@ -21,54 +28,95 @@ public class SpiLoader {
         return InnerSpiLoader.spiLoader;
     }
 
-    public void register(String className, Spi spi){
-        spiMap.computeIfAbsent(className,  k -> new ConcurrentHashMap<>()).put(spi.getKey(), spi);
+    public void register(String className, List<Spi> spiList){
+        if (spiList.size() > 1){
+            spiList.sort(Comparator.comparing(Spi::order));
+        }
+        this.spiMap.put(className, spiList);
     }
 
     public <T extends Spi> T get(String key, Class<T> clazz) throws SpiNotFoundException {
-        Map<String, Spi> map = spiMap.get(clazz.getCanonicalName());
-        if (map != null){
-            Spi spi = map.get(key);
-            if (spi != null){
-                return clazz.cast(spi);
+        List<Spi> spiList = spiMap.get(clazz.getCanonicalName());
+        if (spiList != null && !spiList.isEmpty()){
+            for (Spi spi : spiList) {
+                if (Objects.equals(spi.getKey(), key)){
+                    return clazz.cast(spi);
+                }
             }
             throw new SpiNotFoundException(clazz, key);
         }
         throw new SpiNotFoundException(clazz);
     }
 
-    public <T extends Spi> T getSpiByConfig(Class<T> clazz) throws SpiNotFoundException {
+    /**
+     * The value is obtained through the configuration first.
+     * If the value is not configured or cannot be obtained, the value of primary is true
+     * @param clazz class
+     * @param <T> class type
+     * @return instance
+     * @throws SpiNotFoundException
+     */
+    public <T extends Spi> T getSpiByConfigOrPrimary(Class<T> clazz) throws SpiNotFoundException {
         String name = clazz.getCanonicalName();
-        String key = Configs.Spi.get(name);
-        Map<String, Spi> map = spiMap.get(name);
-        if (map != null){
-            Spi spi = map.get(key);
-            if (spi != null){
-                return clazz.cast(spi);
+        String key = null;
+        try {
+            key = Configs.getString(name);
+        }catch (NullPointerException ignore){}
+        List<Spi> spiList = spiMap.get(name);
+        if (spiList != null && !spiList.isEmpty()){
+            if (StringUtil.isNotBlank(key)) {
+                for (Spi spi : spiList) {
+                    if (Objects.equals(spi.getKey(), key)) {
+                        return clazz.cast(spi);
+                    }
+                }
+            }
+            for (Spi spi : spiList) {
+                if (spi.isPrimary()){
+                    return clazz.cast(spi);
+                }
             }
             throw new SpiNotFoundException(clazz, key);
         }
         throw new SpiNotFoundException(clazz);
     }
 
+    public  <T extends Spi> T getDefault(Class<T> clazz) throws SpiNotFoundException {
+        String name = clazz.getCanonicalName();
+        List<Spi> spiList = spiMap.get(name);
+        if (spiList != null && !spiList.isEmpty()){
+            for (Spi spi : spiList) {
+                if (spi.isPrimary()){
+                    return clazz.cast(spi);
+                }
+            }
+        }
+        throw new SpiNotFoundException(clazz);
+    }
 
     public synchronized void load(String className) {
         try {
             Class<?> loadClass = Class.forName(className);
-            Class<Spi> spiClass = Spi.class;
-            if (spiClass.isAssignableFrom(loadClass)){
+            if (!spiClass.isAssignableFrom(loadClass)){
                 LOG.warn("Must implement {}.", spiClass.getCanonicalName());
                 return;
             }
             ServiceLoader<?> loader = ServiceLoader.load(loadClass);
+            ArrayList<Spi> spiList = new ArrayList<>();
+            LoadOnlyTheFirstOne loadOnlyTheFirstOne = loadClass.getAnnotation(LoadOnlyTheFirstOne.class);
             for (Object next : loader) {
                 Spi spi = (Spi) next;
-                register(className, spi);
+                spiList.add(spi);
+                if(loadOnlyTheFirstOne != null){
+                    break;
+                }
             }
+            register(className, spiList);
         }catch (Exception e){
             LOG.error("spi loader error:", e);
         }
     }
+
 
     private static class InnerSpiLoader {
         private static final SpiLoader spiLoader = new SpiLoader();

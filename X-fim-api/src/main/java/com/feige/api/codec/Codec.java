@@ -1,8 +1,10 @@
 package com.feige.api.codec;
 
+import com.feige.api.annotation.LoadOnlyTheFirstOne;
 import com.feige.api.session.ISession;
 import com.feige.api.spi.Spi;
 
+@LoadOnlyTheFirstOne
 public interface Codec extends Spi {
 
     /**
@@ -23,4 +25,10 @@ public interface Codec extends Spi {
      * @throws Exception
      */
     Object decode(ISession session, IByteBuf byteBuf) throws Exception;
+
+    @Override
+    default boolean isPrimary() {
+        return true;
+    }
+
 }

@@ -3,8 +3,8 @@ package com.feige.fim.adapter;
 import com.feige.api.codec.Codec;
 import com.feige.fim.spi.SpiLoader;
 import com.feige.fim.spi.SpiNotFoundException;
-import com.feige.log.Logger;
-import com.feige.log.Loggers;
+import org.slf4j.Logger;
+import com.feige.fim.lg.Loggers;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -41,7 +41,7 @@ public class NettyCodecAdapter {
         if (codec == null){
             synchronized (NettyCodecAdapter.class){
                 if (codec == null) {
-                    codec = SpiLoader.getInstance().getSpiByConfig(Codec.class);
+                    codec = SpiLoader.getInstance().getSpiByConfigOrPrimary(Codec.class);
                 }
             }
         }

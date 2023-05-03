@@ -1,14 +1,14 @@
 package com.feige.fim.server.tcp;
 
-import com.feige.api.config.Configs;
+import com.feige.fim.config.Configs;
 import com.feige.api.constant.Const;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.IServer;
 import com.feige.fim.factory.NettyEventLoopFactory;
 import com.feige.fim.spi.SpiLoader;
 import com.feige.fim.spi.SpiNotFoundException;
-import com.feige.log.Logger;
-import com.feige.log.Loggers;
+import org.slf4j.Logger;
+import com.feige.fim.lg.Loggers;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -34,19 +34,19 @@ public class NettyTcpServer implements IServer {
         this.tcpBossGroup = NettyEventLoopFactory.createEventLoopGroup(Const.DEFAULT_IO_THREADS, "fim-tcp-server-boss-");
         this.tcpWorkGroup = NettyEventLoopFactory.createEventLoopGroup(Const.DEFAULT_IO_THREADS, "fim-tcp-server-work-");
         this.serverBootstrap = new ServerBootstrap();
-        this.bindAddress = new InetSocketAddress(Configs.Server.TCP_IP, Configs.Server.TCP_PORT);
+        this.bindAddress = new InetSocketAddress(Configs.getString(Configs.ConfigKey.SERVER_TCP_IP_KEY), Configs.getInt(Configs.ConfigKey.SERVER_TCP_PORT_KEY));
     }
 
     @Override
     public void start() throws SpiNotFoundException {
-        SessionHandler sessionHandler = SpiLoader.getInstance().getSpiByConfig(SessionHandler.class);
+        SessionHandler sessionHandler = SpiLoader.getInstance().getSpiByConfigOrPrimary(SessionHandler.class);
         this.bind(sessionHandler);
         this.channel.newSucceededFuture().addListener(future -> {
             if (future.isSuccess()) {
                 this.isRunning = true;
-                LOG.info("netty tcp server in {} port start finish....", Configs.Server.TCP_PORT);
+                LOG.info("netty tcp server in {} port start finish....", Configs.getInt(Configs.ConfigKey.SERVER_TCP_PORT_KEY));
             }else {
-                LOG.error("netty tcp server in {} port start fail....", Configs.Server.TCP_PORT);
+                LOG.error("netty tcp server in {} port start fail....", Configs.getInt(Configs.ConfigKey.SERVER_TCP_PORT_KEY));
             }
         });
         this.channel.closeFuture().addListener(future -> this.stop());
