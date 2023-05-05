@@ -10,9 +10,19 @@ public class TransportCodec implements Codec {
 
     @Override
     public IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj)  throws EncoderException {
-        byteBuf.markReaderIndex();
-        
-        return null;
+        if (obj instanceof Transport) {
+            Transport packet = (Transport) obj;
+            byteBuf.writeByte(packet.getBody().length);
+            byteBuf.writeByte(packet.getCs());
+            byteBuf.writeByte(packet.getVersion());
+            byteBuf.writeByte(packet.getCmd());
+            byteBuf.writeByte(packet.getSerializeType());
+            byteBuf.writeBytes(packet.getSrcId());
+            byteBuf.writeBytes(packet.getDestId());
+            byteBuf.writeByte(packet.getFeatures());
+            byteBuf.writeBytes(packet.getBody());
+        }
+        return byteBuf;
     }
 
 

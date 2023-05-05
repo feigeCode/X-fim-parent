@@ -13,7 +13,7 @@ public interface Codec extends Spi {
      * @param byteBuf byte buffer
      * @param obj object
      * @return byte buffer
-     * @throws Exception
+     * @throws EncoderException
      */
     IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj) throws EncoderException;
 
@@ -22,7 +22,7 @@ public interface Codec extends Spi {
      * @param session session
      * @param byteBuf byte buffer
      * @return object
-     * @throws Exception
+     * @throws DecoderException
      */
     Object decode(ISession session, IByteBuf byteBuf) throws DecoderException;
 
