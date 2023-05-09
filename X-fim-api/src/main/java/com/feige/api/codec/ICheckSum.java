@@ -10,7 +10,14 @@ public interface ICheckSum extends Spi {
      * @return Equal or not
      * @throws CheckSumException
      */
-    void check(byte[] body, byte expectedCheckSum) throws CheckSumException;
+    default void check(byte[] body, byte expectedCheckSum) throws CheckSumException {
+        byte checksumResult = getCheckSum(body);
+        if (checksumResult != expectedCheckSum) {
+            throw new CheckSumException(String.format(
+                    "stream corrupted: mismatching checksum: %d (expected: %d)",
+                    checksumResult, expectedCheckSum));
+        }
+    }
 
     /**
      * calculate check sum

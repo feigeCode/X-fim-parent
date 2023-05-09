@@ -1,19 +1,8 @@
 package com.feige.fim.codec;
 
 import com.feige.api.codec.ICheckSum;
-import com.feige.api.codec.CheckSumException;
 
 public class DefaultCheckSum implements ICheckSum {
-
-    @Override
-    public void check( byte[] body, byte expectedCheckSum) {
-        byte checksumResult = getCheckSum(body);
-        if ( checksumResult != expectedCheckSum) {
-            throw new CheckSumException(String.format(
-                    "stream corrupted: mismatching checksum: %d (expected: %d)",
-                    checksumResult, expectedCheckSum));
-        }
-    }
 
     @Override
     public byte getCheckSum(byte[] data) {
