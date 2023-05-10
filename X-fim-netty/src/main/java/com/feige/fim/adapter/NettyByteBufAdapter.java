@@ -1,24 +1,8 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.feige.fim.adapter;
 
-import com.feige.fim.utils.AssertUtil;
-import com.feige.fim.buffer.IByteBufUtil;
 import com.feige.api.codec.IByteBuf;
+import com.feige.fim.buffer.IByteBufUtil;
+import com.feige.fim.utils.AssertUtil;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
@@ -225,6 +209,91 @@ public class NettyByteBufAdapter implements IByteBuf {
         return buffer.readByte();
     }
 
+    @Override
+    public short readShort() {
+        return buffer.readShort();
+    }
+
+    @Override
+    public short readShortLE() {
+        return buffer.readShortLE();
+    }
+
+    @Override
+    public int readUnsignedShort() {
+        return buffer.readUnsignedShort();
+    }
+
+    @Override
+    public int readUnsignedShortLE() {
+        return buffer.readUnsignedShortLE();
+    }
+
+    @Override
+    public int readMedium() {
+        return buffer.readMedium();
+    }
+
+    @Override
+    public int readMediumLE() {
+        return buffer.readMediumLE();
+    }
+
+    @Override
+    public int readUnsignedMedium() {
+        return buffer.readUnsignedMedium();
+    }
+
+    @Override
+    public int readUnsignedMediumLE() {
+        return buffer.readUnsignedMediumLE();
+    }
+
+    @Override
+    public int readInt() {
+        return  buffer.readInt();
+    }
+
+    @Override
+    public int readIntLE() {
+        return buffer.readIntLE();
+    }
+
+    @Override
+    public long readUnsignedInt() {
+        return buffer.readUnsignedInt();
+    }
+
+    @Override
+    public long readUnsignedIntLE() {
+        return buffer.readUnsignedIntLE();
+    }
+
+    @Override
+    public long readLong() {
+        return buffer.readLong();
+    }
+
+    @Override
+    public long readLongLE() {
+        return buffer.readLongLE();
+    }
+
+    @Override
+    public char readChar() {
+        return buffer.readChar();
+    }
+
+    @Override
+    public float readFloat() {
+        return buffer.readFloat();
+    }
+
+    @Override
+    public double readDouble() {
+        return buffer.readDouble();
+    }
+
 
     @Override
     public void readBytes(byte[] dst) {
@@ -362,6 +431,84 @@ public class NettyByteBufAdapter implements IByteBuf {
     @Override
     public void writeByte(int value) {
         buffer.writeByte(value);
+    }
+
+    @Override
+    public IByteBuf writeShort(int value) {
+        buffer.writeShort(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeShortLE(int value) {
+        buffer.writeShortLE(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeMedium(int value) {
+        buffer.writeMedium(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeMediumLE(int value) {
+        buffer.writeMediumLE(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeInt(int value) {
+        buffer.writeInt(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeIntLE(int value) {
+        buffer.writeIntLE(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeLong(long value) {
+        buffer.writeLong(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeLongLE(long value) {
+        buffer.writeLongLE(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeChar(int value) {
+        buffer.writeChar(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeFloat(float value) {
+        buffer.writeFloat(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeFloatLE(float value) {
+        buffer.writeFloatLE(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeDouble(double value) {
+        buffer.writeDouble(value);
+        return this;
+    }
+
+    @Override
+    public IByteBuf writeDoubleLE(double value) {
+        buffer.writeDoubleLE(value);
+        return this;
     }
 
 

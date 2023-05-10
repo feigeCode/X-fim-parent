@@ -1,21 +1,33 @@
 package com.feige.fim.codec;
 
 
-import java.util.function.Function;
+import com.feige.api.codec.Command;
+import com.feige.api.constant.Const;
 
 /**
- * bodyLength       int类型       消息体长度
- * cs               byte类型      校验和
- * version          byte类型      协议版本
- * cmd              byte类型      操作命令
- * serializeType    byte类型      序列化类型
- * srcId            byte[]类型    源ID
- * destId           byte[]类型    目标ID
- * features         byte类型      启用特性
+ * version          byte类型      协议版本   1
+ * bodyLength       int类型       消息体长度 4
+ * srcId            long类型      源ID      8
+ * destId           long类型      目标ID    8
+ * cmd              byte类型      操作命令   1
+ * serializeType    byte类型      序列化类型  1
+ * features         byte类型      启用特性   1
+ * cs               short类型      校验和    2
  * body             byte[]类型    数据
  */
 public class Transport {
 
+
+    public static Transport create(Command command){
+        Transport transport = new Transport();
+        transport.setCmd(command.getCmd());
+        transport.setVersion(Const.VERSION);
+        return transport;
+    }
+
+    private Transport(){
+
+    }
 
     /**
      * 协议版本
@@ -24,19 +36,15 @@ public class Transport {
     /**
      * 源ID
      */
-    private byte[] srcId;
+    private long srcId;
     /**
      * 目标ID
      */
-    private byte[] destId;
+    private long destId;
     /**
      * 操作指令
      */
     private byte cmd;
-    /**
-     * 校验和
-     */
-    private short cs;
     /**
      * 序列化类型
      */
@@ -45,6 +53,10 @@ public class Transport {
      * 启用特性
      */
     private byte features;
+    /**
+     * 校验和
+     */
+    private short cs;
     /**
      * 数据
      */
@@ -61,20 +73,28 @@ public class Transport {
     }
 
 
-    public short getCs() {
-        return cs;
-    }
-
-    public void setCs(short cs) {
-        this.cs = cs;
-    }
-
     public byte getVersion() {
         return version;
     }
 
     public void setVersion(byte version) {
         this.version = version;
+    }
+
+    public long getSrcId() {
+        return srcId;
+    }
+
+    public void setSrcId(long srcId) {
+        this.srcId = srcId;
+    }
+
+    public long getDestId() {
+        return destId;
+    }
+
+    public void setDestId(long destId) {
+        this.destId = destId;
     }
 
     public byte getCmd() {
@@ -93,28 +113,20 @@ public class Transport {
         this.serializeType = serializeType;
     }
 
-    public byte[] getSrcId() {
-        return srcId;
-    }
-
-    public void setSrcId(byte[] srcId) {
-        this.srcId = srcId;
-    }
-
-    public byte[] getDestId() {
-        return destId;
-    }
-
-    public void setDestId(byte[] destId) {
-        this.destId = destId;
-    }
-
     public byte getFeatures() {
         return features;
     }
 
     public void setFeatures(byte features) {
         this.features = features;
+    }
+
+    public short getCs() {
+        return cs;
+    }
+
+    public void setCs(short cs) {
+        this.cs = cs;
     }
 
     public byte[] getBody() {
@@ -127,13 +139,5 @@ public class Transport {
 
     public int getBodyLength(){
         return this.getBody().length;
-    }
-
-    public <T> T getSrcId(Function<byte[], T> fn){
-        return fn.apply(this.getSrcId());
-    }
-
-    public <T> T getDestId(Function<byte[], T> fn){
-        return fn.apply(this.getDestId());
     }
 }

@@ -1,5 +1,6 @@
 package com.feige.fim.codec;
 
+import com.feige.api.codec.CheckSumException;
 import com.feige.api.codec.ICheckSum;
 import com.feige.fim.spi.SpiLoader;
 
@@ -11,10 +12,11 @@ public class CheckSumUtils {
      * @param body body
      * @param expectedCheckSum expected check sum
      * @return Equal or not
+     * @throws CheckSumException
      */
-    public static void check(byte[] body, short expectedCheckSum) {
+    public static void check(byte[] data, short expectedCheckSum)  throws CheckSumException {
         ICheckSum iCheckSum = SpiLoader.getInstance().getSpiByConfigOrPrimary(ICheckSum.class);
-        iCheckSum.check(body, expectedCheckSum);
+        iCheckSum.check(data, expectedCheckSum);
     }
 
 

@@ -249,6 +249,191 @@ public interface IByteBuf extends Comparable<IByteBuf> {
     byte readByte();
 
     /**
+     * Gets a 16-bit short integer at the current {@code readerIndex}
+     * and increases the {@code readerIndex} by {@code 2} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 2}
+     */
+    short readShort();
+
+    /**
+     * Gets a 16-bit short integer at the current {@code readerIndex}
+     * in the Little Endian Byte Order and increases the {@code readerIndex}
+     * by {@code 2} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 2}
+     */
+    short readShortLE();
+
+    /**
+     * Gets an unsigned 16-bit short integer at the current {@code readerIndex}
+     * and increases the {@code readerIndex} by {@code 2} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 2}
+     */
+    int   readUnsignedShort();
+
+    /**
+     * Gets an unsigned 16-bit short integer at the current {@code readerIndex}
+     * in the Little Endian Byte Order and increases the {@code readerIndex}
+     * by {@code 2} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 2}
+     */
+    int   readUnsignedShortLE();
+
+    /**
+     * Gets a 24-bit medium integer at the current {@code readerIndex}
+     * and increases the {@code readerIndex} by {@code 3} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 3}
+     */
+    int   readMedium();
+
+    /**
+     * Gets a 24-bit medium integer at the current {@code readerIndex}
+     * in the Little Endian Byte Order and increases the
+     * {@code readerIndex} by {@code 3} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 3}
+     */
+    int   readMediumLE();
+
+    /**
+     * Gets an unsigned 24-bit medium integer at the current {@code readerIndex}
+     * and increases the {@code readerIndex} by {@code 3} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 3}
+     */
+    int   readUnsignedMedium();
+
+    /**
+     * Gets an unsigned 24-bit medium integer at the current {@code readerIndex}
+     * in the Little Endian Byte Order and increases the {@code readerIndex}
+     * by {@code 3} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 3}
+     */
+    int   readUnsignedMediumLE();
+
+    /**
+     * Gets a 32-bit integer at the current {@code readerIndex}
+     * and increases the {@code readerIndex} by {@code 4} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 4}
+     */
+    int   readInt();
+
+    /**
+     * Gets a 32-bit integer at the current {@code readerIndex}
+     * in the Little Endian Byte Order and increases the {@code readerIndex}
+     * by {@code 4} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 4}
+     */
+    int   readIntLE();
+
+    /**
+     * Gets an unsigned 32-bit integer at the current {@code readerIndex}
+     * and increases the {@code readerIndex} by {@code 4} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 4}
+     */
+    long  readUnsignedInt();
+
+    /**
+     * Gets an unsigned 32-bit integer at the current {@code readerIndex}
+     * in the Little Endian Byte Order and increases the {@code readerIndex}
+     * by {@code 4} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 4}
+     */
+    long  readUnsignedIntLE();
+
+    /**
+     * Gets a 64-bit integer at the current {@code readerIndex}
+     * and increases the {@code readerIndex} by {@code 8} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 8}
+     */
+    long  readLong();
+
+    /**
+     * Gets a 64-bit integer at the current {@code readerIndex}
+     * in the Little Endian Byte Order and increases the {@code readerIndex}
+     * by {@code 8} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 8}
+     */
+    long  readLongLE();
+
+    /**
+     * Gets a 2-byte UTF-16 character at the current {@code readerIndex}
+     * and increases the {@code readerIndex} by {@code 2} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 2}
+     */
+    char  readChar();
+
+    /**
+     * Gets a 32-bit floating point number at the current {@code readerIndex}
+     * and increases the {@code readerIndex} by {@code 4} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 4}
+     */
+    float readFloat();
+
+    /**
+     * Gets a 32-bit floating point number at the current {@code readerIndex}
+     * in Little Endian Byte Order and increases the {@code readerIndex}
+     * by {@code 4} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 4}
+     */
+    default float readFloatLE() {
+        return Float.intBitsToFloat(readIntLE());
+    }
+
+    /**
+     * Gets a 64-bit floating point number at the current {@code readerIndex}
+     * and increases the {@code readerIndex} by {@code 8} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 8}
+     */
+    double readDouble();
+
+    /**
+     * Gets a 64-bit floating point number at the current {@code readerIndex}
+     * in Little Endian Byte Order and increases the {@code readerIndex}
+     * by {@code 8} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 8}
+     */
+    default double readDoubleLE() {
+        return Double.longBitsToDouble(readLongLE());
+    }
+
+
+    /**
      * Transfers this buffer's data to the specified destination starting at the
      * current {@code readerIndex} and increases the {@code readerIndex} by the
      * number of the transferred bytes (= {@code dst.length}).
@@ -613,6 +798,130 @@ public interface IByteBuf extends Comparable<IByteBuf> {
      *                                   than {@code 1}
      */
     void writeByte(int value);
+
+    /**
+     * Sets the specified 16-bit short integer at the current
+     * {@code writerIndex} and increases the {@code writerIndex} by {@code 2}
+     * in this buffer.  The 16 high-order bits of the specified value are ignored.
+     * If {@code this.writableBytes} is less than {@code 2}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeShort(int value);
+
+    /**
+     * Sets the specified 16-bit short integer in the Little Endian Byte
+     * Order at the current {@code writerIndex} and increases the
+     * {@code writerIndex} by {@code 2} in this buffer.
+     * The 16 high-order bits of the specified value are ignored.
+     * If {@code this.writableBytes} is less than {@code 2}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeShortLE(int value);
+
+    /**
+     * Sets the specified 24-bit medium integer at the current
+     * {@code writerIndex} and increases the {@code writerIndex} by {@code 3}
+     * in this buffer.
+     * If {@code this.writableBytes} is less than {@code 3}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeMedium(int value);
+
+    /**
+     * Sets the specified 24-bit medium integer at the current
+     * {@code writerIndex} in the Little Endian Byte Order and
+     * increases the {@code writerIndex} by {@code 3} in this
+     * buffer.
+     * If {@code this.writableBytes} is less than {@code 3}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeMediumLE(int value);
+
+    /**
+     * Sets the specified 32-bit integer at the current {@code writerIndex}
+     * and increases the {@code writerIndex} by {@code 4} in this buffer.
+     * If {@code this.writableBytes} is less than {@code 4}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeInt(int value);
+
+    /**
+     * Sets the specified 32-bit integer at the current {@code writerIndex}
+     * in the Little Endian Byte Order and increases the {@code writerIndex}
+     * by {@code 4} in this buffer.
+     * If {@code this.writableBytes} is less than {@code 4}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeIntLE(int value);
+
+    /**
+     * Sets the specified 64-bit long integer at the current
+     * {@code writerIndex} and increases the {@code writerIndex} by {@code 8}
+     * in this buffer.
+     * If {@code this.writableBytes} is less than {@code 8}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeLong(long value);
+
+    /**
+     * Sets the specified 64-bit long integer at the current
+     * {@code writerIndex} in the Little Endian Byte Order and
+     * increases the {@code writerIndex} by {@code 8}
+     * in this buffer.
+     * If {@code this.writableBytes} is less than {@code 8}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeLongLE(long value);
+
+    /**
+     * Sets the specified 2-byte UTF-16 character at the current
+     * {@code writerIndex} and increases the {@code writerIndex} by {@code 2}
+     * in this buffer.  The 16 high-order bits of the specified value are ignored.
+     * If {@code this.writableBytes} is less than {@code 2}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeChar(int value);
+
+    /**
+     * Sets the specified 32-bit floating point number at the current
+     * {@code writerIndex} and increases the {@code writerIndex} by {@code 4}
+     * in this buffer.
+     * If {@code this.writableBytes} is less than {@code 4}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeFloat(float value);
+
+    /**
+     * Sets the specified 32-bit floating point number at the current
+     * {@code writerIndex} in Little Endian Byte Order and increases
+     * the {@code writerIndex} by {@code 4} in this buffer.
+     * If {@code this.writableBytes} is less than {@code 4}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    default IByteBuf writeFloatLE(float value) {
+        return writeIntLE(Float.floatToRawIntBits(value));
+    }
+
+    /**
+     * Sets the specified 64-bit floating point number at the current
+     * {@code writerIndex} and increases the {@code writerIndex} by {@code 8}
+     * in this buffer.
+     * If {@code this.writableBytes} is less than {@code 8}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    IByteBuf writeDouble(double value);
+
+    /**
+     * Sets the specified 64-bit floating point number at the current
+     * {@code writerIndex} in Little Endian Byte Order and increases
+     * the {@code writerIndex} by {@code 8} in this buffer.
+     * If {@code this.writableBytes} is less than {@code 8}, 
+     * will be called in an attempt to expand capacity to accommodate.
+     */
+    default IByteBuf writeDoubleLE(double value) {
+        return writeLongLE(Double.doubleToRawLongBits(value));
+    }
+
 
     /**
      * Transfers the specified source array's data to this buffer starting at
