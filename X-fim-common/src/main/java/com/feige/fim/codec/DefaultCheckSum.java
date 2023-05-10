@@ -5,17 +5,17 @@ import com.feige.api.codec.ICheckSum;
 public class DefaultCheckSum implements ICheckSum {
 
     @Override
-    public byte getCheckSum(byte[] data) {
+    public short getCheckSum(byte[] data) {
         int sum = 0;
         for (byte b : data) {
             sum += b & 0xff;
         }
-        return (byte) (~sum & 0xff);
+        return (short) (~sum & 0xff);
     }
 
     @Override
     public String getKey() {
-        return "1";
+        return "default";
     }
 
     @Override
@@ -23,8 +23,4 @@ public class DefaultCheckSum implements ICheckSum {
         return true;
     }
 
-    @Override
-    public int order() {
-        return 1;
-    }
 }

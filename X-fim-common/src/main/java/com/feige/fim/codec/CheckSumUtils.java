@@ -12,7 +12,7 @@ public class CheckSumUtils {
      * @param expectedCheckSum expected check sum
      * @return Equal or not
      */
-    public static void check(byte[] body, byte expectedCheckSum) {
+    public static void check(byte[] body, short expectedCheckSum) {
         ICheckSum iCheckSum = SpiLoader.getInstance().getSpiByConfigOrPrimary(ICheckSum.class);
         iCheckSum.check(body, expectedCheckSum);
     }
@@ -23,7 +23,7 @@ public class CheckSumUtils {
      * @param body body
      * @return check sum
      */
-    public static byte calculate(byte[] body) {
+    public static short calculate(byte[] body) {
         ICheckSum iCheckSum = SpiLoader.getInstance().getSpiByConfigOrPrimary(ICheckSum.class);
         return iCheckSum.getCheckSum(body);
     }

@@ -1,6 +1,8 @@
 package com.feige.fim.codec;
 
 
+import java.util.function.Function;
+
 /**
  * bodyLength       int类型       消息体长度
  * cs               byte类型      校验和
@@ -20,18 +22,6 @@ public class Transport {
      */
     private byte version;
     /**
-     * 校验和
-     */
-    private byte cs;
-    /**
-     * 操作命令
-     */
-    private byte cmd;
-    /**
-     * 序列化类型
-     */
-    private byte serializeType;
-    /**
      * 源ID
      */
     private byte[] srcId;
@@ -39,6 +29,18 @@ public class Transport {
      * 目标ID
      */
     private byte[] destId;
+    /**
+     * 操作指令
+     */
+    private byte cmd;
+    /**
+     * 校验和
+     */
+    private short cs;
+    /**
+     * 序列化类型
+     */
+    private byte serializeType;
     /**
      * 启用特性
      */
@@ -59,11 +61,11 @@ public class Transport {
     }
 
 
-    public byte getCs() {
+    public short getCs() {
         return cs;
     }
 
-    public void setCs(byte cs) {
+    public void setCs(short cs) {
         this.cs = cs;
     }
 
@@ -121,5 +123,17 @@ public class Transport {
 
     public void setBody(byte[] body) {
         this.body = body;
+    }
+
+    public int getBodyLength(){
+        return this.getBody().length;
+    }
+
+    public <T> T getSrcId(Function<byte[], T> fn){
+        return fn.apply(this.getSrcId());
+    }
+
+    public <T> T getDestId(Function<byte[], T> fn){
+        return fn.apply(this.getDestId());
     }
 }
