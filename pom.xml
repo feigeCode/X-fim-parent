@@ -15,7 +15,7 @@
         <module>X-fim-core</module>
         <module>X-fim-netty</module>
         <module>X-fim-nacos</module>
-        <module>X-fim-log4j2</module>
+        <module>X-fim-zk</module>
     </modules>
 
     <properties>

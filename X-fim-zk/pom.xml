@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>X-fim-log4j2</artifactId>
+    <artifactId>X-fim-zk</artifactId>
 
 
 </project>
