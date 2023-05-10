@@ -6,7 +6,6 @@ import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.IServer;
 import com.feige.fim.factory.NettyEventLoopFactory;
 import com.feige.fim.spi.SpiLoader;
-import com.feige.fim.spi.SpiNotFoundException;
 import org.slf4j.Logger;
 import com.feige.fim.lg.Loggers;
 import io.netty.bootstrap.ServerBootstrap;
@@ -38,7 +37,7 @@ public class NettyTcpServer implements IServer {
     }
 
     @Override
-    public void start() throws SpiNotFoundException {
+    public void start() {
         SessionHandler sessionHandler = SpiLoader.getInstance().getSpiByConfigOrPrimary(SessionHandler.class);
         this.bind(sessionHandler);
         this.channel.newSucceededFuture().addListener(future -> {

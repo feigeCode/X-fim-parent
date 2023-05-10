@@ -1,6 +1,6 @@
 package com.feige.fim.spi;
 
-public class SpiNotFoundException extends Exception {
+public class SpiNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = -3160453149606778709L;
 

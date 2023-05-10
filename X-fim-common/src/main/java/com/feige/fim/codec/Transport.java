@@ -13,14 +13,16 @@ package com.feige.fim.codec;
  * body             byte[]类型    数据
  */
 public class Transport {
-    /**
-     * 校验和
-     */
-    private byte cs;
+
+
     /**
      * 协议版本
      */
     private byte version;
+    /**
+     * 校验和
+     */
+    private byte cs;
     /**
      * 操作命令
      */

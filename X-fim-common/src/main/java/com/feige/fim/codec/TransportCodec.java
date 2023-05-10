@@ -39,7 +39,7 @@ public class TransportCodec implements Codec {
 
     @Override
     public String getKey() {
-        return "default";
+        return "transport";
     }
 
     @Override

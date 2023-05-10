@@ -2,7 +2,6 @@ package com.feige.fim.adapter;
 
 import com.feige.api.codec.Codec;
 import com.feige.fim.spi.SpiLoader;
-import com.feige.fim.spi.SpiNotFoundException;
 import org.slf4j.Logger;
 import com.feige.fim.lg.Loggers;
 import io.netty.buffer.ByteBuf;
@@ -37,7 +36,7 @@ public class NettyCodecAdapter {
         return decoder;
     }
 
-    public static Codec getCodec() throws SpiNotFoundException {
+    public static Codec getCodec() {
         if (codec == null){
             synchronized (NettyCodecAdapter.class){
                 if (codec == null) {

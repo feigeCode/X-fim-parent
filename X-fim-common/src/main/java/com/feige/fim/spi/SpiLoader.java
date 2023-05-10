@@ -35,7 +35,7 @@ public class SpiLoader {
         this.spiMap.put(className, spiList);
     }
 
-    public <T extends Spi> T get(String key, Class<T> clazz) throws SpiNotFoundException {
+    public <T extends Spi> T get(String key, Class<T> clazz) {
         List<Spi> spiList = spiMap.get(clazz.getCanonicalName());
         if (spiList != null && !spiList.isEmpty()){
             for (Spi spi : spiList) {
@@ -54,9 +54,8 @@ public class SpiLoader {
      * @param clazz class
      * @param <T> class type
      * @return instance
-     * @throws SpiNotFoundException
      */
-    public <T extends Spi> T getSpiByConfigOrPrimary(Class<T> clazz) throws SpiNotFoundException {
+    public <T extends Spi> T getSpiByConfigOrPrimary(Class<T> clazz) {
         String name = clazz.getCanonicalName();
         String key = null;
         try {
@@ -81,7 +80,7 @@ public class SpiLoader {
         throw new SpiNotFoundException(clazz);
     }
 
-    public  <T extends Spi> T getDefault(Class<T> clazz) throws SpiNotFoundException {
+    public  <T extends Spi> T getDefault(Class<T> clazz) {
         String name = clazz.getCanonicalName();
         List<Spi> spiList = spiMap.get(name);
         if (spiList != null && !spiList.isEmpty()){
