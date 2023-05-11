@@ -43,7 +43,7 @@ public interface SessionRepository extends Spi {
      * @param	platform 平台标识
      * @return: java.util.Collection<io.netty.session.ISession>
      */
-    default Collection<ISession> getSessions(String uid, String... platform) {
+    default Collection<ISession> getSessions(String uid, int... platform) {
         return Collections.emptyList();
     };
 

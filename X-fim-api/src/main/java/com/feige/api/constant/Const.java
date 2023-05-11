@@ -35,4 +35,9 @@ public interface Const {
      */
     byte COMPRESS_FEATURE = 2;
 
+
+
+    int PC = 1;
+    int MOBILE = 2;
+    int WEB = 3;
 }
