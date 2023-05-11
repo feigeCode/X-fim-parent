@@ -100,7 +100,7 @@ public class TransportCodec implements Codec {
             return -1;
         }
         int readableBytes = byteBuf.readableBytes();
-        return bodyLength + (Const.HEADER_LEN - 4 - 1) == readableBytes ? bodyLength : -1;
+        return bodyLength + (Const.HEADER_LEN - 4 - 1) <= readableBytes ? bodyLength : -1;
     }
 
     @Override
