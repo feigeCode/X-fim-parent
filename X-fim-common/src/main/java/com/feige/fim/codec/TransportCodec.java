@@ -8,9 +8,12 @@ import com.feige.api.codec.IByteBuf;
 import com.feige.api.codec.VersionException;
 import com.feige.api.constant.Const;
 import com.feige.api.session.ISession;
+import com.feige.fim.lg.Loggers;
+import org.slf4j.Logger;
 
 public class TransportCodec implements Codec {
 
+    private static final Logger LOG = Loggers.CODEC;
     @Override
     public IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj)  throws EncoderException {
         if (obj instanceof Transport) {
@@ -43,8 +46,28 @@ public class TransportCodec implements Codec {
                 return Transport.create(Command.HEARTBEAT);
             } else {
                 byteBuf.resetReaderIndex();
-                checkVersion(byteBuf);
-
+                byte version = checkVersion(byteBuf, session);
+                int bodyLength = checkLength(byteBuf, session);
+                if (bodyLength != -1) {
+                    long srcId = byteBuf.readLong();
+                    long destId = byteBuf.readLong();
+                    byte cmd = byteBuf.readByte();
+                    byte features = byteBuf.readByte();
+                    byte serializeType = byteBuf.readByte();
+                    short checksum = checkChecksum(byteBuf, session);
+                    byte[] body = new byte[bodyLength];
+                    byteBuf.readBytes(body);
+                    Transport transport = Transport.create(Command.valueOf(cmd));
+                    transport.setVersion(version);
+                    transport.setSrcId(srcId);
+                    transport.setDestId(destId);
+                    transport.setFeatures(features);
+                    transport.setSerializeType(serializeType);
+                    transport.setCs(checksum);
+                    transport.setBody(body);
+                }else {
+                    byteBuf.resetReaderIndex();
+                }
             }
 
         }
@@ -53,21 +76,31 @@ public class TransportCodec implements Codec {
     }
 
 
-    private void checkVersion(IByteBuf byteBuf){
-        if (byteBuf.readByte() == Const.VERSION) {
+    private byte checkVersion(IByteBuf byteBuf, ISession session){
+        byte version = byteBuf.readByte();
+        if (version != Const.VERSION) {
+            session.close();
             throw new VersionException("The protocol version does not match");
         }
+        return version;
     }
 
-    private void checkChecksum(IByteBuf byteBuf){
+    private short checkChecksum(IByteBuf byteBuf, ISession session){
         short cs = byteBuf.readShort();
         byte[] data = byteBuf.array();
         CheckSumUtils.check(data, cs);
+        return cs;
     }
 
-    private boolean checkLength(IByteBuf byteBuf){
-        int len = byteBuf.readInt();
-        return byteBuf.readableBytes() == len;
+    private int checkLength(IByteBuf byteBuf, ISession session){
+        int bodyLength = byteBuf.readInt();
+        if (bodyLength < 0){
+            LOG.error("sessionId : {}, negative length: {}",session.getId(),  bodyLength);
+            session.close();
+            return -1;
+        }
+        int readableBytes = byteBuf.readableBytes();
+        return bodyLength + (Const.HEADER_LEN - 4 - 1) == readableBytes ? bodyLength : -1;
     }
 
     @Override
