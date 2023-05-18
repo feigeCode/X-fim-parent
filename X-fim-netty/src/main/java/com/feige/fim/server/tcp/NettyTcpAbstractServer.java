@@ -1,9 +1,10 @@
 package com.feige.fim.server.tcp;
 
 import com.feige.api.constant.Const;
+import com.feige.api.sc.AbstractServer;
+import com.feige.api.sc.Listener;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;
-import com.feige.api.sc.AbstractServer;
 import com.feige.fim.config.Configs;
 import com.feige.fim.factory.NettyEventLoopFactory;
 import com.feige.fim.lg.Loggers;
@@ -15,8 +16,9 @@ import io.netty.channel.EventLoopGroup;
 import org.slf4j.Logger;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.CompletableFuture;
 
-public class NettyTcpServer extends AbstractServer {
+public class NettyTcpAbstractServer extends AbstractServer {
 
     public static final Logger LOG = Loggers.SERVER;
 
@@ -27,7 +29,7 @@ public class NettyTcpServer extends AbstractServer {
     private InetSocketAddress bindAddress;
     private boolean isRunning = false;
 
-    public NettyTcpServer(SessionHandler handler) {
+    public NettyTcpAbstractServer(SessionHandler handler) {
         super(handler);
     }
 
@@ -39,7 +41,17 @@ public class NettyTcpServer extends AbstractServer {
         this.bindAddress = new InetSocketAddress(Configs.getString(Configs.ConfigKey.SERVER_TCP_IP_KEY), Configs.getInt(Configs.ConfigKey.SERVER_TCP_PORT_KEY));
     }
 
-    public void start() {
+    @Override
+    public void start(Listener listener) {
+        
+    }
+
+    @Override
+    public void stop(Listener listener) {
+
+    }
+
+    public CompletableFuture<Boolean> start() {
         this.channel.newSucceededFuture().addListener(future -> {
             if (future.isSuccess()) {
                 this.isRunning = true;
@@ -49,13 +61,14 @@ public class NettyTcpServer extends AbstractServer {
             }
         });
         this.channel.closeFuture().addListener(future -> this.stop());
+        return null;
     }
 
     public void destroy() throws IllegalStateException {
 
     }
 
-    public void stop() {
+    public CompletableFuture<Boolean> stop() {
         if (tcpBossGroup != null && !(tcpBossGroup.isShuttingDown() && tcpBossGroup.isShutdown() && tcpBossGroup.isTerminated())){
             tcpBossGroup.shutdownGracefully();
         }
@@ -63,6 +76,12 @@ public class NettyTcpServer extends AbstractServer {
             tcpWorkGroup.shutdownGracefully();
         }
         this.isRunning = false;
+        return null;
+    }
+
+    @Override
+    public SessionHandler getSessionHandler() {
+        return null;
     }
 
     @Override
@@ -91,6 +110,11 @@ public class NettyTcpServer extends AbstractServer {
     @Override
     public InetSocketAddress getLocalAddress() {
         return null;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return false;
     }
 
     @Override

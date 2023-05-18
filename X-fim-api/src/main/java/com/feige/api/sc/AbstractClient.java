@@ -6,5 +6,5 @@ package com.feige.api.sc;
  * @Description: <br/>
  * @date: 2023/5/13 14:33<br/>
  */
-public abstract class AbstractClient implements Client {
+public abstract class AbstractClient extends ServiceAdapter implements Client {
 }

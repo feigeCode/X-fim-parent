@@ -1,7 +1,6 @@
 package com.feige.api.sc;
 
-import com.feige.api.handler.SessionHandler;
-import com.feige.api.session.SessionRepository;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author feige<br />
@@ -9,17 +8,16 @@ import com.feige.api.session.SessionRepository;
  * @Description: <br/>
  * @date: 2023/5/13 14:33<br/>
  */
-public abstract class AbstractServer extends AbstractEndpoint implements Server{
+public abstract class AbstractServer extends ServiceAdapter implements Server {
+
+    public enum ServerState {Created, Initialized, Starting, Started, Shutdown}
+
+    protected final AtomicReference<ServerState> serverState = new AtomicReference<>(ServerState.Created);
+
     
-    private final SessionRepository sessionRepository;
-    public AbstractServer(SessionHandler handler) {
-        super(handler);
-        this.sessionRepository = null;
+    
+    @Override
+    public boolean isRunning() {
+        return ServerState.Started == serverState.get();
     }
-
-    protected abstract void doOpen() throws Throwable;
-
-    protected abstract void doClose() throws Throwable;
-
-    protected abstract int getSessionsSize();
 }
