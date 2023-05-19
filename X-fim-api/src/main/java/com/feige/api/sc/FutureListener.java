@@ -5,9 +5,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * @author feige<br />
+ * @author mpush <br />
  * @ClassName: FutureListener <br/>
- * @Description: <br/>
+ * @Description: from mpush<br/>
  * @date: 2023/5/18 22:48<br/>
  */
 public class FutureListener extends CompletableFuture<Boolean> implements Listener {
@@ -40,7 +40,9 @@ public class FutureListener extends CompletableFuture<Boolean> implements Listen
      * @param service 服务
      */
     public void monitor(ServiceAdapter service) {
-        if (isDone()) return;// 防止Listener被重复执行
+        if (isDone()) {
+            return;// 防止Listener被重复执行
+        }
         runAsync(() -> {
             try {
                 this.get(service.timeoutMillis(), TimeUnit.MILLISECONDS);
