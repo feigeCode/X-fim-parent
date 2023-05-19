@@ -1,5 +1,8 @@
 package com.feige.api.sc;
 
+import com.feige.api.handler.SessionHandler;
+
+import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -14,10 +17,29 @@ public abstract class AbstractServer extends ServiceAdapter implements Server {
 
     protected final AtomicReference<ServerState> serverState = new AtomicReference<>(ServerState.Created);
 
+    protected SessionHandler sessionHandler;
+
+    protected InetSocketAddress bindAddress;
+    
+    public AbstractServer(SessionHandler sessionHandler) {
+        this.sessionHandler = sessionHandler;
+    }
     
     
+
     @Override
     public boolean isRunning() {
         return ServerState.Started == serverState.get();
+    }
+    
+
+    @Override
+    public SessionHandler getSessionHandler() {
+        return sessionHandler;
+    }
+
+    @Override
+    public InetSocketAddress getLocalAddress() {
+        return bindAddress;
     }
 }

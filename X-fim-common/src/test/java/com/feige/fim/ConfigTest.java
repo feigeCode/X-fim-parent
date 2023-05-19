@@ -16,7 +16,7 @@ public class ConfigTest {
 
     @Test
     public void yamlConfigTest() throws Exception {
-        System.setProperty(Configs.CONFIG_FILE_KEY, "E:\\project\\im\\X-fim-parent\\X-fim-common\\src\\test\\resources\\conf\\fim.yaml");
+        System.setProperty(Configs.CONFIG_FILE_KEY, "E:\\project\\my\\X-fim-parent\\X-fim-common\\src\\test\\resources\\conf\\fim.yaml");
         for (String spi : spiArr) {
             SpiLoader.getInstance().load(spi);
         }

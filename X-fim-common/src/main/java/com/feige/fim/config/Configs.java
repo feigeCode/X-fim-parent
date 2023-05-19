@@ -4,6 +4,7 @@ package com.feige.fim.config;
 import com.feige.api.config.Config;
 import com.feige.api.config.ConfigFactory;
 import com.feige.fim.spi.SpiLoader;
+import com.feige.fim.utils.StringUtil;
 
 import java.io.File;
 import java.util.List;
@@ -118,6 +119,10 @@ public final class Configs {
      * @return string config
      */
     public static String getString(String key){
+        String value = System.getProperty(key);
+        if (StringUtil.isNotBlank(value)){
+            return value;
+        }
         return getConfig().getString(key);
     }
 
