@@ -13,16 +13,19 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public abstract class AbstractServer extends ServiceAdapter implements Server {
 
+    
     public enum ServerState {Created, Initialized, Starting, Started, Shutdown}
 
     protected final AtomicReference<ServerState> serverState = new AtomicReference<>(ServerState.Created);
 
     protected SessionHandler sessionHandler;
 
-    protected InetSocketAddress bindAddress;
+    protected InetSocketAddress address;
+
     
-    public AbstractServer(SessionHandler sessionHandler) {
+    public AbstractServer(SessionHandler sessionHandler, InetSocketAddress address) {
         this.sessionHandler = sessionHandler;
+        this.address = address;
     }
     
     
@@ -39,7 +42,9 @@ public abstract class AbstractServer extends ServiceAdapter implements Server {
     }
 
     @Override
-    public InetSocketAddress getLocalAddress() {
-        return bindAddress;
+    public InetSocketAddress getAddress() {
+        return address;
     }
+    
+    
 }

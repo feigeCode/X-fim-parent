@@ -7,13 +7,8 @@ import java.net.InetSocketAddress;
 
 public interface Server extends Service {
     
-    /**
-     *bind
-     * @param bindAddress
-     */
-    void bind(InetSocketAddress bindAddress);
 
-
+    
     /**
      * get session handler.
      *
@@ -22,10 +17,11 @@ public interface Server extends Service {
     SessionHandler getSessionHandler();
 
     /**
-     * get local address.
+     * get address.
      *
-     * @return local address.
+     * @return address.
      */
-    InetSocketAddress getLocalAddress();
+    InetSocketAddress getAddress();
+    
 
 }
