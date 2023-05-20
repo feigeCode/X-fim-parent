@@ -56,7 +56,7 @@ public class EnvConfig implements Config {
 
     @Override
     public String[] getArr(String key) {
-        return new String[0];
+        return null;
     }
 
     @Override
