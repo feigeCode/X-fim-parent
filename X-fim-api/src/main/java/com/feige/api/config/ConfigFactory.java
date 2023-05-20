@@ -1,9 +1,9 @@
 package com.feige.api.config;
 
-import com.feige.api.annotation.LoadOnlyTheFirstOne;
+import com.feige.api.annotation.LoadOnlyOne;
 import com.feige.api.spi.Spi;
 
-@LoadOnlyTheFirstOne
+@LoadOnlyOne
 public interface ConfigFactory extends Spi {
 
     /**

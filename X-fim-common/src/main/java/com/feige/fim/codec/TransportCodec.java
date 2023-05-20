@@ -109,7 +109,7 @@ public class TransportCodec implements Codec {
     }
 
     @Override
-    public boolean isPrimary() {
+    public boolean primary() {
         return true;
     }
 }

@@ -3,8 +3,10 @@ package com.feige.fim.config;
 
 import com.feige.api.config.Config;
 import com.feige.api.config.ConfigFactory;
-import com.feige.fim.spi.SpiLoader;
-import com.feige.fim.utils.StringUtil;
+import com.feige.fim.config.impl.CompositeConfig;
+import com.feige.fim.config.impl.EnvConfig;
+import com.feige.fim.config.impl.SystemConfig;
+import com.feige.fim.spi.SpiLoaderUtils;
 
 import java.io.File;
 import java.util.List;
@@ -33,18 +35,35 @@ public final class Configs {
         String SERVER_UDP_PORT_KEY = "fim.server.udp-port";
     }
 
-    private static Config CONFIG;
+    private final static CompositeConfig COMPOSITE_CONFIG = new CompositeConfig();
+    private final static Config SYSTEM_CONFIG = new SystemConfig();
+    private final static Config ENV_CONFIG = new EnvConfig();
+    private static Config APP_CONFIG = null;
 
     public static void loadConfig() throws Exception {
-        ConfigFactory configFactory = SpiLoader.getInstance().getSpiByConfigOrPrimary(ConfigFactory.class);
-        CONFIG = configFactory.create();
+        COMPOSITE_CONFIG.addConfig(SYSTEM_CONFIG);
+        COMPOSITE_CONFIG.addConfig(ENV_CONFIG);
+        ConfigFactory configFactory = SpiLoaderUtils.getByConfig(ConfigFactory.class, true);
+        APP_CONFIG = configFactory.create();
+        COMPOSITE_CONFIG.addConfig(APP_CONFIG);
     }
 
-    public static Config getConfig(){
-        return CONFIG;
+    public static Config getCompositeConfig(){
+        return COMPOSITE_CONFIG;
     }
 
 
+    public static Config getSystemConfig(){
+        return SYSTEM_CONFIG;
+    }
+
+    public static Config getAppConfig(){
+        return APP_CONFIG;
+    }
+
+    public static Config getEnvConfig(){
+        return ENV_CONFIG;
+    }
     /**
      *  get int config
      * @param key key
@@ -52,7 +71,7 @@ public final class Configs {
      * @return int config
      */
     public static Integer getInt(String key, Integer defaultValue){
-        return getConfig().getInt(key, defaultValue);
+        return getCompositeConfig().getInt(key, defaultValue);
     }
 
     /**
@@ -61,7 +80,7 @@ public final class Configs {
      * @return int config
      */
     public static Integer getInt(String key){
-        return getConfig().getInt(key);
+        return getCompositeConfig().getInt(key);
     }
 
 
@@ -72,7 +91,7 @@ public final class Configs {
      * @return long config
      */
     public static Long getLong(String key, Long defaultValue){
-        return getConfig().getLong(key, defaultValue);
+        return getCompositeConfig().getLong(key, defaultValue);
     }
 
     /**
@@ -81,7 +100,7 @@ public final class Configs {
      * @return long config
      */
     public static Long getLong(String key){
-        return getConfig().getLong(key);
+        return getCompositeConfig().getLong(key);
     }
 
     /**
@@ -91,7 +110,7 @@ public final class Configs {
      * @return double config
      */
     public static Double getDouble(String key, Double defaultValue){
-        return getConfig().getDouble(key);
+        return getCompositeConfig().getDouble(key);
     }
 
     /**
@@ -100,7 +119,7 @@ public final class Configs {
      * @return double config
      */
     public static Double getDouble(String key){
-        return getConfig().getDouble(key);
+        return getCompositeConfig().getDouble(key);
     }
 
     /**
@@ -110,7 +129,7 @@ public final class Configs {
      * @return string config
      */
     public static String getString(String key, String defaultValue){
-        return getConfig().getString(key, defaultValue);
+        return getCompositeConfig().getString(key, defaultValue);
     }
 
     /**
@@ -119,11 +138,7 @@ public final class Configs {
      * @return string config
      */
     public static String getString(String key){
-        String value = System.getProperty(key);
-        if (StringUtil.isNotBlank(value)){
-            return value;
-        }
-        return getConfig().getString(key);
+        return getCompositeConfig().getString(key);
     }
 
     /**
@@ -133,7 +148,7 @@ public final class Configs {
      * @return boolean config
      */
     public static Boolean getBoolean(String key, Boolean defaultValue){
-        return getConfig().getBoolean(key, defaultValue);
+        return getCompositeConfig().getBoolean(key, defaultValue);
     }
 
     /**
@@ -142,7 +157,7 @@ public final class Configs {
      * @return boolean config
      */
     public static Boolean getBoolean(String key){
-        return getConfig().getBoolean(key);
+        return getCompositeConfig().getBoolean(key);
     }
 
     /**
@@ -151,7 +166,7 @@ public final class Configs {
      * @return map config
      */
     public static Map<String, Object> getMap(String key){
-        return getConfig().getMap(key);
+        return getCompositeConfig().getMap(key);
     }
 
     /**
@@ -160,7 +175,7 @@ public final class Configs {
      * @return list config
      */
     public static List<String> getList(String key){
-        return getConfig().getList(key);
+        return getCompositeConfig().getList(key);
     }
 
     /**
@@ -169,7 +184,7 @@ public final class Configs {
      * @return array config
      */
     public static String[] getArr(String key){
-        return getConfig().getArr(key);
+        return getCompositeConfig().getArr(key);
     }
 
 }

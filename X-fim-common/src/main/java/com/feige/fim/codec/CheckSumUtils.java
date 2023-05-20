@@ -2,7 +2,7 @@ package com.feige.fim.codec;
 
 import com.feige.api.codec.CheckSumException;
 import com.feige.api.codec.ICheckSum;
-import com.feige.fim.spi.SpiLoader;
+import com.feige.fim.spi.JdkSpiLoader;
 
 
 public class CheckSumUtils {
@@ -15,7 +15,7 @@ public class CheckSumUtils {
      * @throws CheckSumException
      */
     public static void check(byte[] data, short expectedCheckSum)  throws CheckSumException {
-        ICheckSum iCheckSum = SpiLoader.getInstance().getSpiByConfigOrPrimary(ICheckSum.class);
+        ICheckSum iCheckSum = JdkSpiLoader.getInstance().getSpiByConfigOrPrimary(ICheckSum.class);
         iCheckSum.check(data, expectedCheckSum);
     }
 
@@ -26,7 +26,7 @@ public class CheckSumUtils {
      * @return check sum
      */
     public static short calculate(byte[] body) {
-        ICheckSum iCheckSum = SpiLoader.getInstance().getSpiByConfigOrPrimary(ICheckSum.class);
+        ICheckSum iCheckSum = JdkSpiLoader.getInstance().getSpiByConfigOrPrimary(ICheckSum.class);
         return iCheckSum.getCheckSum(body);
     }
 }

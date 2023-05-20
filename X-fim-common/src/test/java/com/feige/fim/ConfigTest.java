@@ -1,7 +1,7 @@
 package com.feige.fim;
 
 import com.feige.fim.config.Configs;
-import com.feige.fim.spi.SpiLoader;
+import com.feige.fim.spi.SpiLoaderUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class ConfigTest {
     public void yamlConfigTest() throws Exception {
         System.setProperty(Configs.CONFIG_FILE_KEY, "E:\\project\\my\\X-fim-parent\\X-fim-common\\src\\test\\resources\\conf\\fim.yaml");
         for (String spi : spiArr) {
-            SpiLoader.getInstance().load(spi);
+            SpiLoaderUtils.load(spi);
         }
         Configs.loadConfig();
         Assert.assertEquals(Configs.getString("fim.test.key"), "value");

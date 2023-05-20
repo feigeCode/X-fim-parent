@@ -1,10 +1,10 @@
 package com.feige.api.codec;
 
-import com.feige.api.annotation.LoadOnlyTheFirstOne;
+import com.feige.api.annotation.LoadOnlyOne;
 import com.feige.api.session.ISession;
 import com.feige.api.spi.Spi;
 
-@LoadOnlyTheFirstOne
+@LoadOnlyOne
 public interface Codec extends Spi {
 
     /**

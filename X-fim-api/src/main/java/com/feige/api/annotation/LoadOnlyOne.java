@@ -9,12 +9,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Whether to load only the first one
+ * Whether to load only one
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @Inherited
 @Documented
-public @interface LoadOnlyTheFirstOne {
+public @interface LoadOnlyOne {
 
 }
