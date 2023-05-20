@@ -40,4 +40,7 @@ public interface Const {
     int PC = 1;
     int MOBILE = 2;
     int WEB = 3;
+    
+    
+    String COMMA = ",";
 }

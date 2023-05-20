@@ -1,9 +1,9 @@
 package com.feige.api.codec;
 
-import com.feige.api.annotation.LoadOnlyOne;
+import com.feige.api.annotation.CacheOne;
 import com.feige.api.spi.Spi;
 
-@LoadOnlyOne
+@CacheOne
 public interface ICheckSum extends Spi {
     /**
      *

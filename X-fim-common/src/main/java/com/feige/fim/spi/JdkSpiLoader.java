@@ -1,20 +1,26 @@
 package com.feige.fim.spi;
 
-import com.feige.api.annotation.LoadOnlyOne;
+import com.feige.api.annotation.CacheOne;
+import com.feige.api.constant.Const;
 import com.feige.api.spi.Spi;
 import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
 import com.feige.fim.config.Configs;
 import com.feige.fim.lg.Loggers;
 import com.feige.fim.utils.StringUtil;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -98,15 +104,33 @@ public class JdkSpiLoader implements SpiLoader {
                     if (list == null){
                         ServiceLoader<?> loader = ServiceLoader.load(loadClass);
                         List<Spi> spiList = new ArrayList<>();
-                        LoadOnlyOne loadOnlyOne = loadClass.getAnnotation(LoadOnlyOne.class);
+                        Set<String> keys = keys(className);
                         for (Object next : loader) {
                             Spi spi = (Spi) next;
                             spiList.add(spi);
-                            if(loadOnlyOne != null){
-                                break;
+                        }
+                        if (keys != null && keys.size() > 0){
+                            spiList = spiList.stream()
+                                    .filter(spi -> keys.contains(spi.getKey()))
+                                    .collect(Collectors.toList());
+                        }else {
+                            CacheOne cacheOne = loadClass.getAnnotation(CacheOne.class);
+                            if (cacheOne != null){
+                                List<Spi> collect = spiList.stream()
+                                        .filter(Spi::primary)
+                                        .collect(Collectors.toList());
+                                if (CollectionUtils.isEmpty(collect) && spiList.size() > 0){
+                                    spiList = spiList.subList(0, 1);
+                                }else {
+                                    spiList = collect.subList(0, 1);
+                                }
                             }
                         }
-                        register(loadClass, spiList);
+                        if (CollectionUtils.isNotEmpty(spiList)){
+                            register(loadClass, spiList);
+                        }else {
+                            LOG.warn("class = {}, No implementation classes have been registered", className);
+                        }
                     }
                 }
             }
@@ -115,4 +139,13 @@ public class JdkSpiLoader implements SpiLoader {
         }
     }
     
+    
+    private Set<String> keys(String className){
+        Map<String, Object> map = Configs.getMap(Configs.ConfigKey.SPI_LOADER_KEY);
+        String key = MapUtils.getString(map, className);
+        if (StringUtil.isNotBlank(key)){
+            return new HashSet<>(Arrays.asList(key.split(Const.COMMA)));
+        }
+        return null;
+    }
 }

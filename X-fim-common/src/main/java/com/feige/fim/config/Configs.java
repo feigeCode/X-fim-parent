@@ -33,6 +33,8 @@ public final class Configs {
         String SERVER_ENABLE_UDP_KEY = "fim.server.enable-udp";
         String SERVER_UDP_IP_KEY = "fim.server.udp-ip";
         String SERVER_UDP_PORT_KEY = "fim.server.udp-port";
+        
+        String SPI_LOADER_KEY = "fim.spi.loader";
     }
 
     private final static CompositeConfig COMPOSITE_CONFIG = new CompositeConfig();
