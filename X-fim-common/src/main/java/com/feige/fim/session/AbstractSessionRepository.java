@@ -1,16 +1,17 @@
 package com.feige.fim.session;
 
-import com.feige.fim.utils.StringUtil;
 import com.feige.api.session.ISession;
 import com.feige.api.session.SessionRepository;
+import com.feige.fim.utils.StringUtil;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractSessionRepository implements SessionRepository {
     
-    private final Map<String, Map<Integer, ISession>> sessionsMap = new ConcurrentHashMap<>();
+    private final Map<String, List<ISession>> sessionsMap = new ConcurrentHashMap<>();
     
     @Override
     public String getUid(ISession session) {
@@ -41,14 +42,8 @@ public abstract class AbstractSessionRepository implements SessionRepository {
     @Override
     public boolean containsSession(String uid, Integer clientType) {
         if (StringUtil.isNotBlank(uid)){
-            Map<Integer, ISession> sessionMap = sessionsMap.get(uid);
-            if (sessionMap != null && !sessionMap.isEmpty()){
-                if (!StringUtil.isEmpty(clientType)){
-                    return sessionMap.containsKey(clientType);
-                }else {
-                    return true;
-                }
-            }
+            List<ISession> sessions = sessionsMap.get(uid);
+            return true;
         }
         return false;
     }
