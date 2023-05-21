@@ -2,6 +2,8 @@ package com.feige.api.config;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +32,9 @@ public interface Config {
      * @param defaultValue default value
      * @return int config
      */
-    Integer getInt(String key, Integer defaultValue);
+    default Integer getInt(String key, Integer defaultValue) {
+        return convert(Integer.class, key, defaultValue);
+    }
 
     /**
      *  get int config
@@ -48,7 +52,10 @@ public interface Config {
      * @param defaultValue default value
      * @return long config
      */
-    Long getLong(String key, Long defaultValue);
+    default Long getLong(String key, Long defaultValue) {
+        return convert(Long.class, key, defaultValue);
+    }
+
 
     /**
      *  get long config
@@ -65,7 +72,9 @@ public interface Config {
      * @param defaultValue default value
      * @return double config
      */
-    Double getDouble(String key, Double defaultValue);
+    default Double getDouble(String key, Double defaultValue) {
+        return convert(Double.class, key, defaultValue);
+    }
 
     /**
      *  get double config
@@ -82,7 +91,9 @@ public interface Config {
      * @param defaultValue default value
      * @return string config
      */
-    String getString(String key, String defaultValue);
+    default String getString(String key, String defaultValue) {
+        return convert(String.class, key, defaultValue);
+    }
 
     /**
      * get string config
@@ -99,7 +110,9 @@ public interface Config {
      * @param defaultValue default value
      * @return boolean config
      */
-    Boolean getBoolean(String key, Boolean defaultValue);
+    default Boolean getBoolean(String key, Boolean defaultValue) {
+        return convert(Boolean.class, key, defaultValue);
+    }
 
     /**
      * get boolean config
@@ -115,21 +128,27 @@ public interface Config {
      * @param key key
      * @return map config
      */
-    Map<String, Object> getMap(String key);
+    default Map<String, Object> getMap(String key) {
+        return convert(Map.class, key, null);
+    }
 
     /**
      * get list config
      * @param key key
      * @return list config
      */
-    List<String> getList(String key);
+    default List<String> getList(String key) {
+        return convert(List.class, key, null);
+    }
 
     /**
      * get array config
      * @param key key
      * @return array config
      */
-    String[] getArr(String key);
+    default String[] getArr(String key) {
+        return convert(String[].class, key, null);
+    }
 
 
     /**
@@ -147,13 +166,56 @@ public interface Config {
      * @param <T> type
      */
     default <T> T getObject(String key, Class<T> type) {
-        Object object = getObject(key);
-        return type.cast(object);
+        return convert(type, key, null);
     }
 
     /**
-     * 序号
-     * @return 序号
+     * order
+     * @return order
      */
     int order();
+    
+    default <T> T convert(Class<T> cls, String key, T defaultValue){
+        Object answer = this.getObject(key);
+        if (answer == null){
+            return defaultValue;
+        }
+        if (cls.isInstance(answer)){
+            return cls.cast(answer);
+        }
+        if (Boolean.class.equals(cls) || Boolean.TYPE.equals(cls)){
+            if (answer instanceof String) {
+                answer = Boolean.valueOf((String)answer);
+            }
+            if (answer instanceof Number) {
+                Number n = (Number)answer;
+                answer = n.intValue() != 0 ? Boolean.TRUE : Boolean.FALSE;
+            }
+        }else if (cls.isAssignableFrom(Number.class) || cls.isPrimitive()){
+            if (answer instanceof String) {
+                try {
+                    String text = (String)answer;
+                    answer = NumberFormat.getInstance().parse(text);
+                } catch (ParseException ignored) {}
+            }
+            if (answer instanceof Number) {
+                if (Integer.class.equals(cls) || Integer.TYPE.equals(cls)) {
+                    answer = ((Number) answer).intValue();
+                } else if (Long.class.equals(cls) || Long.TYPE.equals(cls)) {
+                    answer = ((Number) answer).longValue();
+                } else if (Byte.class.equals(cls) || Byte.TYPE.equals(cls)) {
+                    answer = ((Number) answer).byteValue();
+                } else if (Short.class.equals(cls) || Short.TYPE.equals(cls)) {
+                    answer = ((Number) answer).shortValue();
+                } else if (Float.class.equals(cls) || Float.TYPE.equals(cls)) {
+                    answer = ((Number) answer).floatValue();
+                } else if (Double.class.equals(cls) || Double.TYPE.equals(cls)) {
+                    answer = ((Number) answer).doubleValue();
+                }
+            }
+        }else if (cls.isEnum()) {
+            answer = Enum.valueOf(cls.asSubclass(Enum.class), (String) answer);
+        }
+        return cls.cast(answer); 
+    }
 }

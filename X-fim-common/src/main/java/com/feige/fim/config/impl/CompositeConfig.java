@@ -1,11 +1,11 @@
 package com.feige.fim.config.impl;
 
 import com.feige.api.config.Config;
+import com.feige.fim.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author feige<br />
@@ -22,98 +22,10 @@ public class CompositeConfig implements Config {
     }
 
     @Override
-    public Integer getInt(String key, Integer defaultValue) {
-        for (Config config : configList) {
-            Integer value = config.getInt(key, defaultValue);
-            if (value != null){
-                return value;
-            }
-        }
-        return defaultValue;
-    }
-
-    @Override
-    public Long getLong(String key, Long defaultValue) {
-        for (Config config : configList) {
-            Long value = config.getLong(key, defaultValue);
-            if (value != null){
-                return value;
-            }
-        }
-        return defaultValue;
-    }
-
-    @Override
-    public Double getDouble(String key, Double defaultValue) {
-        for (Config config : configList) {
-            Double value = config.getDouble(key, defaultValue);
-            if (value != null){
-                return value;
-            }
-        }
-        return defaultValue;
-    }
-
-    @Override
-    public String getString(String key, String defaultValue) {
-        for (Config config : configList) {
-            String value = config.getString(key, defaultValue);
-            if (value != null){
-                return value;
-            }
-        }
-        return defaultValue;
-    }
-
-    @Override
-    public Boolean getBoolean(String key, Boolean defaultValue) {
-        for (Config config : configList) {
-            Boolean value = config.getBoolean(key, defaultValue);
-            if (value != null){
-                return value;
-            }
-        }
-        return defaultValue;
-    }
-
-    @Override
-    public Map<String, Object> getMap(String key) {
-        for (Config config : configList) {
-            Map<String, Object> value = config.getMap(key);
-            if (value != null){
-                return value;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public List<String> getList(String key) {
-        for (Config config : configList) {
-            List<String> value = config.getList(key);
-            if (value != null){
-                return value;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String[] getArr(String key) {
-        for (Config config : configList) {
-            String[] value = config.getArr(key);
-            if (value != null){
-                return value;
-            }
-        }
-        return null;
-    }
-
-    @Override
     public Object getObject(String key) {
         for (Config config : configList) {
             Object value = config.getObject(key);
-            if (value != null){
+            if (!StringUtil.isBlank(value)){
                 return value;
             }
         }
