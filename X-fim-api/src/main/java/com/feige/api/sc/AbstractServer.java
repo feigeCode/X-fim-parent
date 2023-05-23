@@ -1,6 +1,8 @@
 package com.feige.api.sc;
 
+import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
+import com.feige.api.session.SessionRepository;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicReference;
@@ -19,13 +21,19 @@ public abstract class AbstractServer extends ServiceAdapter implements Server {
     protected final AtomicReference<ServerState> serverState = new AtomicReference<>(ServerState.Created);
 
     protected SessionHandler sessionHandler;
+    
+    protected Codec codec;
+    
+    protected SessionRepository sessionRepository;
 
     protected InetSocketAddress address;
 
     
-    public AbstractServer(SessionHandler sessionHandler, InetSocketAddress address) {
-        this.sessionHandler = sessionHandler;
+    public AbstractServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec codec) {
         this.address = address;
+        this.sessionHandler = sessionHandler;
+        this.sessionRepository = sessionRepository;
+        this.codec = codec;
     }
     
     
@@ -45,6 +53,13 @@ public abstract class AbstractServer extends ServiceAdapter implements Server {
     public InetSocketAddress getAddress() {
         return address;
     }
-    
-    
+
+    @Override
+    public Codec getCodec() {
+        return codec;
+    }
+    @Override
+    public SessionRepository getSessionRepository() {
+        return sessionRepository;
+    }
 }

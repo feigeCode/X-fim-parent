@@ -13,12 +13,6 @@ public interface Session extends Spi {
     String getId();
 
     /**
-     * 设置session的唯一id
-     * @param id 唯一ID
-     */
-    void setId(String id);
-
-    /**
      * 获取本地地址
      * @return
      */

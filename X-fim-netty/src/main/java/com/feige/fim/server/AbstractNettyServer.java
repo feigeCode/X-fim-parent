@@ -1,15 +1,18 @@
 package com.feige.fim.server;
 
+import com.feige.api.codec.Codec;
 import com.feige.api.constant.Const;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.AbstractServer;
 import com.feige.api.sc.Listener;
 import com.feige.api.sc.ServiceException;
+import com.feige.api.session.SessionRepository;
 import com.feige.fim.factory.NettyEventLoopFactory;
 import com.feige.fim.lg.Loggers;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.util.concurrent.Future;
 import org.slf4j.Logger;
@@ -26,8 +29,8 @@ public abstract class AbstractNettyServer extends AbstractServer {
     protected ServerBootstrap serverBootstrap;
     protected Channel channel;
 
-    public AbstractNettyServer(SessionHandler sessionHandler, InetSocketAddress address) {
-        super(sessionHandler, address);
+    public AbstractNettyServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec codec) {
+        super(address, sessionHandler, sessionRepository, codec);
     }
 
     @Override
@@ -130,7 +133,13 @@ public abstract class AbstractNettyServer extends AbstractServer {
         return Const.DEFAULT_IO_THREADS;
     }
     
-    protected abstract void initServerBootstrap();
+    protected void initServerBootstrap() {
+        this.serverBootstrap
+                .group(bossGroup, workGroup)
+                .childOption(ChannelOption.TCP_NODELAY, true)
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .channel(NettyEventLoopFactory.createServerSocketChannelClass());
+    }
     
     
     

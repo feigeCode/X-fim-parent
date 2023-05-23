@@ -3,7 +3,7 @@ package com.feige.fim.server;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
-import com.feige.fim.adapter.NettyChannelAdapter;
+import com.feige.fim.adapter.NettyChannel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -46,6 +46,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     }
     
     protected Session toSession(ChannelHandlerContext ctx){
-        return NettyChannelAdapter.fromChannel(ctx, sessionRepository);
+        return NettyChannel.fromChannel(ctx, sessionRepository);
     }
 }

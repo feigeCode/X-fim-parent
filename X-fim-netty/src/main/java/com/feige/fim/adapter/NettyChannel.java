@@ -10,32 +10,23 @@ import io.netty.channel.ChannelHandlerContext;
 import java.net.InetSocketAddress;
 
 
-public class NettyChannelAdapter extends AbstractSession {
+public class NettyChannel extends AbstractSession {
  
     private final Channel channel;
     
-    public NettyChannelAdapter(Channel channel) {
+    public NettyChannel(Channel channel) {
         this.channel = channel;
         this.markActive(this.channel.isActive());
     }
 
     public static Session fromChannel(ChannelHandlerContext ctx, SessionRepository sessionRepository){
         final Channel channel = ctx.channel();
-        final Session session = ((NettySessionRepository) sessionRepository).getOrAdd(ctx);
-        if (session == null){
-            return new NettyChannelAdapter(channel);
-        }
-        return session;
+        return sessionRepository.computeIfAbsent(channel.id().asShortText(), k -> new NettyChannel(channel));
     }
 
     @Override
     public String getId() {
         return channel.id().asLongText();
-    }
-
-    @Override
-    public void setId(String id) {
-
     }
 
     @Override

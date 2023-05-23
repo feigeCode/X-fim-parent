@@ -21,7 +21,7 @@ public abstract class AbstractSessionHandler implements SessionHandler {
 
     @Override
     public void disconnected(Session session) throws RemotingException {
-        sessionRepository.remove(session);
+        sessionRepository.removeAndClose(session);
     }
     
     

@@ -1,82 +1,60 @@
 package com.feige.api.session;
 
+import com.feige.api.handler.RemotingException;
 import com.feige.api.spi.Spi;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Predicate;
+import java.util.Objects;
+import java.util.function.Function;
 
 public interface SessionRepository extends Spi {
 
-
+    /**
+     * get by session id
+     * @param id  session id
+     * @return session
+     */
+    Session get(String id);
 
     /**
-     * @description: 把session保存到MAP中
-     * @author: feige
-     * @date: 2021/10/9 22:08
-     * @param	session
-     * @return: void
+     * add session
+     * @param session session
      */
     void add(Session session);
 
-    /**
-     * @description: 移除session
-     * @author: feige
-     * @date: 2021/10/9 22:09
-     * @param	session
-     * @return: void
-     */
-    void remove(Session session);
-
-    /**
-     * @description: 通过唯一标识获取对应平台的session
-     * @author: feige
-     * @date: 2021/10/9 22:09
-     * @param	uid	唯一标识
-     * @param	platform 平台标识
-     * @return: java.util.Collection<io.netty.session.Session>
-     */
-    default Collection<Session> getSessions(String uid, int... platform) {
-        return Collections.emptyList();
-    };
-
-    /**
-     * @description: 通过唯一标识获取会话
-     * @author: feige
-     * @date: 2021/10/9 22:10
-     * @param	uid
-     * @return: java.util.Collection<io.netty.session.Session>
-     */
-    Collection<Session> getSessions(String uid);
-
-    /**
-     * @description: 往对应uid的通道中写数据
-     * @author: feige
-     * @date: 2021/10/9 22:11
-     * @param	uid
-     * @param	msg
-     * @return: void
-     */
-    void write(String uid, Object msg);
-
-    /**
-     * @description: 通过唯一标识往符合断言的通道写数据
-     * @author: feige
-     * @date: 2021/10/9 22:12
-     * @param	uid 唯一标识
-     * @param	msg 消息
-     * @param	predicate 断言规则，用来筛选满足条件的session
-     * @return: void
-     */
-    default void write(String uid, Object msg, Predicate<Session> predicate){
-
+    default Session computeIfAbsent(String id, Function<String, Session> mappingFunction) {
+        Objects.requireNonNull(mappingFunction);
+        Session session;
+        if ((session = get(id)) == null) {
+            Session newSession;
+            if ((newSession = mappingFunction.apply(id)) != null) {
+                add(newSession);
+                return newSession;
+            }
+        }
+        return session;
     }
 
     /**
+     * remove and close
+     * @param session session
+     */
+    void removeAndClose(Session session);
+
+
+    /**
+     * send msg
+     * @param id session id
+     * @param msg message
+     * @throws RemotingException
+     */
+    void write(String id, Object msg) throws RemotingException;
+
+
+
+    /**
      * Whether to include session
-     * @param uid USER ID
-     * @param clientType client type
+     * @param id session id
      * @return
      */
-    boolean containsSession(String uid, Integer clientType);
+    boolean contains(String id);
 }
