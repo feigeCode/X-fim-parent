@@ -1,6 +1,8 @@
 package com.feige.api.sc;
 
+import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
+import com.feige.api.session.SessionRepository;
 
 import java.net.InetSocketAddress;
 
@@ -22,6 +24,19 @@ public interface Server extends Service {
      * @return address.
      */
     InetSocketAddress getAddress();
+
+
+    /**
+     * get codec
+     * @return codec
+     */
+    public Codec getCodec();
+
+    /**
+     * get session repository
+     * @return session repository
+     */
+    public SessionRepository getSessionRepository();
     
 
 }

@@ -1,55 +1,46 @@
 package com.feige.fim.session;
 
-import com.feige.api.session.ISession;
+import com.feige.api.handler.RemotingException;
+import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
 import com.feige.fim.utils.StringUtil;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractSessionRepository implements SessionRepository {
+    protected final Map<String, Session> sessionMap = new ConcurrentHashMap<>();
     
-    private final Map<String, List<ISession>> sessionsMap = new ConcurrentHashMap<>();
+    @Override
+    public Session get(String sid){
+        return sessionMap.get(sid);
+    }
+
+    @Override
+    public void add(Session session) {
+        String id = session.getId();
+        sessionMap.put(id, session);
+
+    }
+
+    @Override
+    public void removeAndClose(Session session) {
+        sessionMap.remove(session.getId());
+        session.close();
+    }
     
+
     @Override
-    public String getUid(ISession session) {
-        return session.getId();
+    public void write(String id, Object msg) throws RemotingException {
+        Session session = get(id);
+        session.write(msg);
     }
 
     @Override
-    public void add(ISession session) {
-        String uid = getUid(session);
-        
-    }
-
-    @Override
-    public void remove(ISession session) {
-
-    }
-
-    @Override
-    public Collection<ISession> getSessions(String uid) {
-        return null;
-    }
-
-    @Override
-    public void write(String uid, Object msg) {
-
-    }
-
-    @Override
-    public boolean containsSession(String uid, Integer clientType) {
-        if (StringUtil.isNotBlank(uid)){
-            List<ISession> sessions = sessionsMap.get(uid);
-            return true;
+    public boolean contains(String id) {
+        if (StringUtil.isNotBlank(id)){
+            return sessionMap.containsKey(id);
         }
         return false;
-    }
-
-    @Override
-    public String getKey() {
-        return null;
     }
 }

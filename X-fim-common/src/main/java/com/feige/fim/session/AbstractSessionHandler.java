@@ -2,7 +2,7 @@ package com.feige.fim.session;
 
 import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;
-import com.feige.api.session.ISession;
+import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
 
 /**
@@ -15,28 +15,24 @@ public abstract class AbstractSessionHandler implements SessionHandler {
     private SessionRepository sessionRepository;
 
     @Override
-    public void connected(ISession session) throws RemotingException {
+    public void connected(Session session) throws RemotingException {
         sessionRepository.add(session);
     }
 
     @Override
-    public void disconnected(ISession session) throws RemotingException {
-        sessionRepository.remove(session);
+    public void disconnected(Session session) throws RemotingException {
+        sessionRepository.removeAndClose(session);
     }
-
-    @Override
-    public void sent(ISession session, Object message) throws RemotingException {
-        
-    }
+    
     
 
     @Override
-    public void received(ISession session, Object message) throws RemotingException {
+    public void received(Session session, Object message) throws RemotingException {
         
     }
 
     @Override
-    public void caught(ISession session, Throwable exception) throws RemotingException {
+    public void caught(Session session, Throwable exception) throws RemotingException {
         
     }
     

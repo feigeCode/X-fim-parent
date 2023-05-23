@@ -7,7 +7,7 @@ import com.feige.api.codec.EncoderException;
 import com.feige.api.codec.IByteBuf;
 import com.feige.api.codec.VersionException;
 import com.feige.api.constant.Const;
-import com.feige.api.session.ISession;
+import com.feige.api.session.Session;
 import com.feige.fim.lg.Loggers;
 import org.slf4j.Logger;
 
@@ -15,7 +15,7 @@ public class TransportCodec implements Codec {
 
     private static final Logger LOG = Loggers.CODEC;
     @Override
-    public IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj)  throws EncoderException {
+    public IByteBuf encode(Session session, IByteBuf byteBuf, Object obj)  throws EncoderException {
         if (obj instanceof Transport) {
             Transport packet = (Transport) obj;
             if (packet.getCmd() == Command.HEARTBEAT.getCmd()){
@@ -39,7 +39,7 @@ public class TransportCodec implements Codec {
 
 
     @Override
-    public Object decode(ISession session, IByteBuf byteBuf)  throws DecoderException {
+    public Object decode(Session session, IByteBuf byteBuf)  throws DecoderException {
         byteBuf.markReaderIndex();
         if (byteBuf.readable()) {
             if (byteBuf.readByte() == Const.HEARTBEAT) {
@@ -76,7 +76,7 @@ public class TransportCodec implements Codec {
     }
 
 
-    private byte checkVersion(IByteBuf byteBuf, ISession session){
+    private byte checkVersion(IByteBuf byteBuf, Session session){
         byte version = byteBuf.readByte();
         if (version != Const.VERSION) {
             session.close();
@@ -85,14 +85,14 @@ public class TransportCodec implements Codec {
         return version;
     }
 
-    private short checkChecksum(IByteBuf byteBuf, ISession session){
+    private short checkChecksum(IByteBuf byteBuf, Session session){
         short cs = byteBuf.readShort();
         byte[] data = byteBuf.array();
         CheckSumUtils.check(data, cs);
         return cs;
     }
 
-    private int checkLength(IByteBuf byteBuf, ISession session){
+    private int checkLength(IByteBuf byteBuf, Session session){
         int bodyLength = byteBuf.readInt();
         if (bodyLength < 0){
             LOG.error("sessionId : {}, negative length: {}",session.getId(),  bodyLength);

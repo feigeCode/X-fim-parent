@@ -1,7 +1,7 @@
 package com.feige.api.codec;
 
 import com.feige.api.annotation.CacheOne;
-import com.feige.api.session.ISession;
+import com.feige.api.session.Session;
 import com.feige.api.spi.Spi;
 
 @CacheOne
@@ -15,7 +15,7 @@ public interface Codec extends Spi {
      * @return byte buffer
      * @throws EncoderException
      */
-    IByteBuf encode(ISession session, IByteBuf byteBuf, Object obj) throws EncoderException;
+    IByteBuf encode(Session session, IByteBuf byteBuf, Object obj) throws EncoderException;
 
     /**
      * Decoding
@@ -24,6 +24,6 @@ public interface Codec extends Spi {
      * @return object
      * @throws DecoderException
      */
-    Object decode(ISession session, IByteBuf byteBuf) throws DecoderException;
+    Object decode(Session session, IByteBuf byteBuf) throws DecoderException;
 
 }

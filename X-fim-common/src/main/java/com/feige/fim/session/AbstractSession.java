@@ -1,6 +1,6 @@
 package com.feige.fim.session;
 
-import com.feige.api.session.ISession;
+import com.feige.api.session.Session;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,8 +12,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @Description: <br/>
  * @date: 2023/5/21 16:45<br/>
  */
-public abstract class AbstractSession implements ISession {
+public abstract class AbstractSession implements Session {
     protected final AtomicBoolean active = new AtomicBoolean(false);
+    
 
     private final Map<String, Object> attributes = new ConcurrentHashMap<>();
 
