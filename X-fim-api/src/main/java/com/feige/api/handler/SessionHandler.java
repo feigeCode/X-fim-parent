@@ -1,6 +1,6 @@
 package com.feige.api.handler;
 
-import com.feige.api.session.ISession;
+import com.feige.api.session.Session;
 import com.feige.api.spi.Spi;
 
 public interface SessionHandler extends Spi {
@@ -9,30 +9,22 @@ public interface SessionHandler extends Spi {
      *
      * @param session session.
      */
-    void connected(ISession session) throws RemotingException;
+    void connected(Session session) throws RemotingException;
 
     /**
      * on session disconnected.
      *
      * @param session session.
      */
-    void disconnected(ISession session) throws RemotingException;
-
-    /**
-     * on message sent.
-     *
-     * @param session session.
-     * @param message message.
-     */
-    void sent(ISession session, Object message) throws RemotingException;
-
+    void disconnected(Session session) throws RemotingException;
+    
     /**
      * on message received.
      *
      * @param session session.
      * @param message message.
      */
-    void received(ISession session, Object message) throws RemotingException;
+    void received(Session session, Object message) throws RemotingException;
 
     /**
      * on exception caught.
@@ -40,5 +32,5 @@ public interface SessionHandler extends Spi {
      * @param session   session.
      * @param exception exception.
      */
-    void caught(ISession session, Throwable exception) throws RemotingException;
+    void caught(Session session, Throwable exception) throws RemotingException;
 }

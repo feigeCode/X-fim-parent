@@ -1,9 +1,11 @@
 package com.feige.fim.adapter;
 
 import com.feige.api.handler.RemotingException;
-import com.feige.api.session.ISession;
+import com.feige.api.session.Session;
+import com.feige.api.session.SessionRepository;
 import com.feige.fim.session.AbstractSession;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 
 import java.net.InetSocketAddress;
 
@@ -17,8 +19,13 @@ public class NettyChannelAdapter extends AbstractSession {
         this.markActive(this.channel.isActive());
     }
 
-    public static ISession fromChannel(Channel channel){
-        return new NettyChannelAdapter(channel);
+    public static Session fromChannel(ChannelHandlerContext ctx, SessionRepository sessionRepository){
+        final Channel channel = ctx.channel();
+        final Session session = ((NettySessionRepository) sessionRepository).getOrAdd(ctx);
+        if (session == null){
+            return new NettyChannelAdapter(channel);
+        }
+        return session;
     }
 
     @Override

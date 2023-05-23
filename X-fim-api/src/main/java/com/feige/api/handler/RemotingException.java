@@ -1,6 +1,6 @@
 package com.feige.api.handler;
 
-import com.feige.api.session.ISession;
+import com.feige.api.session.Session;
 
 import java.net.InetSocketAddress;
 
@@ -12,7 +12,7 @@ public class RemotingException extends Exception {
 
     private final InetSocketAddress remoteAddress;
 
-    public RemotingException(ISession session, String msg) {
+    public RemotingException(Session session, String msg) {
         this(session == null ? null : session.getLocalAddress(), session == null ? null : session.getRemoteAddress(),
                 msg);
     }
@@ -24,7 +24,7 @@ public class RemotingException extends Exception {
         this.remoteAddress = remoteAddress;
     }
 
-    public RemotingException(ISession session, Throwable cause) {
+    public RemotingException(Session session, Throwable cause) {
         this(session == null ? null : session.getLocalAddress(), session == null ? null : session.getRemoteAddress(),
                 cause);
     }
@@ -36,7 +36,7 @@ public class RemotingException extends Exception {
         this.remoteAddress = remoteAddress;
     }
 
-    public RemotingException(ISession session, String message, Throwable cause) {
+    public RemotingException(Session session, String message, Throwable cause) {
         this(session == null ? null : session.getLocalAddress(), session == null ? null : session.getRemoteAddress(),
                 message, cause);
     }

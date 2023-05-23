@@ -8,14 +8,7 @@ import java.util.function.Predicate;
 
 public interface SessionRepository extends Spi {
 
-    /**
-     * @description: 获取唯一标识
-     * @author: feige
-     * @date: 2021/10/9 21:10
-     * @param	session	当前用户的通道
-     * @return: java.lang.String
-     */
-    String getUid(ISession session);
+
 
     /**
      * @description: 把session保存到MAP中
@@ -24,7 +17,7 @@ public interface SessionRepository extends Spi {
      * @param	session
      * @return: void
      */
-    void add(ISession session);
+    void add(Session session);
 
     /**
      * @description: 移除session
@@ -33,7 +26,7 @@ public interface SessionRepository extends Spi {
      * @param	session
      * @return: void
      */
-    void remove(ISession session);
+    void remove(Session session);
 
     /**
      * @description: 通过唯一标识获取对应平台的session
@@ -41,9 +34,9 @@ public interface SessionRepository extends Spi {
      * @date: 2021/10/9 22:09
      * @param	uid	唯一标识
      * @param	platform 平台标识
-     * @return: java.util.Collection<io.netty.session.ISession>
+     * @return: java.util.Collection<io.netty.session.Session>
      */
-    default Collection<ISession> getSessions(String uid, int... platform) {
+    default Collection<Session> getSessions(String uid, int... platform) {
         return Collections.emptyList();
     };
 
@@ -52,9 +45,9 @@ public interface SessionRepository extends Spi {
      * @author: feige
      * @date: 2021/10/9 22:10
      * @param	uid
-     * @return: java.util.Collection<io.netty.session.ISession>
+     * @return: java.util.Collection<io.netty.session.Session>
      */
-    Collection<ISession> getSessions(String uid);
+    Collection<Session> getSessions(String uid);
 
     /**
      * @description: 往对应uid的通道中写数据
@@ -75,7 +68,7 @@ public interface SessionRepository extends Spi {
      * @param	predicate 断言规则，用来筛选满足条件的session
      * @return: void
      */
-    default void write(String uid, Object msg, Predicate<ISession> predicate){
+    default void write(String uid, Object msg, Predicate<Session> predicate){
 
     }
 

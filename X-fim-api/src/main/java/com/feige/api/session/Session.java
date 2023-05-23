@@ -5,7 +5,7 @@ import com.feige.api.spi.Spi;
 
 import java.net.InetSocketAddress;
 
-public interface ISession extends Spi {
+public interface Session extends Spi {
     /**
      * 获取session的唯一id
      * @return

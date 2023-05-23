@@ -1,6 +1,6 @@
 package com.feige.fim.session;
 
-import com.feige.api.session.ISession;
+import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
 import com.feige.fim.utils.StringUtil;
 
@@ -11,26 +11,33 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractSessionRepository implements SessionRepository {
     
-    private final Map<String, List<ISession>> sessionsMap = new ConcurrentHashMap<>();
-    
-    @Override
-    public String getUid(ISession session) {
+    protected final Map<String, Session> sessionMap = new ConcurrentHashMap<>();
+    protected final Map<String, List<SessionInfo>> sessionInfosMap = new ConcurrentHashMap<>();
+
+    /**
+     * @description: 获取唯一标识
+     * @author: feige
+     * @date: 2021/10/9 21:10
+     * @param	session	当前用户的通道
+     * @return: java.lang.String
+     */
+    protected String getSid(Session session) {
         return session.getId();
     }
 
     @Override
-    public void add(ISession session) {
-        String uid = getUid(session);
+    public void add(Session session) {
+        String sid = getSid(session);
         
     }
 
     @Override
-    public void remove(ISession session) {
+    public void remove(Session session) {
 
     }
 
     @Override
-    public Collection<ISession> getSessions(String uid) {
+    public Collection<Session> getSessions(String uid) {
         return null;
     }
 
@@ -42,7 +49,7 @@ public abstract class AbstractSessionRepository implements SessionRepository {
     @Override
     public boolean containsSession(String uid, Integer clientType) {
         if (StringUtil.isNotBlank(uid)){
-            List<ISession> sessions = sessionsMap.get(uid);
+            List<SessionInfo> sessionInfos = sessionInfosMap.get(uid);
             return true;
         }
         return false;
