@@ -19,7 +19,7 @@ public class DefaultCheckSum implements ICheckSum {
     }
 
     @Override
-    public boolean isPrimary() {
+    public boolean primary() {
         return true;
     }
 

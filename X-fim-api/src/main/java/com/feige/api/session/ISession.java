@@ -1,5 +1,6 @@
 package com.feige.api.session;
 
+import com.feige.api.handler.RemotingException;
 import com.feige.api.spi.Spi;
 
 import java.net.InetSocketAddress;
@@ -35,7 +36,7 @@ public interface ISession extends Spi {
      *
      * @param msg
      */
-    void write(Object msg);
+    void write(Object msg) throws RemotingException;
 
 
     /**

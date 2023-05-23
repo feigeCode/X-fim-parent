@@ -1,4 +1,4 @@
-package com.feige.fim.spi;
+package com.feige.api.spi;
 
 public class SpiNotFoundException extends RuntimeException {
 

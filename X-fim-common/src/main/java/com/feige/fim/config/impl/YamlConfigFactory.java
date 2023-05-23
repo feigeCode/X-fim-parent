@@ -10,7 +10,7 @@ import java.io.File;
 public class YamlConfigFactory implements ConfigFactory {
     @Override
     public Config create() throws Exception{
-        YamlConfigImpl yamlConfig = new YamlConfigImpl();
+        YamlConfig yamlConfig = new YamlConfig();
         yamlConfig.parseFile(getFile());
         return yamlConfig;
     }
@@ -44,7 +44,7 @@ public class YamlConfigFactory implements ConfigFactory {
     }
 
     @Override
-    public boolean isPrimary() {
+    public boolean primary() {
         return true;
     }
 }

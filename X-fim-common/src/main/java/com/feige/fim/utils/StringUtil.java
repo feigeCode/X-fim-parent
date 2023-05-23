@@ -12,7 +12,17 @@ public class StringUtil {
     public static final String EMPTY_STR = "";
 
     public static boolean isEmpty(Object str) {
-        return str == null || "".equals(str);
+        return str == null || EMPTY_STR.equals(str);
+    }
+    public static boolean isNull(Object obj){
+        return obj == null;
+    }
+    public static boolean isBlank(Object obj){
+        if (obj instanceof CharSequence){
+            return isBlank((CharSequence) obj);
+        }else {
+            return isNull(obj);
+        }
     }
 
     public static boolean isBlank(CharSequence s) {

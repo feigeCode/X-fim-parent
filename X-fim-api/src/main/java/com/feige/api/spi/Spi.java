@@ -11,7 +11,7 @@ public interface Spi {
      * Whether it is primary
      * @return is primary
      */
-    default boolean isPrimary() {
+    default boolean primary() {
         return false;
     }
 

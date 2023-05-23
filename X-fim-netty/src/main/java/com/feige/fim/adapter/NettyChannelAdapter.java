@@ -1,25 +1,29 @@
 package com.feige.fim.adapter;
 
+import com.feige.api.handler.RemotingException;
 import com.feige.api.session.ISession;
-import io.netty.channel.ChannelHandlerContext;
+import com.feige.fim.session.AbstractSession;
+import io.netty.channel.Channel;
 
 import java.net.InetSocketAddress;
 
-public class NettyChannelAdapter implements ISession {
 
-    private final ChannelHandlerContext ctx;
-
-    public NettyChannelAdapter(ChannelHandlerContext ctx) {
-        this.ctx = ctx;
+public class NettyChannelAdapter extends AbstractSession {
+ 
+    private final Channel channel;
+    
+    public NettyChannelAdapter(Channel channel) {
+        this.channel = channel;
+        this.markActive(this.channel.isActive());
     }
 
-    public static ISession fromCtx(ChannelHandlerContext ctx){
-        return new NettyChannelAdapter(ctx);
+    public static ISession fromChannel(Channel channel){
+        return new NettyChannelAdapter(channel);
     }
 
     @Override
     public String getId() {
-        return ctx.channel().id().asLongText();
+        return channel.id().asLongText();
     }
 
     @Override
@@ -29,56 +33,33 @@ public class NettyChannelAdapter implements ISession {
 
     @Override
     public InetSocketAddress getLocalAddress() {
-        return (InetSocketAddress) ctx.channel().localAddress();
+        return (InetSocketAddress) channel.localAddress();
     }
 
     @Override
     public InetSocketAddress getRemoteAddress() {
-        return (InetSocketAddress) ctx.channel().remoteAddress();
+        return (InetSocketAddress) channel.remoteAddress();
     }
 
     @Override
-    public void write(Object msg) {
-
+    public void write(Object msg) throws RemotingException {
+        if (isClosed()) {
+            throw new RemotingException(this, "Failed to write message " + 
+                    (msg == null ? "" : msg.getClass().getName()) + 
+                    ", cause: Channel closed. channel: " + getLocalAddress() + " -> " + getRemoteAddress());
+        }
+        channel.writeAndFlush(msg);
     }
 
     @Override
     public void close() {
-
-    }
-
-    @Override
-    public boolean isClosed() {
-        return false;
-    }
-
-    @Override
-    public boolean isConnected() {
-        return false;
-    }
-
-    @Override
-    public boolean hasAttr(String key) {
-        return false;
-    }
-
-    @Override
-    public Object getAttr(String key) {
-        return null;
-    }
-
-    @Override
-    public void setAttr(String key, Object value) {
-
-    }
-
-    @Override
-    public void removeAttr(String key) {
-
+        super.close();
+        channel.close();
     }
 
     @Override
     public String getKey() {
-        return null;
+        return "session";
     }
+    
 }

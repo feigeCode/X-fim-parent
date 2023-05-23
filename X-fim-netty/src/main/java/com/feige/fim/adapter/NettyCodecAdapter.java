@@ -1,14 +1,14 @@
 package com.feige.fim.adapter;
 
 import com.feige.api.codec.Codec;
-import com.feige.fim.spi.SpiLoader;
-import org.slf4j.Logger;
 import com.feige.fim.lg.Loggers;
+import com.feige.fim.spi.SpiLoaderUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.MessageToByteEncoder;
+import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class NettyCodecAdapter {
         if (codec == null){
             synchronized (NettyCodecAdapter.class){
                 if (codec == null) {
-                    codec = SpiLoader.getInstance().getSpiByConfigOrPrimary(Codec.class);
+                    codec = SpiLoaderUtils.getByConfig(Codec.class, true);
                 }
             }
         }
