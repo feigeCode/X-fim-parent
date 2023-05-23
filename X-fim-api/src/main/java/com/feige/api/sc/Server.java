@@ -9,8 +9,6 @@ import java.net.InetSocketAddress;
 
 public interface Server extends Service {
     
-
-    
     /**
      * get session handler.
      *
@@ -30,13 +28,13 @@ public interface Server extends Service {
      * get codec
      * @return codec
      */
-    public Codec getCodec();
+    Codec getCodec();
 
     /**
      * get session repository
      * @return session repository
      */
-    public SessionRepository getSessionRepository();
+    SessionRepository getSessionRepository();
     
 
 }
