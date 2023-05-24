@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class AbstractSession implements Session {
     protected final AtomicBoolean active = new AtomicBoolean(false);
+    protected final AtomicBoolean bindClient = new AtomicBoolean(false);
     
 
     private final Map<String, Object> attributes = new ConcurrentHashMap<>();
@@ -57,5 +58,15 @@ public abstract class AbstractSession implements Session {
     @Override
     public boolean isConnected() {
         return active.get();
+    }
+
+    @Override
+    public boolean isBindClient() {
+        return bindClient.get();
+    }
+
+    @Override
+    public void setBindClient(boolean isBindClient) {
+        bindClient.set(isBindClient);
     }
 }

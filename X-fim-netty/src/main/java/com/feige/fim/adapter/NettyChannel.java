@@ -12,6 +12,7 @@ import java.net.InetSocketAddress;
 
 
 public class NettyChannel extends AbstractSession {
+    
  
     private final Channel channel;
     
@@ -59,6 +60,11 @@ public class NettyChannel extends AbstractSession {
     public void close() {
         super.close();
         channel.close();
+    }
+
+    @Override
+    public boolean isConnected() {
+        return super.isConnected() && channel.isActive() && channel.isWritable();
     }
 
     @Override

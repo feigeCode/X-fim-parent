@@ -11,6 +11,6 @@ public interface Loggers {
     Logger CODEC = LoggerFactory.getLogger("codec.log");
     Logger LOADER = LoggerFactory.getLogger("loader.log");
     Logger UTILS = LoggerFactory.getLogger("utils.log");
-
+    Logger HEARTBEAT = LoggerFactory.getLogger("heartbeat.log");
 
 }

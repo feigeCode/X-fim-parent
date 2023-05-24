@@ -54,6 +54,17 @@ public interface Session extends Spi {
     boolean isConnected();
 
     /**
+     * is bind client
+     * @return
+     */
+    boolean isBindClient();
+
+    /**
+     * set is bind client
+     */
+    void setBindClient(boolean isBindClient);
+
+    /**
      * 是否有对应属性
      *
      * @param key key.
