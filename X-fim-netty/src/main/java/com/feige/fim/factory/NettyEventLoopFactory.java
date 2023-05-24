@@ -5,12 +5,15 @@ import com.feige.fim.utils.OsUtil;
 import com.feige.fim.config.Configs;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.Epoll;
+import io.netty.channel.epoll.EpollDatagramChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.ServerSocketChannel;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
@@ -30,6 +33,10 @@ public class NettyEventLoopFactory {
 
     public static Class<? extends ServerSocketChannel> createServerSocketChannelClass() {
         return enableEpoll() ? EpollServerSocketChannel.class : NioServerSocketChannel.class;
+    }
+
+    public static Class<? extends DatagramChannel> createDatagramChannelClass() {
+        return enableEpoll() ? EpollDatagramChannel.class : NioDatagramChannel.class;
     }
 
     private static boolean enableEpoll() {
