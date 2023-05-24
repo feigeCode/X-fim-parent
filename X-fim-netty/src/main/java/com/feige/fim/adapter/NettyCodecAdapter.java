@@ -1,6 +1,10 @@
 package com.feige.fim.adapter;
 
 import com.feige.api.codec.Codec;
+import com.feige.api.codec.IByteBuf;
+import com.feige.api.handler.SessionHandler;
+import com.feige.api.session.Session;
+import com.feige.api.session.SessionRepository;
 import com.feige.fim.lg.Loggers;
 import com.feige.fim.spi.SpiLoaderUtils;
 import io.netty.buffer.ByteBuf;
@@ -25,8 +29,14 @@ public class NettyCodecAdapter {
     private final ChannelHandler encoder = new InternalEncoder();
     private final ChannelHandler decoder = new InternalDecoder();
 
-    private static Codec codec;
-    
+    private final Codec codec;
+    private final SessionRepository sessionRepository;
+
+    public NettyCodecAdapter(Codec codec, SessionRepository sessionRepository) {
+        this.codec = codec;
+        this.sessionRepository = sessionRepository;
+    }
+
     public ChannelHandler getEncoder(){
         return encoder;
     }
@@ -36,32 +46,36 @@ public class NettyCodecAdapter {
         return decoder;
     }
 
-    public static Codec getCodec() {
-        if (codec == null){
-            synchronized (NettyCodecAdapter.class){
-                if (codec == null) {
-                    codec = SpiLoaderUtils.getByConfig(Codec.class, true);
-                }
-            }
-        }
+    public Codec getCodec() {
         return codec;
     }
-    
 
-    private static class InternalEncoder extends MessageToByteEncoder<Object> {
+    public SessionRepository getSessionRepository() {
+        return sessionRepository;
+    }
+
+    private class InternalEncoder extends MessageToByteEncoder<Object> {
 
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
             Codec codec = getCodec();
+            final IByteBuf byteBuf = NettyByteBufAdapter.fromByteBuf(out);
+            codec.encode(toSession(ctx),byteBuf , msg);
         }
     }
 
-    private static class InternalDecoder extends ByteToMessageDecoder {
+    private class InternalDecoder extends ByteToMessageDecoder {
 
         @Override
         protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
             Codec codec = getCodec();
+            Object obj = codec.decode(toSession(ctx), NettyByteBufAdapter.fromByteBuf(in));
+            out.add(obj);
         }
+    }
+
+    protected Session toSession(ChannelHandlerContext ctx){
+        return NettyChannel.getOrAddSession(ctx, getSessionRepository());
     }
     
 }

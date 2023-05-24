@@ -7,6 +7,7 @@ import com.feige.fim.adapter.NettyChannel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleStateEvent;
 
 /**
  * @author feige<br />
@@ -44,8 +45,17 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         sessionHandler.caught(toSession(ctx), cause);
     }
-    
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent){
+            final Session session = toSession(ctx);
+            
+        }
+        super.userEventTriggered(ctx, evt);
+    }
+
     protected Session toSession(ChannelHandlerContext ctx){
-        return NettyChannel.fromChannel(ctx, sessionRepository);
+        return NettyChannel.getOrAddSession(ctx, sessionRepository);
     }
 }

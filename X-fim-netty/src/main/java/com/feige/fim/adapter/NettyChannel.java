@@ -5,6 +5,7 @@ import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
 import com.feige.fim.session.AbstractSession;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.net.InetSocketAddress;
@@ -19,9 +20,14 @@ public class NettyChannel extends AbstractSession {
         this.markActive(this.channel.isActive());
     }
 
-    public static Session fromChannel(ChannelHandlerContext ctx, SessionRepository sessionRepository){
+    public static Session getOrAddSession(ChannelHandlerContext ctx, SessionRepository sessionRepository){
         final Channel channel = ctx.channel();
-        return sessionRepository.computeIfAbsent(channel.id().asShortText(), k -> new NettyChannel(channel));
+        return sessionRepository.computeIfAbsent(channel.id().asShortText(), k -> {
+            if (sessionRepository instanceof NettySessionRepository){
+                channel.closeFuture().addListener(((NettySessionRepository) sessionRepository).remover);
+            }
+            return new NettyChannel(channel);
+        });
     }
 
     @Override
@@ -58,6 +64,25 @@ public class NettyChannel extends AbstractSession {
     @Override
     public String getKey() {
         return "session";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        NettyChannel that = (NettyChannel) o;
+
+        return channel.id().equals(that.channel.id());
+    }
+
+    @Override
+    public int hashCode() {
+        return channel.id().hashCode();
     }
     
 }
