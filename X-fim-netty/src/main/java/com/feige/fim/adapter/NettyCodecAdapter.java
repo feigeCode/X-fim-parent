@@ -12,6 +12,8 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.MessageToByteEncoder;
+import io.netty.handler.codec.MessageToMessageDecoder;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class NettyCodecAdapter {
 
     private final ChannelHandler encoder = new InternalEncoder();
     private final ChannelHandler decoder = new InternalDecoder();
+    private final ChannelHandler wsDecoder = new InternalWsDecoder();
 
     private final Codec codec;
     private final SessionRepository sessionRepository;
@@ -44,6 +47,10 @@ public class NettyCodecAdapter {
 
     public ChannelHandler getDecoder(){
         return decoder;
+    }
+
+    public ChannelHandler getWsDecoder() {
+        return wsDecoder;
     }
 
     public Codec getCodec() {
@@ -77,5 +84,18 @@ public class NettyCodecAdapter {
     protected Session toSession(ChannelHandlerContext ctx){
         return NettyChannel.getOrAddSession(ctx, getSessionRepository());
     }
+
+    
+    private class InternalWsDecoder extends MessageToMessageDecoder<BinaryWebSocketFrame> {
+        
+        @Override
+        protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
+            Codec codec = getCodec();
+            final ByteBuf in = msg.content();
+            Object obj = codec.decode(toSession(ctx), NettyByteBufAdapter.fromByteBuf(in));
+            out.add(obj);
+        }
+    }
+    
     
 }
