@@ -3,3 +3,12 @@ fim:
     dir: /logs
     level: debug
     conf_path: E:\project\my\X-fim-parent\conf\logback.xml
+  spi:
+    loader: { 
+      com.feige.fim.server.NettyTcpServerProvider: tcp, 
+      com.feige.api.codec.Codec: transport,  
+      com.feige.api.handler.SessionHandler: default,
+      com.feige.api.session.SessionRepository: sessionRepository
+      
+    }
+      

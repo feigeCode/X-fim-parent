@@ -20,6 +20,11 @@
             <groupId>com.feige</groupId>
             <artifactId>X-fim-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 

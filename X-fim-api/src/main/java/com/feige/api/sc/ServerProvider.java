@@ -1,4 +1,9 @@
 package com.feige.api.sc;
 
-public class ServerProvider {
+import com.feige.api.spi.Spi;
+
+public interface ServerProvider extends Spi {
+    
+    Server get();
+    
 }
