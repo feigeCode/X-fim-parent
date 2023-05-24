@@ -24,5 +24,24 @@ public class NettyTcpServer extends AbstractNettyServer {
         this.serverBootstrap
                 .childHandler(new TcpServerInitializer(this));
     }
-    
+
+    @Override
+    protected String getBossGroupThreadName() {
+        return "fim-tcp-server-boss-";
+    }
+
+    @Override
+    protected String getWorkerGroupThreadName() {
+        return "fim-tcp-server-work-";
+    }
+
+    @Override
+    protected int getBossGroupThreadNum() {
+        return super.getBossGroupThreadNum();
+    }
+
+    @Override
+    protected int getWorkerGroupThreadNum() {
+        return super.getWorkerGroupThreadNum();
+    }
 }

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+
+    <!-- 尽量别用绝对路径，如果带参数不同容器路径解释可能不同,以下配置参数在pom.xml里 -->
+    <property name="log.root.level" value="${log.root.level}"/> <!-- 日志级别 -->
+    <property name="log.home" value="${log.home}"/>  <!-- 日志路径，这里是相对路径， -->
+
+    <!-- srd log -->
+    <appender name="SRD_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/srd.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/srd.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - [%thread] %-5level - %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- info log -->
+    <appender name="FIM_INFO_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/info-fim.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/info-fim.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - [%thread] %-5level - %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- debug log -->
+    <appender name="FIM_DEBUG_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/debug-fim.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>debug</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/debug-fim.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - [%thread] %-5level - %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- task log -->
+    <appender name="TASK_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/task.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/task.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- server log -->
+    <appender name="SERVER_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/server.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/server.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- codec log -->
+    <appender name="CODEC_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/codec.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/codec.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- heartbeat log -->
+    <appender name="LOADER_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/loader.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/loader.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- cache log -->
+    <appender name="UTILS_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/utils.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/utils.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- http log -->
+    <appender name="HEARTBEAT_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/heartbeat.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/heartbeat.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <encoder charset="UTF-8">
+            <pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root>
+        <level value="${log.root.level}"/>
+        <appender-ref ref="MPUSH_APPENDER"/>
+        <appender-ref ref="MPUSH_INFO_APPENDER"/>
+        <appender-ref ref="MPUSH_DEBUG_APPENDER"/>
+    </root>
+
+    <logger name="console" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="task.log" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="TASK_APPENDER"/>
+    </logger>
+    <logger name="heartbeat.log" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="HEARTBEAT_APPENDER"/>
+    </logger>
+    <logger name="server.log" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="SERVER_APPENDER"/>
+    </logger>
+    <logger name="utils.log" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="UTILS_APPENDER"/>
+    </logger>
+    <logger name="codec.log" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="CODEC_APPENDER"/>
+    </logger>
+    <logger name="loader.log" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="LOADER_APPENDER"/>
+    </logger>
+    <logger name="srd.log" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="SRD_APPENDER"/>
+    </logger>
+
+
+    <logger name="org.apache.zookeeper.ClientCnxn" additivity="false">
+        <level value="warn"/>
+        <appender-ref ref="MPUSH_APPENDER"/>
+    </logger>
+</configuration>

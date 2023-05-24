@@ -1,6 +1,7 @@
 package com.feige.fim;
 
 import com.feige.fim.config.Configs;
+import com.feige.fim.lg.Loggers;
 import com.feige.fim.spi.SpiLoaderUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Assert;

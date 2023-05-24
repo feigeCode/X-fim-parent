@@ -21,6 +21,12 @@ public interface SessionRepository extends Spi {
      */
     void add(Session session);
 
+    /**
+     * add if absent session
+     * @param id id
+     * @param mappingFunction session mapping function
+     * @return
+     */
     default Session computeIfAbsent(String id, Function<String, Session> mappingFunction) {
         Objects.requireNonNull(mappingFunction);
         Session session;

@@ -6,6 +6,7 @@ import com.feige.api.config.ConfigFactory;
 import com.feige.fim.config.impl.CompositeConfig;
 import com.feige.fim.config.impl.EnvConfig;
 import com.feige.fim.config.impl.SystemConfig;
+import com.feige.fim.lg.Loggers;
 import com.feige.fim.spi.SpiLoaderUtils;
 
 import java.io.File;
@@ -19,6 +20,12 @@ public final class Configs {
     public final static String DEFAULT_CONFIG_PATH = "conf" + File.separator + "fim.";
 
     public interface ConfigKey {
+        /**
+         * log config key
+         */
+        String LOG_DIR = "fim.log.dir";
+        String LOG_LEVEL = "fim.log.level";
+        String LOG_CONF_PATH = "fim.log.conf-path";
         /**
          * server config key
          */
@@ -48,6 +55,7 @@ public final class Configs {
         ConfigFactory configFactory = SpiLoaderUtils.getByConfig(ConfigFactory.class, true);
         APP_CONFIG = configFactory.create();
         COMPOSITE_CONFIG.addConfig(APP_CONFIG);
+        Loggers.init();
     }
 
     public static Config getCompositeConfig(){
