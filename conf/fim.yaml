@@ -1,0 +1,5 @@
+fim:
+  log: 
+    dir: /logs
+    level: debug
+    conf_path: E:\project\my\X-fim-parent\conf\logback.xml
