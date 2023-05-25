@@ -16,6 +16,7 @@
         <module>X-fim-netty</module>
         <module>X-fim-nacos</module>
         <module>X-fim-zk</module>
+        <module>X-fim-test</module>
     </modules>
 
     <properties>

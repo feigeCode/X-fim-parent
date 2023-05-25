@@ -8,9 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ServerTest {
+    public static final String CONFIG_PATH = "E:\\project\\my\\X-fim-parent\\conf\\fim.yaml";
     
     @Before
     public void initialize() throws Exception {
+        System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         Configs.loadConfig();
     }
     
