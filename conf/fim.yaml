@@ -2,15 +2,13 @@ fim:
   log: 
     dir: /logs
     level: debug
-    conf_path: E:\project\my\X-fim-parent\conf\logback.xml
+    conf-path: E:\project\my\X-fim-parent\conf\logback.xml
   spi:
-    loader: { 
-      com.feige.fim.server.NettyTcpServerProvider: tcp, 
-      com.feige.api.codec.Codec: transport,  
-      com.feige.api.handler.SessionHandler: default,
-      com.feige.api.session.SessionRepository: sessionRepository
-      
-    }
+    loader: 
+      - com.feige.api.sc.ServerProvider=tcp
+      - com.feige.api.codec.Codec=transport 
+      - com.feige.api.handler.SessionHandler=nettySessionHandler
+      - com.feige.api.session.SessionRepository=nettySessionRepository
   server: 
     enable-epoll: true
     tcp:

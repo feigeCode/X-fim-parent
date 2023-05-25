@@ -4,6 +4,7 @@ import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
 import com.feige.fim.config.Configs;
 import com.feige.fim.spi.SpiLoaderUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +15,12 @@ public class ServerTest {
     public void initialize() throws Exception {
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         Configs.loadConfig();
+    }
+    
+    @Test
+    public void configTest(){
+        Assert.assertEquals(Configs.getString(Configs.CONFIG_FILE_KEY), CONFIG_PATH);
+        Assert.assertEquals(Configs.getString(Configs.ConfigKey.LOG_LEVEL), "debug");
     }
     
     @Test

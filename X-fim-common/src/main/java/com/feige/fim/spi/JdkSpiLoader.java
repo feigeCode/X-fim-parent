@@ -1,7 +1,6 @@
 package com.feige.fim.spi;
 
 import com.feige.api.annotation.CacheOne;
-import com.feige.api.constant.Const;
 import com.feige.api.spi.Spi;
 import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
@@ -9,13 +8,10 @@ import com.feige.fim.config.Configs;
 import com.feige.fim.lg.Loggers;
 import com.feige.fim.utils.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -141,11 +137,6 @@ public class JdkSpiLoader implements SpiLoader {
     
     
     private Set<String> keys(String className){
-        Map<String, Object> map = Configs.getMap(Configs.ConfigKey.SPI_LOADER_KEY);
-        String key = MapUtils.getString(map, className);
-        if (StringUtil.isNotBlank(key)){
-            return new HashSet<>(Arrays.asList(key.split(Const.COMMA)));
-        }
-        return null;
+        return Configs.getSpiConfig().get(className);
     }
 }

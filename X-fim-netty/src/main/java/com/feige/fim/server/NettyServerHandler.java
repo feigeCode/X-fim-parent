@@ -4,9 +4,12 @@ import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
 import com.feige.fim.adapter.NettyChannel;
+import com.feige.fim.adapter.NettySessionRepository;
 import com.feige.fim.lg.Loggers;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -81,6 +84,13 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     protected Session toSession(ChannelHandlerContext ctx){
-        return NettyChannel.getOrAddSession(ctx, sessionRepository);
+        Channel channel = ctx.channel();
+        ChannelId channelId = channel.id();
+        return sessionRepository.computeIfAbsent(channelId.asShortText(), k -> {
+            if (sessionRepository instanceof NettySessionRepository) {
+                channel.closeFuture().addListener(((NettySessionRepository) sessionRepository).remover);
+            }
+            return new NettyChannel(channel);
+        });
     }
 }
