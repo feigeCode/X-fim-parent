@@ -26,7 +26,9 @@ public abstract class AbstractSessionRepository implements SessionRepository {
     @Override
     public void removeAndClose(Session session) {
         sessionMap.remove(session.getId());
-        session.close();
+        if(!session.isClosed()){
+            session.close();
+        }
     }
     
 
