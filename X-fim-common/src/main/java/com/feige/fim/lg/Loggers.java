@@ -11,7 +11,8 @@ public interface Loggers {
         System.setProperty("log.root.level", Configs.getString(Configs.ConfigKey.LOG_LEVEL));
         System.setProperty("logback.configurationFile", Configs.getString(Configs.ConfigKey.LOG_CONF_PATH));
     }
-    
+
+    Logger CONSOLE = LoggerFactory.getLogger("console");
     Logger SRD = LoggerFactory.getLogger("srd.log");
     Logger TASK = LoggerFactory.getLogger("task.log");
     Logger SERVER = LoggerFactory.getLogger("server.log");
