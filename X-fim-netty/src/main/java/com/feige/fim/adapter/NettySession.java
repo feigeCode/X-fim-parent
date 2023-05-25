@@ -39,7 +39,7 @@ public class NettySession extends AbstractSession {
 
     @Override
     public String getId() {
-        return channel.id().asLongText();
+        return channel.id().asShortText();
     }
 
     @Override
