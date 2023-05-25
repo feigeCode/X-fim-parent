@@ -48,13 +48,12 @@ public class SpiLoaderUtils {
     /**
      * get object by config 
      * @param clazz class
-     * @param configNullReturnPrimary Whether to take the first object whose primary is true when configured null
      * @return object
      * @param <T> class type
      * @throws SpiNotFoundException
      */
-    public static <T extends Spi> T getByConfig(Class<T> clazz, boolean configNullReturnPrimary) throws SpiNotFoundException {
-        return getSpiLoader().getByConfig(clazz, configNullReturnPrimary);
+    public static <T extends Spi> T getByConfig(Class<T> clazz) throws SpiNotFoundException {
+        return getSpiLoader().getByConfig(clazz);
     }
 
 

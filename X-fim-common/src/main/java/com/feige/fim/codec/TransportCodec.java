@@ -107,9 +107,5 @@ public class TransportCodec implements Codec {
     public String getKey() {
         return "transport";
     }
-
-    @Override
-    public boolean primary() {
-        return true;
-    }
+    
 }

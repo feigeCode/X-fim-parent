@@ -6,7 +6,6 @@ import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
 import com.feige.fim.config.Configs;
 import com.feige.fim.lg.Loggers;
-import com.feige.fim.utils.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -50,30 +48,12 @@ public class JdkSpiLoader implements SpiLoader {
     }
 
     @Override
-    public <T extends Spi> T getByConfig(Class<T> clazz, boolean configNullReturnPrimary) throws SpiNotFoundException {
-        String key = null;
-        try {
-            key = Configs.getSpiConfig().get(clazz.getName()).get(0);
-        }catch (NullPointerException ignore){}
-        List<Spi> spiList = spiMap.get(clazz);
-        if (spiList != null && !spiList.isEmpty()){
-            if (StringUtil.isNotBlank(key)) {
-                for (Spi spi : spiList) {
-                    if (Objects.equals(spi.getKey(), key)) {
-                        return clazz.cast(spi);
-                    }
-                }
-            }
-            if (configNullReturnPrimary){
-                for (Spi spi : spiList) {
-                    if (spi.primary()){
-                        return clazz.cast(spi);
-                    }
-                }
-            }
-            throw new SpiNotFoundException(clazz, key);
+    public <T extends Spi> T getByConfig(Class<T> clazz) throws SpiNotFoundException {
+        List<String> keys = Configs.getSpiConfig().get(clazz.getName());
+        if (CollectionUtils.isEmpty(keys)){
+            throw new SpiNotFoundException(clazz);
         }
-        throw new SpiNotFoundException(clazz);
+        return get(keys.get(0), clazz);
     }
 
     @Override

@@ -19,9 +19,5 @@ public class NettySessionRepository extends AbstractSessionRepository {
     public String getKey() {
         return "nettySessionRepository";
     }
-
-    @Override
-    public boolean primary() {
-        return true;
-    }
+    
 }

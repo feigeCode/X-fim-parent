@@ -10,7 +10,6 @@ import com.feige.fim.spi.SpiLoaderUtils;
 import com.google.common.base.Splitter;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,7 +58,7 @@ public final class Configs {
         SpiLoaderUtils.load(ConfigFactory.class.getName());
         COMPOSITE_CONFIG.addConfig(SYSTEM_CONFIG);
         COMPOSITE_CONFIG.addConfig(ENV_CONFIG);
-        ConfigFactory configFactory = SpiLoaderUtils.getByConfig(ConfigFactory.class, true);
+        ConfigFactory configFactory = SpiLoaderUtils.getByConfig(ConfigFactory.class);
         APP_CONFIG = configFactory.create();
         COMPOSITE_CONFIG.addConfig(APP_CONFIG);
         initLogConfig();

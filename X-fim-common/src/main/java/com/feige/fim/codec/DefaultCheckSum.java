@@ -17,10 +17,6 @@ public class DefaultCheckSum implements ICheckSum {
     public String getKey() {
         return "default";
     }
-
-    @Override
-    public boolean primary() {
-        return true;
-    }
+    
 
 }
