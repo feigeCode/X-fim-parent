@@ -10,6 +10,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +28,6 @@ public class JdkSpiLoader implements SpiLoader {
 
     @Override
     public void register(Class<?> clazz, List<Spi> objects) {
-        if (objects.size() > 1){
-            objects.sort(Comparator.comparing(Spi::order));
-        }
         this.spiMap.put(clazz, objects);
     }
 
@@ -85,21 +83,23 @@ public class JdkSpiLoader implements SpiLoader {
                             Spi spi = (Spi) next;
                             spiList.add(spi);
                         }
+                        if (spiList.size() > 1){
+                            spiList.sort(Comparator.comparing(Spi::order));
+                        }
                         if (keys != null && keys.size() > 0){
                             spiList = spiList.stream()
                                     .filter(spi -> keys.contains(spi.getKey()))
                                     .collect(Collectors.toList());
                         }else {
                             CacheOne cacheOne = loadClass.getAnnotation(CacheOne.class);
-                            if (cacheOne != null){
-                                List<Spi> collect = spiList.stream()
-                                        .filter(Spi::primary)
+                            if (cacheOne == null){
+                                List<String> keys_ = spiList.stream()
+                                        .map(Spi::getKey)
                                         .collect(Collectors.toList());
-                                if (CollectionUtils.isEmpty(collect) && spiList.size() > 0){
-                                    spiList = spiList.subList(0, 1);
-                                }else {
-                                    spiList = collect.subList(0, 1);
-                                }
+                                Configs.getSpiConfig().put(className, keys_);
+                            }else {
+                                spiList = Collections.singletonList(spiList.get(0));
+                                Configs.getSpiConfig().put(className, Collections.singletonList(spiList.get(0).getKey()));
                             }
                         }
                         if (CollectionUtils.isNotEmpty(spiList)){
