@@ -1,8 +1,9 @@
 package com.feige.api.handler;
 
 import com.feige.api.session.Session;
+import com.feige.api.spi.Spi;
 
-public interface MsgHandler {
+public interface MsgHandler extends Spi {
 
     /**
      * handle
@@ -10,10 +11,5 @@ public interface MsgHandler {
      * @param msg msg
      */
     void handle(Session session, Object msg);
-
-    /**
-     * cmd
-     * @return cmd
-     */
-    int getCmd();
+    
 }
