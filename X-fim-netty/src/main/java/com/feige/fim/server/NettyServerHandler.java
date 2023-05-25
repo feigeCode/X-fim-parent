@@ -37,12 +37,16 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        sessionHandler.connected(toSession(ctx));
+        Session session = toSession(ctx);
+        sessionRepository.add(session);
+        sessionHandler.connected(session);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        sessionHandler.disconnected(toSession(ctx));
+        Session session = toSession(ctx);
+        sessionRepository.removeAndClose(session);
+        sessionHandler.disconnected(session);
     }
 
     @Override

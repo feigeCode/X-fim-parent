@@ -1,6 +1,4 @@
-package com.feige.fim.handler;
-
-import com.feige.fim.session.AbstractSessionHandler;
+package com.feige.fim.session;
 
 public class NettySessionHandler extends AbstractSessionHandler {
     @Override

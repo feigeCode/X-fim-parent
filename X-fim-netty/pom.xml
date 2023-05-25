@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>X-fim-common</artifactId>
+            <artifactId>X-fim-core</artifactId>
         </dependency>
     </dependencies>
     <build>
