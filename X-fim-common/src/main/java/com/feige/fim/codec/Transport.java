@@ -1,7 +1,7 @@
 package com.feige.fim.codec;
 
 
-import com.feige.api.codec.Command;
+import com.feige.api.constant.Command;
 import com.feige.api.constant.Const;
 
 /**

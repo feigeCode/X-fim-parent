@@ -1,4 +1,4 @@
-package com.feige.api.codec;
+package com.feige.api.constant;
 
 public enum Command {
     HEARTBEAT(1),

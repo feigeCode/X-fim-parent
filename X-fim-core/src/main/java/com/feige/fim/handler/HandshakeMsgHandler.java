@@ -1,6 +1,6 @@
 package com.feige.fim.handler;
 
-import com.feige.api.codec.Command;
+import com.feige.api.constant.Command;
 import com.feige.api.handler.AbstractMsgHandler;
 import com.feige.api.session.Session;
 

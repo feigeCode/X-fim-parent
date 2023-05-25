@@ -1,7 +1,7 @@
 package com.feige.fim.codec;
 
 import com.feige.api.codec.Codec;
-import com.feige.api.codec.Command;
+import com.feige.api.constant.Command;
 import com.feige.api.codec.DecoderException;
 import com.feige.api.codec.EncoderException;
 import com.feige.api.codec.IByteBuf;

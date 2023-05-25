@@ -4,7 +4,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * @author feige<br />
+ * @author mpush<br />
  * @ClassName: ServiceAdapter <br/>
  * @Description: from mpush<br/>
  * @date: 2023/5/13 14:29<br/>
