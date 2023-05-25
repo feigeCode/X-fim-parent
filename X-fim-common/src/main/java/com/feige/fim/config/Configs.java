@@ -30,16 +30,16 @@ public final class Configs {
          * server config key
          */
         String SERVER_ENABLE_EPOLL_KEY = "fim.server.enable-epoll";
-        String SERVER_ENABLE_TCP_KEY = "fim.server.enable-tcp";
-        String SERVER_TCP_IP_KEY = "fim.server.tcp-ip";
-        String SERVER_TCP_PORT_KEY = "fim.server.tcp-port";
-        String SERVER_ENABLE_WS_KEY = "fim.server.enable-ws";
-        String SERVER_ENABLE_HTTP_KEY = "fim.server.enable-http";
-        String SERVER_WS_IP_KEY = "fim.server.ws-ip";
-        String SERVER_WS_PORT_KEY = "fim.server.ws-port";
-        String SERVER_ENABLE_UDP_KEY = "fim.server.enable-udp";
-        String SERVER_UDP_IP_KEY = "fim.server.udp-ip";
-        String SERVER_UDP_PORT_KEY = "fim.server.udp-port";
+        String SERVER_ENABLE_TCP_KEY = "fim.server.tcp.enable";
+        String SERVER_TCP_IP_KEY = "fim.server.tcp.ip";
+        String SERVER_TCP_PORT_KEY = "fim.server.tcp.port";
+        String SERVER_ENABLE_WS_KEY = "fim.server.ws.enable";
+        String SERVER_ENABLE_HTTP_KEY = "fim.server.http.enable";
+        String SERVER_WS_IP_KEY = "fim.server.ws.ip";
+        String SERVER_WS_PORT_KEY = "fim.server.ws.port";
+        String SERVER_ENABLE_UDP_KEY = "fim.server.udp.enable";
+        String SERVER_UDP_IP_KEY = "fim.server.udp.ip";
+        String SERVER_UDP_PORT_KEY = "fim.server.udp.port";
         
         String SPI_LOADER_KEY = "fim.spi.loader";
     }

@@ -11,4 +11,22 @@ fim:
       com.feige.api.session.SessionRepository: sessionRepository
       
     }
+  server: 
+    enable-epoll: true
+    tcp:
+      enable: true
+      ip: 127.0.0.1
+      port: 8001
+    ws:
+      enable: true
+      ip: 127.0.0.1
+      port: 8002
+    http:
+      enable: true
+    udp:
+      enable: true
+      ip: 127.0.0.1
+      port: 8003
+      
+      
       
