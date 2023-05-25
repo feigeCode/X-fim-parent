@@ -53,7 +53,7 @@ public final class Configs {
     private final static Config SYSTEM_CONFIG = new SystemConfig();
     private final static Config ENV_CONFIG = new EnvConfig();
     private static Config APP_CONFIG = null;
-    private static final Map<String, Set<String>> SPI_CONFIG = new ConcurrentHashMap<>();
+    private static final Map<String, List<String>> SPI_CONFIG = new ConcurrentHashMap<>();
 
     public static void loadConfig() throws Exception {
         SpiLoaderUtils.load(ConfigFactory.class.getName());
@@ -72,7 +72,7 @@ public final class Configs {
             List<String> list = equalsSplitter.splitToList(line);
             if (list.size() == 2){
                 String className = list.get(0);
-                SPI_CONFIG.put(className, new HashSet<>(commaSplitter.splitToList(list.get(1))));
+                SPI_CONFIG.put(className, commaSplitter.splitToList(list.get(1)));
             }
         }
         Set<String> classNames = SPI_CONFIG.keySet();
@@ -104,7 +104,7 @@ public final class Configs {
         return ENV_CONFIG;
     }
 
-    public static Map<String, Set<String>> getSpiConfig(){
+    public static Map<String, List<String>> getSpiConfig(){
         return SPI_CONFIG;
     }
     /**

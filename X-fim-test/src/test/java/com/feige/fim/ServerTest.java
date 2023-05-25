@@ -15,6 +15,7 @@ public class ServerTest {
     public void initialize() throws Exception {
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         Configs.loadConfig();
+        System.out.println("initialize end...");
     }
     
     @Test

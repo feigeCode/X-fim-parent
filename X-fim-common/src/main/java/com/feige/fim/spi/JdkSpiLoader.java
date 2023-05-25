@@ -53,7 +53,7 @@ public class JdkSpiLoader implements SpiLoader {
     public <T extends Spi> T getByConfig(Class<T> clazz, boolean configNullReturnPrimary) throws SpiNotFoundException {
         String key = null;
         try {
-            key = Configs.getString(clazz.getName());
+            key = Configs.getSpiConfig().get(clazz.getName()).get(0);
         }catch (NullPointerException ignore){}
         List<Spi> spiList = spiMap.get(clazz);
         if (spiList != null && !spiList.isEmpty()){
@@ -100,7 +100,7 @@ public class JdkSpiLoader implements SpiLoader {
                     if (list == null){
                         ServiceLoader<?> loader = ServiceLoader.load(loadClass);
                         List<Spi> spiList = new ArrayList<>();
-                        Set<String> keys = keys(className);
+                        List<String> keys = keys(className);
                         for (Object next : loader) {
                             Spi spi = (Spi) next;
                             spiList.add(spi);
@@ -136,7 +136,7 @@ public class JdkSpiLoader implements SpiLoader {
     }
     
     
-    private Set<String> keys(String className){
+    private List<String> keys(String className){
         return Configs.getSpiConfig().get(className);
     }
 }
