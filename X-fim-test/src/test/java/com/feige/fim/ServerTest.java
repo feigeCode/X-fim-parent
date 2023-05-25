@@ -5,14 +5,15 @@ import com.feige.api.sc.ServerProvider;
 import com.feige.fim.config.Configs;
 import com.feige.fim.spi.SpiLoaderUtils;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ServerTest {
-    public static final String CONFIG_PATH = "E:\\project\\my\\X-fim-parent\\conf\\fim.yaml";
+    public static final String CONFIG_PATH = "E:\\project\\im\\X-fim-parent\\conf\\fim.yaml";
     
-    @Before
-    public void initialize() throws Exception {
+    @BeforeClass
+    public static void initialize() throws Exception {
+        System.out.println("initialize start...");
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         Configs.loadConfig();
         System.out.println("initialize end...");
@@ -29,5 +30,14 @@ public class ServerTest {
         final ServerProvider serverProvider = SpiLoaderUtils.get("tcp", ServerProvider.class);
         Server server = serverProvider.get();
         server.syncStart();
+        server.syncStop();
+    }
+
+    @Test
+    public void createWsServer(){
+        final ServerProvider serverProvider = SpiLoaderUtils.get("ws", ServerProvider.class);
+        Server server = serverProvider.get();
+        server.syncStart();
+        server.syncStop();
     }
 }
