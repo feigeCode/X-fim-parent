@@ -4,7 +4,7 @@ import com.feige.api.sc.Server;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.DatagramChannel;
-import io.netty.channel.socket.SocketChannel;
+
 
 public class UdpServerInitializer extends ChannelInitializer<DatagramChannel> {
 

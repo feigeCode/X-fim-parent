@@ -20,7 +20,7 @@ public abstract class AbstractServerProvider implements ServerProvider {
      * @return session handler
      */
     protected SessionHandler getSessionHandler() {
-        return SpiLoaderUtils.getByConfig(SessionHandler.class, true);
+        return SpiLoaderUtils.getByConfig(SessionHandler.class);
     }
 
     /**
@@ -46,7 +46,7 @@ public abstract class AbstractServerProvider implements ServerProvider {
      * @return codec
      */
     protected Codec getCodec() {
-        return SpiLoaderUtils.getByConfig(Codec.class, true);
+        return SpiLoaderUtils.getByConfig(Codec.class);
     }
 
     /**
@@ -54,6 +54,6 @@ public abstract class AbstractServerProvider implements ServerProvider {
      * @return session repository
      */
     protected SessionRepository getSessionRepository() {
-        return SpiLoaderUtils.getByConfig(SessionRepository.class, true);
+        return SpiLoaderUtils.getByConfig(SessionRepository.class);
     }
 }

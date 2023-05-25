@@ -5,18 +5,19 @@ import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
 import com.feige.fim.session.AbstractSession;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.net.InetSocketAddress;
 
 
-public class NettyChannel extends AbstractSession {
+public class NettySession extends AbstractSession {
     
  
     private final Channel channel;
     
-    public NettyChannel(Channel channel) {
+    public NettySession(Channel channel) {
         this.channel = channel;
         this.markActive(this.channel.isActive());
     }
@@ -24,16 +25,21 @@ public class NettyChannel extends AbstractSession {
     public static Session getOrAddSession(ChannelHandlerContext ctx, SessionRepository sessionRepository){
         final Channel channel = ctx.channel();
         return sessionRepository.computeIfAbsent(channel.id().asShortText(), k -> {
-            if (sessionRepository instanceof NettySessionRepository){
-                channel.closeFuture().addListener(((NettySessionRepository) sessionRepository).remover);
-            }
-            return new NettyChannel(channel);
+            NettySession nettySession = new NettySession(channel);
+            channel.closeFuture().addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    future.removeListener(this);
+                    sessionRepository.removeAndClose(nettySession);
+                }
+            });
+            return nettySession;
         });
     }
 
     @Override
     public String getId() {
-        return channel.id().asLongText();
+        return channel.id().asShortText();
     }
 
     @Override
@@ -68,11 +74,6 @@ public class NettyChannel extends AbstractSession {
     }
 
     @Override
-    public String getKey() {
-        return "session";
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -81,7 +82,7 @@ public class NettyChannel extends AbstractSession {
             return false;
         }
 
-        NettyChannel that = (NettyChannel) o;
+        NettySession that = (NettySession) o;
 
         return channel.id().equals(that.channel.id());
     }

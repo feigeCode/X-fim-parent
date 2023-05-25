@@ -25,4 +25,25 @@ public class NettyWsServer extends AbstractNettyServer {
     protected String wsPath(){
         return "/ws";
     }
+
+
+    @Override
+    protected String getBossGroupThreadName() {
+        return "fim-ws-server-boss-";
+    }
+
+    @Override
+    protected String getWorkerGroupThreadName() {
+        return "fim-ws-server-work-";
+    }
+
+    @Override
+    protected int getBossGroupThreadNum() {
+        return super.getBossGroupThreadNum();
+    }
+
+    @Override
+    protected int getWorkerGroupThreadNum() {
+        return super.getWorkerGroupThreadNum();
+    }
 }

@@ -35,6 +35,9 @@ public abstract class AbstractNettyServer extends AbstractServer {
 
     @Override
     public void initialize() {
+        if (!serverState.compareAndSet(ServerState.Created, ServerState.Initialized)) {
+            throw new ServiceException("Server already init");
+        }
         this.bossGroup = createBossGroup();
         this.workGroup = createWorkerGroup();
         this.serverBootstrap = new ServerBootstrap();
@@ -52,7 +55,7 @@ public abstract class AbstractNettyServer extends AbstractServer {
                     .addListener(future -> {
                         if (future.isSuccess()) {
                             serverState.set(ServerState.Started);
-                            LOG.info("netty tcp server in {} port start finish....", getAddress().getPort());
+                            LOG.info("netty [{}] server in {} port start finish....", getClass().getSimpleName() ,getAddress().getPort());
                             if (listener != null){
                                 listener.onSuccess(address);
                             }

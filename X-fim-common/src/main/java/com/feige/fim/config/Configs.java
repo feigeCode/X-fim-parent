@@ -6,18 +6,22 @@ import com.feige.api.config.ConfigFactory;
 import com.feige.fim.config.impl.CompositeConfig;
 import com.feige.fim.config.impl.EnvConfig;
 import com.feige.fim.config.impl.SystemConfig;
-import com.feige.fim.lg.Loggers;
 import com.feige.fim.spi.SpiLoaderUtils;
+import com.google.common.base.Splitter;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public final class Configs {
 
     public final static String CONFIG_FILE_KEY = "fim.path";
     public final static String DEFAULT_CONFIG_PATH = "conf" + File.separator + "fim.";
+    public final static Splitter equalsSplitter = Splitter.on("=").omitEmptyStrings();
+    public final static Splitter commaSplitter = Splitter.on(",").omitEmptyStrings();
 
     public interface ConfigKey {
         /**
@@ -30,17 +34,19 @@ public final class Configs {
          * server config key
          */
         String SERVER_ENABLE_EPOLL_KEY = "fim.server.enable-epoll";
-        String SERVER_ENABLE_TCP_KEY = "fim.server.enable-tcp";
-        String SERVER_TCP_IP_KEY = "fim.server.tcp-ip";
-        String SERVER_TCP_PORT_KEY = "fim.server.tcp-port";
-        String SERVER_ENABLE_WS_KEY = "fim.server.enable-ws";
-        String SERVER_ENABLE_HTTP_KEY = "fim.server.enable-http";
-        String SERVER_WS_IP_KEY = "fim.server.ws-ip";
-        String SERVER_WS_PORT_KEY = "fim.server.ws-port";
-        String SERVER_ENABLE_UDP_KEY = "fim.server.enable-udp";
-        String SERVER_UDP_IP_KEY = "fim.server.udp-ip";
-        String SERVER_UDP_PORT_KEY = "fim.server.udp-port";
-        
+        String SERVER_ENABLE_TCP_KEY = "fim.server.tcp.enable";
+        String SERVER_TCP_IP_KEY = "fim.server.tcp.ip";
+        String SERVER_TCP_PORT_KEY = "fim.server.tcp.port";
+        String SERVER_ENABLE_WS_KEY = "fim.server.ws.enable";
+        String SERVER_ENABLE_HTTP_KEY = "fim.server.http.enable";
+        String SERVER_WS_IP_KEY = "fim.server.ws.ip";
+        String SERVER_WS_PORT_KEY = "fim.server.ws.port";
+        String SERVER_ENABLE_UDP_KEY = "fim.server.udp.enable";
+        String SERVER_UDP_IP_KEY = "fim.server.udp.ip";
+        String SERVER_UDP_PORT_KEY = "fim.server.udp.port";
+        /**
+         * spi key
+         */
         String SPI_LOADER_KEY = "fim.spi.loader";
     }
 
@@ -48,14 +54,38 @@ public final class Configs {
     private final static Config SYSTEM_CONFIG = new SystemConfig();
     private final static Config ENV_CONFIG = new EnvConfig();
     private static Config APP_CONFIG = null;
+    private static final Map<String, List<String>> SPI_CONFIG = new ConcurrentHashMap<>();
 
     public static void loadConfig() throws Exception {
+        SpiLoaderUtils.load(ConfigFactory.class.getName());
         COMPOSITE_CONFIG.addConfig(SYSTEM_CONFIG);
         COMPOSITE_CONFIG.addConfig(ENV_CONFIG);
-        ConfigFactory configFactory = SpiLoaderUtils.getByConfig(ConfigFactory.class, true);
+        ConfigFactory configFactory = SpiLoaderUtils.getByConfig(ConfigFactory.class);
         APP_CONFIG = configFactory.create();
         COMPOSITE_CONFIG.addConfig(APP_CONFIG);
-        Loggers.init();
+        initLogConfig();
+        initSpiConfig();
+    }
+    
+    public static void initSpiConfig(){
+        List<String> spiConfigList = getList(ConfigKey.SPI_LOADER_KEY);
+        for (String line : spiConfigList) {
+            List<String> list = equalsSplitter.splitToList(line);
+            if (list.size() == 2){
+                String className = list.get(0);
+                SPI_CONFIG.put(className, commaSplitter.splitToList(list.get(1)));
+            }
+        }
+        Set<String> classNames = SPI_CONFIG.keySet();
+        for (String className : classNames) {
+            SpiLoaderUtils.load(className);
+        }
+    }
+
+    public static void initLogConfig() {
+        System.setProperty("log.home", Configs.getString(Configs.ConfigKey.LOG_DIR));
+        System.setProperty("log.root.level", Configs.getString(Configs.ConfigKey.LOG_LEVEL));
+        System.setProperty("logback.configurationFile", Configs.getString(Configs.ConfigKey.LOG_CONF_PATH));
     }
 
     public static Config getCompositeConfig(){
@@ -73,6 +103,10 @@ public final class Configs {
 
     public static Config getEnvConfig(){
         return ENV_CONFIG;
+    }
+
+    public static Map<String, List<String>> getSpiConfig(){
+        return SPI_CONFIG;
     }
     /**
      *  get int config

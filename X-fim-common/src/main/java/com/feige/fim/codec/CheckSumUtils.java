@@ -15,7 +15,7 @@ public class CheckSumUtils {
      * @throws CheckSumException
      */
     public static void check(byte[] data, short expectedCheckSum)  throws CheckSumException {
-        ICheckSum iCheckSum = SpiLoaderUtils.getByConfig(ICheckSum.class, true);
+        ICheckSum iCheckSum = SpiLoaderUtils.getByConfig(ICheckSum.class);
         iCheckSum.check(data, expectedCheckSum);
     }
 
@@ -26,7 +26,7 @@ public class CheckSumUtils {
      * @return check sum
      */
     public static short calculate(byte[] body) {
-        ICheckSum iCheckSum = SpiLoaderUtils.getByConfig(ICheckSum.class, true);
+        ICheckSum iCheckSum = SpiLoaderUtils.getByConfig(ICheckSum.class);
         return iCheckSum.getCheckSum(body);
     }
 }

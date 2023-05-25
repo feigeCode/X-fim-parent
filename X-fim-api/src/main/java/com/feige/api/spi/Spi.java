@@ -8,14 +8,6 @@ public interface Spi {
     String getKey();
 
     /**
-     * Whether it is primary
-     * @return is primary
-     */
-    default boolean primary() {
-        return false;
-    }
-
-    /**
      * order
      * @return order number
      */

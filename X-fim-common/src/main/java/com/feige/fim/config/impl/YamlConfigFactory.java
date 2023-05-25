@@ -42,9 +42,5 @@ public class YamlConfigFactory implements ConfigFactory {
     public String getKey() {
         return "yaml";
     }
-
-    @Override
-    public boolean primary() {
-        return true;
-    }
+    
 }

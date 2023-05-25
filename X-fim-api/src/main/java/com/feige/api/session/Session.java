@@ -1,11 +1,10 @@
 package com.feige.api.session;
 
 import com.feige.api.handler.RemotingException;
-import com.feige.api.spi.Spi;
 
 import java.net.InetSocketAddress;
 
-public interface Session extends Spi {
+public interface Session {
     /**
      * 获取session的唯一id
      * @return

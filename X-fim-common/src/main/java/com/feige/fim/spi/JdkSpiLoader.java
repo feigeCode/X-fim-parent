@@ -1,26 +1,21 @@
 package com.feige.fim.spi;
 
 import com.feige.api.annotation.CacheOne;
-import com.feige.api.constant.Const;
 import com.feige.api.spi.Spi;
 import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
 import com.feige.fim.config.Configs;
 import com.feige.fim.lg.Loggers;
-import com.feige.fim.utils.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -33,9 +28,6 @@ public class JdkSpiLoader implements SpiLoader {
 
     @Override
     public void register(Class<?> clazz, List<Spi> objects) {
-        if (objects.size() > 1){
-            objects.sort(Comparator.comparing(Spi::order));
-        }
         this.spiMap.put(clazz, objects);
     }
 
@@ -54,30 +46,12 @@ public class JdkSpiLoader implements SpiLoader {
     }
 
     @Override
-    public <T extends Spi> T getByConfig(Class<T> clazz, boolean configNullReturnPrimary) throws SpiNotFoundException {
-        String key = null;
-        try {
-            key = Configs.getString(clazz.getName());
-        }catch (NullPointerException ignore){}
-        List<Spi> spiList = spiMap.get(clazz);
-        if (spiList != null && !spiList.isEmpty()){
-            if (StringUtil.isNotBlank(key)) {
-                for (Spi spi : spiList) {
-                    if (Objects.equals(spi.getKey(), key)) {
-                        return clazz.cast(spi);
-                    }
-                }
-            }
-            if (configNullReturnPrimary){
-                for (Spi spi : spiList) {
-                    if (spi.primary()){
-                        return clazz.cast(spi);
-                    }
-                }
-            }
-            throw new SpiNotFoundException(clazz, key);
+    public <T extends Spi> T getByConfig(Class<T> clazz) throws SpiNotFoundException {
+        List<String> keys = Configs.getSpiConfig().get(clazz.getName());
+        if (CollectionUtils.isEmpty(keys)){
+            throw new SpiNotFoundException(clazz);
         }
-        throw new SpiNotFoundException(clazz);
+        return get(keys.get(0), clazz);
     }
 
     @Override
@@ -104,10 +78,13 @@ public class JdkSpiLoader implements SpiLoader {
                     if (list == null){
                         ServiceLoader<?> loader = ServiceLoader.load(loadClass);
                         List<Spi> spiList = new ArrayList<>();
-                        Set<String> keys = keys(className);
+                        List<String> keys = keys(className);
                         for (Object next : loader) {
                             Spi spi = (Spi) next;
                             spiList.add(spi);
+                        }
+                        if (spiList.size() > 1){
+                            spiList.sort(Comparator.comparing(Spi::order));
                         }
                         if (keys != null && keys.size() > 0){
                             spiList = spiList.stream()
@@ -115,15 +92,14 @@ public class JdkSpiLoader implements SpiLoader {
                                     .collect(Collectors.toList());
                         }else {
                             CacheOne cacheOne = loadClass.getAnnotation(CacheOne.class);
-                            if (cacheOne != null){
-                                List<Spi> collect = spiList.stream()
-                                        .filter(Spi::primary)
+                            if (cacheOne == null){
+                                List<String> keys_ = spiList.stream()
+                                        .map(Spi::getKey)
                                         .collect(Collectors.toList());
-                                if (CollectionUtils.isEmpty(collect) && spiList.size() > 0){
-                                    spiList = spiList.subList(0, 1);
-                                }else {
-                                    spiList = collect.subList(0, 1);
-                                }
+                                Configs.getSpiConfig().put(className, keys_);
+                            }else {
+                                spiList = Collections.singletonList(spiList.get(0));
+                                Configs.getSpiConfig().put(className, Collections.singletonList(spiList.get(0).getKey()));
                             }
                         }
                         if (CollectionUtils.isNotEmpty(spiList)){
@@ -140,12 +116,7 @@ public class JdkSpiLoader implements SpiLoader {
     }
     
     
-    private Set<String> keys(String className){
-        Map<String, Object> map = Configs.getMap(Configs.ConfigKey.SPI_LOADER_KEY);
-        String key = MapUtils.getString(map, className);
-        if (StringUtil.isNotBlank(key)){
-            return new HashSet<>(Arrays.asList(key.split(Const.COMMA)));
-        }
-        return null;
+    private List<String> keys(String className){
+        return Configs.getSpiConfig().get(className);
     }
 }

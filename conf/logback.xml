@@ -5,12 +5,13 @@
     <property name="log.root.level" value="${log.root.level}"/> <!-- 日志级别 -->
     <property name="log.home" value="${log.home}"/>  <!-- 日志路径，这里是相对路径， -->
 
+    
     <!-- srd log -->
-    <appender name="SRD_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.home}/srd.log</file>
+    <appender name="FIM_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/fim.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.home}/srd.log.%d{yyyy-MM-dd}
+            <fileNamePattern>${log.home}/fim.log.%d{yyyy-MM-dd}
             </fileNamePattern>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
@@ -18,7 +19,6 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - [%thread] %-5level - %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
-
     <!-- info log -->
     <appender name="FIM_INFO_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.home}/info-fim.log</file>
@@ -51,6 +51,19 @@
             <fileNamePattern>${log.home}/debug-fim.log.%d{yyyy-MM-dd}
             </fileNamePattern>
             <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - [%thread] %-5level - %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- srd log -->
+    <appender name="SRD_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.home}/srd.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.home}/srd.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+            <maxHistory>5</maxHistory>
         </rollingPolicy>
         <encoder charset="UTF-8">
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - [%thread] %-5level - %logger{35} - %msg%n</pattern>
@@ -154,9 +167,9 @@
 
     <root>
         <level value="${log.root.level}"/>
-        <appender-ref ref="MPUSH_APPENDER"/>
-        <appender-ref ref="MPUSH_INFO_APPENDER"/>
-        <appender-ref ref="MPUSH_DEBUG_APPENDER"/>
+        <appender-ref ref="FIM_APPENDER"/>
+        <appender-ref ref="FIM_INFO_APPENDER"/>
+        <appender-ref ref="FIM_DEBUG_APPENDER"/>
     </root>
 
     <logger name="console" additivity="false">
@@ -191,10 +204,5 @@
         <level value="debug"/>
         <appender-ref ref="SRD_APPENDER"/>
     </logger>
-
-
-    <logger name="org.apache.zookeeper.ClientCnxn" additivity="false">
-        <level value="warn"/>
-        <appender-ref ref="MPUSH_APPENDER"/>
-    </logger>
+    
 </configuration>
