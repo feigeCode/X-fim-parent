@@ -2,11 +2,9 @@ package com.feige.fim.adapter;
 
 import com.feige.api.codec.Codec;
 import com.feige.api.codec.IByteBuf;
-import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
 import com.feige.fim.lg.Loggers;
-import com.feige.fim.spi.SpiLoaderUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -82,7 +80,7 @@ public class NettyCodecAdapter {
     }
 
     protected Session toSession(ChannelHandlerContext ctx){
-        return NettyChannel.getOrAddSession(ctx, getSessionRepository());
+        return NettySession.getOrAddSession(ctx, getSessionRepository());
     }
 
     
