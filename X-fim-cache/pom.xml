@@ -9,7 +9,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>X-fim-zk</artifactId>
+    <artifactId>X-fim-cache</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>X-fim-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

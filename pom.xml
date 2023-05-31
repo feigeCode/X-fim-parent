@@ -15,7 +15,7 @@
         <module>X-fim-core</module>
         <module>X-fim-netty</module>
         <module>X-fim-nacos</module>
-        <module>X-fim-zk</module>
+        <module>X-fim-cache</module>
         <module>X-fim-test</module>
     </modules>
 
@@ -34,10 +34,22 @@
         <slf4j-api.version>1.7.7</slf4j-api.version>
         <logback.version>1.2.9</logback.version>
         <log4j.version>2.17.1</log4j.version>
+        <ehcache.version>3.9.0</ehcache.version>
+        <redisson.version>3.14.0</redisson.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>${ehcache.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -147,6 +159,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>X-fim-nacos</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>X-fim-cache</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
