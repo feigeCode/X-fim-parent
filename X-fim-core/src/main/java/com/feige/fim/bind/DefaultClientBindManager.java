@@ -7,9 +7,8 @@ import com.feige.api.cache.CacheGroup;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.MapCache;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,42 +19,60 @@ import java.util.stream.Collectors;
  * @date: 2023/5/27 10:47<br/>
  */
 public class DefaultClientBindManager extends AbstractClientBindManager {
+    
     public DefaultClientBindManager(CacheManager cacheManager) {
         super(cacheManager);
     }
 
-    public MapCache<Integer, ClientBindInfo> get(String clientId){
+    protected MapCache<String, ClientBindInfo> getMapCache(){
         CacheGroup group = cacheManager.getGroup(ClientBindManager.class);
-        MapCache<Integer, ClientBindInfo> mapCache = group.get(clientId, MapCache.class);
+        String canonicalName = this.getClass().getCanonicalName();
+        MapCache<String, ClientBindInfo> mapCache = group.get(canonicalName, MapCache.class);
         if (mapCache == null){
-            return group.createMap(clientId, Integer.class, ClientBindInfo.class);
+            synchronized (this){
+                mapCache = group.get(canonicalName, MapCache.class);
+                if (mapCache == null) {
+                    mapCache = group.createMap(canonicalName, String.class, ClientBindInfo.class);
+                }
+            }
         }
         return mapCache;
     }
     
+    protected String getKey(String clientId, int osCode){
+        return clientId + "_" + osCode;
+    }
+    
     @Override
     public void register(ClientBindInfo clientBindInfo) {
-        get(clientBindInfo.getClientId()).put(clientBindInfo.getOsCode(), clientBindInfo);
+        MapCache<String, ClientBindInfo> mapCache = getMapCache();
+        mapCache.put(getKey(clientBindInfo.getClientId(), clientBindInfo.getOsCode()), clientBindInfo);
     }
 
     @Override
     public ClientBindInfo lookup(String clientId, ClientType clientType) {
-        return get(clientId).get(clientType.getCode());
+        String key = getKey(clientId, clientType.getCode());
+        MapCache<String, ClientBindInfo> mapCache = getMapCache();
+        return mapCache.get(key);
     }
 
     @Override
-    public List<ClientBindInfo> lookupAll(String clientId) {
-        Set<Integer> keys = Arrays.stream(ClientType.values())
-                .map(ClientType::getCode)
+    public Map<String, ClientBindInfo> lookupAll(final String clientId) {
+        Set<String> keys = Arrays.stream(ClientType.values())
+                .map(clientType -> getKey(clientId, clientType.getCode()))
                 .collect(Collectors.toSet());
-        return new ArrayList<>(get(clientId).getAll(keys).values());
+        return getMapCache().getAll(keys);
     }
 
     @Override
     public ClientBindInfo unregister(String clientId, ClientType clientType) {
-        MapCache<Integer, ClientBindInfo> mapCache = get(clientId);
-        ClientBindInfo clientBindInfo = mapCache.remove(clientType.getCode());
-        
-        return clientBindInfo;
+        MapCache<String, ClientBindInfo> mapCache = getMapCache();
+        String key = getKey(clientId, clientType.getCode());
+        return mapCache.remove(key);
+    }
+
+    @Override
+    public String getKey() {
+        return "default";
     }
 }

@@ -1,6 +1,9 @@
 package com.feige.api.bind;
 
+import com.feige.api.spi.Spi;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author feige<br />
@@ -8,7 +11,7 @@ import java.util.List;
  * @Description: <br/>
  * @date: 2023/5/27 10:46<br/>
  */
-public interface ClientBindManager {
+public interface ClientBindManager extends Spi {
 
     /**
      * register client bind info
@@ -29,7 +32,7 @@ public interface ClientBindManager {
      * @param clientId client id
      * @return all client bind info
      */
-    List<ClientBindInfo> lookupAll(String clientId);
+    Map<String, ClientBindInfo> lookupAll(String clientId);
 
 
     /**
