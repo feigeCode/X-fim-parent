@@ -7,6 +7,7 @@ import com.feige.api.cache.MapCache;
 import com.feige.api.cache.MapCacheOptions;
 import com.feige.api.cache.ObjectCache;
 import com.feige.api.cache.SetCache;
+import com.feige.api.constant.Const;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.CacheConfiguration;
@@ -23,8 +24,7 @@ import java.io.Serializable;
  * @date: 2023/5/31 22:53<br/>
  */
 public class EhcacheCacheGroup extends AbstractCacheGroup {
-
-    public static final String UNDERLINE = "_";
+    
     private final EhcacheCacheManager manager;
     private final CacheManager cacheManager;
 
@@ -36,7 +36,7 @@ public class EhcacheCacheGroup extends AbstractCacheGroup {
 
     @Override
     protected String getGroupedName(String name) {
-        return this.groupName + UNDERLINE + name;
+        return this.groupName + Const.UNDERLINE + name;
     }
 
     @Override

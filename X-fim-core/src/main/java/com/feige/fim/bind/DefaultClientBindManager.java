@@ -6,6 +6,7 @@ import com.feige.api.bind.ClientType;
 import com.feige.api.cache.CacheGroup;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.MapCache;
+import com.feige.api.constant.Const;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class DefaultClientBindManager extends AbstractClientBindManager {
     }
     
     protected String getKey(String clientId, int osCode){
-        return clientId + "_" + osCode;
+        return clientId + Const.UNDERLINE + osCode;
     }
     
     @Override

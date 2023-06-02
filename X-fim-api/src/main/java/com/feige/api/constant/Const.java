@@ -43,4 +43,6 @@ public interface Const {
     
     
     String COMMA = ",";
+
+    String UNDERLINE = "_";
 }
