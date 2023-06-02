@@ -21,19 +21,20 @@ import java.util.stream.Collectors;
  */
 public class DefaultClientBindManager extends AbstractClientBindManager {
     
+    public static final String CACHE_NAME = "BIND_CLIENT";
+    
     public DefaultClientBindManager(CacheManager cacheManager) {
         super(cacheManager);
     }
 
     protected MapCache<String, ClientBindInfo> getMapCache(){
         CacheGroup group = cacheManager.getGroup(ClientBindManager.class);
-        String canonicalName = this.getClass().getCanonicalName();
-        MapCache<String, ClientBindInfo> mapCache = group.get(canonicalName, MapCache.class);
+        MapCache<String, ClientBindInfo> mapCache = group.get(CACHE_NAME, MapCache.class);
         if (mapCache == null){
             synchronized (this){
-                mapCache = group.get(canonicalName, MapCache.class);
+                mapCache = group.get(CACHE_NAME, MapCache.class);
                 if (mapCache == null) {
-                    mapCache = group.createMap(canonicalName, String.class, ClientBindInfo.class);
+                    mapCache = group.createMap(CACHE_NAME, String.class, ClientBindInfo.class);
                 }
             }
         }
