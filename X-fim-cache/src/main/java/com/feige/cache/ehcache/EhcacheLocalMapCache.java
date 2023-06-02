@@ -1,6 +1,7 @@
 package com.feige.cache.ehcache;
 
 import com.feige.api.cache.LocalMapCache;
+import com.feige.api.cache.MapCacheLoader;
 import org.ehcache.Cache;
 
 import java.io.Serializable;
@@ -12,17 +13,21 @@ import java.io.Serializable;
  * @date: 2023/5/31 22:58<br/>
  */
 public class EhcacheLocalMapCache<K extends Serializable, V extends Serializable> extends EhcacheCacheMap<K, V> implements LocalMapCache<K, V> {
-    public EhcacheLocalMapCache(String group, String name, Cache<K, V> cache) {
-        super(group, name, cache);
+
+    
+    public EhcacheLocalMapCache(String group, String name, Cache<K, V> cache, MapCacheLoader<K, V> loader) {
+        super(group, name, cache, loader);
     }
 
     @Override
     public V putIfAbsent(K key, V value) {
-        return null;
+        return cache.putIfAbsent(key, value);
     }
 
     @Override
     public V getOrDefault(K key, V defaultValue) {
-        return null;
+        V v = super.get(key);
+        return v == null ? defaultValue : v;
     }
+
 }

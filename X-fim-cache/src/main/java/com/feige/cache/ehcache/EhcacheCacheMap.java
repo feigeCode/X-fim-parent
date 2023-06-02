@@ -2,12 +2,17 @@ package com.feige.cache.ehcache;
 
 import com.feige.api.cache.AbstractCacheable;
 import com.feige.api.cache.MapCache;
+import com.feige.api.cache.MapCacheLoader;
 import org.ehcache.Cache;
 
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
 
 /**
@@ -19,12 +24,71 @@ import java.util.function.BiConsumer;
 public class EhcacheCacheMap<K extends Serializable, V extends Serializable> extends AbstractCacheable implements MapCache<K, V> {
     
     protected Cache<K, V> cache;
+    private ConcurrentMap<K, ReentrantLock> loadLocks;
+    private final MapCacheLoader<K, V> loader;
 
-    public EhcacheCacheMap(String group, String name, Cache<K,V> cache) {
+    public EhcacheCacheMap(String group, String name, Cache<K,V> cache, MapCacheLoader<K, V> loader) {
         super(group, name);
         this.cache = cache;
+        this.loader = loader;
+        if (!hasNoLoader()) {
+            this.loadLocks = new ConcurrentHashMap<>();
+        }
     }
 
+    protected boolean hasNoLoader() {
+        return this.loader == null;
+    }
+
+    private boolean doTryLock(ReentrantLock aLock) {
+        try {
+            //5秒不释放，忽略
+            return aLock.tryLock(5, TimeUnit.SECONDS);
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    private void doUnlock(K key, ReentrantLock locker) {
+        if (locker.isLocked()) {
+            locker.unlock();
+        }
+        loadLocks.remove(key);
+    }
+
+    private ReentrantLock getKeyLoadLock(K aKey) {
+        ReentrantLock result, fTempLock;
+        // 按对应的Key值进行锁定加载,避免加载多次
+        result = loadLocks.get(aKey);
+        if (result != null) {
+            return result;
+        }
+        result = new ReentrantLock();
+        fTempLock = loadLocks.putIfAbsent(aKey, result);
+        if (fTempLock != null) {
+            return fTempLock;
+        }
+
+        return result;
+    }
+
+    private V loadValue(K key) {
+        if (hasNoLoader()){
+            return null;
+        }
+        // 按对应的Key值进行锁定加载,避免加载多次
+        ReentrantLock locker = getKeyLoadLock(key);
+        boolean locked = doTryLock(locker);
+        try {
+            if (locked) {
+                return loader.load(key);
+            }
+        } finally {
+            doUnlock(key, locker);
+        }
+        return null;
+    }
+    
     @Override
     public int size() {
         throw new UnsupportedOperationException();
@@ -61,11 +125,35 @@ public class EhcacheCacheMap<K extends Serializable, V extends Serializable> ext
 
     @Override
     public void loadAll(boolean replaceExistingValues) {
+        if (loader == null) {
+            return;
+        }
+        Iterable<K> iterable = loader.loadAllKeys();
+        iterable.forEach(key -> {
+            V value = loader.load(key);
+            if (replaceExistingValues) {
+                put(key, value);
+            } else {
+                putIfAbsent(key, value);
+            }
+        });
+    }
 
+    public V putIfAbsent(K key, V value) {
+        return cache.putIfAbsent(key, value);
     }
 
     @Override
     public V get(K key) {
+        if (!hasNoLoader()) {
+            V value = cache.get(key);
+            if (value == null) {
+                value = loadValue(key);
+                if (value != null) {
+                    this.put(key, value);
+                }
+            }
+        }
         return cache.get(key);
     }
 

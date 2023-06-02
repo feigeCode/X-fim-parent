@@ -1,6 +1,6 @@
 package com.feige.api.cache;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 /**
  * @author feige<br />
@@ -11,9 +11,8 @@ import java.util.concurrent.TimeUnit;
 public class MapCacheOptions<K, V> {
     private int writeBehindBatchSize = 50;
     private int writeBehindDelay = 1000;
-    private long timeToLive;
+    private Duration timeToLive;
     private long maximumSize;
-    private TimeUnit timeUnit;
     private MapCacheLoader<K, V> loader;
 
     public static <K, V> MapCacheOptions<K, V> defaults() {
@@ -51,9 +50,8 @@ public class MapCacheOptions<K, V> {
         return writeBehindDelay;
     }
 
-    public MapCacheOptions<K, V> expire(long timeToLive, TimeUnit timeUnit) {
+    public MapCacheOptions<K, V> expire(Duration timeToLive) {
         this.timeToLive = timeToLive;
-        this.timeUnit = timeUnit;
         return this;
     }
 
@@ -66,11 +64,7 @@ public class MapCacheOptions<K, V> {
         return maximumSize;
     }
 
-    public long getTimeToLive() {
+    public Duration getTimeToLive() {
         return timeToLive;
-    }
-
-    public TimeUnit getTimeUnit() {
-        return timeUnit;
     }
 }
