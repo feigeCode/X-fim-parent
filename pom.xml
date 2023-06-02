@@ -17,6 +17,7 @@
         <module>X-fim-nacos</module>
         <module>X-fim-cache</module>
         <module>X-fim-test</module>
+        <module>X-fim-client</module>
     </modules>
 
     <properties>
@@ -24,6 +25,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <netty.version>4.1.45.Final</netty.version>
+        <os.detected.classifier>linux-x86_64</os.detected.classifier>
         <protobuf.java.version>3.11.1</protobuf.java.version>
         <curator.version>4.0.1</curator.version>
         <nacos-client.version>2.0.3</nacos-client.version>
@@ -36,6 +38,7 @@
         <log4j.version>2.17.1</log4j.version>
         <ehcache.version>3.9.0</ehcache.version>
         <redisson.version>3.14.0</redisson.version>
+        
     </properties>
 
     <dependencyManagement>
@@ -83,12 +86,46 @@
                 <artifactId>nacos-client</artifactId>
                 <version>${nacos-client.version}</version>
             </dependency>
-
+            <!-- ======================================== -->
+            <!-- netty依赖 -->
+            <!-- ======================================== -->
             <dependency>
                 <groupId>io.netty</groupId>
-                <artifactId>netty-all</artifactId>
+                <artifactId>netty-codec</artifactId>
                 <version>${netty.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport-native-epoll</artifactId>
+                <version>${netty.version}</version>
+                <classifier>${os.detected.classifier}</classifier>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport-udt</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport-sctp</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+         
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>
@@ -164,6 +201,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>X-fim-cache</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>X-fim-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
