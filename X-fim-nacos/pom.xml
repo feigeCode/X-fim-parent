@@ -12,4 +12,14 @@
     <artifactId>X-fim-nacos</artifactId>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>X-fim-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+        </dependency>
+    </dependencies>
 </project>

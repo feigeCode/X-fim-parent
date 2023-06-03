@@ -48,6 +48,11 @@ public final class Configs {
          * spi key
          */
         String SPI_LOADER_KEY = "fim.spi.loader";
+
+        /**
+         * 注册中心
+         */
+        String NACOS_SERVER_LIST_KEY = "fim.nacos.server-list";
     }
 
     private final static CompositeConfig COMPOSITE_CONFIG = new CompositeConfig();
