@@ -46,7 +46,7 @@ public class NettyUdpServer extends AbstractServer {
             if (!serverState.compareAndSet(ServerState.Initialized, ServerState.Starting)) {
                 throw new ServiceException("Server already started or have not init");
             }
-            initServerBootstrap();
+            initBootstrap();
             ChannelFuture channelFuture = this.bootstrap
                     .bind(address)
                     .addListener(future -> {
@@ -121,7 +121,7 @@ public class NettyUdpServer extends AbstractServer {
     }
 
 
-    protected void initServerBootstrap() {
+    protected void initBootstrap() {
         this.bootstrap
                 .group(group)
                 .channel(NettyEventLoopFactory.createDatagramChannelClass())
