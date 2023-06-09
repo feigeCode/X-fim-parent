@@ -14,10 +14,10 @@
         <module>X-fim-common</module>
         <module>X-fim-core</module>
         <module>X-fim-netty</module>
-        <module>X-fim-nacos</module>
         <module>X-fim-cache</module>
         <module>X-fim-test</module>
         <module>X-fim-client</module>
+        <module>X-fim-cluster</module>
     </modules>
 
     <properties>
