@@ -1,6 +1,7 @@
 package com.feige.fim.netty;
 
 import com.feige.fim.api.AbstractClient;
+import com.feige.fim.api.ServerStatusListener;
 import com.feige.fim.lg.Logs;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -37,9 +38,8 @@ public class NettyClient extends AbstractClient {
     }
 
     @Override
-    protected void doConnect(InetSocketAddress remoteAddress) {
+    protected void doConnect(ServerStatusListener stopListener) {
         try {
-            
             initBootstrap();
             ChannelFuture channelFuture = this.bootstrap
                     .connect(remoteAddress)
@@ -53,12 +53,13 @@ public class NettyClient extends AbstractClient {
     }
 
     @Override
-    protected void doStop(Object obj) {
+    protected void doStop(ServerStatusListener stopListener) {
         Logs.getInstance().info("try shutdown {}...", this.getClass().getSimpleName());
         try {
             if (channel != null) {
                 // unbind.
                 channel.close();
+                channel = null;
             }
         } catch (Throwable e) {
             Logs.getInstance().warn(e.getMessage(), e);
@@ -67,8 +68,12 @@ public class NettyClient extends AbstractClient {
             if (this.bootstrap != null) {
                 long timeout = timeoutMillis();
                 long quietPeriod = Math.min(2000L, timeout);
-                Future<?> bossGroupShutdownFuture = group.shutdownGracefully(quietPeriod, timeout, MILLISECONDS);
-                bossGroupShutdownFuture.syncUninterruptibly();
+                if (this.group != null){
+                    Future<?> bossGroupShutdownFuture = group.shutdownGracefully(quietPeriod, timeout, MILLISECONDS);
+                    bossGroupShutdownFuture.syncUninterruptibly();
+                }
+                this.group = null;
+                this.bootstrap = null;
             }
         } catch (Throwable e) {
             Logs.getInstance().warn(e.getMessage(), e);

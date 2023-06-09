@@ -12,11 +12,11 @@ public interface Client {
 
     void initialize();
 
-    void connect(InetSocketAddress remoteAddress);
+    void connect(InetSocketAddress remoteAddress, ServerStatusListener listener);
 
-    void stop();
+    void stop(ServerStatusListener listener);
     
-    void reconnect();
+    void reconnect(ServerStatusListener listener);
     
     boolean isConnected();
 }

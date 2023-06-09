@@ -1,4 +1,4 @@
-package com.feige.fim.ack;
+package com.feige.fim.api;
 
 public interface MsgStatusListener {
 

@@ -1,7 +1,10 @@
 package com.feige.fim.api;
 
+import com.feige.fim.lg.Logs;
+
 import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author feige<br />
@@ -11,6 +14,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class AbstractClient implements Client {
 
+    protected InetSocketAddress remoteAddress;
+    protected final AtomicInteger reconnectCnt = new AtomicInteger(0);
+    public static final int MAX_RECONNECT_CNT = 3;
+    
     protected final AtomicBoolean connected = new AtomicBoolean();
     @Override
     public void initialize() {
@@ -18,20 +25,22 @@ public abstract class AbstractClient implements Client {
     }
 
     @Override
-    public void connect(InetSocketAddress remoteAddress) {
-        this.tryConnect(remoteAddress, this::doConnect);
+    public void connect(InetSocketAddress remoteAddress, ServerStatusListener listener) {
+        assert remoteAddress != null;
+        this.remoteAddress = remoteAddress;
+        this.tryConnect(listener, this::doConnect);
     }
 
     @Override
-    public void stop() {
-        this.tryStop(null, this::doStop);
+    public void stop(ServerStatusListener listener) {
+        this.tryStop(listener, this::doStop);
     }
     
-    protected void tryConnect(InetSocketAddress remoteAddress,  Fun<InetSocketAddress> fun){
+    protected void tryConnect(ServerStatusListener listener,  Fun<ServerStatusListener> fun){
         if (connected.compareAndSet(false, true)){
             try {
                 this.initialize();
-                fun.apply(remoteAddress);
+                fun.apply(listener);
             } catch (Throwable e) {
                 throw new RuntimeException(e);
             }
@@ -42,10 +51,10 @@ public abstract class AbstractClient implements Client {
         }
     }
     
-    protected void tryStop(Object obj, Fun<Object> fun){
+    protected void tryStop(ServerStatusListener listener, Fun<ServerStatusListener> fun){
         if (connected.compareAndSet(true, false)){
             try {
-                fun.apply(obj);
+                fun.apply(listener);
             } catch (Throwable e) {
                 throw new RuntimeException(e);
             }
@@ -56,9 +65,18 @@ public abstract class AbstractClient implements Client {
         }
     }
 
+  
     @Override
-    public void reconnect() {
-        
+    public void reconnect(ServerStatusListener listener) {
+        if (reconnectCnt.incrementAndGet() <= MAX_RECONNECT_CNT) {
+            this.doReconnect(listener);
+        }
+    }
+    
+    
+    protected void doReconnect(ServerStatusListener listener){
+        this.stop(listener);
+        this.connect(remoteAddress, listener);
     }
 
     @Override
@@ -66,10 +84,10 @@ public abstract class AbstractClient implements Client {
         return connected.get();
     }
 
-    protected abstract void doConnect(InetSocketAddress remoteAddress);
+    protected abstract void doConnect(ServerStatusListener listener);
     
     
-    protected abstract void doStop(Object obj);
+    protected abstract void doStop(ServerStatusListener listener);
 
 
     /**
