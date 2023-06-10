@@ -47,7 +47,7 @@ public class JdkSpiLoader implements SpiLoader {
 
     @Override
     public <T extends Spi> T getByConfig(Class<T> clazz) throws SpiNotFoundException {
-        List<String> keys = Configs.getSpiConfig().get(clazz.getName());
+        List<String> keys = keys(clazz.getName());
         if (CollectionUtils.isEmpty(keys)){
             throw new SpiNotFoundException(clazz);
         }
@@ -93,13 +93,13 @@ public class JdkSpiLoader implements SpiLoader {
                         }else {
                             CacheOne cacheOne = loadClass.getAnnotation(CacheOne.class);
                             if (cacheOne == null){
-                                List<String> keys_ = spiList.stream()
+                                String keys_ = spiList.stream()
                                         .map(Spi::getKey)
-                                        .collect(Collectors.toList());
-                                Configs.getSpiConfig().put(className, keys_);
+                                         .collect(Collectors.joining(","));
+                                setSpiConfig(className, keys_);
                             }else {
                                 spiList = Collections.singletonList(spiList.get(0));
-                                Configs.getSpiConfig().put(className, Collections.singletonList(spiList.get(0).getKey()));
+                                setSpiConfig(className, spiList.get(0).getKey());
                             }
                         }
                         if (CollectionUtils.isNotEmpty(spiList)){
@@ -117,6 +117,15 @@ public class JdkSpiLoader implements SpiLoader {
     
     
     private List<String> keys(String className){
-        return Configs.getSpiConfig().get(className);
+        String keyStr = Configs.getString(getSpiConfigKey(className));
+        return Configs.commaSplitter.splitToList(keyStr);
+    }
+    
+    private String getSpiConfigKey(String className){
+        return Configs.ConfigKey.SPI_LOADER_KEY + "." + className;
+    }
+    
+    private void setSpiConfig(String className, String keys) {
+        System.setProperty(getSpiConfigKey(className), keys);
     }
 }
