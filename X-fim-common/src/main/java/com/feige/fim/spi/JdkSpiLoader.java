@@ -6,6 +6,7 @@ import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
 import com.feige.fim.config.Configs;
 import com.feige.fim.lg.Loggers;
+import com.feige.fim.utils.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 
@@ -118,7 +119,10 @@ public class JdkSpiLoader implements SpiLoader {
     
     private List<String> keys(String className){
         String keyStr = Configs.getString(getSpiConfigKey(className));
-        return Configs.commaSplitter.splitToList(keyStr);
+        if (StringUtil.isNotBlank(keyStr)){
+            return Configs.commaSplitter.splitToList(keyStr);
+        }
+        return null;
     }
     
     private String getSpiConfigKey(String className){

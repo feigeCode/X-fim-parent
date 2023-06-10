@@ -6,6 +6,7 @@ import com.feige.fim.utils.StringUtil;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author feige<br />
@@ -26,6 +27,17 @@ public class CompositeConfig implements Config {
         for (Config config : configList) {
             Object value = config.getObject(key);
             if (!StringUtil.isBlank(value)){
+                return value;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getMap(String key) {
+        for (Config config : configList) {
+            Map<String, Object> value = config.getMap(key);
+            if (value != null){
                 return value;
             }
         }

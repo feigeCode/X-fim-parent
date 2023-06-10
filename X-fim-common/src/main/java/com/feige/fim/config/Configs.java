@@ -52,7 +52,7 @@ public final class Configs {
         /**
          * 注册中心
          */
-        String NACOS_SERVER_LIST_KEY = "fim.nacos.server-list";
+        String NACOS_SERVER_LIST_KEY = "nacos.server-list";
         
         String REDIS_TYPE = "redis.type";
         String REDIS_CONFIG = "redis.config";

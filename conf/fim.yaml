@@ -5,10 +5,10 @@ fim:
     conf-path: E:\project\my\X-fim-parent\conf\logback.xml
   spi:
     loader: 
-      - com.feige.api.sc.ServerProvider=tcp,ws
-      - com.feige.api.codec.Codec=transport 
-      - com.feige.api.handler.SessionHandler=nettySessionHandler
-      - com.feige.api.session.SessionRepository=nettySessionRepository
+      com.feige.api.sc.ServerProvider: tcp,ws
+      com.feige.api.codec.Codec: transport 
+      com.feige.api.handler.SessionHandler: nettySessionHandler
+      com.feige.api.session.SessionRepository: nettySessionRepository
   server: 
     enable-epoll: true
     tcp:
@@ -25,8 +25,8 @@ fim:
       enable: true
       ip: 127.0.0.1
       port: 8003
-  nacos:
-    server-list: 
+nacos:
+  server-list: 127.0.0.1:8848
       
       
       
