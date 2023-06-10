@@ -7,12 +7,8 @@ package com.feige.api.cache;
  * @date: 2023/5/25 22:15<br/>
  */
 public interface Cacheable {
-
-    String getGroup();
-
+    
     String getName();
-
-    String getFullName();
 
     int size();
 

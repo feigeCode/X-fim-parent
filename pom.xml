@@ -37,8 +37,8 @@
         <logback.version>1.2.9</logback.version>
         <log4j.version>2.17.1</log4j.version>
         <ehcache.version>3.9.0</ehcache.version>
-        <redisson.version>3.14.0</redisson.version>
-        
+        <redisson.version>3.21.0</redisson.version>
+        <beanutils.version>1.9.4</beanutils.version>
     </properties>
 
     <dependencyManagement>
@@ -49,9 +49,9 @@
                 <version>${redisson.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.ehcache</groupId>
-                <artifactId>ehcache</artifactId>
-                <version>${ehcache.version}</version>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${beanutils.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -206,6 +206,16 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>X-fim-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>X-fim-cluster</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>X-fim-cache-redis</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

@@ -10,5 +10,5 @@ import com.feige.api.spi.Spi;
  */
 public interface CacheManagerFactory extends Spi {
     
-    CacheManager create();
+    CacheManager create() throws Exception;
 }

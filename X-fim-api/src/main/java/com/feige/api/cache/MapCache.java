@@ -11,20 +11,15 @@ import java.util.function.BiConsumer;
  * @Description: <br/>
  * @date: 2023/5/25 22:16<br/>
  */
-public interface MapCache<K extends Serializable, V extends Serializable> extends Cacheable{
+public interface MapCache<K extends Serializable, V extends Serializable> extends Cacheable {
 
     V put(K key, V value);
 
     void putAll(Map<? extends K, ? extends V> map);
-
-    void clearAndPutAll(Map<? extends K, ? extends V> map);
-
-    void loadAll(boolean replaceExistingValues);
-
+    
     V get(K key);
 
     boolean containsKey(K key);
-
     /**
      * @param keys
      * @return

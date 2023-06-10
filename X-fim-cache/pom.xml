@@ -16,10 +16,6 @@
             <groupId>com.feige</groupId>
             <artifactId>X-fim-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

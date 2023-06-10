@@ -5,6 +5,7 @@ import com.feige.fim.utils.YamlUtils;
 import org.apache.commons.collections4.MapUtils;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,18 @@ public class YamlConfig implements Config {
 
     @Override
     public Map<String, Object> getMap(String key) {
-        return (Map<String, Object>) MapUtils.getMap(this.config, key);
+        Map<String, Object> map = (Map<String, Object>) MapUtils.getMap(this.config, key);
+        if (map == null){
+            map = new HashMap<>();
+            for (Map.Entry<String, Object> entry : this.config.entrySet()) {
+                String entryKey = entry.getKey();
+                Object value = entry.getValue();
+                if (entryKey.startsWith(key + ".")){
+                    map.put(entryKey.substring(key.length() + 1), value);
+                }
+            }
+        }
+        return map;
     }
 
     @Override

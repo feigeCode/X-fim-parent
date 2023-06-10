@@ -1,9 +1,7 @@
 package com.feige.fim.bind;
 
 import com.feige.api.bind.ClientBindInfo;
-import com.feige.api.bind.ClientBindManager;
 import com.feige.api.bind.ClientType;
-import com.feige.api.cache.CacheGroup;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.MapCache;
 import com.feige.api.constant.Const;
@@ -28,13 +26,12 @@ public class DefaultClientBindManager extends AbstractClientBindManager {
     }
 
     protected MapCache<String, ClientBindInfo> getMapCache(){
-        CacheGroup group = cacheManager.getGroup(ClientBindManager.class);
-        MapCache<String, ClientBindInfo> mapCache = group.get(CACHE_NAME, MapCache.class);
+        MapCache<String, ClientBindInfo> mapCache = cacheManager.get(CACHE_NAME, MapCache.class);
         if (mapCache == null){
             synchronized (this){
-                mapCache = group.get(CACHE_NAME, MapCache.class);
+                mapCache = cacheManager.get(CACHE_NAME, MapCache.class);
                 if (mapCache == null) {
-                    mapCache = group.createMap(CACHE_NAME, String.class, ClientBindInfo.class);
+                    mapCache = cacheManager.createMapCache(CACHE_NAME, String.class, ClientBindInfo.class);
                 }
             }
         }
