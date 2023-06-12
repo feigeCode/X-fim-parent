@@ -1,17 +1,13 @@
-package com.feige.fim.adapter;
+package com.feige.fim.netty;
 
 
 import com.feige.fim.codec.Codec;
 import com.feige.fim.codec.PacketCodec;
-import com.feige.fim.lg.Loggers;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.MessageToByteEncoder;
-import io.netty.handler.codec.MessageToMessageDecoder;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -23,11 +19,9 @@ import java.util.List;
  */
 public class NettyCodecAdapter {
 
-    private static final Logger LOG = Loggers.CODEC;
 
     private final ChannelHandler encoder = new InternalEncoder();
     private final ChannelHandler decoder = new InternalDecoder();
-    private final ChannelHandler wsDecoder = new InternalWsDecoder();
 
     private final Codec codec;
 
@@ -44,9 +38,6 @@ public class NettyCodecAdapter {
         return decoder;
     }
 
-    public ChannelHandler getWsDecoder() {
-        return wsDecoder;
-    }
 
     public Codec  getCodec() {
         return codec;
@@ -74,17 +65,5 @@ public class NettyCodecAdapter {
             }
         }
     }
-    private class InternalWsDecoder extends MessageToMessageDecoder<BinaryWebSocketFrame> {
-        
-        @Override
-        protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
-            Codec codec = getCodec();
-            ByteBuf in = msg.content();
-            if (codec instanceof PacketCodec) {
-                ((PacketCodec) codec).decode(ctx, in, out);
-            }
-        }
-    }
-    
     
 }

@@ -1,6 +1,7 @@
 package com.feige.fim.api;
 
-import com.feige.fim.lg.Logs;
+
+import com.feige.fim.codec.Codec;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -19,6 +20,13 @@ public abstract class AbstractClient implements Client {
     public static final int MAX_RECONNECT_CNT = 3;
     
     protected final AtomicBoolean connected = new AtomicBoolean();
+    
+    protected Codec codec;
+
+    public AbstractClient(Codec codec) {
+        this.codec = codec;
+    }
+
     @Override
     public void initialize() {
 

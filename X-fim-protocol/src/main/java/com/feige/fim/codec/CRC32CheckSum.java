@@ -1,6 +1,5 @@
 package com.feige.fim.codec;
 
-import com.feige.api.codec.ICheckSum;
 
 import java.util.zip.CRC32;
 

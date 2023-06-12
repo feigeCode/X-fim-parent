@@ -1,6 +1,6 @@
 package com.feige.fim.server;
 
-import com.feige.api.codec.Codec;
+import com.feige.fim.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.ServerProvider;
 import com.feige.api.session.SessionRepository;
@@ -45,9 +45,7 @@ public abstract class AbstractServerProvider implements ServerProvider {
      * get codec
      * @return codec
      */
-    protected Codec getCodec() {
-        return SpiLoaderUtils.getByConfig(Codec.class);
-    }
+    protected abstract Codec getCodec();
 
     /**
      * get session repository

@@ -2,19 +2,22 @@ package com.feige.fim.netty;
 
 import com.feige.fim.api.AbstractClient;
 import com.feige.fim.api.ServerStatusListener;
+import com.feige.fim.codec.Codec;
 import com.feige.fim.lg.Logs;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
 
-import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -28,13 +31,23 @@ public class NettyClient extends AbstractClient {
     protected EventLoopGroup group;
     protected Bootstrap bootstrap;
     protected Channel channel;
-    
+    private final NettyCodecAdapter codec;
+
+    public NettyClient(Codec codec) {
+        super(codec);
+        this.codec = new NettyCodecAdapter(getCodec());
+    }
 
 
     @Override
     public void initialize() {
         this.group = createEventLoopGroup();
         this.bootstrap = new Bootstrap();
+    }
+
+    @Override
+    public Codec getCodec() {
+        return null;
     }
 
     @Override
@@ -102,7 +115,11 @@ public class NettyClient extends AbstractClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel channel) throws Exception {
-                        
+                        ChannelPipeline pipeline = channel.pipeline();
+                        pipeline.addLast(codec.getDecoder());
+                        pipeline.addLast(codec.getEncoder());
+                        pipeline.addLast(new IdleStateHandler(45,60,0, TimeUnit.SECONDS));
+                        pipeline.addLast(new HeartbeatHandler());
                     }
                 })
                 .option(ChannelOption.SO_KEEPALIVE, true);

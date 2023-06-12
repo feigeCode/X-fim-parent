@@ -1,6 +1,6 @@
 package com.feige.api.sc;
 
-import com.feige.api.codec.Codec;
+import com.feige.fim.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.SessionRepository;
 

@@ -1,4 +1,4 @@
-package com.feige.api.codec;
+package com.feige.fim.codec;
 
 /**
  * An {@link Exception} which is thrown by a codec.

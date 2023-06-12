@@ -1,4 +1,4 @@
-package com.feige.api.codec;
+package com.feige.fim.codec;
 
 public class VersionException extends DecoderException{
 

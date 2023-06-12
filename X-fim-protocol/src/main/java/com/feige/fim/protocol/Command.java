@@ -1,4 +1,4 @@
-package com.feige.api.constant;
+package com.feige.fim.protocol;
 
 public enum Command {
     HEARTBEAT(1),

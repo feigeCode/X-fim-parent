@@ -21,7 +21,7 @@ public class TcpServerInitializer extends ChannelInitializer<SocketChannel> {
 
     public TcpServerInitializer(Server server) {
         this.serverHandler = new NettyServerHandler(server.getSessionHandler(), server.getSessionRepository());
-        this.codec = new NettyCodecAdapter(server.getCodec(), server.getSessionRepository());
+        this.codec = new NettyCodecAdapter(server.getCodec());
         
     }
 

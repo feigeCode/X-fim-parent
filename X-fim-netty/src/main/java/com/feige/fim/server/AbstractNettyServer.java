@@ -1,6 +1,6 @@
 package com.feige.fim.server;
 
-import com.feige.api.codec.Codec;
+import com.feige.fim.codec.Codec;
 import com.feige.api.constant.Const;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.AbstractServer;

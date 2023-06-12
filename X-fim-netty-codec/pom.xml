@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>X-fim-client</artifactId>
+    <artifactId>X-fim-netty-codec</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -20,18 +20,15 @@
         <dependency>
             <groupId>com.feige</groupId>
             <artifactId>X-fim-protocol</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.feige</groupId>
-            <artifactId>X-fim-netty-codec</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
-            <artifactId>netty-transport</artifactId>
+            <artifactId>netty-codec</artifactId>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
-            <artifactId>netty-handler</artifactId>
+            <artifactId>netty-codec-http</artifactId>
         </dependency>
     </dependencies>
 

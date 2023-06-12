@@ -1,10 +1,7 @@
-package com.feige.api.codec;
+package com.feige.fim.codec;
 
-import com.feige.api.annotation.CacheOne;
-import com.feige.api.spi.Spi;
 
-@CacheOne
-public interface ICheckSum extends Spi {
+public interface ICheckSum {
     /**
      *
      * @param data body
@@ -27,4 +24,10 @@ public interface ICheckSum extends Spi {
      * @return check sum
      */
     short getCheckSum(byte[] data);
+
+    /**
+     * key
+     * @return
+     */
+    String getKey();
 }

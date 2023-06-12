@@ -1,5 +1,7 @@
 package com.feige.fim.api;
 
+import com.feige.fim.codec.Codec;
+
 import java.net.InetSocketAddress;
 
 /**
@@ -19,4 +21,10 @@ public interface Client {
     void reconnect(ServerStatusListener listener);
     
     boolean isConnected();
+    /**
+     * get codec
+     * @return codec
+     */
+    Codec getCodec();
+    
 }
