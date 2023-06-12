@@ -15,9 +15,13 @@
         <module>X-fim-core</module>
         <module>X-fim-netty</module>
         <module>X-fim-cache</module>
+        <module>X-fim-cache-redis</module>
         <module>X-fim-test</module>
         <module>X-fim-client</module>
         <module>X-fim-cluster</module>
+        <module>X-fim-nacos</module>
+        <module>X-fim-protocol</module>
+        <module>X-fim-netty-codec</module>
     </modules>
 
     <properties>
@@ -190,17 +194,22 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>X-fim-netty-codec</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>X-fim-netty</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-nacos</artifactId>
+                <artifactId>X-fim-cache</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-cache</artifactId>
+                <artifactId>X-fim-protocol</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -211,6 +220,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>X-fim-cluster</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>X-fim-nacos</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

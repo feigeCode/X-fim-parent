@@ -11,14 +11,13 @@
 
     <artifactId>X-fim-cluster</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>X-fim-nacos</module>
-        <module>X-fim-cache-redis</module>
-    </modules>
+  
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+    
+
 
 </project>
