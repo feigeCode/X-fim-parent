@@ -29,6 +29,11 @@ public class NettyTcpServerProvider extends AbstractServerProvider {
 
     @Override
     protected Codec getCodec(){
-        return new PacketCodec(65535, (byte) -33, (byte) 1, 10, "default");
+        Integer maxPacketSize = Configs.getInt(Configs.ConfigKey.CODEC_MAX_PACKET_SIZE_KEY);
+        Integer heartbeat = Configs.getInt(Configs.ConfigKey.CODEC_HEARTBEAT_KEY);
+        Integer version = Configs.getInt(Configs.ConfigKey.CODEC_VERSION_KEY);
+        Integer headerLength = Configs.getInt(Configs.ConfigKey.CODEC_HEADER_LENGTH_KEY);
+        String  checkSumKey = Configs.getString(Configs.ConfigKey.CODEC_CHECK_SUM_KEY);
+        return new PacketCodec(maxPacketSize, heartbeat.byteValue(), version.byteValue(), headerLength, checkSumKey);
     }
 }

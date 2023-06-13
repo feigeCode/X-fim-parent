@@ -8,6 +8,12 @@ fim:
       com.feige.api.sc.ServerProvider: tcp,ws
       com.feige.api.handler.SessionHandler: nettySessionHandler
       com.feige.api.session.SessionRepository: nettySessionRepository
+  codec:
+    max-packet-size: 65536
+    heartbeat: -33
+    version: 1
+    header-length: 10
+    check-sum-key: default
   server: 
     enable-epoll: true
     tcp:
@@ -26,6 +32,5 @@ fim:
       port: 8003
 nacos:
   server-list: 127.0.0.1:8848
-      
       
       

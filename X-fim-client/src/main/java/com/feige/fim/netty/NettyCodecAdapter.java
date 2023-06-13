@@ -1,8 +1,8 @@
 package com.feige.fim.netty;
 
 
+import com.feige.fim.codec.AbstractNettyCodec;
 import com.feige.fim.codec.Codec;
-import com.feige.fim.codec.PacketCodec;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -49,8 +49,8 @@ public class NettyCodecAdapter {
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
             Codec codec = getCodec();
-            if (codec instanceof PacketCodec) {
-                ((PacketCodec) codec).encode(ctx, msg, out);
+            if (codec instanceof AbstractNettyCodec) {
+                ((AbstractNettyCodec) codec).encode(ctx, msg, out);
             }
         }
     }
@@ -60,8 +60,8 @@ public class NettyCodecAdapter {
         @Override
         protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
             Codec codec = getCodec();
-            if (codec instanceof PacketCodec) {
-                ((PacketCodec) codec).decode(ctx, in, out);
+            if (codec instanceof AbstractNettyCodec) {
+                ((AbstractNettyCodec) codec).decode(ctx, in, out);
             }
         }
     }

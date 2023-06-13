@@ -44,6 +44,15 @@ public final class Configs {
         String SERVER_ENABLE_UDP_KEY = "fim.server.udp.enable";
         String SERVER_UDP_IP_KEY = "fim.server.udp.ip";
         String SERVER_UDP_PORT_KEY = "fim.server.udp.port";
+
+        /**
+         * codec key
+         */
+        String CODEC_MAX_PACKET_SIZE_KEY = "fim.codec.max-packet-size";
+        String CODEC_HEARTBEAT_KEY = "fim.codec.heartbeat";
+        String CODEC_VERSION_KEY = "fim.codec.version";
+        String CODEC_HEADER_LENGTH_KEY = "fim.codec.header-length";
+        String CODEC_CHECK_SUM_KEY = "fim.codec.check-sum-key";
         /**
          * spi key
          */
