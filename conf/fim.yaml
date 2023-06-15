@@ -9,7 +9,7 @@ fim:
       com.feige.api.handler.SessionHandler: nettySessionHandler
       com.feige.api.session.SessionRepository: nettySessionRepository
   codec:
-    max-packet-size: 65536
+    max-packet-size: 65535
     heartbeat: -33
     version: 1
     header-length: 10

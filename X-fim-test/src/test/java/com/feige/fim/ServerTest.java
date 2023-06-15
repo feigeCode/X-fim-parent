@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ServerTest {
-    public static final String CONFIG_PATH = "E:\\project\\im\\X-fim-parent\\conf\\fim.yaml";
+    public static final String CONFIG_PATH = "E:\\project\\my\\X-fim-parent\\conf\\fim.yaml";
     
     @BeforeClass
     public static void initialize() throws Exception {

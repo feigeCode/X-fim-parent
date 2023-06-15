@@ -5,4 +5,6 @@ public interface Event<T> {
     T getSource();
     
     int getType();
+    
+    Throwable getCause();
 }

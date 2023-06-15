@@ -12,8 +12,8 @@ public class PushManager {
     private PushService pushService;
     
     
-    boolean push(Object msg) {
-        return pushService.push(msg);
+    public static boolean push(Object msg) {
+        return getInstance().getPushService().push(msg);
     }
 
     public PushService getPushService() {

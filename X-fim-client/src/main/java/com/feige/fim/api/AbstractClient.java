@@ -2,6 +2,7 @@ package com.feige.fim.api;
 
 
 import com.feige.fim.codec.Codec;
+import com.feige.fim.event.ClientEvent;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,9 +23,11 @@ public abstract class AbstractClient implements Client {
     protected final AtomicBoolean connected = new AtomicBoolean();
     
     protected Codec codec;
+    protected MsgListener msgListener;
 
-    public AbstractClient(Codec codec) {
+    public AbstractClient(Codec codec, MsgListener msgListener) {
         this.codec = codec;
+        this.msgListener = msgListener;
     }
 
     @Override
@@ -68,6 +71,7 @@ public abstract class AbstractClient implements Client {
             }
         }else {
             if (throwIfStopped()){
+                listener.handle(new ClientEvent(this, ServerStatusListener.STOP_FAILURE));
                 throw new IllegalStateException("service already stopped.");
             }
         }
@@ -128,5 +132,15 @@ public abstract class AbstractClient implements Client {
     }
     protected interface Fun<T> {
         void apply(T handler) throws Throwable;
+    }
+
+    @Override
+    public Codec getCodec() {
+        return codec;
+    }
+
+    @Override
+    public MsgListener getMsgListener() {
+        return msgListener;
     }
 }

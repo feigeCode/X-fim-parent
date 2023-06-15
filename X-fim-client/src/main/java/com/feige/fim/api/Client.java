@@ -27,4 +27,7 @@ public interface Client {
      */
     Codec getCodec();
     
+    MsgListener getMsgListener();
+    
+    PushService getPushService();
 }

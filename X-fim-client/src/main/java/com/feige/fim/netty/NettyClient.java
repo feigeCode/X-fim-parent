@@ -1,16 +1,21 @@
 package com.feige.fim.netty;
 
 import com.feige.fim.api.AbstractClient;
+import com.feige.fim.api.MsgListener;
+import com.feige.fim.api.PushService;
 import com.feige.fim.api.ServerStatusListener;
 import com.feige.fim.codec.Codec;
+import com.feige.fim.event.ClientEvent;
 import com.feige.fim.lg.Logs;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -23,7 +28,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
  * @author feige<br />
- * @ClassName: NettyClient <br/>
+ * @ClassName: NettyClientDemo <br/>
  * @Description: <br/>
  * @date: 2023/6/4 15:30<br/>
  */
@@ -32,9 +37,10 @@ public class NettyClient extends AbstractClient {
     protected Bootstrap bootstrap;
     protected Channel channel;
     private final NettyCodecAdapter codec;
+    protected PushService pushService;
 
-    public NettyClient(Codec codec) {
-        super(codec);
+    public NettyClient(Codec codec, MsgListener msgListener) {
+        super(codec, msgListener);
         this.codec = new NettyCodecAdapter(getCodec());
     }
 
@@ -46,18 +52,29 @@ public class NettyClient extends AbstractClient {
     }
 
     @Override
-    public Codec getCodec() {
-        return null;
+    public PushService getPushService() {
+        if (this.channel == null || !this.channel.isActive()){
+            throw new RuntimeException("channel is null or no active");
+        }
+        if (pushService == null){
+            pushService = new NettyPushService(this.channel);
+        }
+        return pushService;
     }
 
+
     @Override
-    protected void doConnect(ServerStatusListener stopListener) {
+    protected void doConnect(ServerStatusListener listener) {
         try {
             initBootstrap();
             ChannelFuture channelFuture = this.bootstrap
                     .connect(remoteAddress)
                     .addListener(future -> {
-                        
+                        if (future.isSuccess()) {
+                            listener.handle(new ClientEvent(NettyClient.this, ServerStatusListener.START_SUCCESS));
+                        }else {
+                            listener.handle(new ClientEvent(NettyClient.this, ServerStatusListener.START_FAILURE, future.cause()));
+                        }
                     });
             this.channel = channelFuture.channel();
         }catch (Throwable throwable){
@@ -66,7 +83,7 @@ public class NettyClient extends AbstractClient {
     }
 
     @Override
-    protected void doStop(ServerStatusListener stopListener) {
+    protected void doStop(ServerStatusListener listener) {
         Logs.getInstance().info("try shutdown {}...", this.getClass().getSimpleName());
         try {
             if (channel != null) {
@@ -91,6 +108,7 @@ public class NettyClient extends AbstractClient {
         } catch (Throwable e) {
             Logs.getInstance().warn(e.getMessage(), e);
         }
+        listener.handle(new ClientEvent(NettyClient.this, ServerStatusListener.STOP_SUCCESS));
         Logs.getInstance().info("{} shutdown success.", this.getClass().getSimpleName());
     }
 
@@ -119,10 +137,28 @@ public class NettyClient extends AbstractClient {
                         pipeline.addLast(codec.getDecoder());
                         pipeline.addLast(codec.getEncoder());
                         pipeline.addLast(new IdleStateHandler(45,60,0, TimeUnit.SECONDS));
-                        pipeline.addLast(new HeartbeatHandler());
+                        pipeline.addLast(new HeartbeatHandler(NettyClient.this));
+                        pipeline.addLast(new SimpleChannelInboundHandler<Object>() {
+                            @Override
+                            protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+                                getMsgListener().onReceivedMsg(msg);
+                            }
+                        });
                     }
                 })
                 .option(ChannelOption.SO_KEEPALIVE, true);
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public EventLoopGroup getGroup() {
+        return group;
+    }
+
+    public Bootstrap getBootstrap() {
+        return bootstrap;
     }
     
 }
