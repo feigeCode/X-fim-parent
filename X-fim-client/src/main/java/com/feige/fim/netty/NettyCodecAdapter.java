@@ -20,8 +20,6 @@ import java.util.List;
 public class NettyCodecAdapter {
 
 
-    private final ChannelHandler encoder = new InternalEncoder();
-    private final ChannelHandler decoder = new InternalDecoder();
 
     private final Codec codec;
 
@@ -30,12 +28,12 @@ public class NettyCodecAdapter {
     }
 
     public ChannelHandler getEncoder(){
-        return encoder;
+        return new InternalEncoder();
     }
 
 
     public ChannelHandler getDecoder(){
-        return decoder;
+        return new InternalDecoder();
     }
 
 

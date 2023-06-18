@@ -3,6 +3,9 @@ package com.feige.fim.event;
 import com.feige.fim.api.Client;
 import com.feige.fim.api.Event;
 
+import java.io.ByteArrayOutputStream;
+import java.io.StringWriter;
+
 public class ClientEvent implements Event<Client> {
     private final Client client;
     private final int type;
@@ -35,7 +38,9 @@ public class ClientEvent implements Event<Client> {
 
     @Override
     public String toString() {
-        return "type=" + type +
-                ", cause=" + cause;
+        if (cause != null){
+            cause.printStackTrace();
+        }
+        return "type=" + type ;
     }
 }

@@ -1,6 +1,6 @@
 package com.feige.fim.session;
 
-public class NettySessionHandler extends AbstractSessionHandler {
+public class SingleSessionHandler extends AbstractSessionHandler {
     
     @Override
     public String getKey() {

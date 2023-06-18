@@ -14,7 +14,7 @@ public class NettyClientDemo {
     public static void main(String[] args) {
         EventDispatcher.create(Executors.newSingleThreadExecutor());
         EventDispatcher.register(new ChannelActiveListener());
-        new NettyClient(new PacketCodec(65536, (byte) -33, (byte) 1, 10, "default"), System.out::println)
+        new NettyClient(new PacketCodec(65536, (byte) -33, (byte) 1, 10, null), System.out::println)
                 .connect(new InetSocketAddress("127.0.0.1", 8001), DefaultServerStatusListener.getInstance());
     }
 }

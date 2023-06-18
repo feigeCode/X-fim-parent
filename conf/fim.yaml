@@ -13,7 +13,7 @@ fim:
     heartbeat: -33
     version: 1
     header-length: 10
-    check-sum-key: default
+    check-sum-key: 
   server: 
     enable-epoll: true
     tcp:

@@ -65,7 +65,7 @@ public abstract class AbstractNettyCodec implements Codec {
                 int bodyLength = checkLength(byteBuf);
                 if (bodyLength != -1) {
                     byte cmd = byteBuf.readByte();
-                    byte sequenceNum = byteBuf.readByte();
+                    int sequenceNum = byteBuf.readInt();
                     byte features = byteBuf.readByte();
                     short checksum = checkChecksum(byteBuf);
                     byte[] data = new byte[bodyLength];
@@ -76,6 +76,7 @@ public abstract class AbstractNettyCodec implements Codec {
                     packet.setFeatures(features);
                     packet.setCs(checksum);
                     packet.setData(data);
+                    return packet;
                 }else {
                     byteBuf.resetReaderIndex();
                 }

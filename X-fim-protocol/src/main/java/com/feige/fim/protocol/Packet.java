@@ -1,5 +1,7 @@
 package com.feige.fim.protocol;
 
+import java.util.Arrays;
+
 public class Packet {
     
     /**
@@ -109,5 +111,18 @@ public class Packet {
 
     public int getDataLength(){
         return this.getData().length;
+    }
+
+    @Override
+    public String toString() {
+        return "Packet{" +
+                "version=" + version +
+                ", cmd=" + cmd +
+                ", sequenceNum=" + sequenceNum +
+                ", features=" + features +
+                ", cs=" + cs +
+                ", classKey=" + classKey +
+                ", data=" + Arrays.toString(data) +
+                '}';
     }
 }

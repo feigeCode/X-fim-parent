@@ -1,1 +1,1 @@
-com.feige.fim.session.NettySessionHandler
+com.feige.fim.session.SingleSessionHandler
