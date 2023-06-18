@@ -26,12 +26,12 @@ public abstract class AbstractSessionHandler implements SessionHandler {
 
     @Override
     public void received(Session session, Object message) throws RemotingException {
-        
+        System.out.println(message);
     }
 
     @Override
     public void caught(Session session, Throwable exception) throws RemotingException {
-        
+        exception.printStackTrace();
     }
     
 }

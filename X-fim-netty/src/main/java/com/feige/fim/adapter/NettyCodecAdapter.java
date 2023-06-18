@@ -25,10 +25,6 @@ public class NettyCodecAdapter {
 
     private static final Logger LOG = Loggers.CODEC;
 
-    private final ChannelHandler encoder = new InternalEncoder();
-    private final ChannelHandler decoder = new InternalDecoder();
-    private final ChannelHandler wsDecoder = new InternalWsDecoder();
-
     private final Codec codec;
 
     public NettyCodecAdapter(Codec  codec) {
@@ -36,16 +32,16 @@ public class NettyCodecAdapter {
     }
 
     public ChannelHandler getEncoder(){
-        return encoder;
+        return new InternalEncoder();
     }
 
 
     public ChannelHandler getDecoder(){
-        return decoder;
+        return new InternalDecoder();
     }
 
     public ChannelHandler getWsDecoder() {
-        return wsDecoder;
+        return new InternalWsDecoder();
     }
 
     public Codec  getCodec() {

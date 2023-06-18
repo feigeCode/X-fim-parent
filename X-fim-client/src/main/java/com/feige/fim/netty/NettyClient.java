@@ -96,14 +96,14 @@ public class NettyClient extends AbstractClient {
         }
         try {
             if (this.bootstrap != null) {
-                long timeout = timeoutMillis();
-                long quietPeriod = Math.min(2000L, timeout);
-                if (this.group != null){
-                    Future<?> bossGroupShutdownFuture = group.shutdownGracefully(quietPeriod, timeout, MILLISECONDS);
-                    bossGroupShutdownFuture.syncUninterruptibly();
-                }
-                this.group = null;
                 this.bootstrap = null;
+            }
+            long timeout = timeoutMillis();
+            long quietPeriod = Math.min(2000L, timeout);
+            if (this.group != null){
+                Future<?> bossGroupShutdownFuture = group.shutdownGracefully(quietPeriod, timeout, MILLISECONDS);
+                bossGroupShutdownFuture.syncUninterruptibly();
+                this.group = null;
             }
         } catch (Throwable e) {
             Logs.getInstance().warn(e.getMessage(), e);
@@ -138,12 +138,7 @@ public class NettyClient extends AbstractClient {
                         pipeline.addLast(codec.getEncoder());
                         pipeline.addLast(new IdleStateHandler(45,60,0, TimeUnit.SECONDS));
                         pipeline.addLast(new HeartbeatHandler(NettyClient.this));
-                        pipeline.addLast(new SimpleChannelInboundHandler<Object>() {
-                            @Override
-                            protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
-                                getMsgListener().onReceivedMsg(msg);
-                            }
-                        });
+                        pipeline.addLast(new NettyClientHandler(NettyClient.this));
                     }
                 })
                 .option(ChannelOption.SO_KEEPALIVE, true);

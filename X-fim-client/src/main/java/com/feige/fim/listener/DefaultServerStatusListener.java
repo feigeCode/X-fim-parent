@@ -8,9 +8,26 @@ import com.feige.fim.push.PushManager;
 
 public class DefaultServerStatusListener implements ServerStatusListener {
     
+    private static DefaultServerStatusListener serverStatusListener;
+    
+    public static DefaultServerStatusListener getInstance(){
+        if (serverStatusListener == null){
+            synchronized (DefaultServerStatusListener.class){
+                if (serverStatusListener == null) {
+                    serverStatusListener = new DefaultServerStatusListener();
+                }
+            }
+        }
+        return serverStatusListener;
+    }
+    
+    private DefaultServerStatusListener(){
+        
+    }
+    
     @Override
     public <T extends Client> void handle(Event<T> event) {
-        System.out.println(event.getType());
+        System.out.println(event);
         if (event instanceof ClientEvent){
             T source = event.getSource();
             if (event.getType() == ServerStatusListener.START_SUCCESS){

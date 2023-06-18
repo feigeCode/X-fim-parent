@@ -18,7 +18,6 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
 
     @Override
     public void handle(Session session, Object msg) {
-
     }
     
 }
