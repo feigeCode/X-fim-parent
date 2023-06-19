@@ -28,7 +28,7 @@ public class ChannelActiveListener {
             PushManager.push(packet);
         }
         if (ChannelActive.CHANNEL_INACTIVE == type){
-            client.reconnect(DefaultServerStatusListener.getInstance());
+//            client.reconnect(DefaultServerStatusListener.getInstance());
             System.out.println("channel inactive");
         }
     }
