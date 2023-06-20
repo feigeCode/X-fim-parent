@@ -30,7 +30,7 @@ public class TcpServerInitializer extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = socketChannel.pipeline();
         pipeline.addLast(codec.getDecoder());
         pipeline.addLast(codec.getEncoder());
-        pipeline.addLast(new IdleStateHandler(45,60,0,TimeUnit.SECONDS));
+        pipeline.addLast(new IdleStateHandler(30,60,0,TimeUnit.SECONDS));
         pipeline.addLast(this.serverHandler);
 
     }

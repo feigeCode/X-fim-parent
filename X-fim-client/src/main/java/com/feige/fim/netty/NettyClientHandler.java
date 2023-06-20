@@ -1,7 +1,7 @@
 package com.feige.fim.netty;
 
 import com.feige.fim.event.ChannelActive;
-import com.feige.fim.utils.EventDispatcher;
+import com.feige.fim.listener.ChannelActiveListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -20,18 +20,21 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
-        EventDispatcher.fire(new ChannelActive(nettyClient, ChannelActive.CHANNEL_ACTIVE));
+        ChannelActive channelActive = new ChannelActive(nettyClient, ChannelActive.CHANNEL_ACTIVE);
+        ChannelActiveListener.getInstance().handleEvent(channelActive);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
-        EventDispatcher.fire(new ChannelActive(nettyClient, ChannelActive.CHANNEL_INACTIVE));
+        ChannelActive channelActive = new ChannelActive(nettyClient, ChannelActive.CHANNEL_INACTIVE);
+        ChannelActiveListener.getInstance().handleEvent(channelActive);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
-        EventDispatcher.fire(new ChannelActive(nettyClient, ChannelActive.CHANNEL_INACTIVE, cause));
+        ChannelActive channelActive = new ChannelActive(nettyClient, ChannelActive.CHANNEL_INACTIVE, cause);
+        ChannelActiveListener.getInstance().handleEvent(channelActive);
     }
 }

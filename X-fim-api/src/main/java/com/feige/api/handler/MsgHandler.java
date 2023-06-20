@@ -10,6 +10,6 @@ public interface MsgHandler extends Spi {
      * @param session session
      * @param msg msg
      */
-    void handle(Session session, Object msg);
+    void handle(Session session, Object msg) throws RemotingException;
     
 }

@@ -1,7 +1,6 @@
 package com.feige.fim.utils;
 
-import com.feige.fim.api.Event;
-import com.feige.fim.lg.Logs;
+import com.feige.fim.lg.Loggers;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 
@@ -13,10 +12,10 @@ public class EventDispatcher {
 
     public static void create(Executor executor) {
         eventBus = new AsyncEventBus(executor, (exception, context)
-                -> Logs.getInstance().error("event bus subscriber ex", exception));
+                -> Loggers.CONSOLE.error("event bus subscriber ex", exception));
     }
 
-    public static void fire(Event<?> event) {
+    public static void fire(Object event) {
         eventBus.post(event);
     }
 

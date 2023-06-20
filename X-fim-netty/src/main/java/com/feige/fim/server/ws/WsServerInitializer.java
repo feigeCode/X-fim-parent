@@ -41,7 +41,7 @@ public class WsServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new WebSocketServerProtocolHandler(wsPath, null, true, 65536, false, true));
         pipeline.addLast(codec.getWsDecoder());
         pipeline.addLast(codec.getEncoder());
-        pipeline.addLast(new IdleStateHandler(45,60,0, TimeUnit.SECONDS));
+        pipeline.addLast(new IdleStateHandler(30,60,0, TimeUnit.SECONDS));
         pipeline.addLast(this.serverHandler);
 
     }

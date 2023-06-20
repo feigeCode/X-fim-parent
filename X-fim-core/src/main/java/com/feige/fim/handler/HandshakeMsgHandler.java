@@ -12,12 +12,12 @@ import com.feige.api.session.Session;
  */
 public class HandshakeMsgHandler extends AbstractMsgHandler {
     @Override
-    public int getCmd() {
+    public byte getCmd() {
         return Command.HANDSHAKE.getCmd();
     }
 
     @Override
-    public void handle(Session session, Object msg) {
+    public void handle(Session session, Object msg) throws RuntimeException {
     }
     
 }

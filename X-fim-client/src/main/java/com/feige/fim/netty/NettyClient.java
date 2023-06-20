@@ -19,6 +19,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
 
@@ -54,7 +55,7 @@ public class NettyClient extends AbstractClient {
     @Override
     public PushService getPushService() {
         if (this.channel == null || !this.channel.isActive()){
-            throw new RuntimeException("channel is null or no active");
+            throw new RuntimeException("channel is null or inactive");
         }
         if (pushService == null){
             pushService = new NettyPushService(this.channel);
@@ -125,6 +126,11 @@ public class NettyClient extends AbstractClient {
     protected Class<? extends SocketChannel> createSocketChannelClass() {
         return NioSocketChannel.class;
     }
+    
+    
+    protected IdleStateHandler createIdleStateHandler(){
+        return new IdleStateHandler(60,30,0, TimeUnit.SECONDS);
+    }
 
     protected void initBootstrap() {
         this.bootstrap
@@ -136,7 +142,7 @@ public class NettyClient extends AbstractClient {
                         ChannelPipeline pipeline = channel.pipeline();
                         pipeline.addLast(codec.getDecoder());
                         pipeline.addLast(codec.getEncoder());
-                        pipeline.addLast(new IdleStateHandler(45,60,0, TimeUnit.SECONDS));
+                        pipeline.addLast(createIdleStateHandler());
                         pipeline.addLast(new HeartbeatHandler(NettyClient.this));
                         pipeline.addLast(new NettyClientHandler(NettyClient.this));
                     }

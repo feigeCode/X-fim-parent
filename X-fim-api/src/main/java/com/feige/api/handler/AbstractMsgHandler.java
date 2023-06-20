@@ -17,5 +17,5 @@ public abstract class AbstractMsgHandler implements MsgHandler {
      * cmd
      * @return cmd
      */
-    public abstract int getCmd();
+    public abstract byte getCmd();
 }
