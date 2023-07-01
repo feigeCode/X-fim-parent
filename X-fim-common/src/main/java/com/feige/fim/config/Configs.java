@@ -56,7 +56,7 @@ public final class Configs {
          * spi key
          */
         String SPI_LOADER_KEY = "spi.loader";
-        String SPI_LOADER_TYPE = "spi.type";
+        String SPI_LOADER_TYPE = "spi.loader.type";
 
         /**
          * 注册中心
