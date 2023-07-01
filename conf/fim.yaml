@@ -35,7 +35,8 @@ spi:
     com.feige.api.sc.ServerProvider: com.feige.fim.server.NettyTcpServerProvider,com.feige.fim.server.NettyWsServerProvider
     com.feige.api.handler.SessionHandler: com.feige.fim.session.SingleSessionHandler
     com.feige.api.session.SessionRepository: com.feige.fim.adapter.NettySessionRepository
-    com.feige.api.cache.CacheManagerFactory: 
+    com.feige.api.cache.CacheManagerFactory: com.feige.cache.LocalCacheManagerFactory
+    com.feige.api.handler.MsgHandler: com.feige.fim.handler.HandshakeMsgHandler,com.feige.fim.handler.HeartbeatMsgHandler 
 
       
       

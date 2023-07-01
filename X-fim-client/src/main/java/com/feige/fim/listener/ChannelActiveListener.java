@@ -30,16 +30,6 @@ public class ChannelActiveListener {
         Client client = channelActive.getSource();
         if (ChannelActive.CHANNEL_ACTIVE == type){
             PushManager.getInstance().setPushService(client.getPushService());
-            System.out.println("channel active");
-            Packet packet = Packet.create(Command.HANDSHAKE);
-            packet.setSequenceNum(1);
-            packet.setClassKey((byte)1);
-            packet.setFeatures((byte)0);
-            byte[] bytes = new byte[2];
-            bytes[0] = 1;
-            bytes[1] = 2;
-            packet.setData(bytes);
-            PushManager.push(packet);
         }
         if (ChannelActive.CHANNEL_INACTIVE == type){
 //            client.reconnect(DefaultServerStatusListener.getInstance());

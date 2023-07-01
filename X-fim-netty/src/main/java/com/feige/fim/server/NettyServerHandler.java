@@ -62,7 +62,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             if (idleStateEvent.state() == IdleState.READER_IDLE) {
                 Integer hbCnt = (Integer) session.getAttr(HEARTBEAT_CNT);
                 if (hbCnt == null){
-                    hbCnt = 0;
+                    hbCnt = 1;
                 }else {
                     if (hbCnt >= MAX_TIMEOUT_CNT){
                         session.close();

@@ -70,6 +70,7 @@ public class NettyClient extends AbstractClient {
             initBootstrap();
             ChannelFuture channelFuture = this.bootstrap
                     .connect(remoteAddress)
+                    .sync()
                     .addListener(future -> {
                         if (future.isSuccess()) {
                             listener.handle(new ClientEvent(NettyClient.this, ServerStatusListener.START_SUCCESS));
