@@ -3,8 +3,11 @@ package com.feige.fim.spi;
 import com.feige.api.spi.Spi;
 import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
+import com.feige.fim.config.Configs;
+import com.feige.fim.lg.Loggers;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author feige<br />
@@ -21,7 +24,14 @@ public class SpiLoaderUtils {
         if (spiLoader == null){
             synchronized (SpiLoaderUtils.class){
                 if (spiLoader == null){
-                    spiLoader = new JdkSpiLoader();
+                    String type = Configs.getString(Configs.ConfigKey.SPI_LOADER_TYPE);
+                    if (Objects.equals(type, ConfigSpiLoader.TYPE)){
+                        spiLoader = new ConfigSpiLoader();
+                        Loggers.LOADER.info("使用" + ConfigSpiLoader.class.getName() + "加载器");
+                    }else {
+                        spiLoader = new JdkSpiLoader();
+                        Loggers.LOADER.info("使用" + JdkSpiLoader.class.getName() + "加载器");
+                    }
                 }
             }
         }
@@ -46,14 +56,14 @@ public class SpiLoaderUtils {
 
 
     /**
-     * get object by config 
+     * get first object
      * @param clazz class
      * @return object
      * @param <T> class type
      * @throws SpiNotFoundException
      */
-    public static <T extends Spi> T getByConfig(Class<T> clazz) throws SpiNotFoundException {
-        return getSpiLoader().getByConfig(clazz);
+    public static <T extends Spi> T getFirst(Class<T> clazz) throws SpiNotFoundException {
+        return getSpiLoader().getFirst(clazz);
     }
 
 
@@ -68,8 +78,16 @@ public class SpiLoaderUtils {
         return getSpiLoader().getAll(clazz);
     }
 
-    public static void load(String className){
-        getSpiLoader().load(className);
+    public static void load(String className) throws ClassNotFoundException {
+        Class<?> loadClass = Class.forName(className);
+        load(loadClass);
     }
-    
+
+    public static void load(Class<?> loadClass){
+        getSpiLoader().load(loadClass);
+    }
+
+    public static void initSpiLoader() {
+        
+    }
 }

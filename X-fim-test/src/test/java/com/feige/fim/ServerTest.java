@@ -1,8 +1,10 @@
 package com.feige.fim;
 
+import com.feige.api.config.ConfigFactory;
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
 import com.feige.fim.config.Configs;
+import com.feige.fim.config.impl.YamlConfigFactory;
 import com.feige.fim.spi.SpiLoaderUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -14,6 +16,7 @@ public class ServerTest {
     @BeforeClass
     public static void initialize() throws Exception {
         System.out.println("initialize start...");
+        System.setProperty(Configs.ConfigKey.SPI_LOADER_KEY + "." + ConfigFactory.class.getName(), YamlConfigFactory.class.getName());
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         Configs.loadConfig();
         System.out.println("initialize end...");

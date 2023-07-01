@@ -1,8 +1,0 @@
-fim:
-  test:
-    key: value
-    arr:
-      - a
-      - b
-      - c
-  path: test

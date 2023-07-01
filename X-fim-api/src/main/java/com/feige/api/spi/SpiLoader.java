@@ -30,13 +30,13 @@ public interface SpiLoader {
 
 
     /**
-     * get object by config 
+     * get first object 
      * @param clazz class
      * @return object
      * @param <T> class type
      * @throws SpiNotFoundException
      */
-    <T extends Spi> T getByConfig(Class<T> clazz) throws SpiNotFoundException;
+    <T extends Spi> T getFirst(Class<T> clazz) throws SpiNotFoundException;
 
 
     /**
@@ -51,8 +51,8 @@ public interface SpiLoader {
 
     /**
      * load class
-     * @param className class name
+     * @param loadClass class
      */
-    void load(String className);
+    void load(Class<?> loadClass);
     
 }

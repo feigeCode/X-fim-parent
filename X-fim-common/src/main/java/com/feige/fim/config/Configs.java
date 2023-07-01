@@ -6,14 +6,13 @@ import com.feige.api.config.ConfigFactory;
 import com.feige.fim.config.impl.CompositeConfig;
 import com.feige.fim.config.impl.EnvConfig;
 import com.feige.fim.config.impl.SystemConfig;
-import com.feige.fim.spi.SpiLoaderUtils;
 import com.google.common.base.Splitter;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ServiceLoader;
 
 
 public final class Configs {
@@ -56,7 +55,8 @@ public final class Configs {
         /**
          * spi key
          */
-        String SPI_LOADER_KEY = "fim.spi.loader";
+        String SPI_LOADER_KEY = "spi.loader";
+        String SPI_LOADER_TYPE = "spi.type";
 
         /**
          * 注册中心
@@ -75,23 +75,20 @@ public final class Configs {
 
 
     public static void loadConfig() throws Exception {
-        SpiLoaderUtils.load(ConfigFactory.class.getName());
         COMPOSITE_CONFIG.addConfig(SYSTEM_CONFIG);
         COMPOSITE_CONFIG.addConfig(ENV_CONFIG);
-        ConfigFactory configFactory = SpiLoaderUtils.getByConfig(ConfigFactory.class);
-        APP_CONFIG = configFactory.create();
+        ServiceLoader<ConfigFactory> loader = ServiceLoader.load(ConfigFactory.class);
+        Iterator<ConfigFactory> iterator = loader.iterator();
+        if (iterator.hasNext()){
+            APP_CONFIG = iterator.next().create();
+        }else {
+            throw new RuntimeException(ConfigFactory.class.getName() + "未发现任何实现，请检查META-INF/services目录下的配置是否正常!");
+        }
         COMPOSITE_CONFIG.addConfig(APP_CONFIG);
         initLogConfig();
-        initSpiConfig();
     }
     
-    public static void initSpiConfig(){
-        Map<String, Object> spiConfigMap = getMap(ConfigKey.SPI_LOADER_KEY);
-        Set<String> classNames = spiConfigMap.keySet();
-        for (String className : classNames) {
-            SpiLoaderUtils.load(className);
-        }
-    }
+
 
     public static void initLogConfig() {
         System.setProperty("log.home", Configs.getString(Configs.ConfigKey.LOG_DIR));
