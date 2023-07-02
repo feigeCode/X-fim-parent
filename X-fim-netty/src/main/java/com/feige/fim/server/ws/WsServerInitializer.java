@@ -2,6 +2,8 @@ package com.feige.fim.server.ws;
 
 import com.feige.api.sc.Server;
 import com.feige.fim.adapter.NettyCodecAdapter;
+import com.feige.fim.config.Configs;
+import com.feige.fim.factory.SslContextFactory;
 import com.feige.fim.server.NettyServerHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -9,6 +11,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.ssl.SslContext;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 
@@ -19,16 +22,32 @@ public class WsServerInitializer extends ChannelInitializer<SocketChannel> {
     private final NettyCodecAdapter codec;
     private final NettyServerHandler serverHandler;
     private final String wsPath;
+    private final SslContext sslContext;
 
     public WsServerInitializer(Server server, String wsPath) {
         this.serverHandler = new NettyServerHandler(server.getSessionHandler(), server.getSessionRepository());
         this.codec = new NettyCodecAdapter(server.getCodec());
         this.wsPath = wsPath;
+        this.sslContext = buildSslContext();
+    }
+
+    private SslContext buildSslContext() {
+        Boolean isEnableSsl = Configs.getBoolean(Configs.ConfigKey.SERVER_ENABLE_WS_SSL, false);
+        if (isEnableSsl){
+            return SslContextFactory.createSslContext(Configs.ConfigKey.SERVER_ENABLE_WS_K_C_P,
+                    Configs.ConfigKey.SERVER_ENABLE_WS_P_K_P,
+                    Configs.ConfigKey.SERVER_ENABLE_WS_T_C_P,
+                    Configs.ConfigKey.SERVER_ENABLE_WS_K_P);
+        }
+        return null;
     }
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
+        if (sslContext != null){
+            pipeline.addLast(sslContext.newHandler(socketChannel.alloc()));
+        }
         //基于http协议，所以要有http编码解码器
         pipeline.addLast(new HttpServerCodec());
         //对写大数据的支持

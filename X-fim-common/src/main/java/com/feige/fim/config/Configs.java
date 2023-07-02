@@ -6,9 +6,12 @@ import com.feige.api.config.ConfigFactory;
 import com.feige.fim.config.impl.CompositeConfig;
 import com.feige.fim.config.impl.EnvConfig;
 import com.feige.fim.config.impl.SystemConfig;
+import com.feige.fim.utils.StringUtil;
 import com.google.common.base.Splitter;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,15 +37,26 @@ public final class Configs {
          */
         String SERVER_ENABLE_EPOLL_KEY = "fim.server.enable-epoll";
         String SERVER_ENABLE_TCP_KEY = "fim.server.tcp.enable";
+        String SERVER_ENABLE_TCP_SSL = "fim.server.tcp.ssl.enable";
+        String SERVER_ENABLE_TCP_K_C_P = "fim.server.tcp.ssl.key-cert-chain-path";
+        String SERVER_ENABLE_TCP_P_K_P = "fim.server.tcp.ssl.private-key-path";
+        String SERVER_ENABLE_TCP_K_P = "fim.server.tcp.ssl.key-password";
+        String SERVER_ENABLE_TCP_T_C_P = "fim.server.tcp.ssl.trust-cert-collection-path";
         String SERVER_TCP_IP_KEY = "fim.server.tcp.ip";
         String SERVER_TCP_PORT_KEY = "fim.server.tcp.port";
         String SERVER_ENABLE_WS_KEY = "fim.server.ws.enable";
+        String SERVER_ENABLE_WS_SSL = "fim.server.ws.ssl.enable";
+        String SERVER_ENABLE_WS_K_C_P = "fim.server.tcp.ssl.key-cert-chain-path";
+        String SERVER_ENABLE_WS_P_K_P = "fim.server.tcp.ssl.private-key-path";
+        String SERVER_ENABLE_WS_K_P = "fim.server.tcp.ssl.key-password";
+        String SERVER_ENABLE_WS_T_C_P = "fim.server.tcp.ssl.trust-cert-collection-path";
         String SERVER_ENABLE_HTTP_KEY = "fim.server.http.enable";
         String SERVER_WS_IP_KEY = "fim.server.ws.ip";
         String SERVER_WS_PORT_KEY = "fim.server.ws.port";
         String SERVER_ENABLE_UDP_KEY = "fim.server.udp.enable";
         String SERVER_UDP_IP_KEY = "fim.server.udp.ip";
         String SERVER_UDP_PORT_KEY = "fim.server.udp.port";
+
 
         /**
          * codec key
@@ -233,6 +247,23 @@ public final class Configs {
      */
     public static String[] getArr(String key){
         return getCompositeConfig().getArr(key);
+    }
+
+    /**
+     * get stream by config key
+     * @param key config key
+     * @return stream
+     */
+    public static InputStream getInputStream(String key){
+        String path = getString(key);
+        if (StringUtil.isNotBlank(path)){
+            try {
+                return new FileInputStream(path);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }

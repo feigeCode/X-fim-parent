@@ -10,16 +10,14 @@ import com.feige.fim.lg.Logs;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.handler.ssl.SslContext;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
 
@@ -39,10 +37,12 @@ public class NettyClient extends AbstractClient {
     protected Channel channel;
     private final NettyCodecAdapter codec;
     protected PushService pushService;
+    protected SslContext sslContext;
 
-    public NettyClient(Codec codec, MsgListener msgListener) {
+    public NettyClient(Codec codec, MsgListener msgListener, SslContext sslContext) {
         super(codec, msgListener);
         this.codec = new NettyCodecAdapter(getCodec());
+        this.sslContext = sslContext;
     }
 
 
@@ -141,6 +141,9 @@ public class NettyClient extends AbstractClient {
                     @Override
                     protected void initChannel(SocketChannel channel) throws Exception {
                         ChannelPipeline pipeline = channel.pipeline();
+                        if (sslContext != null){
+                            pipeline.addLast(sslContext.newHandler(channel.alloc()));
+                        }
                         pipeline.addLast(codec.getDecoder());
                         pipeline.addLast(codec.getEncoder());
                         pipeline.addLast(createIdleStateHandler());
