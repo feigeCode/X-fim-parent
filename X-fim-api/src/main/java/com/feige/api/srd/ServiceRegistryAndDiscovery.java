@@ -11,11 +11,8 @@ import java.util.List;
  * @Description: <br/>
  * @date: 2021/11/4 23:26<br/>
  */
-public interface IServiceRegistryAndDiscovery extends Spi {
-
-    String CLUSTER_NAME = "XIAOFEI-IM";
-
-
+public interface ServiceRegistryAndDiscovery extends Spi {
+    
     /**
      * 注册实例
      * @param serverInstance 服务实例

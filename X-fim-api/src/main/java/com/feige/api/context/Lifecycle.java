@@ -23,5 +23,6 @@ public interface Lifecycle extends Disposable {
      *
      * @throws IllegalStateException
      */
+    @Override
     void destroy() throws IllegalStateException;
 }

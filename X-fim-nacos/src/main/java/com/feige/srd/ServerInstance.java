@@ -1,4 +1,4 @@
-package com.feige.fim.srd;
+package com.feige.srd;
 
 import com.feige.api.srd.IServerInstance;
 
