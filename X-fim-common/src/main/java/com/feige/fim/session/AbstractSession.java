@@ -1,6 +1,7 @@
 package com.feige.fim.session;
 
 import com.feige.api.session.Session;
+import com.feige.fim.encrypt.Cipher;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class AbstractSession implements Session {
     protected final AtomicBoolean active = new AtomicBoolean(false);
     protected final AtomicBoolean bindClient = new AtomicBoolean(false);
-    
+    protected Cipher cipher;
 
     private final Map<String, Object> attributes = new ConcurrentHashMap<>();
 
@@ -42,6 +43,16 @@ public abstract class AbstractSession implements Session {
     @Override
     public void removeAttr(String key) {
         attributes.remove(key);
+    }
+
+    @Override
+    public Cipher getCipher() {
+        return cipher;
+    }
+
+    @Override
+    public void setCipher(Cipher cipher) {
+        this.cipher = cipher;
     }
 
     @Override

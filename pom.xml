@@ -22,6 +22,7 @@
         <module>X-fim-nacos</module>
         <module>X-fim-protocol</module>
         <module>X-fim-netty-codec</module>
+        <module>X-fim-common-api</module>
     </modules>
 
     <properties>
@@ -43,10 +44,16 @@
         <ehcache.version>3.9.0</ehcache.version>
         <redisson.version>3.21.0</redisson.version>
         <beanutils.version>1.9.4</beanutils.version>
+        <bcprov.version>1.70</bcprov.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bcprov.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
@@ -177,6 +184,11 @@
                 <version>${log4j.version}</version>
             </dependency>
             <!-- 子模块-->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>X-fim-common-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>X-fim-api</artifactId>

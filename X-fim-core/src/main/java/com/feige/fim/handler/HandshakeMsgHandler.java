@@ -1,5 +1,6 @@
 package com.feige.fim.handler;
 
+import com.feige.api.handler.RemotingException;
 import com.feige.fim.protocol.Command;
 import com.feige.api.handler.AbstractMsgHandler;
 import com.feige.api.session.Session;
@@ -17,7 +18,8 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
     }
 
     @Override
-    public void handle(Session session, Object msg) throws RuntimeException {
+    public void handle(Session session, Object msg) throws RemotingException {
+        
     }
     
 }
