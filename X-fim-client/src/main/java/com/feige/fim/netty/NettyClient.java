@@ -1,10 +1,10 @@
 package com.feige.fim.netty;
 
+import com.feige.api.codec.Codec;
 import com.feige.fim.api.AbstractClient;
 import com.feige.fim.api.MsgListener;
 import com.feige.fim.api.PushService;
 import com.feige.fim.api.ServerStatusListener;
-import com.feige.fim.codec.Codec;
 import com.feige.fim.event.ClientEvent;
 import com.feige.fim.lg.Logs;
 import io.netty.bootstrap.Bootstrap;

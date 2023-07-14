@@ -1,6 +1,6 @@
 package com.feige.fim.encrypt.impl;
 
-import com.feige.fim.encrypt.Cipher;
+import com.feige.api.cipher.Cipher;
 import com.feige.fim.encrypt.utils.AesUtils;
 
 import javax.crypto.spec.IvParameterSpec;

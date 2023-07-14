@@ -1,8 +1,8 @@
 package com.feige.fim.netty;
 
 
+import com.feige.api.codec.Codec;
 import com.feige.fim.codec.AbstractNettyCodec;
-import com.feige.fim.codec.Codec;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;

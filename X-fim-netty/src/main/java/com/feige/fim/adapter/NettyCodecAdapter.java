@@ -2,7 +2,7 @@ package com.feige.fim.adapter;
 
 
 import com.feige.fim.codec.AbstractNettyCodec;
-import com.feige.fim.codec.Codec;
+import com.feige.api.codec.Codec;
 import com.feige.fim.lg.Loggers;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;

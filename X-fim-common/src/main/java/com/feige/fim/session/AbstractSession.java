@@ -1,7 +1,7 @@
 package com.feige.fim.session;
 
 import com.feige.api.session.Session;
-import com.feige.fim.encrypt.Cipher;
+import com.feige.api.cipher.Cipher;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

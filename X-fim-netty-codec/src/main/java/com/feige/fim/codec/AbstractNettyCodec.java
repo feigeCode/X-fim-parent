@@ -1,5 +1,10 @@
 package com.feige.fim.codec;
 
+import com.feige.api.codec.Codec;
+import com.feige.api.codec.DecoderException;
+import com.feige.api.codec.EncoderException;
+import com.feige.api.codec.ICheckSum;
+import com.feige.api.codec.VersionException;
 import com.feige.fim.protocol.Command;
 import com.feige.fim.protocol.Packet;
 import com.feige.fim.protocol.ProtocolConst;

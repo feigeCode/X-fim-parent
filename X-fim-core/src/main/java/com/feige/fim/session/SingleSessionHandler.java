@@ -3,7 +3,7 @@ package com.feige.fim.session;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
-import com.feige.fim.encrypt.Cipher;
+import com.feige.api.cipher.Cipher;
 import com.feige.fim.protocol.Packet;
 import com.feige.fim.spi.SpiLoaderUtils;
 

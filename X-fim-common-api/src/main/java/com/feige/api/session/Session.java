@@ -1,7 +1,7 @@
 package com.feige.api.session;
 
 import com.feige.api.handler.RemotingException;
-import com.feige.fim.encrypt.Cipher;
+import com.feige.api.cipher.Cipher;
 
 import java.net.InetSocketAddress;
 
@@ -70,7 +70,7 @@ public interface Session {
      * @param key key.
      * @return
      */
-
+    boolean hasAttr(String key);
     /**
      * 获取对应属性
      *

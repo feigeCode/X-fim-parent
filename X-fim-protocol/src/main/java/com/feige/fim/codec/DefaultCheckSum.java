@@ -1,6 +1,8 @@
 package com.feige.fim.codec;
 
 
+import com.feige.api.codec.ICheckSum;
+
 public class DefaultCheckSum implements ICheckSum {
 
     @Override

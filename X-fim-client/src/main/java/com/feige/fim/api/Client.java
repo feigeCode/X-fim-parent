@@ -1,6 +1,7 @@
 package com.feige.fim.api;
 
-import com.feige.fim.codec.Codec;
+
+import com.feige.api.codec.Codec;
 
 import java.net.InetSocketAddress;
 

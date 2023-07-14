@@ -1,4 +1,4 @@
-package com.feige.fim.encrypt;
+package com.feige.api.cipher;
 
 public interface Cipher {
 

@@ -1,6 +1,7 @@
 package com.feige.fim.codec;
 
 
+import com.feige.api.codec.DecoderException;
 import com.feige.fim.protocol.Packet;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

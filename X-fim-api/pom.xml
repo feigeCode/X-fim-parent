@@ -14,11 +14,8 @@
 <dependencies>
     <dependency>
         <groupId>com.feige</groupId>
-        <artifactId>X-fim-protocol</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>com.feige</groupId>
         <artifactId>X-fim-common-api</artifactId>
+        <scope>provided</scope>
     </dependency>
 </dependencies>
 </project>
