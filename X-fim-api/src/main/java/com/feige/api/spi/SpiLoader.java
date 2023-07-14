@@ -13,9 +13,9 @@ public interface SpiLoader {
     /**
      * register objects
      * @param clazz class
-     * @param objects object list
+     * @param instances object list
      */
-    void register(Class<?> clazz, List<Spi> objects);
+    void register(Class<?> clazz, List<Object> instances);
 
 
     /**
@@ -26,7 +26,7 @@ public interface SpiLoader {
      * @param <T> class type
      * @throws SpiNotFoundException
      */
-    <T extends Spi> T get(String key, Class<T> clazz) throws SpiNotFoundException;
+    <T> T get(String key, Class<T> clazz) throws SpiNotFoundException;
 
 
     /**
@@ -36,7 +36,7 @@ public interface SpiLoader {
      * @param <T> class type
      * @throws SpiNotFoundException
      */
-    <T extends Spi> T getFirst(Class<T> clazz) throws SpiNotFoundException;
+    <T> T getFirst(Class<T> clazz) throws SpiNotFoundException;
 
 
     /**
@@ -46,9 +46,12 @@ public interface SpiLoader {
      * @param <T> class type
      * @throws SpiNotFoundException
      */
-    <T extends Spi> List<T> getAll(Class<T> clazz) throws SpiNotFoundException;
+    <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException;
 
 
+    boolean checkInstance(Object instance);
+    
+    
     /**
      * load class
      * @param loadClass class

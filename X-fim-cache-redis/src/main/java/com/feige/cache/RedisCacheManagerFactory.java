@@ -1,5 +1,6 @@
 package com.feige.cache;
 
+import com.feige.api.annotation.Spi;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
 import com.feige.fim.config.Configs;
@@ -14,6 +15,7 @@ import org.redisson.config.SingleServerConfig;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
+@Spi("redis")
 public class RedisCacheManagerFactory implements CacheManagerFactory {
     
 
@@ -61,8 +63,4 @@ public class RedisCacheManagerFactory implements CacheManagerFactory {
         return new RedisCacheManager(client);
     }
 
-    @Override
-    public String getKey() {
-        return "redis";
-    }
 }

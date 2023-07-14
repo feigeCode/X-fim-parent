@@ -1,6 +1,6 @@
 package com.feige.api.cache;
 
-import com.feige.api.spi.Spi;
+
 
 /**
  * @author feige<br />
@@ -8,7 +8,7 @@ import com.feige.api.spi.Spi;
  * @Description: <br/>
  * @date: 2023/5/25 22:05<br/>
  */
-public interface CacheManagerFactory extends Spi {
+public interface CacheManagerFactory {
     
     CacheManager create() throws Exception;
 }

@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Inherited
 @Documented
 public @interface Inject {
-    String value();
+    String value() default "";
 }

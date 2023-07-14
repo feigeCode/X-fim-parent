@@ -1,12 +1,11 @@
 package com.feige.api.session;
 
 import com.feige.api.handler.RemotingException;
-import com.feige.api.spi.Spi;
 
 import java.util.Objects;
 import java.util.function.Function;
 
-public interface SessionRepository extends Spi {
+public interface SessionRepository {
 
     /**
      * get by session id

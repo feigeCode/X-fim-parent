@@ -1,5 +1,6 @@
 package com.feige.fim.session;
 
+import com.feige.api.annotation.Spi;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
@@ -7,12 +8,9 @@ import com.feige.api.cipher.Cipher;
 import com.feige.fim.protocol.Packet;
 import com.feige.fim.spi.SpiLoaderUtils;
 
+@Spi("single")
 public class SingleSessionHandler extends AbstractSessionHandler {
     
-    @Override
-    public String getKey() {
-        return "single";
-    }
 
     @Override
     public void received(Session session, Object message) throws RemotingException {

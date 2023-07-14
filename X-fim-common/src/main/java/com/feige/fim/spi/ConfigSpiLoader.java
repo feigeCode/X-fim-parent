@@ -1,13 +1,12 @@
 package com.feige.fim.spi;
 
 
-import com.feige.api.spi.Spi;
+
 import com.feige.fim.config.Configs;
 import com.feige.fim.utils.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class ConfigSpiLoader extends AbstractSpiLoader {
@@ -17,30 +16,24 @@ public class ConfigSpiLoader extends AbstractSpiLoader {
     @Override
     public void load(Class<?> loadClass) {
         try {
-            if (!spiClass.isAssignableFrom(loadClass)){
-                LOG.warn("Must implement {}.", spiClass.getName());
-                return;
-            }
-            List<Spi> list = spiMap.get(loadClass);
+            List<?> list = instanceMap.get(loadClass);
             if (list == null){
                 String className = loadClass.getName();
                 synchronized (className.intern()){
-                    list = spiMap.get(loadClass);
+                    list = instanceMap.get(loadClass);
                     if (list == null){
-                        List<Spi> spiList = new ArrayList<>();
+                        List<Object> spiList = new ArrayList<>();
                         List<String> classList = implClassList(className);
                         if (classList != null){
                             for (String clazz : classList) {
                                 Class<?> implClass = Class.forName(clazz);
-                                if (!loadClass.isAssignableFrom(implClass)){
-                                    LOG.warn("Must implement {}.", spiClass.getName());
-                                    continue;
-                                }
                                 Object instance = implClass.newInstance();
-                                spiList.add((Spi) instance);
+                                if (this.checkInstance(instance)) {
+                                    spiList.add(instance);
+                                }
                             }
                             if (spiList.size() > 1){
-                                spiList.sort(Comparator.comparing(Spi::order));
+                                spiList.sort(SPI_ORDER);
                             }
                         }
                         if (CollectionUtils.isNotEmpty(spiList)){

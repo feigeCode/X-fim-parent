@@ -8,10 +8,7 @@ package com.feige.api.handler;
  */
 public abstract class AbstractMsgHandler implements MsgHandler {
 
-    @Override
-    public String getKey() {
-        return String.valueOf(getCmd());
-    }
+    
 
     /**
      * cmd

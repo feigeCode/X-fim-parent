@@ -1,6 +1,5 @@
 package com.feige.fim.spi;
 
-import com.feige.api.spi.Spi;
 import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
 import com.feige.fim.config.Configs;
@@ -50,7 +49,7 @@ public class SpiLoaderUtils {
      * @param <T> class type
      * @throws SpiNotFoundException
      */
-    public static <T extends Spi> T get(String key, Class<T> clazz) throws SpiNotFoundException {
+    public static <T> T get(String key, Class<T> clazz) throws SpiNotFoundException {
         return getSpiLoader().get(key, clazz);
     }
 
@@ -62,7 +61,7 @@ public class SpiLoaderUtils {
      * @param <T> class type
      * @throws SpiNotFoundException
      */
-    public static <T extends Spi> T getFirst(Class<T> clazz) throws SpiNotFoundException {
+    public static <T> T getFirst(Class<T> clazz) throws SpiNotFoundException {
         return getSpiLoader().getFirst(clazz);
     }
 
@@ -74,7 +73,7 @@ public class SpiLoaderUtils {
      * @param <T> class type
      * @throws SpiNotFoundException
      */
-    public static <T extends Spi> List<T> getAll(Class<T> clazz) throws SpiNotFoundException {
+    public static <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException {
         return getSpiLoader().getAll(clazz);
     }
 

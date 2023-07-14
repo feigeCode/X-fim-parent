@@ -1,9 +1,8 @@
 package com.feige.api.handler;
 
 import com.feige.api.session.Session;
-import com.feige.api.spi.Spi;
 
-public interface SessionHandler extends Spi {
+public interface SessionHandler {
     /**
      * on session connected.
      *

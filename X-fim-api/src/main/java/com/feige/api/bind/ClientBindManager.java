@@ -1,8 +1,5 @@
 package com.feige.api.bind;
 
-import com.feige.api.spi.Spi;
-
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,7 +8,7 @@ import java.util.Map;
  * @Description: <br/>
  * @date: 2023/5/27 10:46<br/>
  */
-public interface ClientBindManager extends Spi {
+public interface ClientBindManager {
 
     /**
      * register client bind info

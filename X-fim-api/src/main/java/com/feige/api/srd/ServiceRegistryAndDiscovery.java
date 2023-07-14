@@ -1,7 +1,6 @@
 package com.feige.api.srd;
 
 import com.feige.api.sc.Listener;
-import com.feige.api.spi.Spi;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
  * @Description: <br/>
  * @date: 2021/11/4 23:26<br/>
  */
-public interface ServiceRegistryAndDiscovery extends Spi {
+public interface ServiceRegistryAndDiscovery {
     
     /**
      * 注册实例

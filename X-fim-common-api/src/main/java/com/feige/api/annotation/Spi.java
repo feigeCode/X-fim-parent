@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Spi {
     
-    String value();
+    String value() default "";
     
     int order() default 0;
 }

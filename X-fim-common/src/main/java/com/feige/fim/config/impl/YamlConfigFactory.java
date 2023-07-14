@@ -1,5 +1,6 @@
 package com.feige.fim.config.impl;
 
+import com.feige.api.annotation.Spi;
 import com.feige.api.config.Config;
 import com.feige.api.config.ConfigFactory;
 import com.feige.fim.config.Configs;
@@ -7,6 +8,7 @@ import com.feige.fim.config.Configs;
 import java.io.File;
 
 
+@Spi("yaml")
 public class YamlConfigFactory implements ConfigFactory {
     @Override
     public Config create() throws Exception{
@@ -22,13 +24,13 @@ public class YamlConfigFactory implements ConfigFactory {
         if (Configs.DEFAULT_CONFIG_PATH.equals(path)){
             path = absolutePath + File.separator + path;
         }
-        if (!path.endsWith(getKey()) && !path.endsWith("yml")) {
+        if (!path.endsWith("yaml") && !path.endsWith("yml")) {
             if (path.charAt(path.length() - 1) != '.') {
                 path = path + ".";
             }
-            File f = new File(path + getKey());
+            File f = new File(path + "yaml");
             if (f.exists()) {
-                path += getKey();
+                path += "yaml";
             }else {
                 path += "yml";
             }
@@ -36,11 +38,6 @@ public class YamlConfigFactory implements ConfigFactory {
         file = new File(path);
         return file;
     }
-
-
-    @Override
-    public String getKey() {
-        return "yaml";
-    }
+    
     
 }

@@ -1,8 +1,7 @@
 package com.feige.api.config;
 
-import com.feige.api.spi.Spi;
 
-public interface ConfigFactory extends Spi {
+public interface ConfigFactory {
 
     /**
      *

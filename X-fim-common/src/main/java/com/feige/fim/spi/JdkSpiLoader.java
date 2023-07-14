@@ -1,11 +1,9 @@
 package com.feige.fim.spi;
 
 
-import com.feige.api.spi.Spi;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ServiceLoader;
 
@@ -17,24 +15,21 @@ public class JdkSpiLoader extends AbstractSpiLoader {
     @Override
     public void load(Class<?> loadClass) {
         try {
-            if (!spiClass.isAssignableFrom(loadClass)){
-                LOG.warn("Must implement {}.", spiClass.getName());
-                return;
-            }
-            List<Spi> list = spiMap.get(loadClass);
+            List<Object> list = instanceMap.get(loadClass);
             if (list == null){
                 String className = loadClass.getName();
                 synchronized (className.intern()){
-                    list = spiMap.get(loadClass);
+                    list = instanceMap.get(loadClass);
                     if (list == null){
                         ServiceLoader<?> loader = ServiceLoader.load(loadClass);
-                        List<Spi> spiList = new ArrayList<>();
+                        List<Object> spiList = new ArrayList<>();
                         for (Object next : loader) {
-                            Spi spi = (Spi) next;
-                            spiList.add(spi);
+                            if (this.checkInstance(next)){
+                                spiList.add(next);
+                            }
                         }
                         if (spiList.size() > 1){
-                            spiList.sort(Comparator.comparing(Spi::order));
+                            spiList.sort(SPI_ORDER);
                         }
                         if (CollectionUtils.isNotEmpty(spiList)){
                             register(loadClass, spiList);

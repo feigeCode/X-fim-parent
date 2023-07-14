@@ -1,8 +1,8 @@
 package com.feige.api.serialize;
 
-import com.feige.api.spi.Spi;
 
-public interface Serializer extends Spi {
+
+public interface Serializer {
 
 
     /**
