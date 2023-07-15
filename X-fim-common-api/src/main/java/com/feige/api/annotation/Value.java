@@ -13,4 +13,6 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Value {
     String value();
+    
+    boolean overrideNull() default false;
 }

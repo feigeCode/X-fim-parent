@@ -5,6 +5,7 @@ import com.feige.api.annotation.Value;
 import com.feige.fim.config.Configs;
 import com.feige.fim.spi.SpiLoaderUtils;
 import com.feige.fim.utils.ReflectionUtils;
+import com.feige.fim.utils.StringUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -29,9 +30,16 @@ public class InjectAnnotationInstancePostProcessor implements InstancePostProces
 
         for (Field field : list) {
             Class<?> type = field.getType();
+            String name = field.getName();
             Object value = null;
             if (field.isAnnotationPresent(Inject.class)){
-                value = SpiLoaderUtils.getFirst(type);
+                Inject inject = field.getAnnotation(Inject.class);
+                String key = inject.value();
+                if (StringUtil.isNotBlank(key)){
+                    value = SpiLoaderUtils.get(key, type);
+                }else {
+                    value = SpiLoaderUtils.get(name, type);
+                }
             }else if (field.isAnnotationPresent(Value.class)){
                 Value valueAnnotation = field.getAnnotation(Value.class);
                 String configKey = valueAnnotation.value();

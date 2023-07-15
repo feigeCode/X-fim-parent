@@ -49,10 +49,4 @@ public interface SpiLoader {
     <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException;
     
     
-    /**
-     * load class
-     * @param loadClass class
-     */
-    void load(Class<?> loadClass);
-    
 }

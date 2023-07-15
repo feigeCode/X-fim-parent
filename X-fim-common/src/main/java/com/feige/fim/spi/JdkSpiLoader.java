@@ -1,6 +1,7 @@
 package com.feige.fim.spi;
 
 
+import com.feige.api.order.OrderComparator;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -13,13 +14,13 @@ public class JdkSpiLoader extends AbstractSpiLoader {
 
 
     @Override
-    public void load(Class<?> loadClass) {
+    public void doLoadInstance(Class<?> loadClass) {
         try {
-            List<Object> list = instanceMap.get(loadClass);
+            List<Object> list = instanceCache.get(loadClass);
             if (list == null){
                 String className = loadClass.getName();
                 synchronized (className.intern()){
-                    list = instanceMap.get(loadClass);
+                    list = instanceCache.get(loadClass);
                     if (list == null){
                         ServiceLoader<?> loader = ServiceLoader.load(loadClass);
                         List<Object> instanceList = new ArrayList<>();
@@ -29,7 +30,7 @@ public class JdkSpiLoader extends AbstractSpiLoader {
                             }
                         }
                         if (instanceList.size() > 1){
-                            instanceList.sort(SPI_ORDER);
+                            instanceList.sort(OrderComparator.getInstance());
                         }
                         if (CollectionUtils.isNotEmpty(instanceList)){
                             register(loadClass, instanceList);

@@ -37,6 +37,7 @@ spi:
     com.feige.api.session.SessionRepository: com.feige.fim.adapter.NettySessionRepository
     com.feige.api.cache.CacheManagerFactory: com.feige.cache.LocalCacheManagerFactory
     com.feige.api.handler.MsgHandler: com.feige.fim.handler.HandshakeMsgHandler,com.feige.fim.handler.HeartbeatMsgHandler 
+#    com.feige.api.codec.Codec: com.feige.fim.codec.PacketCodecInstanceProvider
 
       
       

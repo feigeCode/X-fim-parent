@@ -4,6 +4,8 @@ import com.feige.api.annotation.Inject;
 import com.feige.api.annotation.Value;
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
+import com.feige.api.spi.InstanceProvider;
+import com.feige.fim.codec.PacketCodecInstanceProvider;
 import com.feige.fim.config.Configs;
 import com.feige.fim.server.NettyTcpServerProvider;
 import com.feige.fim.spi.SpiLoaderUtils;
@@ -60,5 +62,10 @@ public class ServerTest {
             }
         });
         Assert.assertEquals(list.size(), 5);
+    }
+
+    @Test
+    public void implTest(){
+        Assert.assertTrue(InstanceProvider.class.isAssignableFrom(PacketCodecInstanceProvider.class));
     }
 }

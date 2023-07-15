@@ -76,17 +76,4 @@ public class SpiLoaderUtils {
     public static <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException {
         return getSpiLoader().getAll(clazz);
     }
-
-    public static void load(String className) throws ClassNotFoundException {
-        Class<?> loadClass = Class.forName(className);
-        load(loadClass);
-    }
-
-    public static void load(Class<?> loadClass){
-        getSpiLoader().load(loadClass);
-    }
-
-    public static void initSpiLoader() {
-        
-    }
 }
