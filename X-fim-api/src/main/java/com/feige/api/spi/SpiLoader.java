@@ -47,9 +47,6 @@ public interface SpiLoader {
      * @throws SpiNotFoundException
      */
     <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException;
-
-
-    boolean checkInstance(Object instance);
     
     
     /**

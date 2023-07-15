@@ -38,6 +38,12 @@ public class AssertUtil {
         }
     }
 
+    public static void notEmpty(Object[] arr, String name) {
+        if (arr == null || arr.length == 0) {
+            throw new IllegalStateException(name + " is empty");
+        }
+    }
+
     public static void notBlank(CharSequence s, String name) {
         if (StringUtil.isBlank(s)) {
             throw new IllegalStateException(name + " is blank");

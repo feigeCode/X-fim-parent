@@ -1,6 +1,8 @@
 package com.feige.fim.codec;
 
 
+import com.feige.api.annotation.Prototype;
+import com.feige.api.annotation.Spi;
 import com.feige.api.codec.DecoderException;
 import com.feige.fim.protocol.Packet;
 import io.netty.buffer.ByteBuf;
@@ -8,6 +10,8 @@ import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;
 
+@Spi("packet")
+@Prototype
 public class PacketCodec extends AbstractNettyCodec {
 
 

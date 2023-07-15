@@ -22,17 +22,17 @@ public class JdkSpiLoader extends AbstractSpiLoader {
                     list = instanceMap.get(loadClass);
                     if (list == null){
                         ServiceLoader<?> loader = ServiceLoader.load(loadClass);
-                        List<Object> spiList = new ArrayList<>();
+                        List<Object> instanceList = new ArrayList<>();
                         for (Object next : loader) {
                             if (this.checkInstance(next)){
-                                spiList.add(next);
+                                instanceList.add(applyBeanPostProcessorsBeforeInitialization(next, getInstanceName(next.getClass())));
                             }
                         }
-                        if (spiList.size() > 1){
-                            spiList.sort(SPI_ORDER);
+                        if (instanceList.size() > 1){
+                            instanceList.sort(SPI_ORDER);
                         }
-                        if (CollectionUtils.isNotEmpty(spiList)){
-                            register(loadClass, spiList);
+                        if (CollectionUtils.isNotEmpty(instanceList)){
+                            register(loadClass, instanceList);
                         }else {
                             LOG.warn("class = {}, No implementation classes have been registered", className);
                         }

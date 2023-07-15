@@ -13,13 +13,13 @@ public abstract class AbstractServerProvider implements ServerProvider {
 
 
     @Inject
-    protected SessionHandler sessionHandler;
+    private SessionHandler sessionHandler;
     
     @Inject
-    protected Codec codec;
+    private Codec codec;
     
     @Inject
-    protected SessionRepository sessionRepository;
+    private SessionRepository sessionRepository;
     
     
 

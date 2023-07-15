@@ -22,22 +22,22 @@ public class ConfigSpiLoader extends AbstractSpiLoader {
                 synchronized (className.intern()){
                     list = instanceMap.get(loadClass);
                     if (list == null){
-                        List<Object> spiList = new ArrayList<>();
+                        List<Object> instanceList = new ArrayList<>();
                         List<String> classList = implClassList(className);
                         if (classList != null){
                             for (String clazz : classList) {
                                 Class<?> implClass = Class.forName(clazz);
                                 Object instance = implClass.newInstance();
                                 if (this.checkInstance(instance)) {
-                                    spiList.add(instance);
+                                    instanceList.add(applyBeanPostProcessorsBeforeInitialization(instance, getInstanceName(implClass)));
                                 }
                             }
-                            if (spiList.size() > 1){
-                                spiList.sort(SPI_ORDER);
+                            if (instanceList.size() > 1){
+                                instanceList.sort(SPI_ORDER);
                             }
                         }
-                        if (CollectionUtils.isNotEmpty(spiList)){
-                            register(loadClass, spiList);
+                        if (CollectionUtils.isNotEmpty(instanceList)){
+                            register(loadClass, instanceList);
                         }else {
                             LOG.warn("class = {}, No implementation classes have been registered", className);
                         }

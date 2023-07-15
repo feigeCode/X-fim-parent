@@ -70,4 +70,36 @@ public class StringUtil {
     public static boolean isNotBlank(CharSequence sequence) {
         return !isBlank(sequence);
     }
+
+
+    public static String capitalize(String str) {
+        return changeFirstCharacterCase(str, true);
+    }
+
+   
+    public static String uncapitalize(String str) {
+        return changeFirstCharacterCase(str, false);
+    }
+
+    private static String changeFirstCharacterCase(String str, boolean capitalize) {
+        if (isBlank(str)) {
+            return str;
+        }
+
+        char baseChar = str.charAt(0);
+        char updatedChar;
+        if (capitalize) {
+            updatedChar = Character.toUpperCase(baseChar);
+        }
+        else {
+            updatedChar = Character.toLowerCase(baseChar);
+        }
+        if (baseChar == updatedChar) {
+            return str;
+        }
+
+        char[] chars = str.toCharArray();
+        chars[0] = updatedChar;
+        return new String(chars);
+    }
 }
