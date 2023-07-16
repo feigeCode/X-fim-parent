@@ -1,5 +1,9 @@
 package com.feige.fim.utils;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.Collection;
+
 /**
  * @author feige<br />
  * @ClassName: AssertUtil <br/>
@@ -34,6 +38,12 @@ public class AssertUtil {
 
     public static void notEmpty(CharSequence s, String name) {
         if (StringUtil.isEmpty(s)) {
+            throw new IllegalStateException(name + " is empty");
+        }
+    }
+    
+    public static void notEmpty(Collection<?> coll, String name){
+        if (CollectionUtils.isEmpty(coll)){
             throw new IllegalStateException(name + " is empty");
         }
     }

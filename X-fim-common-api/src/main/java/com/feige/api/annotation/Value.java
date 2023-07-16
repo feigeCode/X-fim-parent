@@ -12,7 +12,15 @@ import java.lang.annotation.Target;
 @Inherited
 @Documented
 public @interface Value {
+    /**
+     * config key
+     * @return
+     */
     String value();
-    
-    boolean overrideNull() default false;
+
+    /**
+     * null safe ，null not set field
+     * @return is null safe
+     */
+    boolean nullSafe() default true;
 }

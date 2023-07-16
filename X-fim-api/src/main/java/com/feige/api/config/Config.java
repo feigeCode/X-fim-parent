@@ -191,7 +191,7 @@ public interface Config {
                 Number n = (Number)answer;
                 answer = n.intValue() != 0 ? Boolean.TRUE : Boolean.FALSE;
             }
-        }else if (cls.isAssignableFrom(Number.class) || cls.isPrimitive()){
+        }else if (Number.class.isAssignableFrom(cls) || cls.isPrimitive()){
             if (answer instanceof String) {
                 try {
                     String text = (String)answer;
@@ -215,6 +215,9 @@ public interface Config {
             }
         }else if (cls.isEnum()) {
             answer = Enum.valueOf(cls.asSubclass(Enum.class), (String) answer);
+        }
+        if (cls.isPrimitive()){
+            return (T) answer;
         }
         return cls.cast(answer); 
     }

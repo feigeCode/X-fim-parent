@@ -248,6 +248,10 @@ public final class Configs {
     public static String[] getArr(String key){
         return getCompositeConfig().getArr(key);
     }
+    
+    public static <T>  T get(Class<T> clazz, String key){
+        return getCompositeConfig().convert(clazz, key, null);
+    }
 
     /**
      * get stream by config key

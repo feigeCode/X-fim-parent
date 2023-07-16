@@ -1,23 +1,29 @@
 package com.feige.fim.spi;
 
+import com.feige.api.annotation.Inject;
 import com.feige.api.annotation.Spi;
+import com.feige.api.annotation.Value;
+import com.feige.api.order.OrderComparator;
 import com.feige.api.spi.InstanceProvider;
 import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
-import com.feige.fim.ioc.InjectAnnotationInstancePostProcessor;
+import com.feige.fim.config.Configs;
 import com.feige.fim.ioc.InstancePostProcessor;
 import com.feige.fim.lg.Loggers;
 import com.feige.fim.utils.AssertUtil;
 import com.feige.fim.utils.ClassUtils;
+import com.feige.fim.utils.ReflectionUtils;
 import com.feige.fim.utils.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public abstract class AbstractSpiLoader implements SpiLoader {
@@ -26,16 +32,14 @@ public abstract class AbstractSpiLoader implements SpiLoader {
     protected final Map<Class<?>, List<Object>> instanceCache = new ConcurrentHashMap<>();
     protected final Map<String, Object> singletonObjectCache = new ConcurrentHashMap<>();
     protected final Map<String, Object> instanceProviderObjectCache = new ConcurrentHashMap<>();
+    protected final Map<Class<?>, String> instanceNameCache = new ConcurrentHashMap<>();
     protected final List<InstancePostProcessor> processors = new ArrayList<>();
-    {
-        processors.add(new InjectAnnotationInstancePostProcessor());
-    }
+    private final AtomicBoolean loadedInstanceProvider = new AtomicBoolean(false);
     
     @Override
     public void register(Class<?> clazz, List<Object> instances) {
         AssertUtil.notNull(clazz, "class");
-        AssertUtil.notNull(instances, "instances");
-        this.instanceCache.put(clazz, instances);
+        AssertUtil.notEmpty(instances, "instances");
         for (Object instance : instances) {
             String instanceName = getInstanceName(instance.getClass());
             this.singletonObjectCache.put(instanceName, instance);
@@ -57,6 +61,7 @@ public abstract class AbstractSpiLoader implements SpiLoader {
         if (instance == null){
             throw new SpiNotFoundException(clazz, key);
         }
+        instance = instanceProviderHandle(key, instance, clazz);
         return clazz.cast(instance);
     }
 
@@ -67,7 +72,9 @@ public abstract class AbstractSpiLoader implements SpiLoader {
         if (CollectionUtils.isEmpty(instanceList)){
             throw new SpiNotFoundException(clazz);
         }
-        return clazz.cast(instanceList.get(0));
+        Object instance = instanceList.get(0);
+        String instanceName = getInstanceName(instance.getClass());
+        return get(instanceName, clazz);
     }
 
     @Override
@@ -78,6 +85,7 @@ public abstract class AbstractSpiLoader implements SpiLoader {
             throw new SpiNotFoundException(clazz);
         }
         return instanceList.stream()
+                .map(instance -> getFirst(instance.getClass()))
                 .map(clazz::cast)
                 .collect(Collectors.toList());
     }
@@ -120,21 +128,43 @@ public abstract class AbstractSpiLoader implements SpiLoader {
     }
 
     private void load(Class<?> clazz) {
+        if (loadedInstanceProvider.compareAndSet(false, true)){
+            load(InstanceProvider.class);
+        }
+        List<Object> instances;
         if (clazz.isInterface() || ClassUtils.isAbstractClass(clazz)){
-            doLoadInstance(clazz);
+            instances = doLoadInstance(clazz);
         }else {
             Object instance = createInstance(clazz);
-            register(clazz, Collections.singletonList(instance));
+            instances = Collections.singletonList(instance);
+        }
+        if (CollectionUtils.isNotEmpty(instances)){
+            if (InstanceProvider.class.equals(clazz)){
+                instances.stream()
+                        .collect(Collectors.groupingBy(instance -> ((InstanceProvider<?>) instance).getType()))
+                        .forEach((k, v) -> {
+                            v.sort(OrderComparator.getInstance());
+                            this.instanceCache.put(k, v);
+                        });
+            }
+            this.instanceCache.put(clazz, instances);
+            List<Object> newInstances = instances.stream()
+                    .map(instance -> applyBeanPostProcessorsBeforeInitialization(instance, getInstanceName(instance.getClass())))
+                    .collect(Collectors.toList());
+            injectInstance(newInstances);
+            newInstances = instances.stream()
+                    .map(instance -> applyBeanPostProcessorsAfterInitialization(instance, getInstanceName(instance.getClass())))
+                    .collect(Collectors.toList());
+            register(clazz, newInstances);
+        }else {
+            LOG.warn("class = {}, No implementation classes have been registered", clazz.getName());
         }
     }
     
     protected Object createInstance(Class<?> clazz){
         if (checkInstance(clazz)){
             try {
-                Object instance = clazz.newInstance();
-                String instanceName = getInstanceName(clazz);
-                applyBeanPostProcessorsBeforeInitialization(instance, instanceName);
-                return instance;
+                return clazz.newInstance();
             } catch (Exception e) {
                 LOG.error("instance error:" , e);
                 throw new RuntimeException(e);
@@ -143,15 +173,24 @@ public abstract class AbstractSpiLoader implements SpiLoader {
         return null;
     }
 
-    protected Object instanceProviderHandle(String key, Object instance) {
-        if (instance instanceof InstanceProvider) {
+    private Object instanceProviderHandle(String key, Object instance, Class<?> clazz) {
+        if (instance instanceof InstanceProvider && !InstanceProvider.class.isAssignableFrom(clazz)) {
+            InstanceProvider<?> instanceProvider = (InstanceProvider<?>) instance;
+            if (!isSingleton(instance)){
+                return instanceProvider.getInstance();
+            }
+            if (StringUtil.isBlank(key)){
+                key = getInstanceName(instance.getClass());
+            }
             Object realInstance = instanceProviderObjectCache.get(key);
             if (realInstance == null){
                 synchronized (instanceProviderObjectCache){
                     realInstance = instanceProviderObjectCache.get(key);
                     if (realInstance == null){
-                        realInstance = ((InstanceProvider<?>) instance).get();
-                        instanceProviderObjectCache.put(key, instance);
+                        realInstance = instanceProvider.getInstance();
+                        if (instanceProvider.isSingleton()){
+                            instanceProviderObjectCache.put(key, realInstance);
+                        }
                     }
                 }
             }
@@ -159,23 +198,34 @@ public abstract class AbstractSpiLoader implements SpiLoader {
         }
         return instance;
     }
+    
+    private boolean isSingleton(Object instance){
+        if (instance instanceof InstanceProvider<?>){
+            return ((InstanceProvider<?>) instance).isSingleton();
+        }
+        return true;
+    }
 
-    protected Object applyBeanPostProcessorsBeforeInitialization(Object instance,  String instanceName) throws Exception {
+    private Object applyBeanPostProcessorsBeforeInitialization(Object instance,  String instanceName) {
         for (InstancePostProcessor processor : processors) {
-            processor.postProcessBeforeInitialization(instance, instanceName);
+            instance = processor.postProcessBeforeInitialization(instance, instanceName);
         }
         return instance;
     }
 
 
-    protected Object applyBeanPostProcessorsAfterInitialization(Object instance,  String instanceName) throws Exception {
+    private Object applyBeanPostProcessorsAfterInitialization(Object instance,  String instanceName) {
         for (InstancePostProcessor processor : processors) {
-            processor.postProcessAfterInitialization(instance, instanceName);
+            instance = processor.postProcessAfterInitialization(instance, instanceName);
         }
         return instance;
     }
     
-    protected String getInstanceName(Class<?> clazz){
+    private String getInstanceName(Class<?> clazz){
+        return this.instanceNameCache.computeIfAbsent(clazz, this::generateInstanceName);
+    }
+    
+    private String generateInstanceName(Class<?> clazz){
         Spi spiAnnotation = clazz.getAnnotation(Spi.class);
         String value = spiAnnotation.value();
         if (StringUtil.isNotBlank(value)){
@@ -183,8 +233,50 @@ public abstract class AbstractSpiLoader implements SpiLoader {
         }
         return StringUtil.capitalize(clazz.getSimpleName());
     }
+
+    private void injectInstance(List<Object> instances){
+        for (Object instance : instances) {
+            injectInstance(instance);
+        }
+    }
+
+    private void injectInstance(Object instance){
+        List<Field> list = new ArrayList<>();
+        // 遍历类的所有字段，包括父类的字段
+        ReflectionUtils.doWithFields(instance.getClass(), field -> {
+            if (field.isAnnotationPresent(Inject.class) || field.isAnnotationPresent(Value.class)) {
+                list.add(field);
+            }
+        });
+
+        for (Field field : list) {
+            Class<?> type = field.getType();
+            Object value = null;
+            if (field.isAnnotationPresent(Inject.class)){
+                Inject inject = field.getAnnotation(Inject.class);
+                String key = inject.value();
+                if (StringUtil.isNotBlank(key)){
+                    value = this.get(key, type);
+                }else {
+                    value = this.getFirst(type);
+                }
+            }else if (field.isAnnotationPresent(Value.class)){
+                Value valueAnnotation = field.getAnnotation(Value.class);
+                String configKey = valueAnnotation.value();
+                value = Configs.get(type, configKey);
+                // 空安全，空值不设置
+                if (value == null && valueAnnotation.nullSafe()){
+                    continue;
+                }
+            }
+            if (value != null){
+                ReflectionUtils.makeAccessible(field);
+                ReflectionUtils.setField(field, instance, value);
+            }
+        }
+    }
     
-    protected abstract void doLoadInstance(Class<?> loadClass);
+    protected abstract List<Object> doLoadInstance(Class<?> loadClass);
 
 
     
