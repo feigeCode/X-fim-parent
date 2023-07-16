@@ -90,6 +90,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         if (t != null){
             return t;
         }
+        instance = instanceProviderHandle(instanceName, instance, clazz);
         return clazz.cast(instance);
     }
 
