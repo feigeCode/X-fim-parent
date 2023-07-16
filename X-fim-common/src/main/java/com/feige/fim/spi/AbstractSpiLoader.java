@@ -153,18 +153,18 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
             instances = Collections.singletonList(instance);
         }
         if (CollectionUtils.isNotEmpty(instances)){
+            List<Object> newInstances = instances.stream()
+                    .map(instance -> applyBeanPostProcessorsBeforeInitialization(instance, getInstanceName(instance.getClass())))
+                    .collect(Collectors.toList());
+            this.instanceCache.put(clazz, newInstances);
             if (InstanceProvider.class.equals(clazz)){
-                instances.stream()
+                newInstances.stream()
                         .collect(Collectors.groupingBy(instance -> ((InstanceProvider<?>) instance).getType()))
                         .forEach((k, v) -> {
                             v.sort(OrderComparator.getInstance());
                             this.instanceCache.put(k, v);
                         });
             }
-            this.instanceCache.put(clazz, instances);
-            List<Object> newInstances = instances.stream()
-                    .map(instance -> applyBeanPostProcessorsBeforeInitialization(instance, getInstanceName(instance.getClass())))
-                    .collect(Collectors.toList());
             injectInstance(newInstances);
             newInstances = instances.stream()
                     .map(instance -> applyBeanPostProcessorsAfterInitialization(instance, getInstanceName(instance.getClass())))
