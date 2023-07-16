@@ -74,7 +74,11 @@ public abstract class AbstractSpiLoader implements SpiLoader {
         }
         Object instance = instanceList.get(0);
         String instanceName = getInstanceName(instance.getClass());
-        return get(instanceName, clazz);
+        T t = get(instanceName, clazz);
+        if (t != null){
+            return t;
+        }
+        return clazz.cast(instance);
     }
 
     @Override
@@ -178,9 +182,6 @@ public abstract class AbstractSpiLoader implements SpiLoader {
             InstanceProvider<?> instanceProvider = (InstanceProvider<?>) instance;
             if (!isSingleton(instance)){
                 return instanceProvider.getInstance();
-            }
-            if (StringUtil.isBlank(key)){
-                key = getInstanceName(instance.getClass());
             }
             Object realInstance = instanceProviderObjectCache.get(key);
             if (realInstance == null){
