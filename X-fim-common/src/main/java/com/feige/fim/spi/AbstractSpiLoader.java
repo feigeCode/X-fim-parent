@@ -166,9 +166,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
                         });
             }
             injectInstance(newInstances);
-            newInstances = instances.stream()
-                    .map(instance -> applyBeanPostProcessorsAfterInitialization(instance, getInstanceName(instance.getClass())))
-                    .collect(Collectors.toList());
+            instances.forEach(instance -> applyBeanPostProcessorsAfterInitialization(instance, getInstanceName(instance.getClass())));
             register(clazz, newInstances);
         }else {
             LOG.warn("class = {}, No implementation classes have been registered", clazz.getName());
@@ -225,11 +223,10 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     }
 
 
-    private Object applyBeanPostProcessorsAfterInitialization(Object instance,  String instanceName) {
+    private void applyBeanPostProcessorsAfterInitialization(Object instance,  String instanceName) {
         for (InstancePostProcessor processor : processors) {
-            instance = processor.postProcessAfterInitialization(instance, instanceName);
+            processor.postProcessAfterInitialization(instance, instanceName);
         }
-        return instance;
     }
     
     private String getInstanceName(Class<?> clazz){
