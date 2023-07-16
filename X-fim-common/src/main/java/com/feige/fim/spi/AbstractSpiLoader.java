@@ -8,7 +8,7 @@ import com.feige.api.spi.InstanceProvider;
 import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
 import com.feige.fim.config.Configs;
-import com.feige.fim.ioc.InstancePostProcessor;
+import com.feige.api.spi.InstancePostProcessor;
 import com.feige.fim.lg.Loggers;
 import com.feige.fim.utils.AssertUtil;
 import com.feige.fim.utils.ClassUtils;

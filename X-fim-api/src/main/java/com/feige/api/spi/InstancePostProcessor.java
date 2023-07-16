@@ -1,4 +1,4 @@
-package com.feige.fim.ioc;
+package com.feige.api.spi;
 
 public interface InstancePostProcessor {
    
