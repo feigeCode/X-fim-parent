@@ -3,7 +3,7 @@ package com.feige.fim;
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
 import com.feige.fim.config.Configs;
-import com.feige.fim.spi.SpiLoaderUtils;
+import com.feige.fim.context.AppContext;
 
 public class NettyServer {
 
@@ -21,7 +21,7 @@ public class NettyServer {
         createTcpServer();
     }
     public static void createTcpServer(){
-        final ServerProvider serverProvider = SpiLoaderUtils.get("tcp", ServerProvider.class);
+        final ServerProvider serverProvider = AppContext.get("tcp", ServerProvider.class);
         Server server = serverProvider.get();
         boolean start = server.syncStart();
         System.out.println(start);

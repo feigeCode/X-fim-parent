@@ -6,7 +6,7 @@ import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.api.cipher.Cipher;
 import com.feige.fim.protocol.Packet;
-import com.feige.fim.spi.SpiLoaderUtils;
+import com.feige.fim.context.AppContext;
 
 @Spi("single")
 public class SingleSessionHandler extends AbstractSessionHandler {
@@ -23,7 +23,7 @@ public class SingleSessionHandler extends AbstractSessionHandler {
                 packet.setData(decryptData);
             }
             String cmd = String.valueOf(packet.getCmd());
-            MsgHandler msgHandler = SpiLoaderUtils.get(cmd, MsgHandler.class);
+            MsgHandler msgHandler = AppContext.get(cmd, MsgHandler.class);
             msgHandler.handle(session, message);
         }
     }

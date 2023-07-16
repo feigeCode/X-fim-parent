@@ -1,5 +1,7 @@
 package com.feige.api.spi;
 
+import com.feige.api.context.Application;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
  * @Description: <br/>
  * @date: 2023/5/20 14:22<br/>
  */
-public interface SpiLoader {
+public interface SpiLoader extends Application {
 
     /**
      * register objects

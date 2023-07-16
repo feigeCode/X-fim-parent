@@ -8,7 +8,7 @@ import com.feige.api.spi.InstanceProvider;
 import com.feige.fim.codec.PacketCodecInstanceProvider;
 import com.feige.fim.config.Configs;
 import com.feige.fim.server.NettyTcpServerProvider;
-import com.feige.fim.spi.SpiLoaderUtils;
+import com.feige.fim.context.AppContext;
 import com.feige.fim.utils.ReflectionUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -17,7 +17,6 @@ import org.junit.Test;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ServerTest {
     public static final String CONFIG_PATH = "E:\\project\\my\\X-fim-parent\\conf\\fim.yaml";
@@ -38,7 +37,7 @@ public class ServerTest {
     
     @Test
     public void createTcpServer(){
-        final ServerProvider serverProvider = SpiLoaderUtils.get("tcp", ServerProvider.class);
+        final ServerProvider serverProvider = AppContext.get("tcp", ServerProvider.class);
         Server server = serverProvider.get();
         server.syncStart();
         server.syncStop();
@@ -46,7 +45,7 @@ public class ServerTest {
 
     @Test
     public void createWsServer(){
-        final ServerProvider serverProvider = SpiLoaderUtils.get("ws", ServerProvider.class);
+        final ServerProvider serverProvider = AppContext.get("ws", ServerProvider.class);
         Server server = serverProvider.get();
         server.syncStart();
         server.syncStop();

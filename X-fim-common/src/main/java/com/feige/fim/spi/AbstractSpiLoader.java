@@ -3,6 +3,7 @@ package com.feige.fim.spi;
 import com.feige.api.annotation.Inject;
 import com.feige.api.annotation.Spi;
 import com.feige.api.annotation.Value;
+import com.feige.api.context.LifecycleAdapter;
 import com.feige.api.order.OrderComparator;
 import com.feige.api.spi.InstanceProvider;
 import com.feige.api.spi.SpiLoader;
@@ -26,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-public abstract class AbstractSpiLoader implements SpiLoader {
+public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiLoader {
 
     protected static final Logger LOG = Loggers.LOADER;
     protected final Map<Class<?>, List<Object>> instanceCache = new ConcurrentHashMap<>();
@@ -34,7 +35,18 @@ public abstract class AbstractSpiLoader implements SpiLoader {
     protected final Map<String, Object> instanceProviderObjectCache = new ConcurrentHashMap<>();
     protected final Map<Class<?>, String> instanceNameCache = new ConcurrentHashMap<>();
     protected final List<InstancePostProcessor> processors = new ArrayList<>();
-    private final AtomicBoolean loadedInstanceProvider = new AtomicBoolean(false);
+    private final AtomicBoolean isInitialized = new AtomicBoolean(false);
+
+    @Override
+    public void initialize() throws IllegalStateException {
+        if (isInitialized.compareAndSet(false, true)){
+            List<Object> instanceList = this.doLoadInstance(InstancePostProcessor.class);
+            for (Object instance : instanceList) {
+                this.processors.add((InstancePostProcessor)instance);
+            }
+            load(InstanceProvider.class);
+        }
+    }
     
     @Override
     public void register(Class<?> clazz, List<Object> instances) {
@@ -132,9 +144,6 @@ public abstract class AbstractSpiLoader implements SpiLoader {
     }
 
     private void load(Class<?> clazz) {
-        if (loadedInstanceProvider.compareAndSet(false, true)){
-            load(InstanceProvider.class);
-        }
         List<Object> instances;
         if (clazz.isInterface() || ClassUtils.isAbstractClass(clazz)){
             instances = doLoadInstance(clazz);
@@ -278,7 +287,4 @@ public abstract class AbstractSpiLoader implements SpiLoader {
     }
     
     protected abstract List<Object> doLoadInstance(Class<?> loadClass);
-
-
-    
 }
