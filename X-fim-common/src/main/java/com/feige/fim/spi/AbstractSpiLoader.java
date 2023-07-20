@@ -61,9 +61,9 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     @Override
     public <T> T get(String key, Class<T> clazz) throws SpiNotFoundException {
         AssertUtil.notBlank(key, "key");
-        AssertUtil.notNull(clazz, "class");
         Object instance = this.singletonObjectCache.get(key);
         if (instance == null){
+            AssertUtil.notNull(clazz, "class");
             List<Object> instanceList = loadClass(clazz);
             if (CollectionUtils.isEmpty(instanceList)) {
                 throw new SpiNotFoundException(clazz);
@@ -86,7 +86,12 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         }
         Object instance = instanceList.get(0);
         String instanceName = getInstanceName(instance.getClass());
-        T t = get(instanceName, clazz);
+        T t = null;
+        try {
+            t = get(instanceName, clazz);
+        } catch (SpiNotFoundException ignored) {
+            
+        }
         if (t != null){
             return t;
         }
@@ -102,7 +107,19 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
             throw new SpiNotFoundException(clazz);
         }
         return instanceList.stream()
-                .map(instance -> getFirst(instance.getClass()))
+                .map(instance -> {
+                    String instanceName = getInstanceName(instance.getClass());
+                    T t = null;
+                    try {
+                        t = get(instanceName, clazz);
+                    } catch (SpiNotFoundException ignored) {
+                        
+                    }
+                    if (t != null){
+                        return t;
+                    }
+                    return instance;
+                })
                 .map(clazz::cast)
                 .collect(Collectors.toList());
     }
@@ -249,18 +266,11 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     }
 
     private void injectInstance(Object instance){
-        List<Field> list = new ArrayList<>();
         // 遍历类的所有字段，包括父类的字段
         ReflectionUtils.doWithFields(instance.getClass(), field -> {
-            if (field.isAnnotationPresent(Inject.class) || field.isAnnotationPresent(Value.class)) {
-                list.add(field);
-            }
-        });
-
-        for (Field field : list) {
             Class<?> type = field.getType();
             Object value = null;
-            if (field.isAnnotationPresent(Inject.class)){
+            if (field.isAnnotationPresent(Inject.class)) {
                 Inject inject = field.getAnnotation(Inject.class);
                 String key = inject.value();
                 if (StringUtil.isNotBlank(key)){
@@ -268,20 +278,22 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
                 }else {
                     value = this.getFirst(type);
                 }
-            }else if (field.isAnnotationPresent(Value.class)){
+            }
+            
+            if (field.isAnnotationPresent(Value.class)){
                 Value valueAnnotation = field.getAnnotation(Value.class);
                 String configKey = valueAnnotation.value();
                 value = Configs.get(type, configKey);
                 // 空安全，空值不设置
                 if (value == null && valueAnnotation.nullSafe()){
-                    continue;
+                    return;
                 }
             }
             if (value != null){
                 ReflectionUtils.makeAccessible(field);
                 ReflectionUtils.setField(field, instance, value);
             }
-        }
+        });
     }
     
     protected abstract List<Object> doLoadInstance(Class<?> loadClass);

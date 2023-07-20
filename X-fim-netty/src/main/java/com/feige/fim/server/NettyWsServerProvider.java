@@ -6,7 +6,6 @@ import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.Server;
 import com.feige.api.session.SessionRepository;
-import com.feige.fim.codec.PacketCodec;
 import com.feige.fim.config.Configs;
 import com.feige.fim.server.ws.NettyWsServer;
 
@@ -29,16 +28,6 @@ public class NettyWsServerProvider extends AbstractServerProvider {
         SessionRepository sessionRepository = getSessionRepository();
         Codec codec = getCodec();
         return new NettyWsServer(socketAddress, sessionHandler, sessionRepository, codec);
-    }
-
-    @Override
-    protected Codec getCodec() {
-        Integer maxPacketSize = Configs.getInt(Configs.ConfigKey.CODEC_MAX_PACKET_SIZE_KEY);
-        Integer heartbeat = Configs.getInt(Configs.ConfigKey.CODEC_HEARTBEAT_KEY);
-        Integer version = Configs.getInt(Configs.ConfigKey.CODEC_VERSION_KEY);
-        Integer headerLength = Configs.getInt(Configs.ConfigKey.CODEC_HEADER_LENGTH_KEY);
-        String checkSumKey = Configs.getString(Configs.ConfigKey.CODEC_CHECK_SUM_KEY);
-        return new PacketCodec(maxPacketSize, heartbeat.byteValue(), version.byteValue(), headerLength, checkSumKey);
     }
 
     public String getIp() {
