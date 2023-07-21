@@ -1,9 +1,14 @@
-package com.feige.api.handler;
+package com.feige.fim.handler;
 
 
 import com.feige.api.annotation.Inject;
+import com.feige.api.cipher.Cipher;
+import com.feige.api.handler.MsgDispatcher;
+import com.feige.api.handler.RemotingException;
+import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
-import com.sun.xml.internal.ws.api.message.Packet;
+import com.feige.fim.protocol.Packet;
+
 
 /**
  * @author feige<br />
@@ -30,7 +35,16 @@ public abstract class AbstractSessionHandler implements SessionHandler {
 
     @Override
     public void received(Session session, Object message) throws RemotingException {
-        msgDispatcher.dispatch(session, (Packet) message);
+        if (message instanceof Packet){
+            Packet packet = (Packet) message;
+            Cipher cipher = session.getCipher();
+            if (cipher != null){
+                byte[] data = packet.getData();
+                byte[] decryptData = cipher.decrypt(data);
+                packet.setData(decryptData);
+            }
+            msgDispatcher.dispatch(session, packet);
+        }
     }
 
     @Override
