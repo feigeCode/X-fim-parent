@@ -1,6 +1,7 @@
 package com.feige.fim.session;
 
 import com.feige.api.annotation.SpiComp;
+import com.feige.api.handler.AbstractSessionHandler;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;

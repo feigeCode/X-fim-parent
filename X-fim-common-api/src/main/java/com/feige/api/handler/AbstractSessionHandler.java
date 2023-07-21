@@ -1,8 +1,9 @@
-package com.feige.fim.session;
+package com.feige.api.handler;
 
-import com.feige.api.handler.RemotingException;
-import com.feige.api.handler.SessionHandler;
+
+import com.feige.api.annotation.Inject;
 import com.feige.api.session.Session;
+import com.sun.xml.internal.ws.api.message.Packet;
 
 /**
  * @author feige<br />
@@ -11,6 +12,9 @@ import com.feige.api.session.Session;
  * @date: 2023/5/21 17:06<br/>
  */
 public abstract class AbstractSessionHandler implements SessionHandler {
+    
+    @Inject
+    protected MsgDispatcher<Packet> msgDispatcher;
     
     @Override
     public void connected(Session session) throws RemotingException {
@@ -26,7 +30,7 @@ public abstract class AbstractSessionHandler implements SessionHandler {
 
     @Override
     public void received(Session session, Object message) throws RemotingException {
-        System.out.println(message);
+        msgDispatcher.dispatch(session, (Packet) message);
     }
 
     @Override
