@@ -1,6 +1,6 @@
 package com.feige.fim.bind;
 
-import com.feige.api.annotation.Spi;
+import com.feige.api.annotation.SpiComp;
 import com.feige.api.bind.ClientBindInfo;
 import com.feige.api.bind.ClientType;
 import com.feige.api.cache.CacheManager;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * @Description: <br/>
  * @date: 2023/5/27 10:47<br/>
  */
-@Spi("default")
+@SpiComp("default")
 public class DefaultClientBindManager extends AbstractClientBindManager {
     
     public static final String CACHE_NAME = "BIND_CLIENT";

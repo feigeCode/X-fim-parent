@@ -1,13 +1,13 @@
 package com.feige.fim.handler;
 
-import com.feige.api.annotation.Spi;
+import com.feige.api.annotation.SpiComp;
 import com.feige.api.handler.AbstractMsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Command;
 import com.feige.fim.protocol.Packet;
 
-@Spi("heartbeat")
+@SpiComp("heartbeat")
 public class HeartbeatMsgHandler extends AbstractMsgHandler {
     @Override
     public byte getCmd() {

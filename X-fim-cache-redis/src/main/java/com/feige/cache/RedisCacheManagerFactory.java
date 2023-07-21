@@ -1,6 +1,6 @@
 package com.feige.cache;
 
-import com.feige.api.annotation.Spi;
+import com.feige.api.annotation.SpiComp;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
 import com.feige.fim.config.Configs;
@@ -15,7 +15,7 @@ import org.redisson.config.SingleServerConfig;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-@Spi("redis")
+@SpiComp("redis")
 public class RedisCacheManagerFactory implements CacheManagerFactory {
     
 

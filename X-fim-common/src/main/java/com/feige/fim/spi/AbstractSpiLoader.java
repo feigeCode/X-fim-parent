@@ -1,7 +1,7 @@
 package com.feige.fim.spi;
 
 import com.feige.api.annotation.Inject;
-import com.feige.api.annotation.Spi;
+import com.feige.api.annotation.SpiComp;
 import com.feige.api.annotation.Value;
 import com.feige.api.context.LifecycleAdapter;
 import com.feige.api.order.OrderComparator;
@@ -18,7 +18,6 @@ import com.feige.fim.utils.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -130,9 +129,9 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     }
 
     protected boolean checkInstance(Class<?> clazz) {
-        boolean annotationPresent = clazz.isAnnotationPresent(Spi.class);
+        boolean annotationPresent = clazz.isAnnotationPresent(SpiComp.class);
         if (!annotationPresent){
-            LOG.warn("class = {}, No @Spi", clazz.getName());
+            LOG.warn("class = {}, No @SpiComp", clazz.getName());
             return false;
         }
         String instanceName = getInstanceName(clazz);
@@ -251,8 +250,8 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     }
     
     private String generateInstanceName(Class<?> clazz){
-        Spi spiAnnotation = clazz.getAnnotation(Spi.class);
-        String value = spiAnnotation.value();
+        SpiComp spiCompAnnotation = clazz.getAnnotation(SpiComp.class);
+        String value = spiCompAnnotation.value();
         if (StringUtil.isNotBlank(value)){
             return value;
         }

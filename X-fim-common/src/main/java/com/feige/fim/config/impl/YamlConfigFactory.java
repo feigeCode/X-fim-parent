@@ -1,6 +1,6 @@
 package com.feige.fim.config.impl;
 
-import com.feige.api.annotation.Spi;
+import com.feige.api.annotation.SpiComp;
 import com.feige.api.config.Config;
 import com.feige.api.config.ConfigFactory;
 import com.feige.fim.config.Configs;
@@ -8,7 +8,7 @@ import com.feige.fim.config.Configs;
 import java.io.File;
 
 
-@Spi("yaml")
+@SpiComp("yaml")
 public class YamlConfigFactory implements ConfigFactory {
     @Override
     public Config create() throws Exception{

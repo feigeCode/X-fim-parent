@@ -1,6 +1,6 @@
 package com.feige.fim.server;
 
-import com.feige.api.annotation.Spi;
+import com.feige.api.annotation.SpiComp;
 import com.feige.api.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
@@ -11,7 +11,7 @@ import com.feige.fim.server.ws.NettyWsServer;
 
 import java.net.InetSocketAddress;
 
-@Spi("ws")
+@SpiComp("ws")
 public class NettyWsServerProvider extends AbstractServerProvider {
 
     @Value(Configs.ConfigKey.SERVER_WS_IP_KEY)

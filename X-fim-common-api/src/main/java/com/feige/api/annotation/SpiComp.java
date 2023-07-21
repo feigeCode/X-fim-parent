@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Inherited
 @Documented
-public @interface Spi {
+public @interface SpiComp {
     
     String value() default "";
 }

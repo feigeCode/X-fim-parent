@@ -1,9 +1,9 @@
 package com.feige.fim.adapter;
 
-import com.feige.api.annotation.Spi;
+import com.feige.api.annotation.SpiComp;
 import com.feige.fim.session.AbstractSessionRepository;
 
-@Spi("nettySessionRepository")
+@SpiComp("nettySessionRepository")
 public class NettySessionRepository extends AbstractSessionRepository {
     
     

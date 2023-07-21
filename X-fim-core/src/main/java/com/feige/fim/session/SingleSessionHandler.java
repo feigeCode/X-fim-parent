@@ -1,6 +1,6 @@
 package com.feige.fim.session;
 
-import com.feige.api.annotation.Spi;
+import com.feige.api.annotation.SpiComp;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
@@ -8,7 +8,7 @@ import com.feige.api.cipher.Cipher;
 import com.feige.fim.protocol.Packet;
 import com.feige.fim.context.AppContext;
 
-@Spi("single")
+@SpiComp("single")
 public class SingleSessionHandler extends AbstractSessionHandler {
     
 

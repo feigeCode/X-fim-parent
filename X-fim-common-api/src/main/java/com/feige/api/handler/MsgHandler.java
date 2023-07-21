@@ -10,5 +10,12 @@ public interface MsgHandler {
      * @param msg msg
      */
     void handle(Session session, Object msg) throws RemotingException;
+
+
+    /**
+     * cmd
+     * @return cmd
+     */
+    byte getCmd();
     
 }

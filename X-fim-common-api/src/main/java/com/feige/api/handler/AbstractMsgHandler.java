@@ -9,10 +9,5 @@ package com.feige.api.handler;
 public abstract class AbstractMsgHandler implements MsgHandler {
 
     
-
-    /**
-     * cmd
-     * @return cmd
-     */
-    public abstract byte getCmd();
+    
 }
