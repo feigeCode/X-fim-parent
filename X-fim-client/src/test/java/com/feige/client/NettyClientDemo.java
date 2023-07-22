@@ -9,8 +9,8 @@ import java.net.InetSocketAddress;
 
 public class NettyClientDemo {
     public static void main(String[] args) {
-        ClientSessionHandler clientSessionHandler = new ClientSessionHandler();
-        clientSessionHandler.setMsgDispatcher(new PacketDispatcher());
+        PacketDispatcher packetDispatcher = new PacketDispatcher();
+        ClientSessionHandler clientSessionHandler = new ClientSessionHandler(packetDispatcher);
         InetSocketAddress address = new InetSocketAddress("127.0.0.1", 8001);
         PacketCodec packetCodec = new PacketCodec(65536, (byte) -33, (byte) 1, 10, null);
         new NettyClient(address, packetCodec, clientSessionHandler).syncStart();
