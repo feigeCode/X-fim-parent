@@ -21,9 +21,9 @@ public class NettyCodecAdapter {
 
 
 
-    private final Codec codec;
+    private final Codec<?> codec;
 
-    public NettyCodecAdapter(Codec  codec) {
+    public NettyCodecAdapter(Codec<?>  codec) {
         this.codec = codec;
     }
 
@@ -37,7 +37,7 @@ public class NettyCodecAdapter {
     }
 
 
-    public Codec  getCodec() {
+    public Codec<?>  getCodec() {
         return codec;
     }
     
@@ -46,7 +46,7 @@ public class NettyCodecAdapter {
 
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-            Codec codec = getCodec();
+            Codec<?> codec = getCodec();
             if (codec instanceof AbstractNettyCodec) {
                 ((AbstractNettyCodec) codec).encode(ctx, msg, out);
             }
@@ -57,7 +57,7 @@ public class NettyCodecAdapter {
 
         @Override
         protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-            Codec codec = getCodec();
+            Codec<?> codec = getCodec();
             if (codec instanceof AbstractNettyCodec) {
                 ((AbstractNettyCodec) codec).decode(ctx, in, out);
             }

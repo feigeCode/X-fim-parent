@@ -25,9 +25,9 @@ public class NettyCodecAdapter {
 
     private static final Logger LOG = Loggers.CODEC;
 
-    private final Codec codec;
+    private final Codec<?> codec;
 
-    public NettyCodecAdapter(Codec  codec) {
+    public NettyCodecAdapter(Codec<?>  codec) {
         this.codec = codec;
     }
 
@@ -44,7 +44,7 @@ public class NettyCodecAdapter {
         return new InternalWsDecoder();
     }
 
-    public Codec  getCodec() {
+    public Codec<?>  getCodec() {
         return codec;
     }
     
@@ -53,7 +53,7 @@ public class NettyCodecAdapter {
 
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-            Codec codec = getCodec();
+            Codec<?> codec = getCodec();
             if (codec instanceof AbstractNettyCodec) {
                 ((AbstractNettyCodec) codec).encode(ctx, msg, out);
             }
@@ -64,7 +64,7 @@ public class NettyCodecAdapter {
 
         @Override
         protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-            Codec codec = getCodec();
+            Codec<?> codec = getCodec();
             if (codec instanceof AbstractNettyCodec) {
                 ((AbstractNettyCodec) codec).decode(ctx, in, out);
             }
@@ -74,7 +74,7 @@ public class NettyCodecAdapter {
         
         @Override
         protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
-            Codec codec = getCodec();
+            Codec<?> codec = getCodec();
             ByteBuf in = msg.content();
             if (codec instanceof AbstractNettyCodec) {
                 ((AbstractNettyCodec) codec).decode(ctx, in, out);

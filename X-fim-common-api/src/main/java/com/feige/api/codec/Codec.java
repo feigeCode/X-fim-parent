@@ -1,13 +1,13 @@
 package com.feige.api.codec;
 
-public interface Codec {
+public interface Codec<T> {
     /**
      * Encoding
      * @param packet packet
      * @param buffer byte buffer
      * @throws EncoderException
      */
-    void encode(Object packet, Object buffer) throws EncoderException;
+    void encode(T packet, Object buffer) throws EncoderException;
 
     /**
      * Decoding
@@ -15,7 +15,7 @@ public interface Codec {
      * @return object
      * @throws DecoderException 
      */
-    Object decode(Object byteBuf) throws DecoderException;
+    T decode(Object byteBuf) throws DecoderException;
 
     /**
      * version

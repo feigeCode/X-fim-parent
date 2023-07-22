@@ -1,6 +1,5 @@
-package com.feige.fim.session;
+package com.feige.api.session;
 
-import com.feige.api.session.Session;
 import com.feige.api.cipher.Cipher;
 
 import java.util.Map;

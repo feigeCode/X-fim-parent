@@ -14,7 +14,7 @@ import io.netty.handler.codec.TooLongFrameException;
 
 import java.util.List;
 
-public abstract class AbstractNettyCodec implements Codec {
+public abstract class AbstractNettyCodec implements Codec<Packet> {
     
     private final int maxPacketSize;
     private final byte heartbeat;
@@ -35,8 +35,7 @@ public abstract class AbstractNettyCodec implements Codec {
     
 
     @Override
-    public void encode(Object p, Object b) throws EncoderException {
-        Packet packet = (Packet) p;
+    public void encode(Packet packet, Object b) throws EncoderException {
         ByteBuf byteBuf = (ByteBuf) b;
         if (packet.getCmd() == Command.HEARTBEAT.getCmd()){
             byteBuf.writeByte(getHeartbeat());
@@ -56,7 +55,7 @@ public abstract class AbstractNettyCodec implements Codec {
     }
 
     @Override
-    public Object decode(Object b) throws DecoderException {
+    public Packet decode(Object b) throws DecoderException {
         ByteBuf byteBuf = (ByteBuf) b;
         byteBuf.markReaderIndex();
         if (byteBuf.isReadable()) {

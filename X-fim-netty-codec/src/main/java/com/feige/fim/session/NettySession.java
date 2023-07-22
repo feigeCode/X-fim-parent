@@ -1,6 +1,7 @@
 package com.feige.fim.session;
 
 import com.feige.api.handler.RemotingException;
+import com.feige.api.session.AbstractSession;
 import io.netty.channel.Channel;
 
 import java.net.InetSocketAddress;

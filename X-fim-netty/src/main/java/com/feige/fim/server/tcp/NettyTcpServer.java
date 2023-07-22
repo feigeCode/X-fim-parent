@@ -14,7 +14,7 @@ public class NettyTcpServer extends AbstractNettyServer {
     public static final Logger LOG = Loggers.SERVER;
 
 
-    public NettyTcpServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec codec) {
+    public NettyTcpServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec<?> codec) {
         super(address, sessionHandler, sessionRepository, codec);
     }
 

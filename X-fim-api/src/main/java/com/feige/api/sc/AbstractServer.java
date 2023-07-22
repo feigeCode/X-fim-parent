@@ -23,14 +23,14 @@ public abstract class AbstractServer extends ServiceAdapter implements Server {
 
     protected SessionHandler sessionHandler;
     
-    protected Codec codec;
+    protected Codec<?> codec;
     
     protected SessionRepository sessionRepository;
 
     protected InetSocketAddress address;
 
     
-    public AbstractServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec codec) {
+    public AbstractServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec<?> codec) {
         this.address = address;
         this.sessionHandler = sessionHandler;
         this.sessionRepository = sessionRepository;
@@ -56,7 +56,7 @@ public abstract class AbstractServer extends ServiceAdapter implements Server {
     }
 
     @Override
-    public Codec getCodec() {
+    public Codec<?> getCodec() {
         return codec;
     }
     @Override

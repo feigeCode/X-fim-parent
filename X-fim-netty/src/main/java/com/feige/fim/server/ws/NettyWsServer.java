@@ -10,7 +10,7 @@ import java.net.InetSocketAddress;
 public class NettyWsServer extends AbstractNettyServer {
 
 
-    public NettyWsServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec codec) {
+    public NettyWsServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec<?> codec) {
         super(address, sessionHandler, sessionRepository, codec);
     }
 

@@ -3,8 +3,6 @@ package com.feige.api.sc;
 
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
-import com.feige.api.sc.Listener;
-import com.feige.api.sc.Service;
 import com.feige.api.session.Session;
 
 import java.net.InetSocketAddress;
@@ -25,7 +23,7 @@ public interface Client extends Service {
      * get codec
      * @return codec
      */
-    Codec getCodec();
+    Codec<?> getCodec();
     
     SessionHandler getSessionHandler();
     

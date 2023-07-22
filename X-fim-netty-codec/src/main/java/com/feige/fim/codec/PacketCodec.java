@@ -18,17 +18,16 @@ public class PacketCodec extends AbstractNettyCodec {
     @Override
     public void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
         if (msg instanceof Packet) {
-            encode(msg, out);
+            encode((Packet) msg, out);
         }
     }
 
     @Override
     public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         try {
-            Object decode = decode(in);
-            if (decode instanceof Packet){
-                Packet packet = (Packet) decode;
-                out.add(packet);
+            Packet decode = decode(in);
+            if (decode != null){
+                out.add(decode);
             }
         } catch (DecoderException e) {
             ctx.channel().close();

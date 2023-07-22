@@ -26,7 +26,7 @@ public class NettyTcpServerProvider extends AbstractServerProvider {
         InetSocketAddress socketAddress = getAddress(this.ip, this.port);
         SessionHandler sessionHandler = getSessionHandler();
         SessionRepository sessionRepository = getSessionRepository();
-        Codec codec = getCodec();
+        Codec<?> codec = getCodec();
         return new NettyTcpServer(socketAddress, sessionHandler, sessionRepository, codec);
     }
     

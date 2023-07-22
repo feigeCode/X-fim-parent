@@ -23,12 +23,12 @@ public abstract class AbstractClient extends ServiceAdapter implements Client {
     
     protected final AtomicBoolean connected = new AtomicBoolean();
     
-    protected Codec codec;
+    protected Codec<?> codec;
     protected SessionHandler sessionHandler;
     protected InetSocketAddress address;
     protected volatile Session session;
 
-    public AbstractClient(InetSocketAddress address , Codec codec, SessionHandler sessionHandler) {
+    public AbstractClient(InetSocketAddress address , Codec<?> codec, SessionHandler sessionHandler) {
         this.address = address;
         this.codec = codec;
         this.sessionHandler = sessionHandler;
@@ -56,7 +56,7 @@ public abstract class AbstractClient extends ServiceAdapter implements Client {
     
 
     @Override
-    public Codec getCodec() {
+    public Codec<?> getCodec() {
         return codec;
     }
 
