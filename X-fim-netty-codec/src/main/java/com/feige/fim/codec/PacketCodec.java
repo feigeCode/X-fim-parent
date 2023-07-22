@@ -1,5 +1,6 @@
 package com.feige.fim.codec;
 
+import com.feige.api.cipher.Cipher;
 import com.feige.api.codec.Codec;
 import com.feige.api.codec.DecoderException;
 import com.feige.api.codec.EncoderException;
@@ -41,6 +42,12 @@ public class PacketCodec implements Codec {
         if (packet.getCmd() == Command.HEARTBEAT.getCmd()){
             byteBuf.writeByte(getHeartbeat());
         }else {
+            Cipher cipher = session.getCipher();
+            if (cipher != null){
+                byte[] data = packet.getData();
+                byte[] encryptData = cipher.encrypt(data);
+                packet.setData(encryptData);
+            }
             int dataLength = packet.getDataLength();
             byteBuf.writeByte(getVersion());
             byteBuf.writeInt(dataLength);
@@ -82,6 +89,10 @@ public class PacketCodec implements Codec {
                     packet.setFeatures(features);
                     packet.setCs(checksum);
                     packet.setClassKey(classKey);
+                    Cipher cipher = session.getCipher();
+                    if (cipher != null){
+                        data = cipher.decrypt(data);
+                    }
                     packet.setData(data);
                     out.add(packet);
                 }else {

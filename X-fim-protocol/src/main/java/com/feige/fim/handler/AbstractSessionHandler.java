@@ -37,12 +37,6 @@ public abstract class AbstractSessionHandler implements SessionHandler {
     public void received(Session session, Object message) throws RemotingException {
         if (message instanceof Packet){
             Packet packet = (Packet) message;
-            Cipher cipher = session.getCipher();
-            if (cipher != null){
-                byte[] data = packet.getData();
-                byte[] decryptData = cipher.decrypt(data);
-                packet.setData(decryptData);
-            }
             msgDispatcher.dispatch(session, packet);
         }
     }
