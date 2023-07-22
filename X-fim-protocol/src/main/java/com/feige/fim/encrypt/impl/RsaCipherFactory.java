@@ -6,6 +6,6 @@ import com.feige.api.cipher.CipherFactory;
 public class RsaCipherFactory implements CipherFactory {
     @Override
     public Cipher create(String key, String... args) {
-        return null;
+        return new RsaCipher(key, args[0]);
     }
 }

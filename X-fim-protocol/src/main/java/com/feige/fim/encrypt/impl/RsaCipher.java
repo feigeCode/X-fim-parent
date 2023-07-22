@@ -1,6 +1,7 @@
 package com.feige.fim.encrypt.impl;
 
 import com.feige.api.cipher.Cipher;
+import com.feige.fim.encrypt.utils.RsaUtils;
 
 
 import java.security.interfaces.RSAPrivateKey;
@@ -21,16 +22,17 @@ public class RsaCipher implements Cipher {
     
     @Override
     public void initialize() {
-        
+        this.rsaPrivateKey = RsaUtils.getPrivateKey(this.privateKey);
+        this.rsaPublicKey = RsaUtils.getPublicKey(this.publicKey);
     }
 
     @Override
     public byte[] decrypt(byte[] data) {
-        return new byte[0];
+        return RsaUtils.decrypt(data, this.rsaPrivateKey);
     }
 
     @Override
     public byte[] encrypt(byte[] data) {
-        return new byte[0];
+        return RsaUtils.encrypt(data, this.rsaPublicKey);
     }
 }

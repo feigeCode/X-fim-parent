@@ -10,12 +10,11 @@ import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 
 
@@ -40,29 +39,40 @@ public class RsaUtils {
             throw new RuntimeException(var2);
         }
     }
+    
+    public static RSAPublicKey getPublicKey(String publicKey) {
+        if (publicKey == null || publicKey.length() <= 0){
+            return null;
+        }
+        byte[] decoded = Base64.decode(publicKey);
+        try {
+            return  (RSAPublicKey)KeyFactory.getInstance(RSA).generatePublic(new X509EncodedKeySpec(decoded));
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static RSAPrivateKey getPrivateKey(String privateKey) {
+        if (privateKey == null || privateKey.length() <= 0){
+            return null;
+        }
+        byte[] decoded = Base64.decode(privateKey);
+        try {
+            return  (RSAPrivateKey)KeyFactory.getInstance(RSA).generatePrivate(new X509EncodedKeySpec(decoded));
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static String keyEncrypt(Key key) {
         return Base64.toBase64String(key.getEncoded());
     }
 
-    public static String encrypt(byte[] data, PublicKey publicKey) {
-        return encrypt(data, keyEncrypt(publicKey));
-    }
-
-    public static String encrypt(String data, PublicKey publicKey) {
-        return encrypt(data.getBytes(StandardCharsets.UTF_8), keyEncrypt(publicKey));
-    }
-
-    public static String encrypt(String data, String publicKey) throws Exception {
-        return encrypt(data.getBytes(StandardCharsets.UTF_8), publicKey);
-    }
-
-    public static String encrypt(byte[] data, String publicKey) {
+    public static byte[] encrypt(byte[] data, RSAPublicKey pubKey) {
         try {
-            byte[] decoded = Base64.decode(publicKey);
-            RSAPublicKey pubKey = (RSAPublicKey)KeyFactory.getInstance(RSA).generatePublic(new X509EncodedKeySpec(decoded));
+           
             Cipher cipher = Cipher.getInstance(RSA);
-            cipher.init(1, pubKey);
+            cipher.init(Cipher.ENCRYPT_MODE, pubKey);
             int inputLen = data.length;
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             int offSet = 0;
@@ -79,19 +89,17 @@ public class RsaUtils {
                 ++i;
             }
 
-            return Base64.toBase64String(out.toByteArray());
+            return Base64.encode(out.toByteArray());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static byte[] decrypt2Byte(String encryptData, String privateKey) {
+    public static byte[] decrypt(byte[] encryptData, RSAPrivateKey priKey) {
         try {
-            byte[] inputByte = Base64.decode(encryptData.getBytes(StandardCharsets.UTF_8));
-            byte[] decoded = Base64.decode(privateKey);
-            RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance(RSA).generatePrivate(new PKCS8EncodedKeySpec(decoded));
+            byte[] inputByte = Base64.decode(encryptData);
             Cipher cipher = Cipher.getInstance(RSA);
-            cipher.init(2, priKey);
+            cipher.init(Cipher.DECRYPT_MODE, priKey);
             int inputLen = inputByte.length;
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             int offSet = 0;
@@ -112,17 +120,5 @@ public class RsaUtils {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static String decrypt(String encryptData, String privateKey) {
-        return new String(decrypt2Byte(encryptData, privateKey));
-    }
-
-    public static String decrypt(String encryptData, PrivateKey privateKey) {
-        return decrypt(encryptData, keyEncrypt(privateKey));
-    }
-
-    public static byte[] decrypt2Byte(String encryptData, PrivateKey privateKey) {
-        return decrypt2Byte(encryptData, keyEncrypt(privateKey));
     }
 }

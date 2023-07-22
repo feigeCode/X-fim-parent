@@ -8,4 +8,6 @@ public class ClientSessionHandler extends AbstractSessionHandler {
     public ClientSessionHandler(MsgDispatcher<Packet> msgDispatcher) {
         this.msgDispatcher = msgDispatcher;
     }
+    
+    
 }
