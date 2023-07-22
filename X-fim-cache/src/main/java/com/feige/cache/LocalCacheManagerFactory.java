@@ -1,10 +1,10 @@
 package com.feige.cache;
 
-import com.feige.api.annotation.Spi;
+import com.feige.api.annotation.SpiComp;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
 
-@Spi("local")
+@SpiComp("local")
 public class LocalCacheManagerFactory implements CacheManagerFactory {
     @Override
     public CacheManager create() {
