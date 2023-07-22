@@ -16,7 +16,7 @@ public abstract class AbstractServerProvider implements ServerProvider {
     private SessionHandler sessionHandler;
     
     @Inject
-    private Codec<?> codec;
+    private Codec codec;
     
     @Inject
     private SessionRepository sessionRepository;
@@ -56,11 +56,11 @@ public abstract class AbstractServerProvider implements ServerProvider {
      * get codec
      * @return codec
      */
-    protected  Codec<?> getCodec() {
+    protected  Codec getCodec() {
         return this.codec;
     }
 
-    public void setCodec(Codec<?> codec) {
+    public void setCodec(Codec codec) {
         this.codec = codec;
     }
 

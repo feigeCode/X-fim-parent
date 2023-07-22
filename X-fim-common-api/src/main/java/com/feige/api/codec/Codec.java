@@ -1,13 +1,17 @@
 package com.feige.api.codec;
 
-public interface Codec<T> {
+import com.feige.api.session.Session;
+
+import java.util.List;
+
+public interface Codec {
     /**
      * Encoding
      * @param packet packet
      * @param buffer byte buffer
      * @throws EncoderException
      */
-    void encode(T packet, Object buffer) throws EncoderException;
+    void encode(Session session, Object packet, Object buffer) throws EncoderException;
 
     /**
      * Decoding
@@ -15,7 +19,7 @@ public interface Codec<T> {
      * @return object
      * @throws DecoderException 
      */
-    T decode(Object byteBuf) throws DecoderException;
+    void decode(Session session, Object byteBuf, List<Object> out) throws DecoderException;
 
     /**
      * version

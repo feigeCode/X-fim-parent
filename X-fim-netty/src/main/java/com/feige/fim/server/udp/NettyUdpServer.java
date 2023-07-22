@@ -29,7 +29,7 @@ public class NettyUdpServer extends AbstractServer {
     protected Channel channel;
     
     
-    public NettyUdpServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec<?> codec) {
+    public NettyUdpServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec codec) {
         super(address, sessionHandler, sessionRepository, codec);
     }
 

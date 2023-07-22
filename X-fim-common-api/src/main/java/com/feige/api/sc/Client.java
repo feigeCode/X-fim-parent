@@ -23,7 +23,7 @@ public interface Client extends Service {
      * get codec
      * @return codec
      */
-    Codec<?> getCodec();
+    Codec getCodec();
     
     SessionHandler getSessionHandler();
     

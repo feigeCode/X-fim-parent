@@ -29,7 +29,7 @@ public abstract class AbstractNettyServer extends AbstractServer {
     protected ServerBootstrap serverBootstrap;
     protected Channel channel;
 
-    public AbstractNettyServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec<?> codec) {
+    public AbstractNettyServer(InetSocketAddress address, SessionHandler sessionHandler, SessionRepository sessionRepository, Codec codec) {
         super(address, sessionHandler, sessionRepository, codec);
     }
 

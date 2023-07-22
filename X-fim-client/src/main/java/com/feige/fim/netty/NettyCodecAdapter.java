@@ -2,7 +2,8 @@ package com.feige.fim.netty;
 
 
 import com.feige.api.codec.Codec;
-import com.feige.fim.codec.AbstractNettyCodec;
+import com.feige.api.codec.DecoderException;
+import com.feige.api.codec.EncoderException;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,13 +19,12 @@ import java.util.List;
  * @date: 2022/8/13 16:10<br/>
  */
 public class NettyCodecAdapter {
+    
+    private final NettyClient nettyClient;
+    
 
-
-
-    private final Codec<?> codec;
-
-    public NettyCodecAdapter(Codec<?>  codec) {
-        this.codec = codec;
+    public NettyCodecAdapter(NettyClient nettyClient) {
+        this.nettyClient = nettyClient;
     }
 
     public ChannelHandler getEncoder(){
@@ -37,8 +37,8 @@ public class NettyCodecAdapter {
     }
 
 
-    public Codec<?>  getCodec() {
-        return codec;
+    public Codec  getCodec() {
+        return nettyClient.getCodec();
     }
     
 
@@ -46,10 +46,14 @@ public class NettyCodecAdapter {
 
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-            Codec<?> codec = getCodec();
-            if (codec instanceof AbstractNettyCodec) {
-                ((AbstractNettyCodec) codec).encode(ctx, msg, out);
+            try {
+                Codec codec = getCodec();
+                codec.encode(nettyClient.getSession(), msg, out);
+            } catch (EncoderException e) {
+                ctx.channel().close();
+                throw e;
             }
+            
         }
     }
 
@@ -57,9 +61,12 @@ public class NettyCodecAdapter {
 
         @Override
         protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-            Codec<?> codec = getCodec();
-            if (codec instanceof AbstractNettyCodec) {
-                ((AbstractNettyCodec) codec).decode(ctx, in, out);
+            try {
+                Codec codec = getCodec();
+                codec.decode(nettyClient.getSession(), in, out);
+            } catch (DecoderException e) {
+                ctx.channel().close();
+                throw e;
             }
         }
     }

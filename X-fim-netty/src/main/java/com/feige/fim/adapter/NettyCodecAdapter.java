@@ -1,8 +1,11 @@
 package com.feige.fim.adapter;
 
 
-import com.feige.fim.codec.AbstractNettyCodec;
+import com.feige.api.codec.DecoderException;
+import com.feige.api.codec.EncoderException;
+import com.feige.api.session.SessionRepository;
 import com.feige.api.codec.Codec;
+import com.feige.fim.factory.NettySessionFactory;
 import com.feige.fim.lg.Loggers;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
@@ -25,10 +28,12 @@ public class NettyCodecAdapter {
 
     private static final Logger LOG = Loggers.CODEC;
 
-    private final Codec<?> codec;
+    private final Codec codec;
+    private final SessionRepository sessionRepository;
 
-    public NettyCodecAdapter(Codec<?>  codec) {
+    public NettyCodecAdapter(Codec  codec, SessionRepository sessionRepository) {
         this.codec = codec;
+        this.sessionRepository = sessionRepository;
     }
 
     public ChannelHandler getEncoder(){
@@ -44,18 +49,24 @@ public class NettyCodecAdapter {
         return new InternalWsDecoder();
     }
 
-    public Codec<?>  getCodec() {
+    public Codec  getCodec() {
         return codec;
     }
     
+    public SessionRepository getSessionRepository(){
+        return sessionRepository;
+    }
 
     private class InternalEncoder extends MessageToByteEncoder<Object> {
 
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-            Codec<?> codec = getCodec();
-            if (codec instanceof AbstractNettyCodec) {
-                ((AbstractNettyCodec) codec).encode(ctx, msg, out);
+            try {
+                Codec codec = getCodec();
+                codec.encode(NettySessionFactory.getOrAddSession(ctx, getSessionRepository()), msg, out);
+            }catch (EncoderException e){
+                ctx.channel().close();
+                throw e;
             }
         }
     }
@@ -64,9 +75,12 @@ public class NettyCodecAdapter {
 
         @Override
         protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-            Codec<?> codec = getCodec();
-            if (codec instanceof AbstractNettyCodec) {
-                ((AbstractNettyCodec) codec).decode(ctx, in, out);
+            try {
+                Codec codec = getCodec();
+                codec.decode(NettySessionFactory.getOrAddSession(ctx, getSessionRepository()), in, out);
+            }catch (DecoderException e){
+                ctx.channel().close();
+                throw e;
             }
         }
     }
@@ -74,11 +88,14 @@ public class NettyCodecAdapter {
         
         @Override
         protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame msg, List<Object> out) throws Exception {
-            Codec<?> codec = getCodec();
-            ByteBuf in = msg.content();
-            if (codec instanceof AbstractNettyCodec) {
-                ((AbstractNettyCodec) codec).decode(ctx, in, out);
-            }
+           try {
+               Codec codec = getCodec();
+               ByteBuf in = msg.content();
+               codec.decode(NettySessionFactory.getOrAddSession(ctx, getSessionRepository()), in, out);
+           }catch (DecoderException e){
+               ctx.channel().close();
+               throw e;
+           }
         }
     }
     

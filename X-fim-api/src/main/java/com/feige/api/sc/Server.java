@@ -28,7 +28,7 @@ public interface Server extends Service {
      * get codec
      * @return codec
      */
-    Codec<?> getCodec();
+    Codec getCodec();
 
     /**
      * get session repository

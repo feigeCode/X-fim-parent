@@ -26,7 +26,7 @@ public class WsServerInitializer extends ChannelInitializer<SocketChannel> {
 
     public WsServerInitializer(Server server, String wsPath) {
         this.serverHandler = new NettyServerHandler(server.getSessionHandler(), server.getSessionRepository());
-        this.codec = new NettyCodecAdapter(server.getCodec());
+        this.codec = new NettyCodecAdapter(server.getCodec(), server.getSessionRepository());
         this.wsPath = wsPath;
         this.sslContext = buildSslContext();
     }

@@ -40,7 +40,7 @@ public class NettyClient extends AbstractClient {
 
     public NettyClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler, SslContext sslContext) {
         super(address, codec, sessionHandler);
-        this.codec = new NettyCodecAdapter(getCodec());
+        this.codec = new NettyCodecAdapter(this);
         this.sslContext = sslContext;
     }
 
