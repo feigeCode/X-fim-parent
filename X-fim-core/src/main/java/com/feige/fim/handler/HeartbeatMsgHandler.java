@@ -8,14 +8,14 @@ import com.feige.fim.protocol.Command;
 import com.feige.fim.protocol.Packet;
 
 @SpiComp("heartbeat")
-public class HeartbeatMsgHandler extends AbstractMsgHandler {
+public class HeartbeatMsgHandler extends AbstractMsgHandler<Packet> {
     @Override
     public byte getCmd() {
         return Command.HEARTBEAT.getCmd();
     }
 
     @Override
-    public void handle(Session session, Object msg) throws RemotingException {
+    public void handle(Session session, Packet packet) throws RemotingException {
         session.write(Packet.create(Command.HEARTBEAT));
     }
 }
