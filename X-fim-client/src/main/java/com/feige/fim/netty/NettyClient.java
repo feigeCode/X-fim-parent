@@ -5,7 +5,6 @@ import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.Listener;
 import com.feige.api.sc.ServiceException;
 import com.feige.api.sc.AbstractClient;
-import com.feige.fim.event.ClientEvent;
 import com.feige.fim.lg.Logs;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;

@@ -26,7 +26,7 @@ public abstract class AbstractClient extends ServiceAdapter implements Client {
     protected Codec codec;
     protected SessionHandler sessionHandler;
     protected InetSocketAddress address;
-    protected Session session;
+    protected volatile Session session;
 
     public AbstractClient(InetSocketAddress address , Codec codec, SessionHandler sessionHandler) {
         this.address = address;
@@ -37,16 +37,16 @@ public abstract class AbstractClient extends ServiceAdapter implements Client {
 
   
     @Override
-    public void reconnect(Listener listener) {
+    public void reconnect() {
         if (reconnectCnt.incrementAndGet() <= MAX_RECONNECT_CNT) {
-            this.doReconnect(listener);
+            this.doReconnect();
         }
     }
     
     
-    protected void doReconnect(Listener listener){
-        this.stop(listener);
-        this.start(listener);
+    protected void doReconnect(){
+        this.syncStart();
+        this.syncStart();
     }
 
     @Override

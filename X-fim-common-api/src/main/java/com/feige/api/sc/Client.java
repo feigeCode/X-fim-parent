@@ -18,7 +18,7 @@ import java.net.InetSocketAddress;
  */
 public interface Client extends Service {
     
-    void reconnect(Listener listener);
+    void reconnect();
     
     boolean isConnected();
     /**

@@ -1,7 +1,5 @@
 package com.feige.fim.netty;
 
-import com.feige.fim.event.ChannelActive;
-import com.feige.fim.listener.ChannelActiveListener;
 import com.feige.fim.protocol.Command;
 import com.feige.fim.protocol.Packet;
 import io.netty.channel.Channel;
@@ -22,7 +20,7 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
         if (evt instanceof IdleStateEvent){
             IdleState state = ((IdleStateEvent) evt).state();
             if (state == IdleState.READER_IDLE){
-                ChannelActiveListener.getInstance().handleEvent(new ChannelActive(nettyClient, ChannelActive.CHANNEL_INACTIVE));
+                // TODO 事件
             }
             
             if (state == IdleState.WRITER_IDLE){
