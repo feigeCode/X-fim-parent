@@ -51,5 +51,13 @@ public abstract class AbstractSessionHandler implements SessionHandler {
     public void caught(Session session, Throwable exception) throws RemotingException {
         exception.printStackTrace();
     }
-    
+
+
+    public MsgDispatcher<Packet> getMsgDispatcher() {
+        return msgDispatcher;
+    }
+
+    public void setMsgDispatcher(MsgDispatcher<Packet> msgDispatcher) {
+        this.msgDispatcher = msgDispatcher;
+    }
 }

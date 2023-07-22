@@ -44,6 +44,10 @@ public class NettyClient extends AbstractClient {
         this.sslContext = sslContext;
     }
 
+    public NettyClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler) {
+        this(address, codec, sessionHandler, null);
+    }
+
 
     @Override
     public void initialize() {
