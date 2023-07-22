@@ -1,10 +1,10 @@
 package com.feige.fim.netty;
 
 import com.feige.api.codec.Codec;
-import com.feige.fim.api.AbstractClient;
-import com.feige.fim.api.MsgListener;
-import com.feige.fim.api.PushService;
-import com.feige.fim.api.ServerStatusListener;
+import com.feige.api.handler.SessionHandler;
+import com.feige.api.sc.Listener;
+import com.feige.api.sc.ServiceException;
+import com.feige.api.sc.AbstractClient;
 import com.feige.fim.event.ClientEvent;
 import com.feige.fim.lg.Logs;
 import io.netty.bootstrap.Bootstrap;
@@ -21,6 +21,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
 
+import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -36,11 +37,10 @@ public class NettyClient extends AbstractClient {
     protected Bootstrap bootstrap;
     protected Channel channel;
     private final NettyCodecAdapter codec;
-    protected PushService pushService;
     protected SslContext sslContext;
 
-    public NettyClient(Codec codec, MsgListener msgListener, SslContext sslContext) {
-        super(codec, msgListener);
+    public NettyClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler, SslContext sslContext) {
+        super(address, codec, sessionHandler);
         this.codec = new NettyCodecAdapter(getCodec());
         this.sslContext = sslContext;
     }
@@ -51,31 +51,25 @@ public class NettyClient extends AbstractClient {
         this.group = createEventLoopGroup();
         this.bootstrap = new Bootstrap();
     }
-
+    
     @Override
-    public PushService getPushService() {
-        if (this.channel == null || !this.channel.isActive()){
-            throw new RuntimeException("channel is null or inactive");
-        }
-        if (pushService == null){
-            pushService = new NettyPushService(this.channel);
-        }
-        return pushService;
-    }
-
-
-    @Override
-    protected void doConnect(ServerStatusListener listener) {
+    protected void doStart(Listener listener) {
         try {
             initBootstrap();
             ChannelFuture channelFuture = this.bootstrap
                     .connect(remoteAddress)
-                    .sync()
                     .addListener(future -> {
                         if (future.isSuccess()) {
-                            listener.handle(new ClientEvent(NettyClient.this, ServerStatusListener.START_SUCCESS));
+                            connected.set(true);
+                            Logs.getInstance().info("netty [{}] client in {} port connect finish....", getClass().getSimpleName() ,getAddress().getPort());
+                            if (listener != null){
+                                listener.onSuccess(address);
+                            }
                         }else {
-                            listener.handle(new ClientEvent(NettyClient.this, ServerStatusListener.START_FAILURE, future.cause()));
+                            Logs.getInstance().error("server start failure on:" + getAddress().getPort(), future.cause());
+                            if (listener != null) {
+                                listener.onFailure(future.cause());
+                            }
                         }
                     });
             this.channel = channelFuture.channel();
@@ -85,7 +79,14 @@ public class NettyClient extends AbstractClient {
     }
 
     @Override
-    protected void doStop(ServerStatusListener listener) {
+    protected void doStop(Listener listener) {
+        if (!connected.compareAndSet(true, false)) {
+            if (listener != null) {
+                listener.onFailure(new ServiceException("server was already shutdown."));
+            }
+            Logs.getInstance().warn("{} was already shutdown.", this.getClass().getSimpleName());
+            return;
+        }
         Logs.getInstance().info("try shutdown {}...", this.getClass().getSimpleName());
         try {
             if (channel != null) {
@@ -110,8 +111,10 @@ public class NettyClient extends AbstractClient {
         } catch (Throwable e) {
             Logs.getInstance().warn(e.getMessage(), e);
         }
-        listener.handle(new ClientEvent(NettyClient.this, ServerStatusListener.STOP_SUCCESS));
         Logs.getInstance().info("{} shutdown success.", this.getClass().getSimpleName());
+        if (listener != null) {
+            listener.onSuccess(address);
+        }
     }
 
 

@@ -1,4 +1,4 @@
-package com.feige.fim.api;
+package com.feige.api.sc;
 
 public interface Event<T> {
     

@@ -2,6 +2,7 @@ package com.feige.fim.netty;
 
 import com.feige.fim.event.ChannelActive;
 import com.feige.fim.listener.ChannelActiveListener;
+import com.feige.fim.session.NettySession;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -14,14 +15,13 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object o) throws Exception {
-        nettyClient.getMsgListener().onReceivedMsg(o);
+        
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
-        ChannelActive channelActive = new ChannelActive(nettyClient, ChannelActive.CHANNEL_ACTIVE);
-        ChannelActiveListener.getInstance().handleEvent(channelActive);
+        nettyClient.sessionActive(new NettySession(ctx.channel()));
     }
 
     @Override
