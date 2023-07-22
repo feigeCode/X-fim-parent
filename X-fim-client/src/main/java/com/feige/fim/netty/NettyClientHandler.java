@@ -19,8 +19,9 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
-        nettyClient.sessionActive(new NettySession(ctx.channel()));
-        nettyClient.getSessionHandler().connected(nettyClient.getSession());
+        NettySession nettySession = new NettySession(ctx.channel());
+        nettyClient.sessionActive(nettySession);
+        nettyClient.getSessionHandler().connected(nettySession);
     }
 
     @Override
