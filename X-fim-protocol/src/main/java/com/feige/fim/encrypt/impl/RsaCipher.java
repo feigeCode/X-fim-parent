@@ -35,4 +35,12 @@ public class RsaCipher implements Cipher {
     public byte[] encrypt(byte[] data) {
         return RsaUtils.encrypt(data, this.rsaPublicKey);
     }
+
+    @Override
+    public String toString() {
+        return "RsaCipher{" +
+                "privateKey='" + privateKey + '\'' +
+                ", publicKey='" + publicKey + '\'' +
+                '}';
+    }
 }

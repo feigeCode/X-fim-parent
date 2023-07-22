@@ -15,6 +15,7 @@ import java.security.SecureRandom;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 
@@ -58,7 +59,7 @@ public class RsaUtils {
         }
         byte[] decoded = Base64.decode(privateKey);
         try {
-            return  (RSAPrivateKey)KeyFactory.getInstance(RSA).generatePrivate(new X509EncodedKeySpec(decoded));
+            return  (RSAPrivateKey)KeyFactory.getInstance(RSA).generatePrivate(new PKCS8EncodedKeySpec(decoded));
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
