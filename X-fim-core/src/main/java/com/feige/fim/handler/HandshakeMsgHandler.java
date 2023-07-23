@@ -2,6 +2,7 @@ package com.feige.fim.handler;
 
 import com.feige.api.annotation.SpiComp;
 import com.feige.api.handler.RemotingException;
+import com.feige.api.msg.Handshake;
 import com.feige.fim.protocol.Command;
 import com.feige.api.handler.AbstractMsgHandler;
 import com.feige.api.session.Session;
@@ -15,6 +16,7 @@ import com.feige.fim.protocol.Packet;
  */
 @SpiComp("handshake")
 public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
+   
     @Override
     public byte getCmd() {
         return Command.HANDSHAKE.getCmd();
@@ -22,6 +24,7 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
 
     @Override
     public void handle(Session session, Packet packet) throws RemotingException {
+        Handshake handshake = serializedClassManager.getSerializedObject(packet.getSerializerType(), packet.getClassKey(), packet.getData(), Handshake.class);
         
     }
     
