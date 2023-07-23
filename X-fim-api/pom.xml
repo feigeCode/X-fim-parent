@@ -15,7 +15,6 @@
     <dependency>
         <groupId>com.feige</groupId>
         <artifactId>X-fim-common-api</artifactId>
-        <scope>provided</scope>
     </dependency>
 </dependencies>
 </project>

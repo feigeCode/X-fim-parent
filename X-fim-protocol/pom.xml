@@ -22,10 +22,6 @@
             <artifactId>protobuf-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.feige</groupId>
             <artifactId>X-fim-common-api</artifactId>
             <scope>provided</scope>

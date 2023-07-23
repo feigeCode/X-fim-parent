@@ -16,8 +16,6 @@
 
 package com.feige.fim.utils;
 
-import com.feige.api.annotation.Inject;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

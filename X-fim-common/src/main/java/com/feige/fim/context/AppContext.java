@@ -3,7 +3,7 @@ package com.feige.fim.context;
 import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
 import com.feige.fim.config.Configs;
-import com.feige.fim.lg.Loggers;
+import com.feige.fim.utils.lg.Loggers;
 import com.feige.fim.spi.ConfigSpiLoader;
 import com.feige.fim.spi.JdkSpiLoader;
 

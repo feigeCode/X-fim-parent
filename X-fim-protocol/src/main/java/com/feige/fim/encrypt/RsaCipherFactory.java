@@ -1,4 +1,4 @@
-package com.feige.fim.encrypt.impl;
+package com.feige.fim.encrypt;
 
 import com.feige.api.annotation.SpiComp;
 import com.feige.api.cipher.Cipher;

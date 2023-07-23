@@ -3,7 +3,7 @@ package com.feige.fim.context;
 import com.feige.api.annotation.InitMethod;
 import com.feige.api.annotation.SpiComp;
 import com.feige.api.spi.InstancePostProcessor;
-import com.feige.fim.lg.Loggers;
+import com.feige.fim.utils.lg.Loggers;
 import com.feige.fim.utils.ReflectionUtils;
 
 @SpiComp

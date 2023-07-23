@@ -1,7 +1,7 @@
-package com.feige.fim.encrypt.impl;
+package com.feige.fim.encrypt;
 
 import com.feige.api.cipher.Cipher;
-import com.feige.fim.encrypt.utils.RsaUtils;
+import com.feige.fim.utils.encrypt.RsaUtils;
 
 
 import java.security.interfaces.RSAPrivateKey;

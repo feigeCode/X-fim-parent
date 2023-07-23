@@ -4,7 +4,7 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.feige.fim.config.Configs;
-import com.feige.fim.lg.Loggers;
+import com.feige.fim.utils.lg.Loggers;
 
 import java.util.Properties;
 

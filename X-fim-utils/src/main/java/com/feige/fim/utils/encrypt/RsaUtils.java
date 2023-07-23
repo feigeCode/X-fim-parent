@@ -1,4 +1,4 @@
-package com.feige.fim.encrypt.utils;
+package com.feige.fim.utils.encrypt;
 
 
 import org.bouncycastle.util.encoders.Base64;

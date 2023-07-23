@@ -1,6 +1,6 @@
 package com.feige.fim.utils;
 
-import com.feige.fim.lg.Loggers;
+import com.feige.fim.utils.lg.Loggers;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 

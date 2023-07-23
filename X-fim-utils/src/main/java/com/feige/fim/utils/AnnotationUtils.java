@@ -16,29 +16,9 @@
 
 package com.feige.fim.utils;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-
 
 public abstract class AnnotationUtils {
-
-
 	
-
-
-
-
-	
-	public static <A extends Annotation> A findAnnotation(
-			AnnotatedElement annotatedElement,  Class<A> annotationType) {
-
-		if (annotationType == null) {
-			return null;
-		}
-
-		return null;
-	}
-
 
 
 }

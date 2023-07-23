@@ -1,6 +1,6 @@
 package com.feige.fim.utils;
 
-import com.feige.fim.lg.Loggers;
+import com.feige.fim.utils.lg.Loggers;
 import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.reader.UnicodeReader;
@@ -35,7 +35,7 @@ public class YamlUtils {
             }
         } catch (Exception e) {
             LOG.error("single yaml file processing error:", e);
-            throw new Exception("single yaml file processing error:", e);
+            throw new RuntimeException("single yaml file processing error:", e);
         }
         return result;
     }
