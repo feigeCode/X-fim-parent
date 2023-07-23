@@ -55,6 +55,7 @@ public class PacketCodec implements Codec {
             byteBuf.writeInt(packet.getSequenceNum());
             byteBuf.writeByte(packet.getFeatures());
             byteBuf.writeShort(packet.getCs());
+            byteBuf.writeByte(packet.getSerializerType());
             byteBuf.writeByte(packet.getClassKey());
             if (dataLength > 0){
                 byteBuf.writeBytes(packet.getData());
@@ -80,6 +81,7 @@ public class PacketCodec implements Codec {
                     int sequenceNum = byteBuf.readInt();
                     byte features = byteBuf.readByte();
                     short checksum = checkChecksum(byteBuf);
+                    byte serializerType = byteBuf.readByte();
                     byte classKey = byteBuf.readByte();
                     byte[] data = new byte[bodyLength];
                     byteBuf.readBytes(data);
@@ -88,6 +90,7 @@ public class PacketCodec implements Codec {
                     packet.setVersion(version);
                     packet.setFeatures(features);
                     packet.setCs(checksum);
+                    packet.setSerializerType(serializerType);
                     packet.setClassKey(classKey);
                     Cipher cipher = session.getCipher();
                     if (cipher != null){

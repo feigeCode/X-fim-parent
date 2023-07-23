@@ -25,9 +25,9 @@ public interface ProtocolConst {
     /**
      * serialization type
      */
-    byte JSON = 16;
-    byte PROTOCOL_BUFFER = 32;
-    byte XML = 64;
+    byte JSON = 1;
+    byte PROTOCOL_BUFFER = 2;
+    byte XML = 3;
     /**
      * heartbeat packet
      */

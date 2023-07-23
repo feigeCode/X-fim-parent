@@ -1,0 +1,31 @@
+
+//使用 proto3 语法 ,未指定则使用proto2
+syntax = "proto3";
+
+//生成 proto 文件所在包路径
+package com.feige.fim.msg;
+
+option java_multiple_files = true;
+//生成 proto 文件所在包路径
+option java_package = "com.feige.fim.msg.proto";
+
+//生成 proto 文件名
+option java_outer_classname="MsgProto";
+
+message HandshakeMsgProto {
+    string clientKey = 1;
+    string iv = 2;
+    string clientVersion = 3;
+    string clientName = 4;
+    uint32 osCode = 5;
+    string clientId = 6;
+    string token = 7;
+    map<string, string> extra = 8;
+}
+
+
+message FastConnectMsgProto {
+    string clientId = 1;
+    string sid = 2;
+}
+

@@ -30,8 +30,9 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <netty.version>4.1.45.Final</netty.version>
-        <os.detected.classifier>linux-x86_64</os.detected.classifier>
-        <protobuf.java.version>3.11.1</protobuf.java.version>
+        <os.detected.classifier.epoll>linux-x86_64</os.detected.classifier.epoll>
+        <protobuf.java.version>3.15.3</protobuf.java.version>
+        <protobuf.util.version>3.15.3</protobuf.util.version>
         <curator.version>4.0.1</curator.version>
         <nacos-client.version>2.0.3</nacos-client.version>
         <yaml.version>1.25</yaml.version>
@@ -114,7 +115,7 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-transport-native-epoll</artifactId>
                 <version>${netty.version}</version>
-                <classifier>${os.detected.classifier}</classifier>
+                <classifier>${os.detected.classifier.epoll}</classifier>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
@@ -142,6 +143,12 @@
                 <artifactId>protobuf-java</artifactId>
                 <version>${protobuf.java.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java-util</artifactId>
+                <version>${protobuf.util.version}</version>
+            </dependency>
+            
             <dependency>
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-x-discovery</artifactId>

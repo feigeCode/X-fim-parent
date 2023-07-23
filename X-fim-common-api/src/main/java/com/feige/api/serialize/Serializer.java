@@ -1,6 +1,7 @@
 package com.feige.api.serialize;
 
 
+import com.feige.api.msg.Msg;
 
 public interface Serializer {
 
@@ -10,7 +11,7 @@ public interface Serializer {
      * @param obj object
      * @return byte[]
      */
-    byte[] serialize(Object obj);
+    byte[] serialize(Msg obj);
 
 
     /**
@@ -18,7 +19,13 @@ public interface Serializer {
      * @param bytes byte[]
      * @return object
      */
-    Object deserialize(byte[] bytes);
+    <T extends Msg> T deserialize(Class<T> clazz, byte[] bytes);
+
+    /**
+     * type
+     * @return
+     */
+    byte getType();
 
 
 }

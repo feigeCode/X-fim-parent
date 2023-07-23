@@ -25,6 +25,10 @@ public class Packet {
      */
     private short cs;
     /**
+     * serializer type 
+     */
+    private byte serializerType;
+    /**
      * data origin key
      */
     private byte classKey;
@@ -89,6 +93,14 @@ public class Packet {
 
     public void setCs(short cs) {
         this.cs = cs;
+    }
+
+    public byte getSerializerType() {
+        return serializerType;
+    }
+
+    public void setSerializerType(byte serializerType) {
+        this.serializerType = serializerType;
     }
 
     public byte getClassKey() {

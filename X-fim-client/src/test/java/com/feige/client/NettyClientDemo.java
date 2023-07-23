@@ -12,7 +12,7 @@ public class NettyClientDemo {
         PacketDispatcher packetDispatcher = new PacketDispatcher();
         ClientSessionHandler clientSessionHandler = new ClientSessionHandler(packetDispatcher);
         InetSocketAddress address = new InetSocketAddress("127.0.0.1", 8001);
-        PacketCodec packetCodec = new PacketCodec(65536, (byte) -33, (byte) 1, 10, null);
+        PacketCodec packetCodec = new PacketCodec(65536, (byte) -33, (byte) 1, 11, null);
         new NettyClient(address, packetCodec, clientSessionHandler).syncStart();
     }
 }
