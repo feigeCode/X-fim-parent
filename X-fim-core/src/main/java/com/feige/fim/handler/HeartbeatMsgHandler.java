@@ -4,7 +4,7 @@ import com.feige.api.annotation.SpiComp;
 import com.feige.api.handler.AbstractMsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
-import com.feige.fim.protocol.Command;
+import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
 
 @SpiComp("heartbeat")
@@ -17,5 +17,15 @@ public class HeartbeatMsgHandler extends AbstractMsgHandler<Packet> {
     @Override
     public void handle(Session session, Packet packet) throws RemotingException {
         session.write(Packet.create(Command.HEARTBEAT));
+    }
+
+    @Override
+    public Class<?> getMsgInterface() {
+        return null;
+    }
+
+    @Override
+    public Class<?> getProtoClass() {
+        return null;
     }
 }

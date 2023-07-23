@@ -4,7 +4,7 @@ package com.feige.fim.spi;
 
 import com.feige.api.order.OrderComparator;
 import com.feige.fim.config.Configs;
-import com.feige.fim.utils.StringUtil;
+import com.feige.fim.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class ConfigSpiLoader extends AbstractSpiLoader {
 
     private List<String> implClassList(String className){
         String implClass = Configs.getString(getSpiConfigKey(className));
-        if (StringUtil.isNotBlank(implClass)){
+        if (StringUtils.isNotBlank(implClass)){
             return Configs.commaSplitter.splitToList(implClass);
         }
         return null;

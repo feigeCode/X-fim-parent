@@ -1,7 +1,7 @@
 package com.feige.fim.config.impl;
 
 import com.feige.api.config.Config;
-import com.feige.fim.utils.StringUtil;
+import com.feige.fim.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,7 +26,7 @@ public class CompositeConfig implements Config {
     public Object getObject(String key) {
         for (Config config : configList) {
             Object value = config.getObject(key);
-            if (!StringUtil.isBlank(value)){
+            if (!StringUtils.isBlank(value)){
                 return value;
             }
         }

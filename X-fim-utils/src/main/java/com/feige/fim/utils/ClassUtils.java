@@ -41,8 +41,6 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.feige.fim.utils.AssertUtil;
-import com.feige.fim.utils.ReflectionUtils;
 import org.apache.commons.collections4.CollectionUtils;
 
 /**
@@ -54,7 +52,6 @@ import org.apache.commons.collections4.CollectionUtils;
  * @author Rob Harrop
  * @author Sam Brannen
  * @since 1.1
- * @see ReflectionUtils
  */
 public abstract class ClassUtils {
 

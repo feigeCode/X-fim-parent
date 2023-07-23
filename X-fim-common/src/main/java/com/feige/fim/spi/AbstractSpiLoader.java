@@ -10,11 +10,11 @@ import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
 import com.feige.fim.config.Configs;
 import com.feige.api.spi.InstancePostProcessor;
-import com.feige.fim.utils.lg.Loggers;
 import com.feige.fim.utils.AssertUtil;
+import com.feige.fim.utils.lg.Loggers;
 import com.feige.fim.utils.ClassUtils;
 import com.feige.fim.utils.ReflectionUtils;
-import com.feige.fim.utils.StringUtil;
+import com.feige.fim.utils.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 
@@ -252,10 +252,10 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     private String generateInstanceName(Class<?> clazz){
         SpiComp spiCompAnnotation = clazz.getAnnotation(SpiComp.class);
         String value = spiCompAnnotation.value();
-        if (StringUtil.isNotBlank(value)){
+        if (StringUtils.isNotBlank(value)){
             return value;
         }
-        return StringUtil.capitalize(clazz.getSimpleName());
+        return StringUtils.uncapitalize(clazz.getSimpleName());
     }
 
     private void injectInstance(List<Object> instances){
@@ -272,7 +272,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
             if (field.isAnnotationPresent(Inject.class)) {
                 Inject inject = field.getAnnotation(Inject.class);
                 String key = inject.value();
-                if (StringUtil.isNotBlank(key)){
+                if (StringUtils.isNotBlank(key)){
                     value = this.get(key, type);
                 }else {
                     value = this.getFirst(type);

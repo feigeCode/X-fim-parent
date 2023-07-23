@@ -804,6 +804,20 @@ public abstract class ReflectionUtils {
 	}
 
 
+	public static String getName(Class<?> c) {
+		if (c.isArray()) {
+			StringBuilder sb = new StringBuilder();
+			do {
+				sb.append("[]");
+				c = c.getComponentType();
+			}
+			while (c.isArray());
+
+			return c.getName() + sb;
+		}
+		return c.getName();
+	}
+
 	/**
 	 * Action to take on each method.
 	 */

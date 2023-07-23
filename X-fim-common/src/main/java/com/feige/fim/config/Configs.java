@@ -6,7 +6,7 @@ import com.feige.api.config.ConfigFactory;
 import com.feige.fim.config.impl.CompositeConfig;
 import com.feige.fim.config.impl.EnvConfig;
 import com.feige.fim.config.impl.SystemConfig;
-import com.feige.fim.utils.StringUtil;
+import com.feige.fim.utils.StringUtils;
 import com.google.common.base.Splitter;
 
 import java.io.File;
@@ -260,7 +260,7 @@ public final class Configs {
      */
     public static InputStream getInputStream(String key){
         String path = getString(key);
-        if (StringUtil.isNotBlank(path)){
+        if (StringUtils.isNotBlank(path)){
             try {
                 return new FileInputStream(path);
             }catch (Exception e){

@@ -3,7 +3,7 @@ package com.feige.fim.session;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
-import com.feige.fim.utils.StringUtil;
+import com.feige.fim.utils.StringUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,7 +40,7 @@ public abstract class AbstractSessionRepository implements SessionRepository {
 
     @Override
     public boolean contains(String id) {
-        if (StringUtil.isNotBlank(id)){
+        if (StringUtils.isNotBlank(id)){
             return sessionMap.containsKey(id);
         }
         return false;

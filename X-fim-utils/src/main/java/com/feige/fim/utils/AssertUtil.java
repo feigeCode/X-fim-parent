@@ -37,7 +37,7 @@ public class AssertUtil {
     }
 
     public static void notEmpty(CharSequence s, String name) {
-        if (StringUtil.isEmpty(s)) {
+        if (StringUtils.isEmpty(s)) {
             throw new IllegalStateException(name + " is empty");
         }
     }
@@ -55,7 +55,7 @@ public class AssertUtil {
     }
 
     public static void notBlank(CharSequence s, String name) {
-        if (StringUtil.isBlank(s)) {
+        if (StringUtils.isBlank(s)) {
             throw new IllegalStateException(name + " is blank");
         }
     }

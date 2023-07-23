@@ -68,7 +68,7 @@ public class YamlUtils {
         //循环读取原数据
         source.forEach((key, value) -> {
             //如果存在路径进行拼接
-            if (StringUtil.isNotBlank(path)) {
+            if (StringUtils.isNotBlank(path)) {
                 if (key.startsWith("[")) {
                     key = path + key;
                 } else {

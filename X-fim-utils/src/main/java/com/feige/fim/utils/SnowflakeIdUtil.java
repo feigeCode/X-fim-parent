@@ -113,7 +113,7 @@ public class SnowflakeIdUtil {
     private static Long getWorkId() {
         try {
             String hostAddress = Inet4Address.getLocalHost().getHostAddress();
-            int[] ints = StringUtil.toCodePoints(hostAddress);
+            int[] ints = StringUtils.toCodePoints(hostAddress);
             int sums = 0;
             for (int b : ints) {
                 sums += b;
@@ -130,7 +130,7 @@ public class SnowflakeIdUtil {
         if(host==null){
             return 0l;
         }
-        int[] ints = StringUtil.toCodePoints(host);
+        int[] ints = StringUtils.toCodePoints(host);
         int sums = 0;
         for (int i : ints) {
             sums += i;
@@ -158,7 +158,7 @@ public class SnowflakeIdUtil {
                 if (name == null) {
                     name = execReadToString("hostname");
                 }
-                HOST_NAME_HOLDER = StringUtil.isEmpty(name) ? null : name.trim();
+                HOST_NAME_HOLDER = StringUtils.isEmpty(name) ? null : name.trim();
             } else if (os.contains("nix") || os.contains("nux") || os.contains("mac os x")) {
                 String name = System.getenv("HOSTNAME");
                 if (name == null) {
@@ -167,7 +167,7 @@ public class SnowflakeIdUtil {
                 if (name == null) {
                     name = execReadToString("cat /etc/hostname");
                 }
-                HOST_NAME_HOLDER = StringUtil.isEmpty(name) ? null : name.trim();
+                HOST_NAME_HOLDER = StringUtils.isEmpty(name) ? null : name.trim();
             }
             if(HOST_NAME_HOLDER ==null){
                 final InetAddress localHost = Inet4Address.getLocalHost();

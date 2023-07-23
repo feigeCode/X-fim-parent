@@ -3,7 +3,7 @@ package com.feige.fim.serialize;
 import com.feige.api.annotation.SpiComp;
 import com.feige.api.msg.Msg;
 import com.feige.api.serialize.Serializer;
-import com.feige.fim.protocol.ProtocolConst;
+import com.feige.api.constant.ProtocolConst;
 
 @SpiComp
 public class ProtoBufSerializer implements Serializer {

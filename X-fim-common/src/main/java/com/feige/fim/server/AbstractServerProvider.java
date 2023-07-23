@@ -5,7 +5,7 @@ import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.ServerProvider;
 import com.feige.api.session.SessionRepository;
-import com.feige.fim.utils.StringUtil;
+import com.feige.fim.utils.StringUtils;
 
 import java.net.InetSocketAddress;
 
@@ -43,7 +43,7 @@ public abstract class AbstractServerProvider implements ServerProvider {
      */
     protected InetSocketAddress getAddress(String ip, int port) {
         InetSocketAddress socketAddress;
-        if (StringUtil.isNotBlank(ip)){
+        if (StringUtils.isNotBlank(ip)){
             socketAddress = new InetSocketAddress(ip, port);
         }else {
             socketAddress = new InetSocketAddress(port);

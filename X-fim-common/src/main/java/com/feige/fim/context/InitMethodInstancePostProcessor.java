@@ -11,7 +11,7 @@ public class InitMethodInstancePostProcessor implements InstancePostProcessor {
     
     @Override
     public void postProcessAfterInitialization(Object instance, String instanceName) {
-        ReflectionUtils.doWithLocalMethods(instance.getClass(), (method) -> {
+        ReflectionUtils.doWithMethods(instance.getClass(), (method) -> {
             if (method.isAnnotationPresent(InitMethod.class)) {
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 if (parameterTypes.length == 0){
@@ -21,6 +21,6 @@ public class InitMethodInstancePostProcessor implements InstancePostProcessor {
                     Loggers.LOADER.warn("initMethod不支持传入参数！");
                 }
             }
-        });
+        }, method -> method.isAnnotationPresent(InitMethod.class));
     }
 }

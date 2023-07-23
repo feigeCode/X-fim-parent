@@ -3,7 +3,7 @@ package com.feige.fim.handler;
 import com.feige.api.handler.MsgDispatcher;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
-import com.feige.fim.protocol.Command;
+import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
 
 public class ClientSessionHandler extends AbstractSessionHandler {

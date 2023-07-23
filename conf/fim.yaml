@@ -40,5 +40,7 @@ spi:
     com.feige.api.spi.InstanceProvider: com.feige.fim.codec.PacketCodecInstanceProvider
     com.feige.api.spi.InstancePostProcessor: com.feige.fim.context.InitMethodInstancePostProcessor
     com.feige.api.handler.MsgDispatcher: com.feige.fim.handler.PacketDispatcher
+    com.feige.api.serialize.Serializer: com.feige.fim.serialize.ProtoBufSerializer
+    com.feige.api.serialize.SerializedClassManager: com.feige.fim.serialize.MsgSerializedClassManager
       
       

@@ -1,6 +1,6 @@
 package com.feige.fim.netty;
 
-import com.feige.fim.protocol.Command;
+import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

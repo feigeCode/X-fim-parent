@@ -3,11 +3,11 @@ package com.feige.fim.utils;
 
 /**
  * @author feige<br />
- * @ClassName: StringUtil <br/>
+ * @ClassName: StringUtils <br/>
  * @Description: <br/>
  * @date: 2021/10/6 21:54<br/>
  */
-public class StringUtil {
+public class StringUtils {
 
     public static final String EMPTY_STR = "";
 

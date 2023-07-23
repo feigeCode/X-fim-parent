@@ -1,5 +1,7 @@
 package com.feige.fim.protocol;
 
+import com.feige.api.constant.Command;
+
 import java.util.Arrays;
 
 public class Packet {

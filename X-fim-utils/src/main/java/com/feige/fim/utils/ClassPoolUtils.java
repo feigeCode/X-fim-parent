@@ -3,6 +3,7 @@ package com.feige.fim.utils;
 
 import javassist.ClassClassPath;
 import javassist.ClassPool;
+import javassist.LoaderClassPath;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +22,25 @@ public class ClassPoolUtils {
                 if (pool == null) {
                     pool = ClassPool.getDefault();
                     pool.insertClassPath(new ClassClassPath(clazz));
+                    CLASS_POOL_MAP.put(classLoader, pool);
+                }
+            }
+        }
+
+        return pool;
+    }
+
+    public static ClassPool getClassPool(ClassLoader classLoader) {
+        if (classLoader == null){
+            return ClassPool.getDefault();
+        }
+        ClassPool pool = CLASS_POOL_MAP.get(classLoader);
+        if (pool == null) {
+            synchronized(CLASS_POOL_MAP) {
+                pool = CLASS_POOL_MAP.get(classLoader);
+                if (pool == null) {
+                    pool = ClassPool.getDefault();
+                    pool.insertClassPath(new LoaderClassPath(classLoader));
                     CLASS_POOL_MAP.put(classLoader, pool);
                 }
             }

@@ -7,9 +7,9 @@ import com.feige.api.codec.EncoderException;
 import com.feige.api.codec.ICheckSum;
 import com.feige.api.codec.VersionException;
 import com.feige.api.session.Session;
-import com.feige.fim.protocol.Command;
+import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
-import com.feige.fim.protocol.ProtocolConst;
+import com.feige.api.constant.ProtocolConst;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.TooLongFrameException;
 
