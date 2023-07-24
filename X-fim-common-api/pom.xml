@@ -19,10 +19,6 @@
     <dependencies>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>X-fim-utils</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.feige</groupId>
             <artifactId>X-fim-ioc</artifactId>
         </dependency>
     </dependencies>

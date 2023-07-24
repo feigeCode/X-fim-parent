@@ -5,13 +5,16 @@ import com.feige.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.Server;
+import com.feige.api.sc.ServerProvider;
 import com.feige.api.session.SessionRepository;
 import com.feige.framework.config.Configs;
 import com.feige.fim.server.ws.NettyWsServer;
+import com.google.auto.service.AutoService;
 
 import java.net.InetSocketAddress;
 
 @SpiComp("ws")
+@AutoService(ServerProvider.class)
 public class NettyWsServerProvider extends AbstractServerProvider {
 
     @Value(Configs.ConfigKey.SERVER_WS_IP_KEY)

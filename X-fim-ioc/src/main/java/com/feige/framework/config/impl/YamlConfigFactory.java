@@ -4,11 +4,13 @@ import com.feige.annotation.SpiComp;
 import com.feige.api.config.Config;
 import com.feige.api.config.ConfigFactory;
 import com.feige.framework.config.Configs;
+import com.google.auto.service.AutoService;
 
 import java.io.File;
 
 
 @SpiComp("yaml")
+@AutoService(ConfigFactory.class)
 public class YamlConfigFactory implements ConfigFactory {
     @Override
     public Config create() throws Exception{

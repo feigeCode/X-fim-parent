@@ -49,10 +49,16 @@
         <beanutils.version>1.9.4</beanutils.version>
         <bcprov.version>1.70</bcprov.version>
         <javassist.version>3.28.0-GA</javassist.version>
+        <auto.service.version>1.0.1</auto.service.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service</artifactId>
+                <version>${auto.service.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk15on</artifactId>

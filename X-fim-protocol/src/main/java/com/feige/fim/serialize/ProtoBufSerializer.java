@@ -4,8 +4,10 @@ import com.feige.annotation.SpiComp;
 import com.feige.api.msg.Msg;
 import com.feige.api.serialize.Serializer;
 import com.feige.api.constant.ProtocolConst;
+import com.google.auto.service.AutoService;
 
 @SpiComp
+@AutoService(Serializer.class)
 public class ProtoBufSerializer implements Serializer {
 
     @Override

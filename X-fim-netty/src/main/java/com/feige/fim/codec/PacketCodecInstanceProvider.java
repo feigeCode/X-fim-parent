@@ -5,8 +5,10 @@ import com.feige.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.api.spi.InstanceProvider;
 import com.feige.framework.config.Configs.ConfigKey;
+import com.google.auto.service.AutoService;
 
 @SpiComp("packet")
+@AutoService(InstanceProvider.class)
 public class PacketCodecInstanceProvider implements InstanceProvider<Codec> {
     
     @Value(ConfigKey.CODEC_MAX_PACKET_SIZE_KEY)

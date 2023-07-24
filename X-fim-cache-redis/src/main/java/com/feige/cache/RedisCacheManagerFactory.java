@@ -4,6 +4,7 @@ import com.feige.annotation.SpiComp;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
 import com.feige.framework.config.Configs;
+import com.google.auto.service.AutoService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -16,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 @SpiComp("redis")
+@AutoService(CacheManagerFactory.class)
 public class RedisCacheManagerFactory implements CacheManagerFactory {
     
 

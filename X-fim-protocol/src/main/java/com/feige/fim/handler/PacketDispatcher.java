@@ -2,12 +2,15 @@ package com.feige.fim.handler;
 
 import com.feige.annotation.SpiComp;
 import com.feige.api.handler.AbstractMsgDispatcher;
+import com.feige.api.handler.MsgDispatcher;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
+import com.google.auto.service.AutoService;
 
 @SpiComp
+@AutoService(MsgDispatcher.class)
 public class PacketDispatcher extends AbstractMsgDispatcher<Packet> {
     
     @Override
