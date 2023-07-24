@@ -1,5 +1,4 @@
-package com.feige.api.annotation;
-
+package com.feige.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -12,6 +11,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Inherited
 @Documented
-public @interface Prototype {
-    
+public @interface MsgComp {
+    byte classKey();
 }

@@ -1,9 +1,9 @@
-package com.feige.fim.config.impl;
+package com.feige.framework.config.impl;
 
-import com.feige.api.annotation.SpiComp;
+import com.feige.annotation.SpiComp;
 import com.feige.api.config.Config;
 import com.feige.api.config.ConfigFactory;
-import com.feige.fim.config.Configs;
+import com.feige.framework.config.Configs;
 
 import java.io.File;
 

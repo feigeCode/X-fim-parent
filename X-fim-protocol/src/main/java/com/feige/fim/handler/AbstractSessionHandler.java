@@ -1,8 +1,7 @@
 package com.feige.fim.handler;
 
 
-import com.feige.api.annotation.Inject;
-import com.feige.api.cipher.Cipher;
+import com.feige.annotation.Inject;
 import com.feige.api.handler.MsgDispatcher;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;

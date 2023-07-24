@@ -1,11 +1,11 @@
-package com.feige.fim.context;
+package com.feige.framework.context;
 
 import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
-import com.feige.fim.config.Configs;
+import com.feige.framework.config.Configs;
 import com.feige.fim.utils.lg.Loggers;
-import com.feige.fim.spi.ConfigSpiLoader;
-import com.feige.fim.spi.JdkSpiLoader;
+import com.feige.framework.boot.ConfigSpiLoader;
+import com.feige.framework.boot.JdkSpiLoader;
 
 import java.util.List;
 import java.util.Objects;

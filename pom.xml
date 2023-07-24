@@ -24,6 +24,7 @@
         <module>X-fim-netty-codec</module>
         <module>X-fim-common-api</module>
         <module>X-fim-utils</module>
+        <module>X-fim-ioc</module>
     </modules>
 
     <properties>
@@ -200,6 +201,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>X-fim-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>X-fim-ioc</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

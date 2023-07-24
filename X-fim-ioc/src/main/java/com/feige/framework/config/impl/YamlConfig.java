@@ -1,4 +1,4 @@
-package com.feige.fim.config.impl;
+package com.feige.framework.config.impl;
 
 import com.feige.api.config.Config;
 import com.feige.fim.utils.YamlUtils;

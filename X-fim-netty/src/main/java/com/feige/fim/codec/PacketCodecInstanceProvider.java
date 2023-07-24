@@ -1,10 +1,10 @@
 package com.feige.fim.codec;
 
-import com.feige.api.annotation.SpiComp;
-import com.feige.api.annotation.Value;
+import com.feige.annotation.SpiComp;
+import com.feige.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.api.spi.InstanceProvider;
-import com.feige.fim.config.Configs.ConfigKey;
+import com.feige.framework.config.Configs.ConfigKey;
 
 @SpiComp("packet")
 public class PacketCodecInstanceProvider implements InstanceProvider<Codec> {

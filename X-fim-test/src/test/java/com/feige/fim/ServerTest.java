@@ -1,18 +1,18 @@
 package com.feige.fim;
 
-import com.feige.api.annotation.Inject;
-import com.feige.api.annotation.Value;
+import com.feige.annotation.Inject;
+import com.feige.annotation.Value;
 import com.feige.api.cipher.Cipher;
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
 import com.feige.api.spi.InstanceProvider;
 import com.feige.fim.codec.PacketCodecInstanceProvider;
-import com.feige.fim.config.Configs;
+import com.feige.framework.config.Configs;
 import com.feige.fim.encrypt.AesCipherFactory;
 import com.feige.fim.encrypt.RsaCipherFactory;
 import com.feige.fim.utils.encrypt.RsaUtils;
 import com.feige.fim.server.NettyTcpServerProvider;
-import com.feige.fim.context.AppContext;
+import com.feige.framework.context.AppContext;
 import com.feige.fim.utils.ReflectionUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;

@@ -1,6 +1,6 @@
-package com.feige.api.order;
+package com.feige.framework.order;
 
-import com.feige.api.annotation.Order;
+import com.feige.annotation.Order;
 
 import java.util.Comparator;
 

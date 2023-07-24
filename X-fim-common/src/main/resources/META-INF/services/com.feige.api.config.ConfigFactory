@@ -1,1 +1,1 @@
-com.feige.fim.config.impl.YamlConfigFactory
+com.feige.framework.config.impl.YamlConfigFactory

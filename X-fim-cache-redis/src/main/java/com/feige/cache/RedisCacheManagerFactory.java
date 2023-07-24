@@ -1,9 +1,9 @@
 package com.feige.cache;
 
-import com.feige.api.annotation.SpiComp;
+import com.feige.annotation.SpiComp;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
-import com.feige.fim.config.Configs;
+import com.feige.framework.config.Configs;
 import org.apache.commons.beanutils.BeanUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

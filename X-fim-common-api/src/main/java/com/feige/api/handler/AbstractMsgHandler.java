@@ -1,10 +1,9 @@
 package com.feige.api.handler;
 
-import com.feige.api.annotation.InitMethod;
-import com.feige.api.annotation.Inject;
-import com.feige.api.annotation.MsgComp;
+import com.feige.annotation.InitMethod;
+import com.feige.annotation.Inject;
+import com.feige.annotation.MsgComp;
 import com.feige.api.constant.ProtocolConst;
-import com.feige.api.msg.Msg;
 import com.feige.api.serialize.SerializedClassManager;
 import com.feige.fim.utils.ClassGenerator;
 import com.feige.fim.utils.ReflectionUtils;

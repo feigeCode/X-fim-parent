@@ -1,6 +1,6 @@
 package com.feige.fim.bind;
 
-import com.feige.api.annotation.SpiComp;
+import com.feige.annotation.SpiComp;
 import com.feige.api.bind.ClientBindInfo;
 import com.feige.api.bind.ClientType;
 import com.feige.api.cache.CacheManager;

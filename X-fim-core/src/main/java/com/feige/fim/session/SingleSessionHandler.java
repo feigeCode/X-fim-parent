@@ -1,12 +1,12 @@
 package com.feige.fim.session;
 
-import com.feige.api.annotation.InitMethod;
-import com.feige.api.annotation.Inject;
-import com.feige.api.annotation.SpiComp;
+import com.feige.annotation.InitMethod;
+import com.feige.annotation.Inject;
+import com.feige.annotation.SpiComp;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.serialize.SerializedClassManager;
 import com.feige.api.serialize.Serializer;
-import com.feige.fim.context.AppContext;
+import com.feige.framework.context.AppContext;
 import com.feige.fim.handler.AbstractSessionHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;

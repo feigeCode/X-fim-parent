@@ -1,14 +1,14 @@
-package com.feige.fim.spi;
+package com.feige.framework.boot;
 
-import com.feige.api.annotation.Inject;
-import com.feige.api.annotation.SpiComp;
-import com.feige.api.annotation.Value;
+import com.feige.annotation.Inject;
+import com.feige.annotation.SpiComp;
+import com.feige.annotation.Value;
 import com.feige.api.context.LifecycleAdapter;
-import com.feige.api.order.OrderComparator;
+import com.feige.framework.order.OrderComparator;
 import com.feige.api.spi.InstanceProvider;
 import com.feige.api.spi.SpiLoader;
 import com.feige.api.spi.SpiNotFoundException;
-import com.feige.fim.config.Configs;
+import com.feige.framework.config.Configs;
 import com.feige.api.spi.InstancePostProcessor;
 import com.feige.fim.utils.AssertUtil;
 import com.feige.fim.utils.lg.Loggers;

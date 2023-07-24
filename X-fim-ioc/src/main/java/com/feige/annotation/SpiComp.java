@@ -1,4 +1,4 @@
-package com.feige.api.annotation;
+package com.feige.annotation;
 
 
 import java.lang.annotation.Documented;

@@ -1,9 +1,9 @@
-package com.feige.fim.spi;
+package com.feige.framework.boot;
 
 
 
-import com.feige.api.order.OrderComparator;
-import com.feige.fim.config.Configs;
+import com.feige.framework.order.OrderComparator;
+import com.feige.framework.config.Configs;
 import com.feige.fim.utils.StringUtils;
 
 import java.util.ArrayList;

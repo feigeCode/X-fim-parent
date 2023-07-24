@@ -2,7 +2,7 @@ package com.feige.fim.factory;
 
 import com.feige.fim.utils.NameThreadFactory;
 import com.feige.fim.utils.OsUtil;
-import com.feige.fim.config.Configs;
+import com.feige.framework.config.Configs;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollDatagramChannel;

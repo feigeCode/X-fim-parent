@@ -2,8 +2,8 @@ package com.feige.fim;
 
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
-import com.feige.fim.config.Configs;
-import com.feige.fim.context.AppContext;
+import com.feige.framework.config.Configs;
+import com.feige.framework.context.AppContext;
 
 public class NettyServer {
 

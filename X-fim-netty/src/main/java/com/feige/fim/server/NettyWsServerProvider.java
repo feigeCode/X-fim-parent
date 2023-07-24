@@ -1,12 +1,12 @@
 package com.feige.fim.server;
 
-import com.feige.api.annotation.SpiComp;
-import com.feige.api.annotation.Value;
+import com.feige.annotation.SpiComp;
+import com.feige.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.Server;
 import com.feige.api.session.SessionRepository;
-import com.feige.fim.config.Configs;
+import com.feige.framework.config.Configs;
 import com.feige.fim.server.ws.NettyWsServer;
 
 import java.net.InetSocketAddress;

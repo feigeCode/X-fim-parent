@@ -1,11 +1,11 @@
-package com.feige.fim.config;
+package com.feige.framework.config;
 
 
 import com.feige.api.config.Config;
 import com.feige.api.config.ConfigFactory;
-import com.feige.fim.config.impl.CompositeConfig;
-import com.feige.fim.config.impl.EnvConfig;
-import com.feige.fim.config.impl.SystemConfig;
+import com.feige.framework.config.impl.CompositeConfig;
+import com.feige.framework.config.impl.EnvConfig;
+import com.feige.framework.config.impl.SystemConfig;
 import com.feige.fim.utils.StringUtils;
 import com.google.common.base.Splitter;
 
