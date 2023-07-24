@@ -4,7 +4,6 @@ import com.feige.api.annotation.InitMethod;
 import com.feige.api.annotation.Inject;
 import com.feige.api.annotation.SpiComp;
 import com.feige.api.handler.MsgHandler;
-import com.feige.api.msg.Msg;
 import com.feige.api.serialize.SerializedClassManager;
 import com.feige.api.serialize.Serializer;
 import com.feige.fim.context.AppContext;
@@ -19,7 +18,7 @@ import java.util.List;
 public class SingleSessionHandler extends AbstractSessionHandler {
     
     @Inject
-    private SerializedClassManager<Msg> serializedClassManager;
+    private SerializedClassManager serializedClassManager;
     
     @InitMethod
     public void initialize(){
