@@ -2,18 +2,18 @@ package com.feige.api.serialize;
 
 import com.feige.api.msg.Msg;
 
-public interface SerializedClassManager<T extends Msg> {
+public interface SerializedClassManager {
     void register(Serializer serializer);
     
-    void registerClass(byte serializerType, byte classKey, Class<T> clazz);
+    void registerClass(byte serializerType, byte classKey, Class<?> clazz);
     
     Serializer unregister(byte serializerType);
     
-    Class<T> unregisterClass(byte serializerType, byte classKey);
+    Class<?> unregisterClass(byte serializerType, byte classKey);
     
     Serializer getSerializer(byte serializerType);
     
-    Class<T> getSerializedClass(byte serializerType, byte classKey);
+    Class<?> getSerializedClass(byte serializerType, byte classKey);
     
     Object getSerializedObject(byte serializerType, byte classKey, byte[] bytes);
 

@@ -5,10 +5,10 @@ import com.feige.api.msg.Msg;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractSerializedClassManager<T extends Msg> implements SerializedClassManager<T>{
+public abstract class AbstractSerializedClassManager implements SerializedClassManager {
     
     protected final Map<Byte, Serializer> serializerMap = new ConcurrentHashMap<>();
-    protected final Map<String, Class<T>> classMap = new ConcurrentHashMap<>();
+    protected final Map<String, Class<?>> classMap = new ConcurrentHashMap<>();
 
     @Override
     public void register(Serializer serializer) {
@@ -16,7 +16,7 @@ public abstract class AbstractSerializedClassManager<T extends Msg> implements S
     }
 
     @Override
-    public void registerClass(byte serializerType, byte classKey, Class<T> clazz) {
+    public void registerClass(byte serializerType, byte classKey, Class<?> clazz) {
         classMap.put(joinClassKey(serializerType, classKey), clazz);
     }
 
@@ -26,7 +26,7 @@ public abstract class AbstractSerializedClassManager<T extends Msg> implements S
     }
 
     @Override
-    public Class<T> unregisterClass(byte serializerType, byte classKey) {
+    public Class<?> unregisterClass(byte serializerType, byte classKey) {
         return classMap.remove(joinClassKey(serializerType, classKey));
     }
 
@@ -36,14 +36,14 @@ public abstract class AbstractSerializedClassManager<T extends Msg> implements S
     }
 
     @Override
-    public Class<T> getSerializedClass(byte serializerType, byte classKey) {
+    public Class<?> getSerializedClass(byte serializerType, byte classKey) {
         return classMap.get(joinClassKey(serializerType, classKey));
     }
 
     @Override
     public Object getSerializedObject(byte serializerType, byte classKey, byte[] bytes) {
         Serializer serializer = getSerializer(serializerType);
-        Class<T> serializedClass = getSerializedClass(serializerType, classKey);
+        Class<?> serializedClass = getSerializedClass(serializerType, classKey);
         if (serializer != null && serializedClass != null){
             return serializer.deserialize(serializedClass, bytes);
         }

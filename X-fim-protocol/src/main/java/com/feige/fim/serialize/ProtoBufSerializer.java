@@ -14,15 +14,17 @@ public class ProtoBufSerializer implements Serializer {
     }
 
     @Override
-    public <T extends Msg> T deserialize(Class<T> clazz, byte[] bytes) {
-        T t = null;
+    public Object deserialize(Class<?> clazz, byte[] bytes) {
+        Object obj = null;
         try {
-            t = clazz.newInstance();
-            t.deserialize(bytes);
+            obj = clazz.newInstance();
+            if (obj instanceof Msg){
+                ((Msg) obj).deserialize(bytes);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return t;
+        return obj;
     }
 
     @Override

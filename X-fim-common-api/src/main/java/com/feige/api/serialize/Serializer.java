@@ -19,7 +19,7 @@ public interface Serializer {
      * @param bytes byte[]
      * @return object
      */
-    <T extends Msg> T deserialize(Class<T> clazz, byte[] bytes);
+    Object deserialize(Class<?> clazz, byte[] bytes);
 
     /**
      * type

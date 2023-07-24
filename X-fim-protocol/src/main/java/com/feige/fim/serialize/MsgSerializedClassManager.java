@@ -5,6 +5,6 @@ import com.feige.api.msg.Msg;
 import com.feige.api.serialize.AbstractSerializedClassManager;
 
 @SpiComp
-public class MsgSerializedClassManager extends AbstractSerializedClassManager<Msg> {
+public class MsgSerializedClassManager extends AbstractSerializedClassManager {
     
 }

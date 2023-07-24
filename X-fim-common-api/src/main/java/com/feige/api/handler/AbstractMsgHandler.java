@@ -31,7 +31,7 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
     }
     
     @Inject
-    protected SerializedClassManager<Msg> serializedClassManager;
+    protected SerializedClassManager serializedClassManager;
     
     @InitMethod
     public void initialize(){
@@ -42,9 +42,9 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
         MsgComp msgComp = type.getAnnotation(MsgComp.class);
         byte classKey = msgComp.classKey();
         Method[] methods = ReflectionUtils.getAllDeclaredMethods(type);
-        serializedClassManager.registerClass(ProtocolConst.JSON, classKey, (Class<Msg>) genBasicClass(type, methods));
+        serializedClassManager.registerClass(ProtocolConst.JSON, classKey, genBasicClass(type, methods));
         if (this.getProtoClass() != null){
-            serializedClassManager.registerClass(ProtocolConst.PROTOCOL_BUFFER, classKey, (Class<Msg>) wrapperProtoClass(type, methods));
+            serializedClassManager.registerClass(ProtocolConst.PROTOCOL_BUFFER, classKey, wrapperProtoClass(type, methods));
         }
     }
     
