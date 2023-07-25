@@ -192,7 +192,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     protected Object createInstance(Class<?> clazz){
         if (checkInstance(clazz)){
             try {
-                return clazz.newInstance();
+                return ReflectionUtils.accessibleConstructor(clazz).newInstance();
             } catch (Exception e) {
                 LOG.error("instance error:" , e);
                 throw new RuntimeException(e);
@@ -200,6 +200,8 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         }
         return null;
     }
+    
+    
 
     private Object instanceProviderHandle(String key, Object instance, Class<?> clazz) {
         if (instance instanceof InstanceProvider && !InstanceProvider.class.isAssignableFrom(clazz)) {

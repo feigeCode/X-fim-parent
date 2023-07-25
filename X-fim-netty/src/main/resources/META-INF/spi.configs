@@ -1,0 +1,10 @@
+com.feige.api.sc.ServerProvider = com.feige.fim.server.NettyTcpServerProvider,com.feige.fim.server.NettyWsServerProvider
+com.feige.api.handler.SessionHandler = com.feige.fim.session.SingleSessionHandler
+com.feige.api.session.SessionRepository = com.feige.fim.adapter.NettySessionRepository
+com.feige.api.cache.CacheManagerFactory = com.feige.cache.LocalCacheManagerFactory
+com.feige.api.handler.MsgHandler = com.feige.fim.handler.HandshakeMsgHandler,com.feige.fim.handler.HeartbeatMsgHandler
+com.feige.api.spi.InstanceProvider = com.feige.fim.codec.PacketCodecInstanceProvider
+com.feige.api.spi.InstancePostProcessor = com.feige.framework.context.InitMethodInstancePostProcessor
+com.feige.api.handler.MsgDispatcher = com.feige.fim.handler.PacketDispatcher
+com.feige.api.serialize.Serializer = com.feige.fim.serialize.ProtoBufSerializer
+com.feige.api.serialize.SerializedClassManager = com.feige.fim.serialize.MsgSerializedClassManager

@@ -2,51 +2,45 @@ package com.feige.framework.boot;
 
 
 
+import com.feige.fim.utils.AssertUtil;
+import com.feige.fim.utils.ClassUtils;
+import com.feige.fim.utils.ReflectionUtils;
 import com.feige.framework.order.OrderComparator;
 import com.feige.framework.config.Configs;
-import com.feige.fim.utils.StringUtils;
+import com.feige.framework.utils.SpiConfigsLoader;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class ConfigSpiLoader extends AbstractSpiLoader {
 
     public static final String TYPE = "config";
 
+
+
+
+
     @Override
     public List<Object>  doLoadInstance(Class<?> loadClass) {
-        List<Object> instanceList = new ArrayList<>();
         try {
-            String className = loadClass.getName();
-            List<String> classList = implClassList(className);
-            if (classList != null){
-                for (String clazz : classList) {
-                    Class<?> implClass = Class.forName(clazz);
-                    Object instance = createInstance(implClass);
-                    if (instance == null){
-                        continue;
-                    }
-                    instanceList.add(instance);
-                }
-                if (instanceList.size() > 1){
-                    instanceList.sort(OrderComparator.getInstance());
-                }
-            }
-        }catch (Exception e){
+            List<?> objects = SpiConfigsLoader.loadConfigs(loadClass, this.getClass().getClassLoader());
+            return objects.stream()
+                    .map(o -> (Object) o)
+                    .collect(Collectors.toList());
+        }catch (Throwable e){
             LOG.error("spi loader error:", e);
         }
-        return instanceList;
+        return Collections.emptyList();
     }
-
-    private List<String> implClassList(String className){
-        String implClass = Configs.getString(getSpiConfigKey(className));
-        if (StringUtils.isNotBlank(implClass)){
-            return Configs.commaSplitter.splitToList(implClass);
-        }
-        return null;
-    }
-
-    private String getSpiConfigKey(String className){
-        return Configs.ConfigKey.SPI_LOADER_KEY + "." + className;
-    }
+    
+    
 }
