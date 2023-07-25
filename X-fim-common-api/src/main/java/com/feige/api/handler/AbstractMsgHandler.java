@@ -36,6 +36,7 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
     public void initialize(){
         Class<?> type = getMsgInterface();
         if (type == null || !type.isAnnotationPresent(MsgComp.class)){
+            // TODO: LOGGER
             return;
         }
         MsgComp msgComp = type.getAnnotation(MsgComp.class);
