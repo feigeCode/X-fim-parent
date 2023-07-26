@@ -2,6 +2,7 @@ package com.feige.fim.server.ws;
 
 import com.feige.api.sc.Server;
 import com.feige.fim.adapter.NettyCodecAdapter;
+import com.feige.fim.config.ServerConfigKey;
 import com.feige.framework.config.Configs;
 import com.feige.fim.factory.SslContextFactory;
 import com.feige.fim.server.NettyServerHandler;
@@ -32,12 +33,12 @@ public class WsServerInitializer extends ChannelInitializer<SocketChannel> {
     }
 
     private SslContext buildSslContext() {
-        Boolean isEnableSsl = Configs.getBoolean(Configs.ConfigKey.SERVER_ENABLE_WS_SSL, false);
+        Boolean isEnableSsl = Configs.getBoolean(ServerConfigKey.SERVER_ENABLE_WS_SSL, false);
         if (isEnableSsl){
-            return SslContextFactory.createSslContext(Configs.ConfigKey.SERVER_ENABLE_WS_K_C_P,
-                    Configs.ConfigKey.SERVER_ENABLE_WS_P_K_P,
-                    Configs.ConfigKey.SERVER_ENABLE_WS_T_C_P,
-                    Configs.ConfigKey.SERVER_ENABLE_WS_K_P);
+            return SslContextFactory.createSslContext(ServerConfigKey.SERVER_ENABLE_WS_K_C_P,
+                    ServerConfigKey.SERVER_ENABLE_WS_P_K_P,
+                    ServerConfigKey.SERVER_ENABLE_WS_T_C_P,
+                    ServerConfigKey.SERVER_ENABLE_WS_K_P);
         }
         return null;
     }

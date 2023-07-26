@@ -16,8 +16,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date: 2023/6/4 15:30<br/>
  */
 public abstract class AbstractClient extends ServiceAdapter implements Client {
-
-    protected InetSocketAddress remoteAddress;
     protected final AtomicInteger reconnectCnt = new AtomicInteger(0);
     public static final int MAX_RECONNECT_CNT = 3;
     

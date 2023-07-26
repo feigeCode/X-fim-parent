@@ -3,8 +3,9 @@ package com.feige.fim;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
-import com.feige.framework.config.Configs;
+import com.feige.fim.config.ServerConfigKey;
 import com.feige.fim.utils.lg.Loggers;
+import com.feige.framework.config.Configs;
 
 import java.util.Properties;
 
@@ -17,7 +18,7 @@ public class NacosClient {
    public static NamingService getNamingService(){
        try {
            Properties prop = new Properties();
-           String serverList = Configs.getString(Configs.ConfigKey.NACOS_SERVER_LIST_KEY);
+           String serverList = Configs.getString(ServerConfigKey.NACOS_SERVER_LIST_KEY);
            prop.setProperty(SERVER_ADDR_KEY, serverList);
            if (namingService == null){
                namingService = NamingFactory.createNamingService(prop);

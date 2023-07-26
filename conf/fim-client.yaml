@@ -1,0 +1,22 @@
+fim:
+  log:
+    dir: /logs
+    level: debug
+    conf-path: E:\project\my\X-fim-parent\conf\logback.xml
+  codec:
+    max-packet-size: 65535
+    heartbeat: -33
+    version: 1
+    header-length: 11
+    check-sum-key:
+  client:
+    tcp:
+      ip: 127.0.0.1
+      port: 8001
+
+
+
+
+spi:
+  loader:
+    type: jdk

@@ -1,6 +1,7 @@
 package com.feige.fim.lg;
 
 import com.feige.fim.api.Log;
+import com.feige.fim.utils.lg.Loggers;
 
 /**
  * @author feige<br />
@@ -11,22 +12,21 @@ import com.feige.fim.api.Log;
 public class ConsoleLog implements Log {
     @Override
     public void debug(String msg, Object... args) {
-        System.out.printf((msg) + "%n", args);
+        Loggers.CONSOLE.debug(msg, args);
     }
 
     @Override
     public void info(String msg, Object... args) {
-        System.out.printf((msg) + "%n", args);
+        Loggers.CONSOLE.info(msg, args);
     }
 
     @Override
     public void warn(String msg, Object... args) {
-        System.out.printf((msg) + "%n", args);
+        Loggers.CONSOLE.warn(msg, args);
     }
 
     @Override
     public void error(String msg, Throwable throwable) {
-        System.out.println(msg);
-        throwable.printStackTrace();
+       Loggers.CONSOLE.error(msg, throwable);
     }
 }

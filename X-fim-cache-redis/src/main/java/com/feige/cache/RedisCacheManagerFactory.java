@@ -3,6 +3,7 @@ package com.feige.cache;
 import com.feige.annotation.SpiComp;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
+import com.feige.fim.config.ServerConfigKey;
 import com.feige.framework.config.Configs;
 import com.google.auto.service.AutoService;
 import org.apache.commons.beanutils.BeanUtils;
@@ -26,8 +27,8 @@ public class RedisCacheManagerFactory implements CacheManagerFactory {
     public static final String TYPE_CLUSTER = "cluster";
 
     public RedissonClient getRedissonClient() throws InvocationTargetException, IllegalAccessException {
-        String type = Configs.getString(Configs.ConfigKey.REDIS_TYPE);
-        Map<String, Object> map = Configs.getMap(Configs.ConfigKey.REDIS_CONFIG);
+        String type = Configs.getString(ServerConfigKey.REDIS_TYPE);
+        Map<String, Object> map = Configs.getMap(ServerConfigKey.REDIS_CONFIG);
         Config config = new Config();
         switch (type) {
             case TYPE_SINGLE:

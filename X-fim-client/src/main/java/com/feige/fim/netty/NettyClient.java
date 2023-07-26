@@ -60,7 +60,7 @@ public class NettyClient extends AbstractClient {
         try {
             initBootstrap();
             ChannelFuture channelFuture = this.bootstrap
-                    .connect(remoteAddress)
+                    .connect(address)
                     .addListener(future -> {
                         if (future.isSuccess()) {
                             connected.set(true);

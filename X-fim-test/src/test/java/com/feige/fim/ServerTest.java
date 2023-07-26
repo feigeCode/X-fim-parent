@@ -7,6 +7,7 @@ import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
 import com.feige.api.spi.InstanceProvider;
 import com.feige.fim.codec.PacketCodecInstanceProvider;
+import com.feige.fim.config.ServerConfigKey;
 import com.feige.framework.config.Configs;
 import com.feige.fim.encrypt.AesCipherFactory;
 import com.feige.fim.encrypt.RsaCipherFactory;
@@ -40,7 +41,7 @@ public class ServerTest {
     @Test
     public void configTest(){
         Assert.assertEquals(Configs.getString(Configs.CONFIG_FILE_KEY), CONFIG_PATH);
-        Assert.assertEquals(Configs.getString(Configs.ConfigKey.LOG_LEVEL), "debug");
+        Assert.assertEquals(Configs.getString(ServerConfigKey.LOG_LEVEL), "debug");
     }
     
     @Test
