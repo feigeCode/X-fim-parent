@@ -1,6 +1,6 @@
 package com.feige.fim.encrypt;
 
-import com.feige.annotation.SpiComp;
+import com.feige.framework.annotation.SpiComp;
 import com.feige.api.cipher.Cipher;
 import com.feige.api.cipher.CipherFactory;
 import com.google.auto.service.AutoService;

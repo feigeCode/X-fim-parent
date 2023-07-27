@@ -1,4 +1,4 @@
-package com.feige.api.config;
+package com.feige.framework.api.config;
 
 import java.io.File;
 import java.nio.file.Files;

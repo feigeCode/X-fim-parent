@@ -1,6 +1,6 @@
-package com.feige.api.spi;
+package com.feige.framework.api.spi;
 
-import com.feige.api.context.Application;
+import com.feige.framework.api.context.Application;
 
 import java.util.List;
 

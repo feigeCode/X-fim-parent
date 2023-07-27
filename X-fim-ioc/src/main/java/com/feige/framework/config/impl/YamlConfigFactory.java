@@ -1,8 +1,8 @@
 package com.feige.framework.config.impl;
 
-import com.feige.annotation.SpiComp;
-import com.feige.api.config.Config;
-import com.feige.api.config.ConfigFactory;
+import com.feige.framework.annotation.SpiComp;
+import com.feige.framework.api.config.Config;
+import com.feige.framework.api.config.ConfigFactory;
 import com.feige.framework.config.Configs;
 import com.google.auto.service.AutoService;
 

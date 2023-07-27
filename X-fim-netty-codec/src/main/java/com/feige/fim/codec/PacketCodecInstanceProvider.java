@@ -1,9 +1,9 @@
 package com.feige.fim.codec;
 
-import com.feige.annotation.SpiComp;
-import com.feige.annotation.Value;
+import com.feige.framework.annotation.SpiComp;
+import com.feige.framework.annotation.Value;
 import com.feige.api.codec.Codec;
-import com.feige.api.spi.InstanceProvider;
+import com.feige.framework.api.spi.InstanceProvider;
 import com.feige.framework.config.Configs.ConfigKey;
 import com.google.auto.service.AutoService;
 

@@ -1,6 +1,6 @@
 package com.feige.fim.server;
 
-import com.feige.annotation.Inject;
+import com.feige.framework.annotation.Inject;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.ServerProvider;

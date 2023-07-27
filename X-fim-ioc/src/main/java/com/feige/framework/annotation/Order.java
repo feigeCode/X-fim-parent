@@ -1,5 +1,4 @@
-package com.feige.annotation;
-
+package com.feige.framework.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,8 +8,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.TYPE})
 @Inherited
 @Documented
-public @interface InitMethod {
+public @interface Order {
+    int value() default 0;
 }

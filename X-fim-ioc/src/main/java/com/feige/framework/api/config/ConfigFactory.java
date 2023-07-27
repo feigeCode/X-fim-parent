@@ -1,4 +1,4 @@
-package com.feige.api.config;
+package com.feige.framework.api.config;
 
 
 public interface ConfigFactory {

@@ -1,7 +1,7 @@
 package com.feige.fim.handler;
 
 
-import com.feige.annotation.Inject;
+import com.feige.framework.annotation.Inject;
 import com.feige.api.handler.MsgDispatcher;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;

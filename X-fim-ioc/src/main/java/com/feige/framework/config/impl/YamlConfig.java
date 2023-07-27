@@ -1,6 +1,6 @@
 package com.feige.framework.config.impl;
 
-import com.feige.api.config.Config;
+import com.feige.framework.api.config.Config;
 import com.feige.fim.utils.YamlUtils;
 import org.apache.commons.collections4.MapUtils;
 

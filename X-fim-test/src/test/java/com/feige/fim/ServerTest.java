@@ -1,11 +1,11 @@
 package com.feige.fim;
 
-import com.feige.annotation.Inject;
-import com.feige.annotation.Value;
+import com.feige.framework.annotation.Inject;
+import com.feige.framework.annotation.Value;
 import com.feige.api.cipher.Cipher;
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
-import com.feige.api.spi.InstanceProvider;
+import com.feige.framework.api.spi.InstanceProvider;
 import com.feige.fim.codec.PacketCodecInstanceProvider;
 import com.feige.fim.config.ServerConfigKey;
 import com.feige.framework.config.Configs;

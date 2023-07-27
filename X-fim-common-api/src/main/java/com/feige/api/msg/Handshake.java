@@ -1,6 +1,6 @@
 package com.feige.api.msg;
 
-import com.feige.annotation.MsgComp;
+import com.feige.framework.annotation.MsgComp;
 
 @MsgComp(classKey = 1)
 public interface Handshake extends Msg {

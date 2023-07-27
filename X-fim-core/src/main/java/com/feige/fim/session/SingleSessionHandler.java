@@ -1,8 +1,8 @@
 package com.feige.fim.session;
 
-import com.feige.annotation.InitMethod;
-import com.feige.annotation.Inject;
-import com.feige.annotation.SpiComp;
+import com.feige.framework.annotation.InitMethod;
+import com.feige.framework.annotation.Inject;
+import com.feige.framework.annotation.SpiComp;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.serialize.SerializedClassManager;

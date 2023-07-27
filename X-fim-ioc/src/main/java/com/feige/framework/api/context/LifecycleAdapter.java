@@ -1,4 +1,4 @@
-package com.feige.api.context;
+package com.feige.framework.api.context;
 
 public abstract class LifecycleAdapter implements Lifecycle {
 

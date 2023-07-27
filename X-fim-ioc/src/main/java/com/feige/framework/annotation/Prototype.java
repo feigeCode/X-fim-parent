@@ -1,4 +1,5 @@
-package com.feige.annotation;
+package com.feige.framework.annotation;
+
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -11,6 +12,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Inherited
 @Documented
-public @interface Order {
-    int value() default 0;
+public @interface Prototype {
+    
 }

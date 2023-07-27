@@ -1,6 +1,6 @@
 package com.feige.cache;
 
-import com.feige.annotation.SpiComp;
+import com.feige.framework.annotation.SpiComp;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
 import com.google.auto.service.AutoService;

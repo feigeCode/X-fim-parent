@@ -1,6 +1,6 @@
 package com.feige.fim.handler;
 
-import com.feige.annotation.SpiComp;
+import com.feige.framework.annotation.SpiComp;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.msg.Handshake;
