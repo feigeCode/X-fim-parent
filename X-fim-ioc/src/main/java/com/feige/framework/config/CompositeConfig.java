@@ -1,4 +1,4 @@
-package com.feige.framework.config.impl;
+package com.feige.framework.config;
 
 import com.feige.framework.api.config.Config;
 import com.feige.fim.utils.StringUtils;

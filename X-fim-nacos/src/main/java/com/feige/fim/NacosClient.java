@@ -5,7 +5,7 @@ import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.feige.fim.config.ServerConfigKey;
 import com.feige.fim.utils.lg.Loggers;
-import com.feige.framework.config.Configs;
+import com.feige.framework.utils.Configs;
 
 import java.util.Properties;
 

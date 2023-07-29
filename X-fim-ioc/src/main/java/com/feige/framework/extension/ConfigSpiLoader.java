@@ -1,7 +1,9 @@
-package com.feige.framework.boot;
+package com.feige.framework.extension;
 
 
 
+import com.feige.framework.api.context.ApplicationContext;
+import com.feige.framework.api.context.Environment;
 import com.feige.framework.utils.SpiConfigsLoader;
 
 import java.util.Collections;
@@ -11,7 +13,11 @@ import java.util.stream.Collectors;
 public class ConfigSpiLoader extends AbstractSpiLoader {
 
     public static final String TYPE = "config";
-    
+
+    public ConfigSpiLoader(ApplicationContext applicationContext, Environment environment) {
+        super(applicationContext, environment);
+    }
+
     @Override
     public List<Object>  doLoadInstance(Class<?> loadClass) {
         try {

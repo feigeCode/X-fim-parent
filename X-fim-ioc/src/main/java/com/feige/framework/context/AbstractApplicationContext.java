@@ -1,0 +1,94 @@
+package com.feige.framework.context;
+
+import com.feige.fim.utils.lg.Loggers;
+import com.feige.framework.api.context.ApplicationContext;
+import com.feige.framework.api.context.Environment;
+import com.feige.framework.api.context.LifecycleAdapter;
+import com.feige.framework.api.spi.SpiLoader;
+import com.feige.framework.api.spi.SpiNotFoundException;
+import com.feige.framework.extension.ConfigSpiLoader;
+import com.feige.framework.extension.JdkSpiLoader;
+import com.feige.framework.utils.AppContext;
+import com.feige.framework.utils.Configs;
+
+import java.util.List;
+import java.util.Objects;
+
+public abstract class AbstractApplicationContext extends LifecycleAdapter implements ApplicationContext {
+    public static final String DEFAULT_LOADER_TYPE = ConfigSpiLoader.TYPE;
+    private final Environment environment;
+    
+    private final SpiLoader spiLoader;
+
+    public AbstractApplicationContext(Environment environment, SpiLoader spiLoader) {
+        this.environment = environment;
+        this.spiLoader = spiLoader;
+        initialize();
+    }
+
+    public AbstractApplicationContext(String type) {
+        this.spiLoader = createSpiLoader(type);
+        this.environment = createEnvironment();
+        initialize();
+    }
+
+    public AbstractApplicationContext() {
+        this(DEFAULT_LOADER_TYPE);
+    }
+
+    private Environment createEnvironment(){
+        return new StandardEnvironment();
+    }
+    private SpiLoader createSpiLoader(String type){
+        SpiLoader spiLoader;
+        if (Objects.equals(type, ConfigSpiLoader.TYPE)){
+            spiLoader = new ConfigSpiLoader(this, this.environment);
+            Loggers.LOADER.info("使用" + ConfigSpiLoader.class.getName() + "加载器");
+        }else {
+            spiLoader = new JdkSpiLoader(this, this.environment);
+            Loggers.LOADER.info("使用" + JdkSpiLoader.class.getName() + "加载器");
+        }
+        return spiLoader;
+    }
+
+    @Override
+    public void initialize() throws IllegalStateException {
+        AppContext.setApplication(this);
+        this.environment.initialize();
+        Configs.setEnvironment(this.environment);
+        this.spiLoader.initialize();
+    }
+
+
+    @Override
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    @Override
+    public SpiLoader getSpiLoader() {
+        return spiLoader;
+    }
+
+
+
+    @Override
+    public void register(Class<?> clazz, List<Object> instances) {
+        this.spiLoader.register(clazz, instances);
+    }
+
+    @Override
+    public <T> T get(String key, Class<T> clazz) throws SpiNotFoundException {
+        return this.spiLoader.get(key, clazz);
+    }
+
+    @Override
+    public <T> T getFirst(Class<T> clazz) throws SpiNotFoundException {
+        return this.spiLoader.getFirst(clazz);
+    }
+
+    @Override
+    public <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException {
+        return this.spiLoader.getAll(clazz);
+    }
+}

@@ -1,6 +1,6 @@
 package com.feige.framework.api.spi;
 
-import com.feige.framework.api.context.Application;
+import com.feige.framework.api.context.Lifecycle;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @Description: <br/>
  * @date: 2023/5/20 14:22<br/>
  */
-public interface SpiLoader extends Application {
+public interface SpiLoader extends Lifecycle {
 
     /**
      * register objects

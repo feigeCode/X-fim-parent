@@ -1,21 +1,15 @@
-package com.feige.framework.config;
+package com.feige.framework.utils;
 
 
 import com.feige.framework.api.config.Config;
-import com.feige.framework.api.config.ConfigFactory;
-import com.feige.framework.config.impl.CompositeConfig;
-import com.feige.framework.config.impl.EnvConfig;
-import com.feige.framework.config.impl.SystemConfig;
+import com.feige.framework.api.context.Environment;
 import com.feige.fim.utils.StringUtils;
-import com.google.common.base.Splitter;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 
 
 public final class Configs {
@@ -49,50 +43,31 @@ public final class Configs {
         String SPI_LOADER_TYPE = "spi.loader.type";
         
     }
+    private static Environment environment;
 
-    private final static CompositeConfig COMPOSITE_CONFIG = new CompositeConfig();
-    private final static Config SYSTEM_CONFIG = new SystemConfig();
-    private final static Config ENV_CONFIG = new EnvConfig();
-    private static Config APP_CONFIG = null;
-
-
-    public static void loadConfig() throws Exception {
-        COMPOSITE_CONFIG.addConfig(SYSTEM_CONFIG);
-        COMPOSITE_CONFIG.addConfig(ENV_CONFIG);
-        ServiceLoader<ConfigFactory> loader = ServiceLoader.load(ConfigFactory.class);
-        Iterator<ConfigFactory> iterator = loader.iterator();
-        if (iterator.hasNext()){
-            APP_CONFIG = iterator.next().create();
-        }else {
-            throw new RuntimeException(ConfigFactory.class.getName() + "未发现任何实现，请检查META-INF/services目录下的配置是否正常!");
-        }
-        COMPOSITE_CONFIG.addConfig(APP_CONFIG);
-        initLogConfig();
+    public static void setEnvironment(Environment environment) {
+        Configs.environment = environment;
     }
-    
 
-
-    public static void initLogConfig() {
-        System.setProperty("log.home", Configs.getString(ConfigKey.LOG_DIR));
-        System.setProperty("log.root.level", Configs.getString(ConfigKey.LOG_LEVEL));
-        System.setProperty("logback.configurationFile", Configs.getString(ConfigKey.LOG_CONF_PATH));
+    public static Environment getEnvironment() {
+        return environment;
     }
 
     public static Config getCompositeConfig(){
-        return COMPOSITE_CONFIG;
+        return environment.getCompositeConfig();
     }
 
 
     public static Config getSystemConfig(){
-        return SYSTEM_CONFIG;
+        return environment.getSystemConfig();
     }
 
     public static Config getAppConfig(){
-        return APP_CONFIG;
+        return environment.getAppConfig();
     }
 
     public static Config getEnvConfig(){
-        return ENV_CONFIG;
+        return environment.getEnvConfig();
     }
     /**
      *  get int config

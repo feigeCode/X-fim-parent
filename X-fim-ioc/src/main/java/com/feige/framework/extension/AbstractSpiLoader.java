@@ -1,14 +1,18 @@
-package com.feige.framework.boot;
+package com.feige.framework.extension;
 
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
+import com.feige.framework.api.context.ApplicationContext;
+import com.feige.framework.api.context.ApplicationContextAware;
+import com.feige.framework.api.context.Environment;
+import com.feige.framework.api.context.EnvironmentAware;
 import com.feige.framework.api.context.LifecycleAdapter;
+import com.feige.framework.api.context.SpiLoaderAware;
 import com.feige.framework.order.OrderComparator;
 import com.feige.framework.api.spi.InstanceProvider;
 import com.feige.framework.api.spi.SpiLoader;
 import com.feige.framework.api.spi.SpiNotFoundException;
-import com.feige.framework.config.Configs;
 import com.feige.framework.api.spi.InstancePostProcessor;
 import com.feige.fim.utils.AssertUtil;
 import com.feige.fim.utils.lg.Loggers;
@@ -35,12 +39,21 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     protected final Map<Class<?>, String> instanceNameCache = new ConcurrentHashMap<>();
     protected final List<InstancePostProcessor> processors = new ArrayList<>();
     private final AtomicBoolean isInitialized = new AtomicBoolean(false);
+    
+    private final ApplicationContext applicationContext;
+    private final Environment environment;
+
+    public AbstractSpiLoader(ApplicationContext applicationContext, Environment environment) {
+        this.applicationContext = applicationContext;
+        this.environment = environment;
+    }
 
     @Override
     public void initialize() throws IllegalStateException {
         if (isInitialized.compareAndSet(false, true)){
             List<Object> instanceList = this.doLoadInstance(InstancePostProcessor.class);
             for (Object instance : instanceList) {
+                invokeAwareMethods(instance);
                 this.processors.add((InstancePostProcessor)instance);
             }
             load(InstanceProvider.class);
@@ -182,6 +195,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
                         });
             }
             injectInstance(newInstances);
+            invokeAwareMethods(newInstances);
             instances.forEach(instance -> applyBeanPostProcessorsAfterInitialization(instance, getInstanceName(instance.getClass())));
             register(clazz, newInstances);
         }else {
@@ -259,10 +273,28 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         }
         return StringUtils.uncapitalize(clazz.getSimpleName());
     }
-
+    
     private void injectInstance(List<Object> instances){
         for (Object instance : instances) {
             injectInstance(instance);
+        }
+    }
+
+    private void invokeAwareMethods(List<Object> instances){
+        for (Object instance : instances) {
+            invokeAwareMethods(instance);
+        }
+    }
+    
+    private void invokeAwareMethods(Object instance){
+        if (instance instanceof SpiLoaderAware) {
+            ((SpiLoaderAware) instance).setSpiLoader(this);
+        }
+        if (instance instanceof ApplicationContextAware){
+            ((ApplicationContextAware) instance).setApplicationContext(applicationContext);
+        }
+        if (instance instanceof EnvironmentAware){
+            ((EnvironmentAware) instance).setEnvironment(environment);
         }
     }
 
@@ -284,7 +316,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
             if (field.isAnnotationPresent(Value.class)){
                 Value valueAnnotation = field.getAnnotation(Value.class);
                 String configKey = valueAnnotation.value();
-                value = Configs.get(type, configKey);
+                value = environment.convert(type, configKey, null);
                 // 空安全，空值不设置
                 if (value == null && valueAnnotation.nullSafe()){
                     return;

@@ -1,12 +1,20 @@
 package com.feige.fim.handler;
 
 
+import com.feige.api.handler.MsgHandler;
+import com.feige.api.serialize.SerializedClassManager;
+import com.feige.api.serialize.Serializer;
+import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.annotation.Inject;
 import com.feige.api.handler.MsgDispatcher;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
+import com.feige.framework.api.context.ApplicationContextAware;
+import com.feige.framework.api.context.ApplicationContext;
+
+import java.util.List;
 
 
 /**
@@ -15,10 +23,37 @@ import com.feige.fim.protocol.Packet;
  * @Description: <br/>
  * @date: 2023/5/21 17:06<br/>
  */
-public abstract class AbstractSessionHandler implements SessionHandler {
+public abstract class AbstractSessionHandler implements SessionHandler, ApplicationContextAware {
+
+    private ApplicationContext ac;
     
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        ac = applicationContext;
+    }
+
     @Inject
     protected MsgDispatcher<Packet> msgDispatcher;
+
+    @Inject
+    private SerializedClassManager serializedClassManager;
+
+    @InitMethod
+    public void initializeMsgHandler(){
+        List<MsgHandler> msgHandlers = ac.getAll(MsgHandler.class);
+        for (MsgHandler<Packet> msgHandler : msgHandlers) {
+            this.msgDispatcher.register(msgHandler);
+        }
+       
+    }
+
+    @InitMethod
+    public void initializeSerializer(){
+        List<Serializer> serializers = ac.getAll(Serializer.class);
+        for (Serializer serializer : serializers) {
+            serializedClassManager.register(serializer);
+        }
+    }
     
     @Override
     public void connected(Session session) throws RemotingException {

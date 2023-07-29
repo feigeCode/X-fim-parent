@@ -1,6 +1,6 @@
 package com.feige.fim.factory;
 
-import com.feige.framework.config.Configs;
+import com.feige.framework.utils.Configs;
 import io.netty.handler.ssl.ClientAuth;
 import io.netty.handler.ssl.OpenSsl;
 import io.netty.handler.ssl.SslContext;

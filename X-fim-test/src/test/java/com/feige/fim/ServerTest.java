@@ -5,15 +5,16 @@ import com.feige.framework.annotation.Value;
 import com.feige.api.cipher.Cipher;
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
+import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.spi.InstanceProvider;
 import com.feige.fim.codec.PacketCodecInstanceProvider;
 import com.feige.fim.config.ServerConfigKey;
-import com.feige.framework.config.Configs;
+import com.feige.framework.context.StandardApplicationContext;
+import com.feige.framework.utils.Configs;
 import com.feige.fim.encrypt.AesCipherFactory;
 import com.feige.fim.encrypt.RsaCipherFactory;
 import com.feige.fim.utils.encrypt.RsaUtils;
 import com.feige.fim.server.NettyTcpServerProvider;
-import com.feige.framework.context.AppContext;
 import com.feige.fim.utils.ReflectionUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -29,24 +30,25 @@ import java.util.List;
 
 public class ServerTest {
     public static final String CONFIG_PATH = "E:\\project\\my\\X-fim-parent\\conf\\fim.yaml";
+    private static ApplicationContext applicationContext;
     
     @BeforeClass
     public static void initialize() throws Exception {
         System.out.println("initialize start...");
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
-        Configs.loadConfig();
+        applicationContext = new StandardApplicationContext();
         System.out.println("initialize end...");
     }
     
     @Test
     public void configTest(){
-        Assert.assertEquals(Configs.getString(Configs.CONFIG_FILE_KEY), CONFIG_PATH);
+        Assert.assertEquals(applicationContext.getEnvironment().getString(Configs.CONFIG_FILE_KEY), CONFIG_PATH);
         Assert.assertEquals(Configs.getString(ServerConfigKey.LOG_LEVEL), "debug");
     }
     
     @Test
     public void createTcpServer(){
-        final ServerProvider serverProvider = AppContext.get("tcp", ServerProvider.class);
+        final ServerProvider serverProvider = applicationContext.get("tcp", ServerProvider.class);
         Server server = serverProvider.get();
         server.syncStart();
         server.syncStop();
@@ -54,7 +56,7 @@ public class ServerTest {
 
     @Test
     public void createWsServer(){
-        final ServerProvider serverProvider = AppContext.get("ws", ServerProvider.class);
+        final ServerProvider serverProvider = applicationContext.get("ws", ServerProvider.class);
         Server server = serverProvider.get();
         server.syncStart();
         server.syncStop();

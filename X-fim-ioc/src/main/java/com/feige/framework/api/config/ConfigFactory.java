@@ -8,5 +8,5 @@ public interface ConfigFactory {
      * @return
      * @throws Exception
      */
-    Config create() throws Exception;
+    Config create() throws IllegalStateException;
 }

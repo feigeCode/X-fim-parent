@@ -1,9 +1,9 @@
-package com.feige.framework.context;
+package com.feige.framework.extension;
 
+import com.feige.fim.utils.lg.Loggers;
 import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.spi.InstancePostProcessor;
-import com.feige.fim.utils.lg.Loggers;
 import com.feige.fim.utils.ReflectionUtils;
 
 @SpiComp

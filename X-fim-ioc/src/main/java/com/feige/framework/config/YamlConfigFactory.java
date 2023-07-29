@@ -1,9 +1,9 @@
-package com.feige.framework.config.impl;
+package com.feige.framework.config;
 
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.config.Config;
 import com.feige.framework.api.config.ConfigFactory;
-import com.feige.framework.config.Configs;
+import com.feige.framework.utils.Configs;
 import com.google.auto.service.AutoService;
 
 import java.io.File;
@@ -13,9 +13,13 @@ import java.io.File;
 @AutoService(ConfigFactory.class)
 public class YamlConfigFactory implements ConfigFactory {
     @Override
-    public Config create() throws Exception{
+    public Config create() throws IllegalStateException{
         YamlConfig yamlConfig = new YamlConfig();
-        yamlConfig.parseFile(getFile());
+        try {
+            yamlConfig.parseFile(getFile());
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
         return yamlConfig;
     }
 
