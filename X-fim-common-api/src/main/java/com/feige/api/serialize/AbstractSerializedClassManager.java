@@ -36,14 +36,14 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
     }
 
     @Override
-    public Class<?> getSerializedClass(byte serializerType, byte classKey) {
+    public Class<?> getClass(byte serializerType, byte classKey) {
         return classMap.get(joinClassKey(serializerType, classKey));
     }
 
     @Override
-    public Object getSerializedObject(byte serializerType, byte classKey, byte[] bytes) {
+    public Object getDeserializedObject(byte serializerType, byte classKey, byte[] bytes) {
         Serializer serializer = getSerializer(serializerType);
-        Class<?> serializedClass = getSerializedClass(serializerType, classKey);
+        Class<?> serializedClass = getClass(serializerType, classKey);
         if (serializer != null && serializedClass != null){
             return serializer.deserialize(serializedClass, bytes);
         }
@@ -51,7 +51,7 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
     }
 
     @Override
-    public byte[] getDeserializedObject(byte serializerType, Msg msg) {
+    public byte[] getSerializedObject(byte serializerType, Msg msg) {
         Serializer serializer = serializerMap.get(serializerType);
         if (serializer != null){
             return serializer.serialize(msg);

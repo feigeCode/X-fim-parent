@@ -1,6 +1,9 @@
 package com.feige.fim.utils;
 
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+
 /**
  * @author feige<br />
  * @ClassName: StringUtils <br/>
@@ -10,6 +13,8 @@ package com.feige.fim.utils;
 public class StringUtils {
 
     public static final String EMPTY_STR = "";
+    public final static Joiner   commaJoiner = Joiner.on(",").skipNulls();
+    public final static Splitter commaSplitter = Splitter.on(",").omitEmptyStrings();
 
     public static boolean isEmpty(Object str) {
         return str == null || EMPTY_STR.equals(str);

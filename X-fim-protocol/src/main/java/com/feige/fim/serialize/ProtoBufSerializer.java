@@ -11,13 +11,16 @@ import com.google.auto.service.AutoService;
 public class ProtoBufSerializer implements Serializer {
 
     @Override
-    public byte[] serialize(Msg obj) {
-        return obj.serialize();
+    public byte[] serialize(Object obj) {
+        if (obj instanceof Msg){
+            return ((Msg) obj).serialize();
+        }
+        return new byte[0];
     }
 
     @Override
-    public Object deserialize(Class<?> clazz, byte[] bytes) {
-        Object obj = null;
+    public <T> T deserialize(Class<T> clazz, byte[] bytes) {
+        T obj = null;
         try {
             obj = clazz.newInstance();
             if (obj instanceof Msg){

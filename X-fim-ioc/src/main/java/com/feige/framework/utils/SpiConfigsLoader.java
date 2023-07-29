@@ -3,6 +3,7 @@ package com.feige.framework.utils;
 import com.feige.fim.utils.AssertUtil;
 import com.feige.fim.utils.ClassUtils;
 import com.feige.fim.utils.ReflectionUtils;
+import com.feige.fim.utils.StringUtils;
 import com.feige.framework.boot.ConfigSpiLoader;
 import com.feige.framework.config.Configs;
 import com.feige.framework.order.OrderComparator;
@@ -72,7 +73,7 @@ public class SpiConfigsLoader {
                 for (Map.Entry<?, ?> entry : properties.entrySet()) {
                     String factoryTypeName = ((String) entry.getKey()).trim();
                     List<String> factoryImplementationNames =
-                            Configs.commaSplitter.splitToList((String) entry.getValue());
+                            StringUtils.commaSplitter.splitToList((String) entry.getValue());
                     for (String factoryImplementationName : factoryImplementationNames) {
                         result.computeIfAbsent(factoryTypeName, key -> new ArrayList<>())
                                 .add(factoryImplementationName.trim());

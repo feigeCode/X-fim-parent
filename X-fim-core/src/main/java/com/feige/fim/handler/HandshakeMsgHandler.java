@@ -28,7 +28,7 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
 
     @Override
     public void handle(Session session, Packet packet) throws RemotingException {
-        Handshake handshake = serializedClassManager.getSerializedObject(packet.getSerializerType(), packet.getClassKey(), packet.getData(), getMsgInterface());
+        Handshake handshake = serializedClassManager.getDeserializedObject(packet.getSerializerType(), packet.getClassKey(), packet.getData(), getMsgInterface());
         
     }
 

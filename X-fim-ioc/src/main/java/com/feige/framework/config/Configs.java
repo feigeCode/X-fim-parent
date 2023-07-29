@@ -22,8 +22,7 @@ public final class Configs {
 
     public final static String CONFIG_FILE_KEY = "fim.path";
     public final static String DEFAULT_CONFIG_PATH = "conf" + File.separator + "fim.";
-    public final static Splitter equalsSplitter = Splitter.on("=").omitEmptyStrings();
-    public final static Splitter commaSplitter = Splitter.on(",").omitEmptyStrings();
+    
 
     public interface ConfigKey {
         /**

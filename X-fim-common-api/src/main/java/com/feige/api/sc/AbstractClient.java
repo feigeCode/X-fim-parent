@@ -43,7 +43,7 @@ public abstract class AbstractClient extends ServiceAdapter implements Client {
     
     
     protected void doReconnect(){
-        this.syncStart();
+        this.syncStop();
         this.syncStart();
     }
 

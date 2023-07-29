@@ -20,6 +20,20 @@ public class AesUtils {
     static final String SHA1_PRNG = "SHA1PRNG";
     public static final String KEY_ALGORITHM_PADDING = "AES/CBC/PKCS5Padding";
     public static final int DEFAULT_KEY_SIZE = 128;
+
+    public static byte[] randomAesKey(int keySize) {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[DEFAULT_KEY_SIZE];
+        random.nextBytes(bytes);
+        return bytes;
+    }
+
+    public byte[] randomAesIv(int size) {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[size];
+        random.nextBytes(bytes);
+        return bytes;
+    }
     
 
     public static SecretKeySpec getKeySpec(byte[] key, int keySize) throws NoSuchAlgorithmException {

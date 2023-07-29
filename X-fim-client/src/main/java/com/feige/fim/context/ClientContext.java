@@ -1,8 +1,16 @@
 package com.feige.fim.context;
 
+import com.feige.fim.config.ClientConfig;
+
+
 public class ClientContext {
+    private static ClientConfig clientConfig;
     
-    public static String currentClientId(){
-        return "test-client-id-1234567";
+    public static ClientConfig getClientConfig(){
+        return clientConfig;
+    }
+    
+    public static void setClientConfig(ClientConfig cf){
+        clientConfig = cf;
     }
 }
