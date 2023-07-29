@@ -1,9 +1,11 @@
 package com.feige.framework.utils;
 
 
+import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.config.Config;
 import com.feige.framework.api.context.Environment;
 import com.feige.fim.utils.StringUtils;
+import com.feige.framework.api.context.EnvironmentAware;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,8 +13,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-
-public final class Configs {
+@SpiComp
+public class Configs implements EnvironmentAware  {
 
     public final static String CONFIG_FILE_KEY = "fim.path";
     public final static String DEFAULT_CONFIG_PATH = "conf" + File.separator + "fim.";
@@ -45,7 +47,8 @@ public final class Configs {
     }
     private static Environment environment;
 
-    public static void setEnvironment(Environment environment) {
+    @Override
+    public void setEnvironment(Environment environment) {
         Configs.environment = environment;
     }
 

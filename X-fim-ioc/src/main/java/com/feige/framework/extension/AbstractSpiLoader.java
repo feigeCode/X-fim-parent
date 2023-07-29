@@ -5,7 +5,6 @@ import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.context.ApplicationContextAware;
-import com.feige.framework.api.context.Environment;
 import com.feige.framework.api.context.EnvironmentAware;
 import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.framework.api.context.SpiLoaderAware;
@@ -19,6 +18,8 @@ import com.feige.fim.utils.lg.Loggers;
 import com.feige.fim.utils.ClassUtils;
 import com.feige.fim.utils.ReflectionUtils;
 import com.feige.fim.utils.StringUtils;
+import com.feige.framework.utils.AppContext;
+import com.feige.framework.utils.Configs;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 
@@ -41,11 +42,9 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     private final AtomicBoolean isInitialized = new AtomicBoolean(false);
     
     private final ApplicationContext applicationContext;
-    private final Environment environment;
 
-    public AbstractSpiLoader(ApplicationContext applicationContext, Environment environment) {
+    public AbstractSpiLoader(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-        this.environment = environment;
     }
 
     @Override
@@ -56,7 +55,9 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
                 invokeAwareMethods(instance);
                 this.processors.add((InstancePostProcessor)instance);
             }
-            load(InstanceProvider.class);
+            this.load(Configs.class);
+            this.load(AppContext.class);
+            this.load(InstanceProvider.class);
         }
     }
     
@@ -294,7 +295,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
             ((ApplicationContextAware) instance).setApplicationContext(applicationContext);
         }
         if (instance instanceof EnvironmentAware){
-            ((EnvironmentAware) instance).setEnvironment(environment);
+            ((EnvironmentAware) instance).setEnvironment(applicationContext.getEnvironment());
         }
     }
 
@@ -303,8 +304,8 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         ReflectionUtils.doWithFields(instance.getClass(), field -> {
             Class<?> type = field.getType();
             Object value = null;
-            if (field.isAnnotationPresent(Inject.class)) {
-                Inject inject = field.getAnnotation(Inject.class);
+            Inject inject = field.getAnnotation(Inject.class);
+            if (inject != null) {
                 String key = inject.value();
                 if (StringUtils.isNotBlank(key)){
                     value = this.get(key, type);
@@ -312,11 +313,11 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
                     value = this.getFirst(type);
                 }
             }
-            
-            if (field.isAnnotationPresent(Value.class)){
-                Value valueAnnotation = field.getAnnotation(Value.class);
+
+            Value valueAnnotation = field.getAnnotation(Value.class);
+            if (valueAnnotation != null){
                 String configKey = valueAnnotation.value();
-                value = environment.convert(type, configKey, null);
+                value = applicationContext.getEnvironment().convert(type, configKey, null);
                 // 空安全，空值不设置
                 if (value == null && valueAnnotation.nullSafe()){
                     return;
@@ -326,7 +327,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
                 ReflectionUtils.makeAccessible(field);
                 ReflectionUtils.setField(field, instance, value);
             }
-        });
+        }, field -> field.isAnnotationPresent(Inject.class) || field.isAnnotationPresent(Value.class));
     }
     
     protected abstract List<Object> doLoadInstance(Class<?> loadClass);

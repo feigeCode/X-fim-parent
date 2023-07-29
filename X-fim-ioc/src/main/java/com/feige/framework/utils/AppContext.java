@@ -1,6 +1,8 @@
 package com.feige.framework.utils;
 
+import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.context.ApplicationContext;
+import com.feige.framework.api.context.ApplicationContextAware;
 import com.feige.framework.api.spi.SpiNotFoundException;
 
 
@@ -13,16 +15,12 @@ import java.util.List;
  * @Description: <br/>
  * @date: 2023/5/20 15:13<br/>
  */
-public class AppContext  {
+@SpiComp
+public class AppContext  implements ApplicationContextAware {
 
     
     private static ApplicationContext applicationContext;
     
-    
-
-    public static void setApplication(ApplicationContext applicationContext){
-        AppContext.applicationContext = applicationContext;
-    }
     
     /**
      * get object by key
@@ -58,5 +56,10 @@ public class AppContext  {
      */
     public static <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException {
         return applicationContext.getAll(clazz);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        AppContext.applicationContext = applicationContext;
     }
 }

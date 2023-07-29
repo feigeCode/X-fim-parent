@@ -42,10 +42,10 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     private SpiLoader createSpiLoader(String type){
         SpiLoader spiLoader;
         if (Objects.equals(type, ConfigSpiLoader.TYPE)){
-            spiLoader = new ConfigSpiLoader(this, this.environment);
+            spiLoader = new ConfigSpiLoader(this);
             Loggers.LOADER.info("使用" + ConfigSpiLoader.class.getName() + "加载器");
         }else {
-            spiLoader = new JdkSpiLoader(this, this.environment);
+            spiLoader = new JdkSpiLoader(this);
             Loggers.LOADER.info("使用" + JdkSpiLoader.class.getName() + "加载器");
         }
         return spiLoader;
@@ -53,9 +53,7 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
 
     @Override
     public void initialize() throws IllegalStateException {
-        AppContext.setApplication(this);
         this.environment.initialize();
-        Configs.setEnvironment(this.environment);
         this.spiLoader.initialize();
     }
 

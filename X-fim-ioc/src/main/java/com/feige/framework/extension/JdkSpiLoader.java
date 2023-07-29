@@ -2,7 +2,6 @@ package com.feige.framework.extension;
 
 
 import com.feige.framework.api.context.ApplicationContext;
-import com.feige.framework.api.context.Environment;
 import com.feige.framework.order.OrderComparator;
 
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ public class JdkSpiLoader extends AbstractSpiLoader {
     
     public static final String TYPE = "jdk";
 
-    public JdkSpiLoader(ApplicationContext applicationContext, Environment environment) {
-        super(applicationContext, environment);
+    public JdkSpiLoader(ApplicationContext applicationContext) {
+        super(applicationContext);
     }
 
 
