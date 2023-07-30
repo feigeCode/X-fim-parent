@@ -8,6 +8,7 @@ import com.feige.framework.api.context.ApplicationContextAware;
 import com.feige.framework.api.context.EnvironmentAware;
 import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.framework.api.context.SpiLoaderAware;
+import com.feige.framework.api.spi.ObjectFactory;
 import com.feige.framework.order.OrderComparator;
 import com.feige.framework.api.spi.InstanceProvider;
 import com.feige.framework.api.spi.SpiLoader;
@@ -25,8 +26,10 @@ import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -34,10 +37,14 @@ import java.util.stream.Collectors;
 public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiLoader {
 
     protected static final Logger LOG = Loggers.LOADER;
-    protected final Map<Class<?>, List<Object>> instanceCache = new ConcurrentHashMap<>();
-    protected final Map<String, Object> singletonObjectCache = new ConcurrentHashMap<>();
-    protected final Map<String, Object> instanceProviderObjectCache = new ConcurrentHashMap<>();
-    protected final Map<Class<?>, String> instanceNameCache = new ConcurrentHashMap<>();
+    private final Set<String> singletonsCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
+    private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>(16);
+    private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
+    protected final Map<Class<?>, List<Object>> earlyInstancesCache = new ConcurrentHashMap<>(16);
+    protected final Map<String, Object> singletonObjectCache = new ConcurrentHashMap<>(64);
+    protected final Map<String, Object> instanceProviderObjectCache = new ConcurrentHashMap<>(32);
+    protected final Map<Class<?>, String> instanceNameCache = new ConcurrentHashMap<>(64);
+    protected final Map<Class<?>, List<String>> classInstancesNameCache = new ConcurrentHashMap<>();
     protected final List<InstancePostProcessor> processors = new ArrayList<>();
     private final AtomicBoolean isInitialized = new AtomicBoolean(false);
     
@@ -62,13 +69,11 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     }
     
     @Override
-    public void register(Class<?> clazz, List<Object> instances) {
-        AssertUtil.notNull(clazz, "class");
-        AssertUtil.notEmpty(instances, "instances");
-        for (Object instance : instances) {
-            String instanceName = getInstanceName(instance.getClass());
-            this.singletonObjectCache.put(instanceName, instance);
-        }
+    public void register(String instanceName, Object instance) {
+        AssertUtil.notNull(instanceName, "instanceName");
+        AssertUtil.notNull(instance, "instance");
+        this.instanceNameCache.putIfAbsent(instance.getClass(), instanceName);
+        this.singletonObjectCache.put(instanceName, instance);
     }
 
     @Override
@@ -86,8 +91,57 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         if (instance == null){
             throw new SpiNotFoundException(clazz, key);
         }
-        instance = instanceProviderHandle(key, instance, clazz);
+        instance = getObjectForInstance(key, instance, clazz);
         return clazz.cast(instance);
+    }
+    
+    protected <T> T doGetInstance(String instanceName, Class<T> requireType){
+        Object instanceObject = getSingleton(instanceName, true);
+        if (instanceObject != null){
+            if (LOG.isTraceEnabled()) {
+                if (isSingletonCurrentlyInCreation(instanceName)) {
+                    LOG.trace("Returning eagerly cached instance of singleton instance '" + instanceName +
+                            "' that is not fully initialized yet - a consequence of a circular reference");
+                }
+                else {
+                    LOG.trace("Returning cached instance of singleton instance '" + instanceName + "'");
+                }
+            }
+            instanceObject = getObjectForInstance(instanceName, instanceObject, requireType);
+        }else {
+            
+        }
+        
+        return (T) instanceObject;
+    }
+    
+    
+    protected Object getSingleton(String instanceName, boolean allowEarlyReference){
+        Object instanceObject = this.singletonObjectCache.get(instanceName);
+        if (instanceObject == null && isSingletonCurrentlyInCreation(instanceName)){
+            instanceObject = this.earlySingletonObjects.get(instanceName);
+            if (instanceObject == null && allowEarlyReference){
+                synchronized (this.singletonObjectCache){
+                    instanceObject = this.singletonObjectCache.get(instanceName);
+                    if (instanceObject == null){
+                        instanceObject = earlySingletonObjects.get(instanceName);
+                        if (instanceObject == null){
+                            ObjectFactory<?> singletonFactory = this.singletonFactories.get(instanceName);
+                            if (singletonFactory != null) {
+                                instanceObject = singletonFactory.getObject();
+                                this.earlySingletonObjects.put(instanceName, instanceObject);
+                                this.singletonFactories.remove(instanceName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return instanceObject;
+    }
+
+    public boolean isSingletonCurrentlyInCreation(String instanceName) {
+        return this.singletonsCurrentlyInCreation.contains(instanceName);
     }
 
     @Override
@@ -108,7 +162,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         if (t != null){
             return t;
         }
-        instance = instanceProviderHandle(instanceName, instance, clazz);
+        instance = getObjectForInstance(instanceName, instance, clazz);
         return clazz.cast(instance);
     }
 
@@ -158,13 +212,18 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     }
 
     private  List<Object> loadClass(Class<?> clazz){
-        List<Object> instanceList = instanceCache.get(clazz);
+        if (clazz.isInterface() || ClassUtils.isAbstractClass(clazz)){
+            List<String> list = classInstancesNameCache.get(clazz);
+        }else {
+            
+        }
+        List<Object> instanceList = earlyInstancesCache.get(clazz);
         if (instanceList == null){
-            synchronized (instanceCache){
-                instanceList = instanceCache.get(clazz);
+            synchronized (earlyInstancesCache){
+                instanceList = earlyInstancesCache.get(clazz);
                 if(instanceList == null){
                     load(clazz);
-                    instanceList = instanceCache.get(clazz);
+                    instanceList = earlyInstancesCache.get(clazz);
                 }
             }
         }
@@ -180,25 +239,37 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
             instances = doLoadInstance(clazz);
         }else {
             Object instance = createInstance(clazz);
+            if (instance == null){
+                return;
+            }
             instances = Collections.singletonList(instance);
         }
         if (CollectionUtils.isNotEmpty(instances)){
             List<Object> newInstances = instances.stream()
                     .map(instance -> applyBeanPostProcessorsBeforeInitialization(instance, getInstanceName(instance.getClass())))
                     .collect(Collectors.toList());
-            this.instanceCache.put(clazz, newInstances);
+            this.earlyInstancesCache.put(clazz, newInstances);
+            Map<Class<?>, List<Object>> instanceProviderMap = null;
             if (InstanceProvider.class.equals(clazz)){
-                newInstances.stream()
-                        .collect(Collectors.groupingBy(instance -> ((InstanceProvider<?>) instance).getType()))
-                        .forEach((k, v) -> {
-                            v.sort(OrderComparator.getInstance());
-                            this.instanceCache.put(k, v);
-                        });
+                instanceProviderMap = newInstances.stream()
+                        .collect(Collectors.groupingBy(instance -> ((InstanceProvider<?>) instance).getType()));
+                instanceProviderMap.forEach((k, v) -> {
+                    v.sort(OrderComparator.getInstance());
+                    earlyInstancesCache.put(k, v);
+                });
             }
             injectInstance(newInstances);
             invokeAwareMethods(newInstances);
-            instances.forEach(instance -> applyBeanPostProcessorsAfterInitialization(instance, getInstanceName(instance.getClass())));
-            register(clazz, newInstances);
+            for (Object instance : newInstances) {
+                String instanceName = getInstanceName(instance.getClass());
+                applyBeanPostProcessorsAfterInitialization(instance, instanceName);
+                register(instanceName, instance);
+                this.classInstancesNameCache.computeIfAbsent(clazz, k -> new ArrayList<>()).add(instanceName);
+            }
+            earlyInstancesCache.remove(clazz);
+            if (instanceProviderMap != null){
+                instanceProviderMap.forEach((k, v) -> earlyInstancesCache.remove(k));
+            }
         }else {
             LOG.warn("class = {}, No implementation classes have been registered", clazz.getName());
         }
@@ -218,20 +289,20 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     
     
 
-    private Object instanceProviderHandle(String key, Object instance, Class<?> clazz) {
+    private Object getObjectForInstance(String instanceName, Object instance, Class<?> clazz) {
         if (instance instanceof InstanceProvider && !InstanceProvider.class.isAssignableFrom(clazz)) {
             InstanceProvider<?> instanceProvider = (InstanceProvider<?>) instance;
             if (!isSingleton(instance)){
                 return instanceProvider.getInstance();
             }
-            Object realInstance = instanceProviderObjectCache.get(key);
+            Object realInstance = instanceProviderObjectCache.get(instanceName);
             if (realInstance == null){
                 synchronized (instanceProviderObjectCache){
-                    realInstance = instanceProviderObjectCache.get(key);
+                    realInstance = instanceProviderObjectCache.get(instanceName);
                     if (realInstance == null){
                         realInstance = instanceProvider.getInstance();
                         if (instanceProvider.isSingleton()){
-                            instanceProviderObjectCache.put(key, realInstance);
+                            instanceProviderObjectCache.put(instanceName, realInstance);
                         }
                     }
                 }

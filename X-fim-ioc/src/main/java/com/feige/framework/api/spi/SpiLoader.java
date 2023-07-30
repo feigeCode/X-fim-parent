@@ -13,11 +13,11 @@ import java.util.List;
 public interface SpiLoader extends Lifecycle {
 
     /**
-     * register objects
-     * @param clazz class
-     * @param instances object list
+     * register object
+     * @param instanceName instance name
+     * @param instance object 
      */
-    void register(Class<?> clazz, List<Object> instances);
+    void register(String instanceName, Object instance);
 
 
     /**

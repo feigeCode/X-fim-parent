@@ -8,8 +8,6 @@ import com.feige.framework.api.spi.SpiLoader;
 import com.feige.framework.api.spi.SpiNotFoundException;
 import com.feige.framework.extension.ConfigSpiLoader;
 import com.feige.framework.extension.JdkSpiLoader;
-import com.feige.framework.utils.AppContext;
-import com.feige.framework.utils.Configs;
 
 import java.util.List;
 import java.util.Objects;
@@ -71,8 +69,8 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
 
 
     @Override
-    public void register(Class<?> clazz, List<Object> instances) {
-        this.spiLoader.register(clazz, instances);
+    public void register(String instanceName, Object instance) {
+        this.spiLoader.register(instanceName, instance);
     }
 
     @Override
