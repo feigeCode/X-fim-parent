@@ -7,8 +7,6 @@ import com.feige.framework.context.StandardApplicationContext;
 import com.feige.framework.extension.JdkSpiLoader;
 import com.feige.framework.utils.Configs;
 
-import java.util.Collections;
-
 
 public class NettyClientDemo {
 
@@ -23,7 +21,7 @@ public class NettyClientDemo {
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         ApplicationContext applicationContext = new StandardApplicationContext(JdkSpiLoader.TYPE);
         ClientConfig clientConfig = new ClientConfig();
-        applicationContext.register(ClientConfig.class, Collections.singletonList(clientConfig));
+        applicationContext.register("clientConfig", clientConfig);
         Client client = applicationContext.get("nettyClient", Client.class);
         client.syncStart();
     }
