@@ -17,7 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private FastConnectMsgProto() {
     clientId_ = "";
-    sid_ = "";
+    sessionId_ = "";
   }
 
   @java.lang.Override
@@ -59,7 +59,7 @@ private static final long serialVersionUID = 0L;
           case 18: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            sid_ = s;
+            sessionId_ = s;
             break;
           }
           default: {
@@ -94,10 +94,10 @@ private static final long serialVersionUID = 0L;
             com.feige.fim.msg.proto.FastConnectMsgProto.class, com.feige.fim.msg.proto.FastConnectMsgProto.Builder.class);
   }
 
-  public static final int CLIENTID_FIELD_NUMBER = 1;
+  public static final int CLIENT_ID_FIELD_NUMBER = 1;
   private volatile java.lang.Object clientId_;
   /**
-   * <code>string clientId = 1;</code>
+   * <code>string client_id = 1;</code>
    * @return The clientId.
    */
   @java.lang.Override
@@ -114,7 +114,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string clientId = 1;</code>
+   * <code>string client_id = 1;</code>
    * @return The bytes for clientId.
    */
   @java.lang.Override
@@ -132,38 +132,38 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int SID_FIELD_NUMBER = 2;
-  private volatile java.lang.Object sid_;
+  public static final int SESSION_ID_FIELD_NUMBER = 2;
+  private volatile java.lang.Object sessionId_;
   /**
-   * <code>string sid = 2;</code>
-   * @return The sid.
+   * <code>string session_id = 2;</code>
+   * @return The sessionId.
    */
   @java.lang.Override
-  public java.lang.String getSid() {
-    java.lang.Object ref = sid_;
+  public java.lang.String getSessionId() {
+    java.lang.Object ref = sessionId_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      sid_ = s;
+      sessionId_ = s;
       return s;
     }
   }
   /**
-   * <code>string sid = 2;</code>
-   * @return The bytes for sid.
+   * <code>string session_id = 2;</code>
+   * @return The bytes for sessionId.
    */
   @java.lang.Override
   public com.google.protobuf.ByteString
-      getSidBytes() {
-    java.lang.Object ref = sid_;
+      getSessionIdBytes() {
+    java.lang.Object ref = sessionId_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      sid_ = b;
+      sessionId_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -187,8 +187,8 @@ private static final long serialVersionUID = 0L;
     if (!getClientIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, clientId_);
     }
-    if (!getSidBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sid_);
+    if (!getSessionIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sessionId_);
     }
     unknownFields.writeTo(output);
   }
@@ -202,8 +202,8 @@ private static final long serialVersionUID = 0L;
     if (!getClientIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, clientId_);
     }
-    if (!getSidBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sid_);
+    if (!getSessionIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sessionId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -222,8 +222,8 @@ private static final long serialVersionUID = 0L;
 
     if (!getClientId()
         .equals(other.getClientId())) return false;
-    if (!getSid()
-        .equals(other.getSid())) return false;
+    if (!getSessionId()
+        .equals(other.getSessionId())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -235,10 +235,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + CLIENTID_FIELD_NUMBER;
+    hash = (37 * hash) + CLIENT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getClientId().hashCode();
-    hash = (37 * hash) + SID_FIELD_NUMBER;
-    hash = (53 * hash) + getSid().hashCode();
+    hash = (37 * hash) + SESSION_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getSessionId().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -374,7 +374,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       clientId_ = "";
 
-      sid_ = "";
+      sessionId_ = "";
 
       return this;
     }
@@ -403,7 +403,7 @@ private static final long serialVersionUID = 0L;
     public com.feige.fim.msg.proto.FastConnectMsgProto buildPartial() {
       com.feige.fim.msg.proto.FastConnectMsgProto result = new com.feige.fim.msg.proto.FastConnectMsgProto(this);
       result.clientId_ = clientId_;
-      result.sid_ = sid_;
+      result.sessionId_ = sessionId_;
       onBuilt();
       return result;
     }
@@ -456,8 +456,8 @@ private static final long serialVersionUID = 0L;
         clientId_ = other.clientId_;
         onChanged();
       }
-      if (!other.getSid().isEmpty()) {
-        sid_ = other.sid_;
+      if (!other.getSessionId().isEmpty()) {
+        sessionId_ = other.sessionId_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -491,7 +491,7 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object clientId_ = "";
     /**
-     * <code>string clientId = 1;</code>
+     * <code>string client_id = 1;</code>
      * @return The clientId.
      */
     public java.lang.String getClientId() {
@@ -507,7 +507,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string clientId = 1;</code>
+     * <code>string client_id = 1;</code>
      * @return The bytes for clientId.
      */
     public com.google.protobuf.ByteString
@@ -524,7 +524,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string clientId = 1;</code>
+     * <code>string client_id = 1;</code>
      * @param value The clientId to set.
      * @return This builder for chaining.
      */
@@ -539,7 +539,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string clientId = 1;</code>
+     * <code>string client_id = 1;</code>
      * @return This builder for chaining.
      */
     public Builder clearClientId() {
@@ -549,7 +549,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string clientId = 1;</code>
+     * <code>string client_id = 1;</code>
      * @param value The bytes for clientId to set.
      * @return This builder for chaining.
      */
@@ -565,78 +565,78 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object sid_ = "";
+    private java.lang.Object sessionId_ = "";
     /**
-     * <code>string sid = 2;</code>
-     * @return The sid.
+     * <code>string session_id = 2;</code>
+     * @return The sessionId.
      */
-    public java.lang.String getSid() {
-      java.lang.Object ref = sid_;
+    public java.lang.String getSessionId() {
+      java.lang.Object ref = sessionId_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        sid_ = s;
+        sessionId_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string sid = 2;</code>
-     * @return The bytes for sid.
+     * <code>string session_id = 2;</code>
+     * @return The bytes for sessionId.
      */
     public com.google.protobuf.ByteString
-        getSidBytes() {
-      java.lang.Object ref = sid_;
+        getSessionIdBytes() {
+      java.lang.Object ref = sessionId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        sid_ = b;
+        sessionId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string sid = 2;</code>
-     * @param value The sid to set.
+     * <code>string session_id = 2;</code>
+     * @param value The sessionId to set.
      * @return This builder for chaining.
      */
-    public Builder setSid(
+    public Builder setSessionId(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      sid_ = value;
+      sessionId_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string sid = 2;</code>
+     * <code>string session_id = 2;</code>
      * @return This builder for chaining.
      */
-    public Builder clearSid() {
+    public Builder clearSessionId() {
       
-      sid_ = getDefaultInstance().getSid();
+      sessionId_ = getDefaultInstance().getSessionId();
       onChanged();
       return this;
     }
     /**
-     * <code>string sid = 2;</code>
-     * @param value The bytes for sid to set.
+     * <code>string session_id = 2;</code>
+     * @param value The bytes for sessionId to set.
      * @return This builder for chaining.
      */
-    public Builder setSidBytes(
+    public Builder setSessionIdBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      sid_ = value;
+      sessionId_ = value;
       onChanged();
       return this;
     }

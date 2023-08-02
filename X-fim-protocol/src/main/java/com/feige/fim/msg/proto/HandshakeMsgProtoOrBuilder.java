@@ -8,66 +8,54 @@ public interface HandshakeMsgProtoOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string clientKey = 1;</code>
+   * <code>bytes client_key = 1;</code>
    * @return The clientKey.
    */
-  java.lang.String getClientKey();
-  /**
-   * <code>string clientKey = 1;</code>
-   * @return The bytes for clientKey.
-   */
-  com.google.protobuf.ByteString
-      getClientKeyBytes();
+  com.google.protobuf.ByteString getClientKey();
 
   /**
-   * <code>string iv = 2;</code>
+   * <code>bytes iv = 2;</code>
    * @return The iv.
    */
-  java.lang.String getIv();
-  /**
-   * <code>string iv = 2;</code>
-   * @return The bytes for iv.
-   */
-  com.google.protobuf.ByteString
-      getIvBytes();
+  com.google.protobuf.ByteString getIv();
 
   /**
-   * <code>string clientVersion = 3;</code>
+   * <code>string client_version = 3;</code>
    * @return The clientVersion.
    */
   java.lang.String getClientVersion();
   /**
-   * <code>string clientVersion = 3;</code>
+   * <code>string client_version = 3;</code>
    * @return The bytes for clientVersion.
    */
   com.google.protobuf.ByteString
       getClientVersionBytes();
 
   /**
-   * <code>string clientName = 4;</code>
-   * @return The clientName.
+   * <code>string os_name = 4;</code>
+   * @return The osName.
    */
-  java.lang.String getClientName();
+  java.lang.String getOsName();
   /**
-   * <code>string clientName = 4;</code>
-   * @return The bytes for clientName.
+   * <code>string os_name = 4;</code>
+   * @return The bytes for osName.
    */
   com.google.protobuf.ByteString
-      getClientNameBytes();
+      getOsNameBytes();
 
   /**
-   * <code>uint32 osCode = 5;</code>
+   * <code>uint32 os_code = 5;</code>
    * @return The osCode.
    */
   int getOsCode();
 
   /**
-   * <code>string clientId = 6;</code>
+   * <code>string client_id = 6;</code>
    * @return The clientId.
    */
   java.lang.String getClientId();
   /**
-   * <code>string clientId = 6;</code>
+   * <code>string client_id = 6;</code>
    * @return The bytes for clientId.
    */
   com.google.protobuf.ByteString
@@ -84,38 +72,4 @@ public interface HandshakeMsgProtoOrBuilder extends
    */
   com.google.protobuf.ByteString
       getTokenBytes();
-
-  /**
-   * <code>map&lt;string, string&gt; extra = 8;</code>
-   */
-  int getExtraCount();
-  /**
-   * <code>map&lt;string, string&gt; extra = 8;</code>
-   */
-  boolean containsExtra(
-      java.lang.String key);
-  /**
-   * Use {@link #getExtraMap()} instead.
-   */
-  @java.lang.Deprecated
-  java.util.Map<java.lang.String, java.lang.String>
-  getExtra();
-  /**
-   * <code>map&lt;string, string&gt; extra = 8;</code>
-   */
-  java.util.Map<java.lang.String, java.lang.String>
-  getExtraMap();
-  /**
-   * <code>map&lt;string, string&gt; extra = 8;</code>
-   */
-
-  java.lang.String getExtraOrDefault(
-      java.lang.String key,
-      java.lang.String defaultValue);
-  /**
-   * <code>map&lt;string, string&gt; extra = 8;</code>
-   */
-
-  java.lang.String getExtraOrThrow(
-      java.lang.String key);
 }

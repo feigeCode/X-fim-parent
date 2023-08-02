@@ -8,26 +8,26 @@ public interface FastConnectMsgProtoOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string clientId = 1;</code>
+   * <code>string client_id = 1;</code>
    * @return The clientId.
    */
   java.lang.String getClientId();
   /**
-   * <code>string clientId = 1;</code>
+   * <code>string client_id = 1;</code>
    * @return The bytes for clientId.
    */
   com.google.protobuf.ByteString
       getClientIdBytes();
 
   /**
-   * <code>string sid = 2;</code>
-   * @return The sid.
+   * <code>string session_id = 2;</code>
+   * @return The sessionId.
    */
-  java.lang.String getSid();
+  java.lang.String getSessionId();
   /**
-   * <code>string sid = 2;</code>
-   * @return The bytes for sid.
+   * <code>string session_id = 2;</code>
+   * @return The bytes for sessionId.
    */
   com.google.protobuf.ByteString
-      getSidBytes();
+      getSessionIdBytes();
 }

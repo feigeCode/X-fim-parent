@@ -8,7 +8,7 @@ public interface Handshake extends Msg {
     String getClientKey();
     String getIv();
     String getClientVersion();
-    String getClientName();
+    String getOsName();
     int getOsCode();
     String getClientId();
     String getToken();
