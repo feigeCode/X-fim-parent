@@ -268,9 +268,11 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     
     private String generateInstanceName(Class<?> clazz){
         SpiComp spiCompAnnotation = clazz.getAnnotation(SpiComp.class);
-        String value = spiCompAnnotation.value();
-        if (StringUtils.isNotBlank(value)){
-            return value;
+        if (spiCompAnnotation != null){
+            String value = spiCompAnnotation.value();
+            if (StringUtils.isNotBlank(value)){
+                return value;
+            }
         }
         return StringUtils.uncapitalize(clazz.getSimpleName());
     }
