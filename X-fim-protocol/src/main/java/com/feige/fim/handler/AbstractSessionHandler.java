@@ -25,11 +25,11 @@ import java.util.List;
  */
 public abstract class AbstractSessionHandler implements SessionHandler, ApplicationContextAware {
 
-    private ApplicationContext ac;
+    protected ApplicationContext applicationContext;
     
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
-        ac = applicationContext;
+        this.applicationContext = applicationContext;
     }
 
     @Inject
@@ -40,7 +40,7 @@ public abstract class AbstractSessionHandler implements SessionHandler, Applicat
 
     @InitMethod
     public void initializeMsgHandler(){
-        List<MsgHandler> msgHandlers = ac.getAll(MsgHandler.class);
+        List<MsgHandler> msgHandlers = applicationContext.getAll(MsgHandler.class);
         for (MsgHandler<Packet> msgHandler : msgHandlers) {
             this.msgDispatcher.register(msgHandler);
         }
@@ -49,7 +49,7 @@ public abstract class AbstractSessionHandler implements SessionHandler, Applicat
 
     @InitMethod
     public void initializeSerializer(){
-        List<Serializer> serializers = ac.getAll(Serializer.class);
+        List<Serializer> serializers = applicationContext.getAll(Serializer.class);
         for (Serializer serializer : serializers) {
             serializedClassManager.register(serializer);
         }

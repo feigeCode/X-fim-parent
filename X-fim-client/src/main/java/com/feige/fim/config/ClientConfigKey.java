@@ -6,4 +6,6 @@ public interface ClientConfigKey {
     
     String CLIENT_TCP_IP_KEY = "fim.client.tcp.ip";
     String CLIENT_TCP_PORT_KEY = "fim.client.tcp.port";
+    
+    String FILE_SESSION_STORAGE_PATH_KEY = "fim.client.ss.path";
 }

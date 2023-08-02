@@ -16,10 +16,10 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private HandshakeMsgProto() {
-    clientKey_ = "";
-    iv_ = "";
+    clientKey_ = com.google.protobuf.ByteString.EMPTY;
+    iv_ = com.google.protobuf.ByteString.EMPTY;
     clientVersion_ = "";
-    clientName_ = "";
+    osName_ = "";
     clientId_ = "";
     token_ = "";
   }
@@ -44,7 +44,6 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
-    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -56,15 +55,13 @@ private static final long serialVersionUID = 0L;
             done = true;
             break;
           case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
 
-            clientKey_ = s;
+            clientKey_ = input.readBytes();
             break;
           }
           case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
 
-            iv_ = s;
+            iv_ = input.readBytes();
             break;
           }
           case 26: {
@@ -76,7 +73,7 @@ private static final long serialVersionUID = 0L;
           case 34: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            clientName_ = s;
+            osName_ = s;
             break;
           }
           case 40: {
@@ -94,19 +91,6 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             token_ = s;
-            break;
-          }
-          case 66: {
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              extra_ = com.google.protobuf.MapField.newMapField(
-                  ExtraDefaultEntryHolder.defaultEntry);
-              mutable_bitField0_ |= 0x00000001;
-            }
-            com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
-            extra__ = input.readMessage(
-                ExtraDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-            extra_.getMutableMap().put(
-                extra__.getKey(), extra__.getValue());
             break;
           }
           default: {
@@ -133,18 +117,6 @@ private static final long serialVersionUID = 0L;
     return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeMsgProto_descriptor;
   }
 
-  @SuppressWarnings({"rawtypes"})
-  @java.lang.Override
-  protected com.google.protobuf.MapField internalGetMapField(
-      int number) {
-    switch (number) {
-      case 8:
-        return internalGetExtra();
-      default:
-        throw new RuntimeException(
-            "Invalid map field number: " + number);
-    }
-  }
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
@@ -153,86 +125,32 @@ private static final long serialVersionUID = 0L;
             com.feige.fim.msg.proto.HandshakeMsgProto.class, com.feige.fim.msg.proto.HandshakeMsgProto.Builder.class);
   }
 
-  public static final int CLIENTKEY_FIELD_NUMBER = 1;
-  private volatile java.lang.Object clientKey_;
+  public static final int CLIENT_KEY_FIELD_NUMBER = 1;
+  private com.google.protobuf.ByteString clientKey_;
   /**
-   * <code>string clientKey = 1;</code>
+   * <code>bytes client_key = 1;</code>
    * @return The clientKey.
    */
   @java.lang.Override
-  public java.lang.String getClientKey() {
-    java.lang.Object ref = clientKey_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      clientKey_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string clientKey = 1;</code>
-   * @return The bytes for clientKey.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getClientKeyBytes() {
-    java.lang.Object ref = clientKey_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      clientKey_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public com.google.protobuf.ByteString getClientKey() {
+    return clientKey_;
   }
 
   public static final int IV_FIELD_NUMBER = 2;
-  private volatile java.lang.Object iv_;
+  private com.google.protobuf.ByteString iv_;
   /**
-   * <code>string iv = 2;</code>
+   * <code>bytes iv = 2;</code>
    * @return The iv.
    */
   @java.lang.Override
-  public java.lang.String getIv() {
-    java.lang.Object ref = iv_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      iv_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string iv = 2;</code>
-   * @return The bytes for iv.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getIvBytes() {
-    java.lang.Object ref = iv_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      iv_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public com.google.protobuf.ByteString getIv() {
+    return iv_;
   }
 
-  public static final int CLIENTVERSION_FIELD_NUMBER = 3;
+  public static final int CLIENT_VERSION_FIELD_NUMBER = 3;
   private volatile java.lang.Object clientVersion_;
   /**
-   * <code>string clientVersion = 3;</code>
+   * <code>string client_version = 3;</code>
    * @return The clientVersion.
    */
   @java.lang.Override
@@ -249,7 +167,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string clientVersion = 3;</code>
+   * <code>string client_version = 3;</code>
    * @return The bytes for clientVersion.
    */
   @java.lang.Override
@@ -267,48 +185,48 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int CLIENTNAME_FIELD_NUMBER = 4;
-  private volatile java.lang.Object clientName_;
+  public static final int OS_NAME_FIELD_NUMBER = 4;
+  private volatile java.lang.Object osName_;
   /**
-   * <code>string clientName = 4;</code>
-   * @return The clientName.
+   * <code>string os_name = 4;</code>
+   * @return The osName.
    */
   @java.lang.Override
-  public java.lang.String getClientName() {
-    java.lang.Object ref = clientName_;
+  public java.lang.String getOsName() {
+    java.lang.Object ref = osName_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      clientName_ = s;
+      osName_ = s;
       return s;
     }
   }
   /**
-   * <code>string clientName = 4;</code>
-   * @return The bytes for clientName.
+   * <code>string os_name = 4;</code>
+   * @return The bytes for osName.
    */
   @java.lang.Override
   public com.google.protobuf.ByteString
-      getClientNameBytes() {
-    java.lang.Object ref = clientName_;
+      getOsNameBytes() {
+    java.lang.Object ref = osName_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      clientName_ = b;
+      osName_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
     }
   }
 
-  public static final int OSCODE_FIELD_NUMBER = 5;
+  public static final int OS_CODE_FIELD_NUMBER = 5;
   private int osCode_;
   /**
-   * <code>uint32 osCode = 5;</code>
+   * <code>uint32 os_code = 5;</code>
    * @return The osCode.
    */
   @java.lang.Override
@@ -316,10 +234,10 @@ private static final long serialVersionUID = 0L;
     return osCode_;
   }
 
-  public static final int CLIENTID_FIELD_NUMBER = 6;
+  public static final int CLIENT_ID_FIELD_NUMBER = 6;
   private volatile java.lang.Object clientId_;
   /**
-   * <code>string clientId = 6;</code>
+   * <code>string client_id = 6;</code>
    * @return The clientId.
    */
   @java.lang.Override
@@ -336,7 +254,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string clientId = 6;</code>
+   * <code>string client_id = 6;</code>
    * @return The bytes for clientId.
    */
   @java.lang.Override
@@ -392,87 +310,6 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int EXTRA_FIELD_NUMBER = 8;
-  private static final class ExtraDefaultEntryHolder {
-    static final com.google.protobuf.MapEntry<
-        java.lang.String, java.lang.String> defaultEntry =
-            com.google.protobuf.MapEntry
-            .<java.lang.String, java.lang.String>newDefaultInstance(
-                com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeMsgProto_ExtraEntry_descriptor, 
-                com.google.protobuf.WireFormat.FieldType.STRING,
-                "",
-                com.google.protobuf.WireFormat.FieldType.STRING,
-                "");
-  }
-  private com.google.protobuf.MapField<
-      java.lang.String, java.lang.String> extra_;
-  private com.google.protobuf.MapField<java.lang.String, java.lang.String>
-  internalGetExtra() {
-    if (extra_ == null) {
-      return com.google.protobuf.MapField.emptyMapField(
-          ExtraDefaultEntryHolder.defaultEntry);
-    }
-    return extra_;
-  }
-
-  public int getExtraCount() {
-    return internalGetExtra().getMap().size();
-  }
-  /**
-   * <code>map&lt;string, string&gt; extra = 8;</code>
-   */
-
-  @java.lang.Override
-  public boolean containsExtra(
-      java.lang.String key) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
-    return internalGetExtra().getMap().containsKey(key);
-  }
-  /**
-   * Use {@link #getExtraMap()} instead.
-   */
-  @java.lang.Override
-  @java.lang.Deprecated
-  public java.util.Map<java.lang.String, java.lang.String> getExtra() {
-    return getExtraMap();
-  }
-  /**
-   * <code>map&lt;string, string&gt; extra = 8;</code>
-   */
-  @java.lang.Override
-
-  public java.util.Map<java.lang.String, java.lang.String> getExtraMap() {
-    return internalGetExtra().getMap();
-  }
-  /**
-   * <code>map&lt;string, string&gt; extra = 8;</code>
-   */
-  @java.lang.Override
-
-  public java.lang.String getExtraOrDefault(
-      java.lang.String key,
-      java.lang.String defaultValue) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
-    java.util.Map<java.lang.String, java.lang.String> map =
-        internalGetExtra().getMap();
-    return map.containsKey(key) ? map.get(key) : defaultValue;
-  }
-  /**
-   * <code>map&lt;string, string&gt; extra = 8;</code>
-   */
-  @java.lang.Override
-
-  public java.lang.String getExtraOrThrow(
-      java.lang.String key) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
-    java.util.Map<java.lang.String, java.lang.String> map =
-        internalGetExtra().getMap();
-    if (!map.containsKey(key)) {
-      throw new java.lang.IllegalArgumentException();
-    }
-    return map.get(key);
-  }
-
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -487,17 +324,17 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getClientKeyBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, clientKey_);
+    if (!clientKey_.isEmpty()) {
+      output.writeBytes(1, clientKey_);
     }
-    if (!getIvBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, iv_);
+    if (!iv_.isEmpty()) {
+      output.writeBytes(2, iv_);
     }
     if (!getClientVersionBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, clientVersion_);
     }
-    if (!getClientNameBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, clientName_);
+    if (!getOsNameBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, osName_);
     }
     if (osCode_ != 0) {
       output.writeUInt32(5, osCode_);
@@ -508,12 +345,6 @@ private static final long serialVersionUID = 0L;
     if (!getTokenBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 7, token_);
     }
-    com.google.protobuf.GeneratedMessageV3
-      .serializeStringMapTo(
-        output,
-        internalGetExtra(),
-        ExtraDefaultEntryHolder.defaultEntry,
-        8);
     unknownFields.writeTo(output);
   }
 
@@ -523,17 +354,19 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getClientKeyBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, clientKey_);
+    if (!clientKey_.isEmpty()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBytesSize(1, clientKey_);
     }
-    if (!getIvBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, iv_);
+    if (!iv_.isEmpty()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBytesSize(2, iv_);
     }
     if (!getClientVersionBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, clientVersion_);
     }
-    if (!getClientNameBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, clientName_);
+    if (!getOsNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, osName_);
     }
     if (osCode_ != 0) {
       size += com.google.protobuf.CodedOutputStream
@@ -544,16 +377,6 @@ private static final long serialVersionUID = 0L;
     }
     if (!getTokenBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, token_);
-    }
-    for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
-         : internalGetExtra().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
-      extra__ = ExtraDefaultEntryHolder.defaultEntry.newBuilderForType()
-          .setKey(entry.getKey())
-          .setValue(entry.getValue())
-          .build();
-      size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, extra__);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -576,16 +399,14 @@ private static final long serialVersionUID = 0L;
         .equals(other.getIv())) return false;
     if (!getClientVersion()
         .equals(other.getClientVersion())) return false;
-    if (!getClientName()
-        .equals(other.getClientName())) return false;
+    if (!getOsName()
+        .equals(other.getOsName())) return false;
     if (getOsCode()
         != other.getOsCode()) return false;
     if (!getClientId()
         .equals(other.getClientId())) return false;
     if (!getToken()
         .equals(other.getToken())) return false;
-    if (!internalGetExtra().equals(
-        other.internalGetExtra())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -597,24 +418,20 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + CLIENTKEY_FIELD_NUMBER;
+    hash = (37 * hash) + CLIENT_KEY_FIELD_NUMBER;
     hash = (53 * hash) + getClientKey().hashCode();
     hash = (37 * hash) + IV_FIELD_NUMBER;
     hash = (53 * hash) + getIv().hashCode();
-    hash = (37 * hash) + CLIENTVERSION_FIELD_NUMBER;
+    hash = (37 * hash) + CLIENT_VERSION_FIELD_NUMBER;
     hash = (53 * hash) + getClientVersion().hashCode();
-    hash = (37 * hash) + CLIENTNAME_FIELD_NUMBER;
-    hash = (53 * hash) + getClientName().hashCode();
-    hash = (37 * hash) + OSCODE_FIELD_NUMBER;
+    hash = (37 * hash) + OS_NAME_FIELD_NUMBER;
+    hash = (53 * hash) + getOsName().hashCode();
+    hash = (37 * hash) + OS_CODE_FIELD_NUMBER;
     hash = (53 * hash) + getOsCode();
-    hash = (37 * hash) + CLIENTID_FIELD_NUMBER;
+    hash = (37 * hash) + CLIENT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getClientId().hashCode();
     hash = (37 * hash) + TOKEN_FIELD_NUMBER;
     hash = (53 * hash) + getToken().hashCode();
-    if (!internalGetExtra().getMap().isEmpty()) {
-      hash = (37 * hash) + EXTRA_FIELD_NUMBER;
-      hash = (53 * hash) + internalGetExtra().hashCode();
-    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -722,28 +539,6 @@ private static final long serialVersionUID = 0L;
       return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeMsgProto_descriptor;
     }
 
-    @SuppressWarnings({"rawtypes"})
-    protected com.google.protobuf.MapField internalGetMapField(
-        int number) {
-      switch (number) {
-        case 8:
-          return internalGetExtra();
-        default:
-          throw new RuntimeException(
-              "Invalid map field number: " + number);
-      }
-    }
-    @SuppressWarnings({"rawtypes"})
-    protected com.google.protobuf.MapField internalGetMutableMapField(
-        int number) {
-      switch (number) {
-        case 8:
-          return internalGetMutableExtra();
-        default:
-          throw new RuntimeException(
-              "Invalid map field number: " + number);
-      }
-    }
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
@@ -770,13 +565,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      clientKey_ = "";
+      clientKey_ = com.google.protobuf.ByteString.EMPTY;
 
-      iv_ = "";
+      iv_ = com.google.protobuf.ByteString.EMPTY;
 
       clientVersion_ = "";
 
-      clientName_ = "";
+      osName_ = "";
 
       osCode_ = 0;
 
@@ -784,7 +579,6 @@ private static final long serialVersionUID = 0L;
 
       token_ = "";
 
-      internalGetMutableExtra().clear();
       return this;
     }
 
@@ -811,16 +605,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.feige.fim.msg.proto.HandshakeMsgProto buildPartial() {
       com.feige.fim.msg.proto.HandshakeMsgProto result = new com.feige.fim.msg.proto.HandshakeMsgProto(this);
-      int from_bitField0_ = bitField0_;
       result.clientKey_ = clientKey_;
       result.iv_ = iv_;
       result.clientVersion_ = clientVersion_;
-      result.clientName_ = clientName_;
+      result.osName_ = osName_;
       result.osCode_ = osCode_;
       result.clientId_ = clientId_;
       result.token_ = token_;
-      result.extra_ = internalGetExtra();
-      result.extra_.makeImmutable();
       onBuilt();
       return result;
     }
@@ -869,20 +660,18 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.feige.fim.msg.proto.HandshakeMsgProto other) {
       if (other == com.feige.fim.msg.proto.HandshakeMsgProto.getDefaultInstance()) return this;
-      if (!other.getClientKey().isEmpty()) {
-        clientKey_ = other.clientKey_;
-        onChanged();
+      if (other.getClientKey() != com.google.protobuf.ByteString.EMPTY) {
+        setClientKey(other.getClientKey());
       }
-      if (!other.getIv().isEmpty()) {
-        iv_ = other.iv_;
-        onChanged();
+      if (other.getIv() != com.google.protobuf.ByteString.EMPTY) {
+        setIv(other.getIv());
       }
       if (!other.getClientVersion().isEmpty()) {
         clientVersion_ = other.clientVersion_;
         onChanged();
       }
-      if (!other.getClientName().isEmpty()) {
-        clientName_ = other.clientName_;
+      if (!other.getOsName().isEmpty()) {
+        osName_ = other.osName_;
         onChanged();
       }
       if (other.getOsCode() != 0) {
@@ -896,8 +685,6 @@ private static final long serialVersionUID = 0L;
         token_ = other.token_;
         onChanged();
       }
-      internalGetMutableExtra().mergeFrom(
-          other.internalGetExtra());
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -926,49 +713,22 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
-    private int bitField0_;
 
-    private java.lang.Object clientKey_ = "";
+    private com.google.protobuf.ByteString clientKey_ = com.google.protobuf.ByteString.EMPTY;
     /**
-     * <code>string clientKey = 1;</code>
+     * <code>bytes client_key = 1;</code>
      * @return The clientKey.
      */
-    public java.lang.String getClientKey() {
-      java.lang.Object ref = clientKey_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        clientKey_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    @java.lang.Override
+    public com.google.protobuf.ByteString getClientKey() {
+      return clientKey_;
     }
     /**
-     * <code>string clientKey = 1;</code>
-     * @return The bytes for clientKey.
-     */
-    public com.google.protobuf.ByteString
-        getClientKeyBytes() {
-      java.lang.Object ref = clientKey_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        clientKey_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string clientKey = 1;</code>
+     * <code>bytes client_key = 1;</code>
      * @param value The clientKey to set.
      * @return This builder for chaining.
      */
-    public Builder setClientKey(
-        java.lang.String value) {
+    public Builder setClientKey(com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
@@ -978,7 +738,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string clientKey = 1;</code>
+     * <code>bytes client_key = 1;</code>
      * @return This builder for chaining.
      */
     public Builder clearClientKey() {
@@ -987,64 +747,22 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
-    /**
-     * <code>string clientKey = 1;</code>
-     * @param value The bytes for clientKey to set.
-     * @return This builder for chaining.
-     */
-    public Builder setClientKeyBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      clientKey_ = value;
-      onChanged();
-      return this;
-    }
 
-    private java.lang.Object iv_ = "";
+    private com.google.protobuf.ByteString iv_ = com.google.protobuf.ByteString.EMPTY;
     /**
-     * <code>string iv = 2;</code>
+     * <code>bytes iv = 2;</code>
      * @return The iv.
      */
-    public java.lang.String getIv() {
-      java.lang.Object ref = iv_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        iv_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    @java.lang.Override
+    public com.google.protobuf.ByteString getIv() {
+      return iv_;
     }
     /**
-     * <code>string iv = 2;</code>
-     * @return The bytes for iv.
-     */
-    public com.google.protobuf.ByteString
-        getIvBytes() {
-      java.lang.Object ref = iv_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        iv_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string iv = 2;</code>
+     * <code>bytes iv = 2;</code>
      * @param value The iv to set.
      * @return This builder for chaining.
      */
-    public Builder setIv(
-        java.lang.String value) {
+    public Builder setIv(com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
@@ -1054,7 +772,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string iv = 2;</code>
+     * <code>bytes iv = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearIv() {
@@ -1063,26 +781,10 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
-    /**
-     * <code>string iv = 2;</code>
-     * @param value The bytes for iv to set.
-     * @return This builder for chaining.
-     */
-    public Builder setIvBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      iv_ = value;
-      onChanged();
-      return this;
-    }
 
     private java.lang.Object clientVersion_ = "";
     /**
-     * <code>string clientVersion = 3;</code>
+     * <code>string client_version = 3;</code>
      * @return The clientVersion.
      */
     public java.lang.String getClientVersion() {
@@ -1098,7 +800,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string clientVersion = 3;</code>
+     * <code>string client_version = 3;</code>
      * @return The bytes for clientVersion.
      */
     public com.google.protobuf.ByteString
@@ -1115,7 +817,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string clientVersion = 3;</code>
+     * <code>string client_version = 3;</code>
      * @param value The clientVersion to set.
      * @return This builder for chaining.
      */
@@ -1130,7 +832,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string clientVersion = 3;</code>
+     * <code>string client_version = 3;</code>
      * @return This builder for chaining.
      */
     public Builder clearClientVersion() {
@@ -1140,7 +842,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string clientVersion = 3;</code>
+     * <code>string client_version = 3;</code>
      * @param value The bytes for clientVersion to set.
      * @return This builder for chaining.
      */
@@ -1156,85 +858,85 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object clientName_ = "";
+    private java.lang.Object osName_ = "";
     /**
-     * <code>string clientName = 4;</code>
-     * @return The clientName.
+     * <code>string os_name = 4;</code>
+     * @return The osName.
      */
-    public java.lang.String getClientName() {
-      java.lang.Object ref = clientName_;
+    public java.lang.String getOsName() {
+      java.lang.Object ref = osName_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        clientName_ = s;
+        osName_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string clientName = 4;</code>
-     * @return The bytes for clientName.
+     * <code>string os_name = 4;</code>
+     * @return The bytes for osName.
      */
     public com.google.protobuf.ByteString
-        getClientNameBytes() {
-      java.lang.Object ref = clientName_;
+        getOsNameBytes() {
+      java.lang.Object ref = osName_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        clientName_ = b;
+        osName_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string clientName = 4;</code>
-     * @param value The clientName to set.
+     * <code>string os_name = 4;</code>
+     * @param value The osName to set.
      * @return This builder for chaining.
      */
-    public Builder setClientName(
+    public Builder setOsName(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      clientName_ = value;
+      osName_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string clientName = 4;</code>
+     * <code>string os_name = 4;</code>
      * @return This builder for chaining.
      */
-    public Builder clearClientName() {
+    public Builder clearOsName() {
       
-      clientName_ = getDefaultInstance().getClientName();
+      osName_ = getDefaultInstance().getOsName();
       onChanged();
       return this;
     }
     /**
-     * <code>string clientName = 4;</code>
-     * @param value The bytes for clientName to set.
+     * <code>string os_name = 4;</code>
+     * @param value The bytes for osName to set.
      * @return This builder for chaining.
      */
-    public Builder setClientNameBytes(
+    public Builder setOsNameBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      clientName_ = value;
+      osName_ = value;
       onChanged();
       return this;
     }
 
     private int osCode_ ;
     /**
-     * <code>uint32 osCode = 5;</code>
+     * <code>uint32 os_code = 5;</code>
      * @return The osCode.
      */
     @java.lang.Override
@@ -1242,7 +944,7 @@ private static final long serialVersionUID = 0L;
       return osCode_;
     }
     /**
-     * <code>uint32 osCode = 5;</code>
+     * <code>uint32 os_code = 5;</code>
      * @param value The osCode to set.
      * @return This builder for chaining.
      */
@@ -1253,7 +955,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>uint32 osCode = 5;</code>
+     * <code>uint32 os_code = 5;</code>
      * @return This builder for chaining.
      */
     public Builder clearOsCode() {
@@ -1265,7 +967,7 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object clientId_ = "";
     /**
-     * <code>string clientId = 6;</code>
+     * <code>string client_id = 6;</code>
      * @return The clientId.
      */
     public java.lang.String getClientId() {
@@ -1281,7 +983,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string clientId = 6;</code>
+     * <code>string client_id = 6;</code>
      * @return The bytes for clientId.
      */
     public com.google.protobuf.ByteString
@@ -1298,7 +1000,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string clientId = 6;</code>
+     * <code>string client_id = 6;</code>
      * @param value The clientId to set.
      * @return This builder for chaining.
      */
@@ -1313,7 +1015,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string clientId = 6;</code>
+     * <code>string client_id = 6;</code>
      * @return This builder for chaining.
      */
     public Builder clearClientId() {
@@ -1323,7 +1025,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string clientId = 6;</code>
+     * <code>string client_id = 6;</code>
      * @param value The bytes for clientId to set.
      * @return This builder for chaining.
      */
@@ -1412,134 +1114,6 @@ private static final long serialVersionUID = 0L;
       
       token_ = value;
       onChanged();
-      return this;
-    }
-
-    private com.google.protobuf.MapField<
-        java.lang.String, java.lang.String> extra_;
-    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
-    internalGetExtra() {
-      if (extra_ == null) {
-        return com.google.protobuf.MapField.emptyMapField(
-            ExtraDefaultEntryHolder.defaultEntry);
-      }
-      return extra_;
-    }
-    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
-    internalGetMutableExtra() {
-      onChanged();;
-      if (extra_ == null) {
-        extra_ = com.google.protobuf.MapField.newMapField(
-            ExtraDefaultEntryHolder.defaultEntry);
-      }
-      if (!extra_.isMutable()) {
-        extra_ = extra_.copy();
-      }
-      return extra_;
-    }
-
-    public int getExtraCount() {
-      return internalGetExtra().getMap().size();
-    }
-    /**
-     * <code>map&lt;string, string&gt; extra = 8;</code>
-     */
-
-    @java.lang.Override
-    public boolean containsExtra(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      return internalGetExtra().getMap().containsKey(key);
-    }
-    /**
-     * Use {@link #getExtraMap()} instead.
-     */
-    @java.lang.Override
-    @java.lang.Deprecated
-    public java.util.Map<java.lang.String, java.lang.String> getExtra() {
-      return getExtraMap();
-    }
-    /**
-     * <code>map&lt;string, string&gt; extra = 8;</code>
-     */
-    @java.lang.Override
-
-    public java.util.Map<java.lang.String, java.lang.String> getExtraMap() {
-      return internalGetExtra().getMap();
-    }
-    /**
-     * <code>map&lt;string, string&gt; extra = 8;</code>
-     */
-    @java.lang.Override
-
-    public java.lang.String getExtraOrDefault(
-        java.lang.String key,
-        java.lang.String defaultValue) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, java.lang.String> map =
-          internalGetExtra().getMap();
-      return map.containsKey(key) ? map.get(key) : defaultValue;
-    }
-    /**
-     * <code>map&lt;string, string&gt; extra = 8;</code>
-     */
-    @java.lang.Override
-
-    public java.lang.String getExtraOrThrow(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, java.lang.String> map =
-          internalGetExtra().getMap();
-      if (!map.containsKey(key)) {
-        throw new java.lang.IllegalArgumentException();
-      }
-      return map.get(key);
-    }
-
-    public Builder clearExtra() {
-      internalGetMutableExtra().getMutableMap()
-          .clear();
-      return this;
-    }
-    /**
-     * <code>map&lt;string, string&gt; extra = 8;</code>
-     */
-
-    public Builder removeExtra(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      internalGetMutableExtra().getMutableMap()
-          .remove(key);
-      return this;
-    }
-    /**
-     * Use alternate mutation accessors instead.
-     */
-    @java.lang.Deprecated
-    public java.util.Map<java.lang.String, java.lang.String>
-    getMutableExtra() {
-      return internalGetMutableExtra().getMutableMap();
-    }
-    /**
-     * <code>map&lt;string, string&gt; extra = 8;</code>
-     */
-    public Builder putExtra(
-        java.lang.String key,
-        java.lang.String value) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      if (value == null) { throw new java.lang.NullPointerException(); }
-      internalGetMutableExtra().getMutableMap()
-          .put(key, value);
-      return this;
-    }
-    /**
-     * <code>map&lt;string, string&gt; extra = 8;</code>
-     */
-
-    public Builder putAllExtra(
-        java.util.Map<java.lang.String, java.lang.String> values) {
-      internalGetMutableExtra().getMutableMap()
-          .putAll(values);
       return this;
     }
     @java.lang.Override
