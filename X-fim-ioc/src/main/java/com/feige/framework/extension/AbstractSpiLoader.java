@@ -1,5 +1,6 @@
 package com.feige.framework.extension;
 
+import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
@@ -8,11 +9,12 @@ import com.feige.framework.api.context.ApplicationContextAware;
 import com.feige.framework.api.context.EnvironmentAware;
 import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.framework.api.context.SpiLoaderAware;
+import com.feige.framework.api.spi.InstanceCreationException;
+import com.feige.framework.api.spi.InstanceCurrentlyInCreationException;
 import com.feige.framework.api.spi.ObjectFactory;
-import com.feige.framework.order.OrderComparator;
 import com.feige.framework.api.spi.InstanceProvider;
 import com.feige.framework.api.spi.SpiLoader;
-import com.feige.framework.api.spi.SpiNotFoundException;
+import com.feige.framework.api.spi.NoSuchInstanceException;
 import com.feige.framework.api.spi.InstancePostProcessor;
 import com.feige.fim.utils.AssertUtil;
 import com.feige.fim.utils.lg.Loggers;
@@ -32,16 +34,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiLoader {
 
     protected static final Logger LOG = Loggers.LOADER;
-    private final Set<String> singletonsCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
+    private final Set<Class<?>> singletonsCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
+    protected final Map<String, Object> singletonObjectCache = new ConcurrentHashMap<>(64);
     private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>(16);
     private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
-    protected final Map<Class<?>, List<Object>> earlyInstancesCache = new ConcurrentHashMap<>(16);
-    protected final Map<String, Object> singletonObjectCache = new ConcurrentHashMap<>(64);
     protected final Map<String, Object> instanceProviderObjectCache = new ConcurrentHashMap<>(32);
     protected final Map<Class<?>, String> instanceNameCache = new ConcurrentHashMap<>(64);
     protected final Map<Class<?>, List<String>> classInstancesNameCache = new ConcurrentHashMap<>();
@@ -57,14 +57,14 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     @Override
     public void initialize() throws IllegalStateException {
         if (isInitialized.compareAndSet(false, true)){
-            List<Object> instanceList = this.doLoadInstance(InstancePostProcessor.class);
-            for (Object instance : instanceList) {
+            List<InstancePostProcessor> instanceList = this.doLoadSpiInstance(InstancePostProcessor.class);
+            for (InstancePostProcessor instance : instanceList) {
                 invokeAwareMethods(instance);
-                this.processors.add((InstancePostProcessor)instance);
+                this.processors.add(instance);
             }
-            this.load(Configs.class);
-            this.load(AppContext.class);
-            this.load(InstanceProvider.class);
+            this.createInstances(Configs.class);
+            this.createInstances(AppContext.class);
+            this.createInstances(InstanceProvider.class);
         }
     }
     
@@ -72,125 +72,38 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     public void register(String instanceName, Object instance) {
         AssertUtil.notNull(instanceName, "instanceName");
         AssertUtil.notNull(instance, "instance");
-        this.instanceNameCache.putIfAbsent(instance.getClass(), instanceName);
-        this.singletonObjectCache.put(instanceName, instance);
+        synchronized (this.singletonObjectCache) {
+            Object oldObject = this.singletonObjectCache.get(instanceName);
+            if (oldObject != null) {
+                throw new IllegalStateException("Could not register object [" + instance +
+                        "] under instance name '" + instanceName + "': there is already object [" + oldObject + "] bound");
+            }
+            this.instanceNameCache.put(instance.getClass(), instanceName);
+            addSingleton(instanceName, instance);
+        }
     }
 
     @Override
-    public <T> T get(String key, Class<T> clazz) throws SpiNotFoundException {
-        AssertUtil.notBlank(key, "key");
-        Object instance = this.singletonObjectCache.get(key);
-        if (instance == null){
-            AssertUtil.notNull(clazz, "class");
-            List<Object> instanceList = loadClass(clazz);
-            if (CollectionUtils.isEmpty(instanceList)) {
-                throw new SpiNotFoundException(clazz);
-            }
-            instance = this.singletonObjectCache.get(key);
-        }
-        if (instance == null){
-            throw new SpiNotFoundException(clazz, key);
-        }
-        instance = getObjectForInstance(key, instance, clazz);
-        return clazz.cast(instance);
+    public <T> T get(String instanceName, Class<T> requireType) throws NoSuchInstanceException {
+        AssertUtil.notBlank(instanceName, "instanceName");
+        AssertUtil.notNull(requireType, "requireType");
+        return doGetInstance(instanceName, requireType);
     }
     
-    protected <T> T doGetInstance(String instanceName, Class<T> requireType){
-        Object instanceObject = getSingleton(instanceName, true);
-        if (instanceObject != null){
-            if (LOG.isTraceEnabled()) {
-                if (isSingletonCurrentlyInCreation(instanceName)) {
-                    LOG.trace("Returning eagerly cached instance of singleton instance '" + instanceName +
-                            "' that is not fully initialized yet - a consequence of a circular reference");
-                }
-                else {
-                    LOG.trace("Returning cached instance of singleton instance '" + instanceName + "'");
-                }
-            }
-            instanceObject = getObjectForInstance(instanceName, instanceObject, requireType);
-        }else {
-            
-        }
-        
-        return (T) instanceObject;
-    }
-    
-    
-    protected Object getSingleton(String instanceName, boolean allowEarlyReference){
-        Object instanceObject = this.singletonObjectCache.get(instanceName);
-        if (instanceObject == null && isSingletonCurrentlyInCreation(instanceName)){
-            instanceObject = this.earlySingletonObjects.get(instanceName);
-            if (instanceObject == null && allowEarlyReference){
-                synchronized (this.singletonObjectCache){
-                    instanceObject = this.singletonObjectCache.get(instanceName);
-                    if (instanceObject == null){
-                        instanceObject = earlySingletonObjects.get(instanceName);
-                        if (instanceObject == null){
-                            ObjectFactory<?> singletonFactory = this.singletonFactories.get(instanceName);
-                            if (singletonFactory != null) {
-                                instanceObject = singletonFactory.getObject();
-                                this.earlySingletonObjects.put(instanceName, instanceObject);
-                                this.singletonFactories.remove(instanceName);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return instanceObject;
-    }
 
-    public boolean isSingletonCurrentlyInCreation(String instanceName) {
-        return this.singletonsCurrentlyInCreation.contains(instanceName);
+    @Override
+    public <T> T get(Class<T> type) throws NoSuchInstanceException {
+        AssertUtil.notNull(type, "type");
+        return doGetInstance(null, type);
     }
 
     @Override
-    public <T> T getFirst(Class<T> clazz) throws SpiNotFoundException {
-        AssertUtil.notNull(clazz, "class");
-        List<Object> instanceList = loadClass(clazz);
-        if (CollectionUtils.isEmpty(instanceList)){
-            throw new SpiNotFoundException(clazz);
-        }
-        Object instance = instanceList.get(0);
-        String instanceName = getInstanceName(instance.getClass());
-        T t = null;
-        try {
-            t = get(instanceName, clazz);
-        } catch (SpiNotFoundException ignored) {
-            
-        }
-        if (t != null){
-            return t;
-        }
-        instance = getObjectForInstance(instanceName, instance, clazz);
-        return clazz.cast(instance);
+    public <T> List<T> getByType(Class<T> type) throws NoSuchInstanceException {
+        AssertUtil.notNull(type, "type");
+        return doGetInstances(type);
     }
 
-    @Override
-    public <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException {
-        AssertUtil.notNull(clazz, "class");
-        List<Object> instanceList = loadClass(clazz);
-        if (instanceList == null){
-            throw new SpiNotFoundException(clazz);
-        }
-        return instanceList.stream()
-                .map(instance -> {
-                    String instanceName = getInstanceName(instance.getClass());
-                    T t = null;
-                    try {
-                        t = get(instanceName, clazz);
-                    } catch (SpiNotFoundException ignored) {
-                        
-                    }
-                    if (t != null){
-                        return t;
-                    }
-                    return instance;
-                })
-                .map(clazz::cast)
-                .collect(Collectors.toList());
-    }
-
+    
    
     protected boolean checkInstance(Object instance) {
         return checkInstance(instance.getClass());
@@ -210,72 +123,189 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         }
         return true;
     }
-
-    private  List<Object> loadClass(Class<?> clazz){
-        if (clazz.isInterface() || ClassUtils.isAbstractClass(clazz)){
-            List<String> list = classInstancesNameCache.get(clazz);
-        }else {
-            
+    
+  
+    private <T> T doGetInstance(String instanceName, Class<T> type){
+        if (StringUtils.isBlank(instanceName)){
+            instanceName = getFirstInstanceName(type);
         }
-        List<Object> instanceList = earlyInstancesCache.get(clazz);
-        if (instanceList == null){
-            synchronized (earlyInstancesCache){
-                instanceList = earlyInstancesCache.get(clazz);
-                if(instanceList == null){
-                    load(clazz);
-                    instanceList = earlyInstancesCache.get(clazz);
+        
+        Object singleton = null;
+        if (StringUtils.isNotBlank(instanceName)){
+            singleton = getSingleton(instanceName, type, true);
+        }
+        
+        if (singleton == null) {
+            Map<String, T> instanceMap = createInstances(type);
+            instanceName = getFirstInstanceName(type);
+            if (StringUtils.isNotBlank(instanceName)){
+                singleton  = instanceMap.get(instanceName);
+            }
+        }
+        
+        if (singleton != null){
+            return getObjectForInstance(instanceName, singleton, type);
+        }
+        throw StringUtils.isNotBlank(instanceName) ? new NoSuchInstanceException(type, instanceName) : new NoSuchInstanceException(type);
+    }
+
+    private String getFirstInstanceName(Class<?> type){
+        List<String> instanceNames = classInstancesNameCache.get(type);
+        if (CollectionUtils.isNotEmpty(instanceNames)){
+            return instanceNames.get(0);
+        }
+        return null;
+    }
+
+    private <T> List<T> doGetInstances(Class<T> type){
+        List<T> ts = new ArrayList<>();
+        List<String> instanceNames = this.classInstancesNameCache.get(type);
+        if (CollectionUtils.isNotEmpty(instanceNames)){
+            for (String instanceName : instanceNames) {
+                Object singleton = getSingleton(instanceName, type, true);
+                if (singleton != null){
+                    ts.add(getObjectForInstance(instanceName, singleton, type));
+                }
+            }
+        }else {
+            Map<String, T> instanceMap = createInstances(type);
+            instanceMap.forEach((instanceName, t) -> ts.add(getObjectForInstance(instanceName, t, type)));
+        }
+        if (CollectionUtils.isEmpty(ts)){
+            throw new NoSuchInstanceException(type);
+        }
+        return ts;
+    }
+    
+    public boolean isSingletonCurrentlyInCreation(Class<?> type) {
+        return this.singletonsCurrentlyInCreation.contains(type);
+    }
+    
+    protected Object getSingleton(String instanceName, Class<?> type, boolean allowEarlyReference) {
+        Object singletonObject = this.singletonObjectCache.get(instanceName);
+        if (singletonObject == null && isSingletonCurrentlyInCreation(type)) {
+            singletonObject = this.earlySingletonObjects.get(instanceName);
+            if (singletonObject == null && allowEarlyReference) {
+                synchronized (this.singletonObjectCache) {
+                    singletonObject = this.singletonObjectCache.get(instanceName);
+                    if (singletonObject == null) {
+                        singletonObject = this.earlySingletonObjects.get(instanceName);
+                        if (singletonObject == null) {
+                            ObjectFactory<?> singletonFactory = this.singletonFactories.get(instanceName);
+                            if (singletonFactory != null) {
+                                singletonObject = singletonFactory.getObject();
+                                this.earlySingletonObjects.put(instanceName, singletonObject);
+                                this.singletonFactories.remove(instanceName);
+                            }
+                        }
+                    }
                 }
             }
         }
-        if (CollectionUtils.isEmpty(instanceList)){
-            throw new SpiNotFoundException(clazz);
-        }
-        return instanceList;
+        return singletonObject;
     }
 
-    private void load(Class<?> clazz) {
-        List<Object> instances;
-        if (clazz.isInterface() || ClassUtils.isAbstractClass(clazz)){
-            instances = doLoadInstance(clazz);
+    public <T> T getEarlyInstanceReference(String instanceName, T instance){
+
+        return instance;
+    }
+    
+    private <T> Map<String, T> createInstances(Class<T> type){
+        if (isSingletonCurrentlyInCreation(type)) {
+            throw new InstanceCurrentlyInCreationException(type);
+        }
+        try {
+            this.singletonsCurrentlyInCreation.add(type);
+            return doCreateInstances(type);
+        }catch (Throwable e){
+            LOG.error("create " + type.getName() + " instance failure:", e);
+            throw new InstanceCreationException(e, type);
+        }finally {
+            this.singletonsCurrentlyInCreation.remove(type);
+        }
+    }
+    
+    
+    private <T> Map<String, T> doCreateInstances(Class<T> type){
+        Map<String, T> result = new HashMap<>();
+        List<T> instances;
+        // 创建实例
+        if (type.isInterface() || ClassUtils.isAbstractClass(type)){
+            instances = doLoadSpiInstance(type);
         }else {
-            Object instance = createInstance(clazz);
+            T instance = createInstance(type);
             if (instance == null){
-                return;
+                throw new RuntimeException();
             }
             instances = Collections.singletonList(instance);
         }
         if (CollectionUtils.isNotEmpty(instances)){
-            List<Object> newInstances = instances.stream()
-                    .map(instance -> applyBeanPostProcessorsBeforeInitialization(instance, getInstanceName(instance.getClass())))
-                    .collect(Collectors.toList());
-            this.earlyInstancesCache.put(clazz, newInstances);
-            Map<Class<?>, List<Object>> instanceProviderMap = null;
-            if (InstanceProvider.class.equals(clazz)){
-                instanceProviderMap = newInstances.stream()
-                        .collect(Collectors.groupingBy(instance -> ((InstanceProvider<?>) instance).getType()));
-                instanceProviderMap.forEach((k, v) -> {
-                    v.sort(OrderComparator.getInstance());
-                    earlyInstancesCache.put(k, v);
-                });
+            // class -> instance names
+            for (Object newInstance : instances) {
+                String instanceName = getInstanceName(newInstance.getClass());
+                this.classInstancesNameCache.computeIfAbsent(type, k -> new ArrayList<>()).add(instanceName);
+                if (newInstance instanceof InstanceProvider){
+                    this.classInstancesNameCache.computeIfAbsent(((InstanceProvider<?>) newInstance).getType(), k -> new ArrayList<>()).add(instanceName);
+                }
             }
-            injectInstance(newInstances);
-            invokeAwareMethods(newInstances);
-            for (Object instance : newInstances) {
+            // 放入三级缓存
+            for (T instance : instances) {
                 String instanceName = getInstanceName(instance.getClass());
-                applyBeanPostProcessorsAfterInitialization(instance, instanceName);
-                register(instanceName, instance);
-                this.classInstancesNameCache.computeIfAbsent(clazz, k -> new ArrayList<>()).add(instanceName);
+                addSingletonFactory(instanceName, () -> this.getEarlyInstanceReference(instanceName, instance));
             }
-            earlyInstancesCache.remove(clazz);
-            if (instanceProviderMap != null){
-                instanceProviderMap.forEach((k, v) -> earlyInstancesCache.remove(k));
+            // 为实例注入属性
+            for (T instance : instances) {
+                injectInstance(instance);
             }
+            // 实现aware接口的调用对应的set方法
+            for (T instance : instances) {
+                invokeAwareMethods(instance);
+            }
+            // 执行前置处理器
+            Map<String, T> wrappedInstanceMap = new HashMap<>();
+            for (T instance : instances) {
+                String instanceName = getInstanceName(instance.getClass());
+                Object currentInstance = applyBeanPostProcessorsBeforeInitialization(instance, instanceName );
+                wrappedInstanceMap.put(instanceName, (T) currentInstance);
+            }
+            // 执行初始化方法
+            for (T wrappedInstance : wrappedInstanceMap.values()) {
+                invokeInitMethods(wrappedInstance);
+            }
+            // 执行后置处理器
+            wrappedInstanceMap.forEach((instanceName, instance) -> {
+                Object currentInstance = applyBeanPostProcessorsAfterInitialization(instance, instanceName);
+                T currentT = (T) currentInstance;
+                addSingleton(instanceName, currentT);
+                result.put(instanceName, currentT);
+            });
+            
         }else {
-            LOG.warn("class = {}, No implementation classes have been registered", clazz.getName());
+            LOG.warn("class = {}, No implementation classes have been registered", type.getName());
+        }
+        
+        return result;
+    }
+
+    protected void addSingleton(String instanceName, Object singletonObject) {
+        synchronized (this.singletonObjectCache) {
+            this.singletonObjectCache.put(instanceName, singletonObject);
+            this.singletonFactories.remove(instanceName);
+            this.earlySingletonObjects.remove(instanceName);
+        }
+    }
+
+    
+    protected void addSingletonFactory(String instanceName, ObjectFactory<?> singletonFactory) {
+        synchronized (this.singletonObjectCache) {
+            if (!this.singletonObjectCache.containsKey(instanceName)) {
+                this.singletonFactories.put(instanceName, singletonFactory);
+                this.earlySingletonObjects.remove(instanceName);
+            }
         }
     }
     
-    protected Object createInstance(Class<?> clazz){
+    protected <T> T createInstance(Class<T> clazz){
         if (checkInstance(clazz)){
             try {
                 return ReflectionUtils.accessibleConstructor(clazz).newInstance();
@@ -289,9 +319,9 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     
     
 
-    private Object getObjectForInstance(String instanceName, Object instance, Class<?> clazz) {
-        if (instance instanceof InstanceProvider && !InstanceProvider.class.isAssignableFrom(clazz)) {
-            InstanceProvider<?> instanceProvider = (InstanceProvider<?>) instance;
+    private <T> T getObjectForInstance(String instanceName, Object instance, Class<T> requireType) {
+        if (instance instanceof InstanceProvider && !InstanceProvider.class.isAssignableFrom(requireType)) {
+            InstanceProvider<T> instanceProvider = (InstanceProvider<T>) instance;
             if (!isSingleton(instance)){
                 return instanceProvider.getInstance();
             }
@@ -307,9 +337,9 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
                     }
                 }
             }
-            return realInstance;
+            return (T) realInstance;
         }
-        return instance;
+        return (T) instance;
     }
     
     private boolean isSingleton(Object instance){
@@ -320,18 +350,30 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     }
 
     private Object applyBeanPostProcessorsBeforeInitialization(Object instance,  String instanceName) {
+        Object result = instance;
         for (InstancePostProcessor processor : processors) {
-            instance = processor.postProcessBeforeInitialization(instance, instanceName);
+            Object currentInstance = processor.postProcessBeforeInitialization(instance, instanceName);
+            if (currentInstance == null) {
+                return result;
+            }
+            result = currentInstance;
         }
         return instance;
     }
 
 
-    private void applyBeanPostProcessorsAfterInitialization(Object instance,  String instanceName) {
+    private Object applyBeanPostProcessorsAfterInitialization(Object instance,  String instanceName) {
+        Object result = instance;
         for (InstancePostProcessor processor : processors) {
-            processor.postProcessAfterInitialization(instance, instanceName);
+            Object currentInstance = processor.postProcessAfterInitialization(instance, instanceName);
+            if (currentInstance == null) {
+                return result;
+            }
+            result = currentInstance;
         }
+        return instance;
     }
+    
     
     private String getInstanceName(Class<?> clazz){
         return this.instanceNameCache.computeIfAbsent(clazz, this::generateInstanceName);
@@ -348,16 +390,18 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         return StringUtils.uncapitalize(clazz.getSimpleName());
     }
     
-    private void injectInstance(List<Object> instances){
-        for (Object instance : instances) {
-            injectInstance(instance);
-        }
-    }
-
-    private void invokeAwareMethods(List<Object> instances){
-        for (Object instance : instances) {
-            invokeAwareMethods(instance);
-        }
+    private void invokeInitMethods(Object instance){
+        ReflectionUtils.doWithMethods(instance.getClass(), (method) -> {
+            if (method.isAnnotationPresent(InitMethod.class)) {
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                if (parameterTypes.length == 0){
+                    ReflectionUtils.makeAccessible(method);
+                    ReflectionUtils.invokeMethod(method, instance);
+                }else {
+                    Loggers.LOADER.warn("initMethod不支持传入参数！");
+                }
+            }
+        }, method -> method.isAnnotationPresent(InitMethod.class));
     }
     
     private void invokeAwareMethods(Object instance){
@@ -379,11 +423,11 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
             Object value = null;
             Inject inject = field.getAnnotation(Inject.class);
             if (inject != null) {
-                String key = inject.value();
-                if (StringUtils.isNotBlank(key)){
-                    value = this.get(key, type);
+                String instanceName = inject.value();
+                if (StringUtils.isNotBlank(instanceName)){
+                    value = this.get(instanceName, type);
                 }else {
-                    value = this.getFirst(type);
+                    value = this.get(type);
                 }
             }
 
@@ -403,5 +447,5 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         }, field -> field.isAnnotationPresent(Inject.class) || field.isAnnotationPresent(Value.class));
     }
     
-    protected abstract List<Object> doLoadInstance(Class<?> loadClass);
+    protected abstract <T> List<T> doLoadSpiInstance(Class<T> loadClass);
 }

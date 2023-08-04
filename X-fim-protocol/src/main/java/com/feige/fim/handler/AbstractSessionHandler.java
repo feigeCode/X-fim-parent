@@ -40,7 +40,7 @@ public abstract class AbstractSessionHandler implements SessionHandler, Applicat
 
     @InitMethod
     public void initializeMsgHandler(){
-        List<MsgHandler> msgHandlers = applicationContext.getAll(MsgHandler.class);
+        List<MsgHandler> msgHandlers = applicationContext.getByType(MsgHandler.class);
         for (MsgHandler<Packet> msgHandler : msgHandlers) {
             this.msgDispatcher.register(msgHandler);
         }
@@ -49,7 +49,7 @@ public abstract class AbstractSessionHandler implements SessionHandler, Applicat
 
     @InitMethod
     public void initializeSerializer(){
-        List<Serializer> serializers = applicationContext.getAll(Serializer.class);
+        List<Serializer> serializers = applicationContext.getByType(Serializer.class);
         for (Serializer serializer : serializers) {
             serializedClassManager.register(serializer);
         }

@@ -3,7 +3,7 @@ package com.feige.framework.utils;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.context.ApplicationContextAware;
-import com.feige.framework.api.spi.SpiNotFoundException;
+import com.feige.framework.api.spi.NoSuchInstanceException;
 
 
 import java.util.List;
@@ -28,9 +28,9 @@ public class AppContext  implements ApplicationContextAware {
      * @param clazz class
      * @return Object
      * @param <T> class type
-     * @throws SpiNotFoundException
+     * @throws NoSuchInstanceException
      */
-    public static <T> T get(String key, Class<T> clazz) throws SpiNotFoundException {
+    public static <T> T get(String key, Class<T> clazz) throws NoSuchInstanceException {
         return applicationContext.get(key, clazz);
     }
 
@@ -40,10 +40,10 @@ public class AppContext  implements ApplicationContextAware {
      * @param clazz class
      * @return object
      * @param <T> class type
-     * @throws SpiNotFoundException
+     * @throws NoSuchInstanceException
      */
-    public static <T> T getFirst(Class<T> clazz) throws SpiNotFoundException {
-        return applicationContext.getFirst(clazz);
+    public static <T> T getFirst(Class<T> clazz) throws NoSuchInstanceException {
+        return applicationContext.get(clazz);
     }
 
 
@@ -52,10 +52,10 @@ public class AppContext  implements ApplicationContextAware {
      * @param clazz class
      * @return object list
      * @param <T> class type
-     * @throws SpiNotFoundException
+     * @throws NoSuchInstanceException
      */
-    public static <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException {
-        return applicationContext.getAll(clazz);
+    public static <T> List<T> getAll(Class<T> clazz) throws NoSuchInstanceException {
+        return applicationContext.getByType(clazz);
     }
 
     @Override

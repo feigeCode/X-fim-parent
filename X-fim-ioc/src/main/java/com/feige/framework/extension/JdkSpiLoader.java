@@ -18,11 +18,11 @@ public class JdkSpiLoader extends AbstractSpiLoader {
 
 
     @Override
-    public List<Object> doLoadInstance(Class<?> loadClass) {
-        List<Object> instanceList = new ArrayList<>();
+    public <T> List<T> doLoadSpiInstance(Class<T> loadClass) {
+        List<T> instanceList = new ArrayList<>();
         try {
-            ServiceLoader<?> loader = ServiceLoader.load(loadClass);
-            for (Object next : loader) {
+            ServiceLoader<T> loader = ServiceLoader.load(loadClass);
+            for (T next : loader) {
                 if (this.checkInstance(next)){
                     instanceList.add(next);
                 }

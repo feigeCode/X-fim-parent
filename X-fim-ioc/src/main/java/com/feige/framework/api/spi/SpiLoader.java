@@ -26,9 +26,9 @@ public interface SpiLoader extends Lifecycle {
      * @param clazz class
      * @return Object
      * @param <T> class type
-     * @throws SpiNotFoundException
+     * @throws NoSuchInstanceException
      */
-    <T> T get(String key, Class<T> clazz) throws SpiNotFoundException;
+    <T> T get(String key, Class<T> clazz) throws NoSuchInstanceException;
 
 
     /**
@@ -36,9 +36,9 @@ public interface SpiLoader extends Lifecycle {
      * @param clazz class
      * @return object
      * @param <T> class type
-     * @throws SpiNotFoundException
+     * @throws NoSuchInstanceException
      */
-    <T> T getFirst(Class<T> clazz) throws SpiNotFoundException;
+    <T> T get(Class<T> clazz) throws NoSuchInstanceException;
 
 
     /**
@@ -46,9 +46,9 @@ public interface SpiLoader extends Lifecycle {
      * @param clazz class
      * @return object list
      * @param <T> class type
-     * @throws SpiNotFoundException
+     * @throws NoSuchInstanceException
      */
-    <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException;
+    <T> List<T> getByType(Class<T> clazz) throws NoSuchInstanceException;
     
     
 }

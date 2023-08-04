@@ -5,7 +5,7 @@ import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.context.Environment;
 import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.framework.api.spi.SpiLoader;
-import com.feige.framework.api.spi.SpiNotFoundException;
+import com.feige.framework.api.spi.NoSuchInstanceException;
 import com.feige.framework.extension.ConfigSpiLoader;
 import com.feige.framework.extension.JdkSpiLoader;
 
@@ -74,17 +74,17 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     }
 
     @Override
-    public <T> T get(String key, Class<T> clazz) throws SpiNotFoundException {
+    public <T> T get(String key, Class<T> clazz) throws NoSuchInstanceException {
         return this.spiLoader.get(key, clazz);
     }
 
     @Override
-    public <T> T getFirst(Class<T> clazz) throws SpiNotFoundException {
-        return this.spiLoader.getFirst(clazz);
+    public <T> T get(Class<T> clazz) throws NoSuchInstanceException {
+        return this.spiLoader.get(clazz);
     }
 
     @Override
-    public <T> List<T> getAll(Class<T> clazz) throws SpiNotFoundException {
-        return this.spiLoader.getAll(clazz);
+    public <T> List<T> getByType(Class<T> clazz) throws NoSuchInstanceException {
+        return this.spiLoader.getByType(clazz);
     }
 }

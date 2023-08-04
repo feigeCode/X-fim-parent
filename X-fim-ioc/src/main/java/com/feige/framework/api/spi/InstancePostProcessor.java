@@ -3,7 +3,7 @@ package com.feige.framework.api.spi;
 public interface InstancePostProcessor {
 
     /**
-     * 对象实例化之后初始化之前执行（属性未注入）
+     * invokeAwareMethods之后invokeInitMethods之前
      * @param instance 实例对象
      * @param instanceName 实例名称
      * @return
@@ -14,11 +14,12 @@ public interface InstancePostProcessor {
 
 
     /**
-     * 初始化完成之后（属性已完成注入）
+     * invokeInitMethods之后
      * @param instance 实例对象
      * @param instanceName 实例名称
+     * @return 
      */
-    default void postProcessAfterInitialization(Object instance, String instanceName) {
-        
+    default Object postProcessAfterInitialization(Object instance, String instanceName) {
+        return instance;
     }
 }
