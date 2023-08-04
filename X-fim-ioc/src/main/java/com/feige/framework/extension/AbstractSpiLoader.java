@@ -79,6 +79,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
                         "] under instance name '" + instanceName + "': there is already object [" + oldObject + "] bound");
             }
             this.instanceNameCache.put(instance.getClass(), instanceName);
+            this.classInstancesNameCache.computeIfAbsent(instance.getClass(), k -> new ArrayList<>()).add(instanceName);
             addSingleton(instanceName, instance);
         }
     }
@@ -226,8 +227,8 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     }
     
     
+    
     private <T> Map<String, T> doCreateInstances(Class<T> type){
-        Map<String, T> result = new HashMap<>();
         List<T> instances;
         // 创建实例
         if (type.isInterface() || ClassUtils.isAbstractClass(type)){
@@ -241,13 +242,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         }
         if (CollectionUtils.isNotEmpty(instances)){
             // class -> instance names
-            for (Object newInstance : instances) {
-                String instanceName = getInstanceName(newInstance.getClass());
-                this.classInstancesNameCache.computeIfAbsent(type, k -> new ArrayList<>()).add(instanceName);
-                if (newInstance instanceof InstanceProvider){
-                    this.classInstancesNameCache.computeIfAbsent(((InstanceProvider<?>) newInstance).getType(), k -> new ArrayList<>()).add(instanceName);
-                }
-            }
+            addClassInstanceName(type, instances);
             // 放入三级缓存
             for (T instance : instances) {
                 String instanceName = getInstanceName(instance.getClass());
@@ -257,41 +252,61 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
             for (T instance : instances) {
                 injectInstance(instance);
             }
-            // 实现aware接口的调用对应的set方法
-            for (T instance : instances) {
-                invokeAwareMethods(instance);
-            }
-            // 执行前置处理器
-            Map<String, T> wrappedInstanceMap = new HashMap<>();
-            for (T instance : instances) {
-                String instanceName = getInstanceName(instance.getClass());
-                Object currentInstance = applyBeanPostProcessorsBeforeInitialization(instance, instanceName );
-                wrappedInstanceMap.put(instanceName, (T) currentInstance);
-            }
-            // 执行初始化方法
-            for (T wrappedInstance : wrappedInstanceMap.values()) {
-                invokeInitMethods(wrappedInstance);
-            }
-            // 执行后置处理器
-            wrappedInstanceMap.forEach((instanceName, instance) -> {
-                Object currentInstance = applyBeanPostProcessorsAfterInitialization(instance, instanceName);
-                T currentT = (T) currentInstance;
-                addSingleton(instanceName, currentT);
-                result.put(instanceName, currentT);
-            });
-            
+            return initializeInstances(type, instances);
         }else {
             LOG.warn("class = {}, No implementation classes have been registered", type.getName());
         }
-        
+        return Collections.emptyMap();
+    }
+    
+    private <T> Map<String, T> initializeInstances(Class<T> type, List<T> instances){
+        Map<String, T> result = new HashMap<>();
+        // 实现aware接口的调用对应的set方法
+        for (T instance : instances) {
+            invokeAwareMethods(instance);
+        }
+        // 执行前置处理器
+        Map<String, T> wrappedInstanceMap = new HashMap<>();
+        for (T instance : instances) {
+            String instanceName = getInstanceName(instance.getClass());
+            Object currentInstance = applyBeanPostProcessorsBeforeInitialization(instance, instanceName );
+            wrappedInstanceMap.put(instanceName, (T) currentInstance);
+        }
+        // 执行初始化方法
+        for (T wrappedInstance : wrappedInstanceMap.values()) {
+            invokeInitMethods(wrappedInstance);
+        }
+        // 执行后置处理器
+        wrappedInstanceMap.forEach((instanceName, instance) -> {
+            Object currentInstance = applyBeanPostProcessorsAfterInitialization(instance, instanceName);
+            T currentT = (T) currentInstance;
+            addSingleton(instanceName, currentT);
+            result.put(instanceName, currentT);
+        });
         return result;
     }
 
+    protected <T> void addClassInstanceName(Class<T> type, List<T> instances){
+        for (Object newInstance : instances) {
+            String instanceName = getInstanceName(newInstance.getClass());
+            this.classInstancesNameCache.computeIfAbsent(type, k -> new ArrayList<>()).add(instanceName);
+            if (newInstance instanceof InstanceProvider){
+                Class<?> realType = ((InstanceProvider<?>) newInstance).getType();
+                this.classInstancesNameCache.computeIfAbsent(realType, k -> new ArrayList<>()).add(instanceName);
+                this.singletonsCurrentlyInCreation.add(realType);
+            }
+        }
+    }
+    
     protected void addSingleton(String instanceName, Object singletonObject) {
         synchronized (this.singletonObjectCache) {
             this.singletonObjectCache.put(instanceName, singletonObject);
             this.singletonFactories.remove(instanceName);
             this.earlySingletonObjects.remove(instanceName);
+            if (singletonObject instanceof InstanceProvider){
+                Class<?> realType = ((InstanceProvider<?>) singletonObject).getType();
+                this.singletonsCurrentlyInCreation.remove(realType);
+            }
         }
     }
 
