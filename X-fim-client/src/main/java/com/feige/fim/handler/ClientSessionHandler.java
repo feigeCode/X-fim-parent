@@ -37,7 +37,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
     
     private void tryFastConnect(Session session) throws RemotingException {
         String sessionConfig = sessionStorage.getItem(ClientConfigKey.SESSION_PERSISTENT_KEY);
-        ClientConfig clientConfig = applicationContext.getFirst(ClientConfig.class);
+        ClientConfig clientConfig = applicationContext.get(ClientConfig.class);
         AssertUtil.notNull(clientConfig, "clientConfig");
         if (StringUtils.isBlank(sessionConfig)){
             handshake(session, clientConfig);
