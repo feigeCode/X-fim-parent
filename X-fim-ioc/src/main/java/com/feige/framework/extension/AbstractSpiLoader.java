@@ -44,7 +44,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
     protected final Map<String, Object> instanceProviderObjectCache = new ConcurrentHashMap<>(32);
     protected final Map<Class<?>, String> instanceNameCache = new ConcurrentHashMap<>(64);
-    protected final Map<Class<?>, List<String>> classInstancesNameCache = new ConcurrentHashMap<>();
+    protected final Map<Class<?>, List<String>> classInstancesNameCache = new ConcurrentHashMap<>(32);
     protected final List<InstancePostProcessor> processors = new ArrayList<>();
     private final AtomicBoolean isInitialized = new AtomicBoolean(false);
     

@@ -42,7 +42,7 @@ public class AppContext  implements ApplicationContextAware {
      * @param <T> class type
      * @throws NoSuchInstanceException
      */
-    public static <T> T getFirst(Class<T> clazz) throws NoSuchInstanceException {
+    public static <T> T get(Class<T> clazz) throws NoSuchInstanceException {
         return applicationContext.get(clazz);
     }
 
@@ -54,7 +54,7 @@ public class AppContext  implements ApplicationContextAware {
      * @param <T> class type
      * @throws NoSuchInstanceException
      */
-    public static <T> List<T> getAll(Class<T> clazz) throws NoSuchInstanceException {
+    public static <T> List<T> getByType(Class<T> clazz) throws NoSuchInstanceException {
         return applicationContext.getByType(clazz);
     }
 
