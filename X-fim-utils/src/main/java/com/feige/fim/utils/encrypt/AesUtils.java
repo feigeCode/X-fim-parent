@@ -28,7 +28,7 @@ public class AesUtils {
         return bytes;
     }
 
-    public byte[] randomAesIv(int size) {
+    public static byte[] randomAesIv(int size) {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[size];
         random.nextBytes(bytes);

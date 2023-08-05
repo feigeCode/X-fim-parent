@@ -19,6 +19,8 @@ public class ClientConfig {
     private String osVersion;
     private int osCode;
     private String token;
+    private String serverIp;
+    private int serverPort;
 
     public String serializeString() {
         String[] strings = {
@@ -73,8 +75,16 @@ public class ClientConfig {
         this.clientKey = clientKey;
     }
 
+    public String getClientKeyString() {
+        return Base64.toBase64String(clientKey);
+    }
+    
     public byte[] getIv() {
         return iv;
+    }
+
+    public String getIvString() {
+        return Base64.toBase64String(iv);
     }
 
     public void setIv(byte[] iv) {
@@ -127,6 +137,22 @@ public class ClientConfig {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getServerIp() {
+        return serverIp;
+    }
+
+    public void setServerIp(String serverIp) {
+        this.serverIp = serverIp;
+    }
+
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
     }
 
     @Override

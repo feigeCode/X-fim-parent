@@ -8,16 +8,28 @@ public interface HandshakeMsgProtoOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>bytes client_key = 1;</code>
+   * <code>string client_key = 1;</code>
    * @return The clientKey.
    */
-  com.google.protobuf.ByteString getClientKey();
+  java.lang.String getClientKey();
+  /**
+   * <code>string client_key = 1;</code>
+   * @return The bytes for clientKey.
+   */
+  com.google.protobuf.ByteString
+      getClientKeyBytes();
 
   /**
-   * <code>bytes iv = 2;</code>
+   * <code>string iv = 2;</code>
    * @return The iv.
    */
-  com.google.protobuf.ByteString getIv();
+  java.lang.String getIv();
+  /**
+   * <code>string iv = 2;</code>
+   * @return The bytes for iv.
+   */
+  com.google.protobuf.ByteString
+      getIvBytes();
 
   /**
    * <code>string client_version = 3;</code>

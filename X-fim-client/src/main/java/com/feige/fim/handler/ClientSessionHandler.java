@@ -19,7 +19,6 @@ import com.feige.api.session.Session;
 import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
 import com.google.auto.service.AutoService;
-import com.google.protobuf.ByteString;
 
 
 @AutoService(SessionHandler.class)
@@ -61,8 +60,8 @@ public class ClientSessionHandler extends AbstractSessionHandler {
     private void handshake(Session session, ClientConfig clientConfig) throws RemotingException {
         Packet packet = PacketUtils.createPacket(Command.HANDSHAKE, Handshake.class);
         HandshakeMsgProto msgProto = HandshakeMsgProto.newBuilder()
-                .setClientKey(ByteString.copyFrom(clientConfig.getClientKey()))
-                .setIv(ByteString.copyFrom(clientConfig.getIv()))
+                .setClientKey(clientConfig.getClientKeyString())
+                .setIv(clientConfig.getIvString())
                 .setClientVersion(clientConfig.getClientVersion())
                 .setOsName(clientConfig.getOsName())
                 .setOsCode(clientConfig.getOsCode())

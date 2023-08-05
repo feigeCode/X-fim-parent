@@ -12,8 +12,8 @@ option java_package = "com.feige.fim.msg.proto";
 option java_outer_classname="MsgProto";
 
 message HandshakeMsgProto {
-    bytes client_key = 1;
-    bytes iv = 2;
+    string client_key = 1;
+    string iv = 2;
     string client_version = 3;
     string os_name = 4;
     uint32 os_code = 5;

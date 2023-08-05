@@ -34,8 +34,8 @@ public final class MsgProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\tMsg.proto\022\021com.feige.fim.msg\"\217\001\n\021Hands" +
-      "hakeMsgProto\022\022\n\nclient_key\030\001 \001(\014\022\n\n\002iv\030\002" +
-      " \001(\014\022\026\n\016client_version\030\003 \001(\t\022\017\n\007os_name\030" +
+      "hakeMsgProto\022\022\n\nclient_key\030\001 \001(\t\022\n\n\002iv\030\002" +
+      " \001(\t\022\026\n\016client_version\030\003 \001(\t\022\017\n\007os_name\030" +
       "\004 \001(\t\022\017\n\007os_code\030\005 \001(\r\022\021\n\tclient_id\030\006 \001(" +
       "\t\022\r\n\005token\030\007 \001(\t\"<\n\023FastConnectMsgProto\022" +
       "\021\n\tclient_id\030\001 \001(\t\022\022\n\nsession_id\030\002 \001(\tB%" +

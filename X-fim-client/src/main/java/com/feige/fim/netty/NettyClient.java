@@ -5,6 +5,7 @@ import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.Listener;
 import com.feige.api.sc.ServiceException;
 import com.feige.api.sc.AbstractClient;
+import com.feige.fim.config.ClientConfig;
 import com.feige.fim.lg.Logs;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -37,15 +38,18 @@ public class NettyClient extends AbstractClient {
     protected Channel channel;
     private final NettyCodecAdapter codec;
     protected SslContext sslContext;
+    private final ClientConfig clientConfig;
+    private InetSocketAddress remoteAddress;
 
-    public NettyClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler, SslContext sslContext) {
-        super(address, codec, sessionHandler);
+    public NettyClient(ClientConfig clientConfig, Codec codec, SessionHandler sessionHandler, SslContext sslContext) {
+        super(codec, sessionHandler);
+        this.clientConfig = clientConfig;
         this.codec = new NettyCodecAdapter(this);
         this.sslContext = sslContext;
     }
 
-    public NettyClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler) {
-        this(address, codec, sessionHandler, null);
+    public NettyClient(ClientConfig clientConfig, Codec codec, SessionHandler sessionHandler) {
+        this(clientConfig, codec, sessionHandler, null);
     }
 
 
@@ -60,13 +64,13 @@ public class NettyClient extends AbstractClient {
         try {
             initBootstrap();
             ChannelFuture channelFuture = this.bootstrap
-                    .connect(address)
+                    .connect(getAddress())
                     .addListener(future -> {
                         if (future.isSuccess()) {
                             connected.set(true);
                             Logs.getInstance().info("netty [{}] client in {} port connect finish....", getClass().getSimpleName() ,getAddress().getPort());
                             if (listener != null){
-                                listener.onSuccess(address);
+                                listener.onSuccess(getAddress());
                             }
                         }else {
                             Logs.getInstance().error("server start failure on:" + getAddress().getPort(), future.cause());
@@ -116,8 +120,9 @@ public class NettyClient extends AbstractClient {
         }
         Logs.getInstance().info("{} shutdown success.", this.getClass().getSimpleName());
         if (listener != null) {
-            listener.onSuccess(address);
+            listener.onSuccess(getAddress());
         }
+        this.remoteAddress = null;
     }
 
 
@@ -171,5 +176,12 @@ public class NettyClient extends AbstractClient {
     public Bootstrap getBootstrap() {
         return bootstrap;
     }
-    
+
+    @Override
+    public InetSocketAddress getAddress() {
+        if (this.remoteAddress == null) {
+            this.remoteAddress = new InetSocketAddress(clientConfig.getServerIp(), clientConfig.getServerPort());
+        }
+        return remoteAddress;
+    }
 }

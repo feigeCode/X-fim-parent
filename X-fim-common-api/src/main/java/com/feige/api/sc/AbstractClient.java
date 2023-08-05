@@ -23,11 +23,9 @@ public abstract class AbstractClient extends ServiceAdapter implements Client {
     
     protected Codec codec;
     protected SessionHandler sessionHandler;
-    protected InetSocketAddress address;
     protected volatile Session session;
 
-    public AbstractClient(InetSocketAddress address , Codec codec, SessionHandler sessionHandler) {
-        this.address = address;
+    public AbstractClient(Codec codec, SessionHandler sessionHandler) {
         this.codec = codec;
         this.sessionHandler = sessionHandler;
     }
@@ -71,9 +69,5 @@ public abstract class AbstractClient extends ServiceAdapter implements Client {
     public void sessionActive(Session session){
         this.session = session;
     }
-
-    @Override
-    public InetSocketAddress getAddress() {
-        return address;
-    }
+    
 }

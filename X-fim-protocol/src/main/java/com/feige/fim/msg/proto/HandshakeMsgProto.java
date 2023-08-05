@@ -16,8 +16,8 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private HandshakeMsgProto() {
-    clientKey_ = com.google.protobuf.ByteString.EMPTY;
-    iv_ = com.google.protobuf.ByteString.EMPTY;
+    clientKey_ = "";
+    iv_ = "";
     clientVersion_ = "";
     osName_ = "";
     clientId_ = "";
@@ -55,13 +55,15 @@ private static final long serialVersionUID = 0L;
             done = true;
             break;
           case 10: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            clientKey_ = input.readBytes();
+            clientKey_ = s;
             break;
           }
           case 18: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            iv_ = input.readBytes();
+            iv_ = s;
             break;
           }
           case 26: {
@@ -126,25 +128,79 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CLIENT_KEY_FIELD_NUMBER = 1;
-  private com.google.protobuf.ByteString clientKey_;
+  private volatile java.lang.Object clientKey_;
   /**
-   * <code>bytes client_key = 1;</code>
+   * <code>string client_key = 1;</code>
    * @return The clientKey.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString getClientKey() {
-    return clientKey_;
+  public java.lang.String getClientKey() {
+    java.lang.Object ref = clientKey_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      clientKey_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string client_key = 1;</code>
+   * @return The bytes for clientKey.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getClientKeyBytes() {
+    java.lang.Object ref = clientKey_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      clientKey_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   public static final int IV_FIELD_NUMBER = 2;
-  private com.google.protobuf.ByteString iv_;
+  private volatile java.lang.Object iv_;
   /**
-   * <code>bytes iv = 2;</code>
+   * <code>string iv = 2;</code>
    * @return The iv.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString getIv() {
-    return iv_;
+  public java.lang.String getIv() {
+    java.lang.Object ref = iv_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      iv_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string iv = 2;</code>
+   * @return The bytes for iv.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getIvBytes() {
+    java.lang.Object ref = iv_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      iv_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   public static final int CLIENT_VERSION_FIELD_NUMBER = 3;
@@ -324,11 +380,11 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!clientKey_.isEmpty()) {
-      output.writeBytes(1, clientKey_);
+    if (!getClientKeyBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, clientKey_);
     }
-    if (!iv_.isEmpty()) {
-      output.writeBytes(2, iv_);
+    if (!getIvBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, iv_);
     }
     if (!getClientVersionBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, clientVersion_);
@@ -354,13 +410,11 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!clientKey_.isEmpty()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeBytesSize(1, clientKey_);
+    if (!getClientKeyBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, clientKey_);
     }
-    if (!iv_.isEmpty()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeBytesSize(2, iv_);
+    if (!getIvBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, iv_);
     }
     if (!getClientVersionBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, clientVersion_);
@@ -565,9 +619,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      clientKey_ = com.google.protobuf.ByteString.EMPTY;
+      clientKey_ = "";
 
-      iv_ = com.google.protobuf.ByteString.EMPTY;
+      iv_ = "";
 
       clientVersion_ = "";
 
@@ -660,11 +714,13 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.feige.fim.msg.proto.HandshakeMsgProto other) {
       if (other == com.feige.fim.msg.proto.HandshakeMsgProto.getDefaultInstance()) return this;
-      if (other.getClientKey() != com.google.protobuf.ByteString.EMPTY) {
-        setClientKey(other.getClientKey());
+      if (!other.getClientKey().isEmpty()) {
+        clientKey_ = other.clientKey_;
+        onChanged();
       }
-      if (other.getIv() != com.google.protobuf.ByteString.EMPTY) {
-        setIv(other.getIv());
+      if (!other.getIv().isEmpty()) {
+        iv_ = other.iv_;
+        onChanged();
       }
       if (!other.getClientVersion().isEmpty()) {
         clientVersion_ = other.clientVersion_;
@@ -714,21 +770,47 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.google.protobuf.ByteString clientKey_ = com.google.protobuf.ByteString.EMPTY;
+    private java.lang.Object clientKey_ = "";
     /**
-     * <code>bytes client_key = 1;</code>
+     * <code>string client_key = 1;</code>
      * @return The clientKey.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getClientKey() {
-      return clientKey_;
+    public java.lang.String getClientKey() {
+      java.lang.Object ref = clientKey_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        clientKey_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>bytes client_key = 1;</code>
+     * <code>string client_key = 1;</code>
+     * @return The bytes for clientKey.
+     */
+    public com.google.protobuf.ByteString
+        getClientKeyBytes() {
+      java.lang.Object ref = clientKey_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        clientKey_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string client_key = 1;</code>
      * @param value The clientKey to set.
      * @return This builder for chaining.
      */
-    public Builder setClientKey(com.google.protobuf.ByteString value) {
+    public Builder setClientKey(
+        java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
@@ -738,7 +820,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>bytes client_key = 1;</code>
+     * <code>string client_key = 1;</code>
      * @return This builder for chaining.
      */
     public Builder clearClientKey() {
@@ -747,22 +829,64 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
-
-    private com.google.protobuf.ByteString iv_ = com.google.protobuf.ByteString.EMPTY;
     /**
-     * <code>bytes iv = 2;</code>
+     * <code>string client_key = 1;</code>
+     * @param value The bytes for clientKey to set.
+     * @return This builder for chaining.
+     */
+    public Builder setClientKeyBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      clientKey_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object iv_ = "";
+    /**
+     * <code>string iv = 2;</code>
      * @return The iv.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getIv() {
-      return iv_;
+    public java.lang.String getIv() {
+      java.lang.Object ref = iv_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        iv_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>bytes iv = 2;</code>
+     * <code>string iv = 2;</code>
+     * @return The bytes for iv.
+     */
+    public com.google.protobuf.ByteString
+        getIvBytes() {
+      java.lang.Object ref = iv_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        iv_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string iv = 2;</code>
      * @param value The iv to set.
      * @return This builder for chaining.
      */
-    public Builder setIv(com.google.protobuf.ByteString value) {
+    public Builder setIv(
+        java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
@@ -772,12 +896,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>bytes iv = 2;</code>
+     * <code>string iv = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearIv() {
       
       iv_ = getDefaultInstance().getIv();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string iv = 2;</code>
+     * @param value The bytes for iv to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIvBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      iv_ = value;
       onChanged();
       return this;
     }
