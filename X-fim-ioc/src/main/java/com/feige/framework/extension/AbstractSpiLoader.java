@@ -243,8 +243,9 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         if (CollectionUtils.isNotEmpty(instances)){
             // class -> instance names
             addClassInstanceName(type, instances);
-            // 放入三级缓存
+            // 设置配置属性值并放入三级缓存
             for (T instance : instances) {
+                setConfigValue(instance);
                 String instanceName = getInstanceName(instance.getClass());
                 addSingletonFactory(instanceName, () -> this.getEarlyInstanceReference(instanceName, instance));
             }
@@ -445,7 +446,19 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
                     value = this.get(type);
                 }
             }
-
+            
+            if (value != null){
+                ReflectionUtils.makeAccessible(field);
+                ReflectionUtils.setField(field, instance, value);
+            }
+        }, field -> field.isAnnotationPresent(Inject.class));
+    }
+    
+    private void setConfigValue(Object instance){
+        // 遍历类的所有字段，包括父类的字段
+        ReflectionUtils.doWithFields(instance.getClass(), field -> {
+            Class<?> type = field.getType();
+            Object value = null;
             Value valueAnnotation = field.getAnnotation(Value.class);
             if (valueAnnotation != null){
                 String configKey = valueAnnotation.value();
@@ -459,7 +472,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
                 ReflectionUtils.makeAccessible(field);
                 ReflectionUtils.setField(field, instance, value);
             }
-        }, field -> field.isAnnotationPresent(Inject.class) || field.isAnnotationPresent(Value.class));
+        }, field -> field.isAnnotationPresent(Value.class));
     }
     
     protected abstract <T> List<T> doLoadSpiInstance(Class<T> loadClass);
