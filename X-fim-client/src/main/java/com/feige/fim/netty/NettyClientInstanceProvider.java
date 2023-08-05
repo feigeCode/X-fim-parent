@@ -1,6 +1,5 @@
 package com.feige.fim.netty;
 
-import com.feige.fim.config.ClientConfig;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.api.codec.Codec;
@@ -14,9 +13,6 @@ import com.google.auto.service.AutoService;
 public class NettyClientInstanceProvider implements InstanceProvider<Client> {
     
     @Inject
-    private ClientConfig clientConfig;
-    
-    @Inject
     private SessionHandler sessionHandler;
 
     @Inject
@@ -24,7 +20,7 @@ public class NettyClientInstanceProvider implements InstanceProvider<Client> {
     
     @Override
     public Client getInstance() {
-        return new NettyClient(clientConfig, codec, sessionHandler);
+        return new NettyClient(codec, sessionHandler);
     }
 
     @Override

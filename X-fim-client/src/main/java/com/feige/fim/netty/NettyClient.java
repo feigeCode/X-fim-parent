@@ -7,6 +7,7 @@ import com.feige.api.sc.ServiceException;
 import com.feige.api.sc.AbstractClient;
 import com.feige.fim.config.ClientConfig;
 import com.feige.fim.lg.Logs;
+import com.feige.framework.utils.AppContext;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -38,18 +39,16 @@ public class NettyClient extends AbstractClient {
     protected Channel channel;
     private final NettyCodecAdapter codec;
     protected SslContext sslContext;
-    private final ClientConfig clientConfig;
     private InetSocketAddress remoteAddress;
 
-    public NettyClient(ClientConfig clientConfig, Codec codec, SessionHandler sessionHandler, SslContext sslContext) {
+    public NettyClient(Codec codec, SessionHandler sessionHandler, SslContext sslContext) {
         super(codec, sessionHandler);
-        this.clientConfig = clientConfig;
         this.codec = new NettyCodecAdapter(this);
         this.sslContext = sslContext;
     }
 
-    public NettyClient(ClientConfig clientConfig, Codec codec, SessionHandler sessionHandler) {
-        this(clientConfig, codec, sessionHandler, null);
+    public NettyClient(Codec codec, SessionHandler sessionHandler) {
+        this(codec, sessionHandler, null);
     }
 
 
@@ -179,6 +178,7 @@ public class NettyClient extends AbstractClient {
 
     @Override
     public InetSocketAddress getAddress() {
+        ClientConfig clientConfig = AppContext.get(ClientConfig.class);
         if (this.remoteAddress == null) {
             this.remoteAddress = new InetSocketAddress(clientConfig.getServerIp(), clientConfig.getServerPort());
         }
