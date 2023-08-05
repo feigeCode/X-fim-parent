@@ -54,6 +54,7 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
     
     protected Class<?> genBasicClass(Class<?> type, Method[] methods){
         try(ClassGenerator classGenerator = new ClassGenerator()) {
+            classGenerator.addInterface(type.getName());
             classGenerator.setClassName(type.getSimpleName());
             for (Method method : methods) {
                 String name = method.getName();
@@ -67,7 +68,7 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
             classGenerator.addMethod("public byte[] serialize(){\n" +
                     "return null;\n" + 
                     "}");
-            classGenerator.addMethod("void deserialize(byte[] bytes){}");
+            classGenerator.addMethod("public void deserialize(byte[] bytes){}");
             return classGenerator.generate(type);
         }catch (Exception e){
             throw new RuntimeException(e);
@@ -76,6 +77,7 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
     
     protected Class<?>  wrapperProtoClass(Class<?> type, Method[] methods){
         try(ClassGenerator classGenerator = new ClassGenerator()) {
+            classGenerator.addInterface(type.getName());
             classGenerator.setClassName(type.getSimpleName());
             classGenerator.addField("protoTarget", Modifier.PRIVATE, getProtoClass(), true);
             for (Method method : methods) {
@@ -89,7 +91,7 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
             classGenerator.addMethod("public byte[] serialize(){\n" +
                     "return this.protoTarget.toByteArray();\n" +
                     "}");
-            classGenerator.addMethod("void deserialize(byte[] bytes){\n" +
+            classGenerator.addMethod("public void deserialize(byte[] bytes){\n" +
                     "this.protoTarget = " + getProtoClass().getName() + ".parseFrom(bytes);\n" +
                     "}");
             return classGenerator.generate(type);
