@@ -9,6 +9,13 @@ fim:
     version: 1
     header-length: 11
     check-sum-key: 
+  crypto:
+    enable: true
+    aes:
+      key-length: 16
+    rsa: 
+      private-key: 
+      public-key: 
   server: 
     enable-epoll: true
     tcp:
@@ -28,9 +35,6 @@ fim:
 nacos:
   server-list: 127.0.0.1:8848
     
-    
-spi:
-  loader:
-    type: config
+  
       
       

@@ -1,4 +1,4 @@
-package com.feige.framework.annotation;
+package com.feige.api.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

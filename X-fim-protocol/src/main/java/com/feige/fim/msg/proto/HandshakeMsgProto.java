@@ -20,6 +20,7 @@ private static final long serialVersionUID = 0L;
     iv_ = "";
     clientVersion_ = "";
     osName_ = "";
+    osVersion_ = "";
     clientId_ = "";
     token_ = "";
   }
@@ -78,18 +79,24 @@ private static final long serialVersionUID = 0L;
             osName_ = s;
             break;
           }
-          case 40: {
+          case 42: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            osCode_ = input.readUInt32();
+            osVersion_ = s;
             break;
           }
-          case 50: {
+          case 48: {
+
+            clientType_ = input.readUInt32();
+            break;
+          }
+          case 58: {
             java.lang.String s = input.readStringRequireUtf8();
 
             clientId_ = s;
             break;
           }
-          case 58: {
+          case 66: {
             java.lang.String s = input.readStringRequireUtf8();
 
             token_ = s;
@@ -279,21 +286,59 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int OS_CODE_FIELD_NUMBER = 5;
-  private int osCode_;
+  public static final int OS_VERSION_FIELD_NUMBER = 5;
+  private volatile java.lang.Object osVersion_;
   /**
-   * <code>uint32 os_code = 5;</code>
-   * @return The osCode.
+   * <code>string os_version = 5;</code>
+   * @return The osVersion.
    */
   @java.lang.Override
-  public int getOsCode() {
-    return osCode_;
+  public java.lang.String getOsVersion() {
+    java.lang.Object ref = osVersion_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      osVersion_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string os_version = 5;</code>
+   * @return The bytes for osVersion.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getOsVersionBytes() {
+    java.lang.Object ref = osVersion_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      osVersion_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
-  public static final int CLIENT_ID_FIELD_NUMBER = 6;
+  public static final int CLIENT_TYPE_FIELD_NUMBER = 6;
+  private int clientType_;
+  /**
+   * <code>uint32 client_type = 6;</code>
+   * @return The clientType.
+   */
+  @java.lang.Override
+  public int getClientType() {
+    return clientType_;
+  }
+
+  public static final int CLIENT_ID_FIELD_NUMBER = 7;
   private volatile java.lang.Object clientId_;
   /**
-   * <code>string client_id = 6;</code>
+   * <code>string client_id = 7;</code>
    * @return The clientId.
    */
   @java.lang.Override
@@ -310,7 +355,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string client_id = 6;</code>
+   * <code>string client_id = 7;</code>
    * @return The bytes for clientId.
    */
   @java.lang.Override
@@ -328,10 +373,10 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int TOKEN_FIELD_NUMBER = 7;
+  public static final int TOKEN_FIELD_NUMBER = 8;
   private volatile java.lang.Object token_;
   /**
-   * <code>string token = 7;</code>
+   * <code>string token = 8;</code>
    * @return The token.
    */
   @java.lang.Override
@@ -348,7 +393,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string token = 7;</code>
+   * <code>string token = 8;</code>
    * @return The bytes for token.
    */
   @java.lang.Override
@@ -392,14 +437,17 @@ private static final long serialVersionUID = 0L;
     if (!getOsNameBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, osName_);
     }
-    if (osCode_ != 0) {
-      output.writeUInt32(5, osCode_);
+    if (!getOsVersionBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, osVersion_);
+    }
+    if (clientType_ != 0) {
+      output.writeUInt32(6, clientType_);
     }
     if (!getClientIdBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, clientId_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, clientId_);
     }
     if (!getTokenBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, token_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 8, token_);
     }
     unknownFields.writeTo(output);
   }
@@ -422,15 +470,18 @@ private static final long serialVersionUID = 0L;
     if (!getOsNameBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, osName_);
     }
-    if (osCode_ != 0) {
+    if (!getOsVersionBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, osVersion_);
+    }
+    if (clientType_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeUInt32Size(5, osCode_);
+        .computeUInt32Size(6, clientType_);
     }
     if (!getClientIdBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, clientId_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, clientId_);
     }
     if (!getTokenBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, token_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, token_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -455,8 +506,10 @@ private static final long serialVersionUID = 0L;
         .equals(other.getClientVersion())) return false;
     if (!getOsName()
         .equals(other.getOsName())) return false;
-    if (getOsCode()
-        != other.getOsCode()) return false;
+    if (!getOsVersion()
+        .equals(other.getOsVersion())) return false;
+    if (getClientType()
+        != other.getClientType()) return false;
     if (!getClientId()
         .equals(other.getClientId())) return false;
     if (!getToken()
@@ -480,8 +533,10 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getClientVersion().hashCode();
     hash = (37 * hash) + OS_NAME_FIELD_NUMBER;
     hash = (53 * hash) + getOsName().hashCode();
-    hash = (37 * hash) + OS_CODE_FIELD_NUMBER;
-    hash = (53 * hash) + getOsCode();
+    hash = (37 * hash) + OS_VERSION_FIELD_NUMBER;
+    hash = (53 * hash) + getOsVersion().hashCode();
+    hash = (37 * hash) + CLIENT_TYPE_FIELD_NUMBER;
+    hash = (53 * hash) + getClientType();
     hash = (37 * hash) + CLIENT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getClientId().hashCode();
     hash = (37 * hash) + TOKEN_FIELD_NUMBER;
@@ -627,7 +682,9 @@ private static final long serialVersionUID = 0L;
 
       osName_ = "";
 
-      osCode_ = 0;
+      osVersion_ = "";
+
+      clientType_ = 0;
 
       clientId_ = "";
 
@@ -663,7 +720,8 @@ private static final long serialVersionUID = 0L;
       result.iv_ = iv_;
       result.clientVersion_ = clientVersion_;
       result.osName_ = osName_;
-      result.osCode_ = osCode_;
+      result.osVersion_ = osVersion_;
+      result.clientType_ = clientType_;
       result.clientId_ = clientId_;
       result.token_ = token_;
       onBuilt();
@@ -730,8 +788,12 @@ private static final long serialVersionUID = 0L;
         osName_ = other.osName_;
         onChanged();
       }
-      if (other.getOsCode() != 0) {
-        setOsCode(other.getOsCode());
+      if (!other.getOsVersion().isEmpty()) {
+        osVersion_ = other.osVersion_;
+        onChanged();
+      }
+      if (other.getClientType() != 0) {
+        setClientType(other.getClientType());
       }
       if (!other.getClientId().isEmpty()) {
         clientId_ = other.clientId_;
@@ -1074,40 +1136,116 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int osCode_ ;
+    private java.lang.Object osVersion_ = "";
     /**
-     * <code>uint32 os_code = 5;</code>
-     * @return The osCode.
+     * <code>string os_version = 5;</code>
+     * @return The osVersion.
      */
-    @java.lang.Override
-    public int getOsCode() {
-      return osCode_;
+    public java.lang.String getOsVersion() {
+      java.lang.Object ref = osVersion_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        osVersion_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>uint32 os_code = 5;</code>
-     * @param value The osCode to set.
+     * <code>string os_version = 5;</code>
+     * @return The bytes for osVersion.
+     */
+    public com.google.protobuf.ByteString
+        getOsVersionBytes() {
+      java.lang.Object ref = osVersion_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        osVersion_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string os_version = 5;</code>
+     * @param value The osVersion to set.
      * @return This builder for chaining.
      */
-    public Builder setOsCode(int value) {
-      
-      osCode_ = value;
+    public Builder setOsVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      osVersion_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>uint32 os_code = 5;</code>
+     * <code>string os_version = 5;</code>
      * @return This builder for chaining.
      */
-    public Builder clearOsCode() {
+    public Builder clearOsVersion() {
       
-      osCode_ = 0;
+      osVersion_ = getDefaultInstance().getOsVersion();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string os_version = 5;</code>
+     * @param value The bytes for osVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setOsVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      osVersion_ = value;
+      onChanged();
+      return this;
+    }
+
+    private int clientType_ ;
+    /**
+     * <code>uint32 client_type = 6;</code>
+     * @return The clientType.
+     */
+    @java.lang.Override
+    public int getClientType() {
+      return clientType_;
+    }
+    /**
+     * <code>uint32 client_type = 6;</code>
+     * @param value The clientType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setClientType(int value) {
+      
+      clientType_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>uint32 client_type = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearClientType() {
+      
+      clientType_ = 0;
       onChanged();
       return this;
     }
 
     private java.lang.Object clientId_ = "";
     /**
-     * <code>string client_id = 6;</code>
+     * <code>string client_id = 7;</code>
      * @return The clientId.
      */
     public java.lang.String getClientId() {
@@ -1123,7 +1261,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string client_id = 6;</code>
+     * <code>string client_id = 7;</code>
      * @return The bytes for clientId.
      */
     public com.google.protobuf.ByteString
@@ -1140,7 +1278,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string client_id = 6;</code>
+     * <code>string client_id = 7;</code>
      * @param value The clientId to set.
      * @return This builder for chaining.
      */
@@ -1155,7 +1293,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string client_id = 6;</code>
+     * <code>string client_id = 7;</code>
      * @return This builder for chaining.
      */
     public Builder clearClientId() {
@@ -1165,7 +1303,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string client_id = 6;</code>
+     * <code>string client_id = 7;</code>
      * @param value The bytes for clientId to set.
      * @return This builder for chaining.
      */
@@ -1183,7 +1321,7 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object token_ = "";
     /**
-     * <code>string token = 7;</code>
+     * <code>string token = 8;</code>
      * @return The token.
      */
     public java.lang.String getToken() {
@@ -1199,7 +1337,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string token = 7;</code>
+     * <code>string token = 8;</code>
      * @return The bytes for token.
      */
     public com.google.protobuf.ByteString
@@ -1216,7 +1354,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string token = 7;</code>
+     * <code>string token = 8;</code>
      * @param value The token to set.
      * @return This builder for chaining.
      */
@@ -1231,7 +1369,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string token = 7;</code>
+     * <code>string token = 8;</code>
      * @return This builder for chaining.
      */
     public Builder clearToken() {
@@ -1241,7 +1379,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string token = 7;</code>
+     * <code>string token = 8;</code>
      * @param value The bytes for token to set.
      * @return This builder for chaining.
      */

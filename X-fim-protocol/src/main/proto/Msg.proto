@@ -16,9 +16,10 @@ message HandshakeMsgProto {
     string iv = 2;
     string client_version = 3;
     string os_name = 4;
-    uint32 os_code = 5;
-    string client_id = 6;
-    string token = 7;
+    string os_version = 5;
+    uint32 client_type = 6;
+    string client_id = 7;
+    string token = 8;
 }
 
 

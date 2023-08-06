@@ -56,30 +56,42 @@ public interface HandshakeMsgProtoOrBuilder extends
       getOsNameBytes();
 
   /**
-   * <code>uint32 os_code = 5;</code>
-   * @return The osCode.
+   * <code>string os_version = 5;</code>
+   * @return The osVersion.
    */
-  int getOsCode();
+  java.lang.String getOsVersion();
+  /**
+   * <code>string os_version = 5;</code>
+   * @return The bytes for osVersion.
+   */
+  com.google.protobuf.ByteString
+      getOsVersionBytes();
 
   /**
-   * <code>string client_id = 6;</code>
+   * <code>uint32 client_type = 6;</code>
+   * @return The clientType.
+   */
+  int getClientType();
+
+  /**
+   * <code>string client_id = 7;</code>
    * @return The clientId.
    */
   java.lang.String getClientId();
   /**
-   * <code>string client_id = 6;</code>
+   * <code>string client_id = 7;</code>
    * @return The bytes for clientId.
    */
   com.google.protobuf.ByteString
       getClientIdBytes();
 
   /**
-   * <code>string token = 7;</code>
+   * <code>string token = 8;</code>
    * @return The token.
    */
   java.lang.String getToken();
   /**
-   * <code>string token = 7;</code>
+   * <code>string token = 8;</code>
    * @return The bytes for token.
    */
   com.google.protobuf.ByteString

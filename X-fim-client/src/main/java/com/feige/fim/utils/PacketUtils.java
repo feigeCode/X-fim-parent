@@ -3,7 +3,7 @@ package com.feige.fim.utils;
 import com.feige.api.constant.Command;
 import com.feige.api.constant.ProtocolConst;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.annotation.MsgComp;
+import com.feige.api.annotation.MsgComp;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

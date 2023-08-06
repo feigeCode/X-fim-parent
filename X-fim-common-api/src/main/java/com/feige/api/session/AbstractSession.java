@@ -1,10 +1,11 @@
 package com.feige.api.session;
 
-import com.feige.api.cipher.Cipher;
+import com.feige.api.crypto.Cipher;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author feige<br />
@@ -14,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class AbstractSession implements Session {
     protected final AtomicBoolean active = new AtomicBoolean(false);
-    protected final AtomicBoolean bindClient = new AtomicBoolean(false);
+    protected final AtomicInteger sessionState = new AtomicInteger(0);
     protected Cipher cipher;
 
     private final Map<String, Object> attributes = new ConcurrentHashMap<>();
@@ -72,11 +73,22 @@ public abstract class AbstractSession implements Session {
 
     @Override
     public boolean isBindClient() {
-        return bindClient.get();
+        return sessionState.get() == 2;
     }
 
     @Override
-    public void setBindClient(boolean isBindClient) {
-        bindClient.set(isBindClient);
+    public void markBindClient() {
+        sessionState.set(2);
     }
+
+    @Override
+    public boolean isHandshake() {
+        return sessionState.get() == 1;
+    }
+
+    @Override
+    public void markHandshake() {
+        sessionState.set(1);
+    }
+    
 }

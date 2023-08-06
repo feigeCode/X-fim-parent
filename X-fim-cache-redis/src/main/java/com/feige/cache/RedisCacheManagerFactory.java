@@ -6,6 +6,7 @@ import com.feige.api.cache.CacheManagerFactory;
 import com.feige.fim.config.ServerConfigKey;
 import com.feige.framework.api.context.Environment;
 import com.feige.framework.api.context.EnvironmentAware;
+import com.feige.framework.api.spi.InstanceProvider;
 import com.google.auto.service.AutoService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.redisson.Redisson;
@@ -19,8 +20,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 @SpiComp("redis")
-@AutoService(CacheManagerFactory.class)
-public class RedisCacheManagerFactory implements CacheManagerFactory, EnvironmentAware {
+@AutoService(InstanceProvider.class)
+public class RedisCacheManagerFactory implements CacheManagerFactory, InstanceProvider<CacheManager>, EnvironmentAware {
     
 
     public static final String TYPE_SINGLE = "single";
@@ -72,5 +73,19 @@ public class RedisCacheManagerFactory implements CacheManagerFactory, Environmen
     @Override
     public void setEnvironment(Environment environment) {
         env = environment;
+    }
+
+    @Override
+    public CacheManager getInstance() {
+        try {
+            return create();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Class<CacheManager> getType() {
+        return CacheManager.class;
     }
 }

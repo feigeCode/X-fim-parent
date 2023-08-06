@@ -12,13 +12,4 @@ fim:
   client:
     ss:
       path: E:\project\my\X-fim-parent\conf
-    tcp:
-      ip: 127.0.0.1
-      port: 8001
 
-
-
-
-spi:
-  loader:
-    type: jdk

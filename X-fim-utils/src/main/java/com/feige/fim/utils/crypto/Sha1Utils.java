@@ -1,4 +1,4 @@
-package com.feige.fim.utils.encrypt;
+package com.feige.fim.utils.crypto;
 
 
 import org.bouncycastle.pqc.math.linearalgebra.ByteUtils;

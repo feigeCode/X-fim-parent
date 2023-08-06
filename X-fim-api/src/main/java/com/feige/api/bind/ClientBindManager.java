@@ -1,5 +1,7 @@
 package com.feige.api.bind;
 
+import com.feige.api.constant.ClientType;
+
 import java.util.Map;
 
 /**

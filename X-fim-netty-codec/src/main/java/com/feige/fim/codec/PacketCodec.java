@@ -1,6 +1,6 @@
 package com.feige.fim.codec;
 
-import com.feige.api.cipher.Cipher;
+import com.feige.api.crypto.Cipher;
 import com.feige.api.codec.Codec;
 import com.feige.api.codec.DecoderException;
 import com.feige.api.codec.EncoderException;

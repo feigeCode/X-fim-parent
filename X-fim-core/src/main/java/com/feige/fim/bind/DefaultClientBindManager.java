@@ -1,11 +1,12 @@
 package com.feige.fim.bind;
 
+import com.feige.api.bind.ClientBindManager;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.api.bind.ClientBindInfo;
-import com.feige.api.bind.ClientType;
-import com.feige.api.cache.CacheManager;
+import com.feige.api.constant.ClientType;
 import com.feige.api.cache.MapCache;
 import com.feige.api.constant.Const;
+import com.google.auto.service.AutoService;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -19,13 +20,10 @@ import java.util.stream.Collectors;
  * @date: 2023/5/27 10:47<br/>
  */
 @SpiComp("default")
+@AutoService(ClientBindManager.class)
 public class DefaultClientBindManager extends AbstractClientBindManager {
     
     public static final String CACHE_NAME = "BIND_CLIENT";
-    
-    public DefaultClientBindManager(CacheManager cacheManager) {
-        super(cacheManager);
-    }
 
     protected MapCache<String, ClientBindInfo> getMapCache(){
         MapCache<String, ClientBindInfo> mapCache = cacheManager.get(CACHE_NAME, MapCache.class);

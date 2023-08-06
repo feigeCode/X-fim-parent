@@ -1,6 +1,6 @@
 
 
-package com.feige.fim.utils.encrypt;
+package com.feige.fim.utils.crypto;
 
 import org.bouncycastle.crypto.digests.SM3Digest;
 import org.bouncycastle.crypto.macs.HMac;

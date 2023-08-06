@@ -13,7 +13,7 @@ import com.google.common.base.Splitter;
 public class StringUtils {
 
     public static final String EMPTY_STR = "";
-    public final static Joiner   commaJoiner = Joiner.on(",").skipNulls();
+    public final static Joiner   commaJoiner = Joiner.on(",");
     public final static Splitter commaSplitter = Splitter.on(",").omitEmptyStrings();
 
     public static boolean isEmpty(Object str) {

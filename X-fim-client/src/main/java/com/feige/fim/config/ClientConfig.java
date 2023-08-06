@@ -17,7 +17,7 @@ public class ClientConfig {
     private String clientId;
     private String osName;
     private String osVersion;
-    private int osCode;
+    private int clientType;
     private String token;
     private String serverIp;
     private int serverPort;
@@ -123,12 +123,12 @@ public class ClientConfig {
         this.osVersion = osVersion;
     }
 
-    public int getOsCode() {
-        return osCode;
+    public int getClientType() {
+        return clientType;
     }
 
-    public void setOsCode(int osCode) {
-        this.osCode = osCode;
+    public void setClientType(int clientType) {
+        this.clientType = clientType;
     }
 
     public String getToken() {
@@ -166,7 +166,7 @@ public class ClientConfig {
                 ", clientId='" + clientId + '\'' +
                 ", osName='" + osName + '\'' +
                 ", osVersion='" + osVersion + '\'' +
-                ", osCode=" + osCode +
+                ", clientType=" + clientType +
                 ", token='" + token + '\'' +
                 '}';
     }

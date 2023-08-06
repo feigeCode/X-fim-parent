@@ -1,8 +1,9 @@
 package com.feige.fim;
 
+import com.feige.api.crypto.CipherFactory;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.Value;
-import com.feige.api.cipher.Cipher;
+import com.feige.api.crypto.Cipher;
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
 import com.feige.framework.api.context.ApplicationContext;
@@ -11,9 +12,9 @@ import com.feige.fim.codec.PacketCodecInstanceProvider;
 import com.feige.fim.config.ServerConfigKey;
 import com.feige.framework.context.StandardApplicationContext;
 import com.feige.framework.utils.Configs;
-import com.feige.fim.encrypt.AesCipherFactory;
-import com.feige.fim.encrypt.RsaCipherFactory;
-import com.feige.fim.utils.encrypt.RsaUtils;
+import com.feige.fim.crypto.AesCipherFactory;
+import com.feige.fim.crypto.RsaCipherFactory;
+import com.feige.fim.utils.crypto.RsaUtils;
 import com.feige.fim.server.NettyTcpServerProvider;
 import com.feige.fim.utils.ReflectionUtils;
 import org.junit.Assert;
@@ -84,8 +85,8 @@ public class ServerTest {
         String key = "aesTestKey";
         String iv = "WrongIlengthmust";
         String data = "AES加解密";
-        AesCipherFactory aesCipherFactory = new AesCipherFactory();
-        Cipher cipher = aesCipherFactory.create(key, iv);
+        CipherFactory aesCipherFactory = applicationContext.get("aes", CipherFactory.class);
+        Cipher cipher = aesCipherFactory.create(key.getBytes(), iv.getBytes());
         byte[] encrypt = cipher.encrypt(data.getBytes(StandardCharsets.UTF_8));
         byte[] decrypt = cipher.decrypt(encrypt);
         Assert.assertEquals(data, new String(decrypt, 0, decrypt.length));
@@ -97,10 +98,8 @@ public class ServerTest {
         KeyPair keyPair = RsaUtils.generateKey();
         PrivateKey aPrivate = keyPair.getPrivate();
         PublicKey aPublic = keyPair.getPublic();
-        String privateKey = RsaUtils.keyEncrypt(aPrivate);
-        String publicKey = RsaUtils.keyEncrypt(aPublic);
-        RsaCipherFactory rsaCipherFactory = new RsaCipherFactory();
-        Cipher cipher = rsaCipherFactory.create(privateKey, publicKey);
+        CipherFactory rsaCipherFactory = applicationContext.get("rsa", CipherFactory.class);
+        Cipher cipher = rsaCipherFactory.create(aPrivate.getEncoded(), aPublic.getEncoded());
         byte[] encrypt = cipher.encrypt(data.getBytes(StandardCharsets.UTF_8));
         byte[] decrypt = cipher.decrypt(encrypt);
         Assert.assertEquals(data, new String(decrypt, 0, decrypt.length));

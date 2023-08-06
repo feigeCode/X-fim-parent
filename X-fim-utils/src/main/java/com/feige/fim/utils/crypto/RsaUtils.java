@@ -1,12 +1,10 @@
-package com.feige.fim.utils.encrypt;
+package com.feige.fim.utils.crypto;
 
 
 import org.bouncycastle.util.encoders.Base64;
 
 import javax.crypto.Cipher;
 import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -41,32 +39,26 @@ public class RsaUtils {
         }
     }
     
-    public static RSAPublicKey getPublicKey(String publicKey) {
-        if (publicKey == null || publicKey.length() <= 0){
+    public static RSAPublicKey getPublicKey(byte[] publicKey) {
+        if (publicKey.length == 0){
             return null;
         }
-        byte[] decoded = Base64.decode(publicKey);
         try {
-            return  (RSAPublicKey)KeyFactory.getInstance(RSA).generatePublic(new X509EncodedKeySpec(decoded));
+            return  (RSAPublicKey)KeyFactory.getInstance(RSA).generatePublic(new X509EncodedKeySpec(publicKey));
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static RSAPrivateKey getPrivateKey(String privateKey) {
-        if (privateKey == null || privateKey.length() <= 0){
+    public static RSAPrivateKey getPrivateKey(byte[] privateKey) {
+        if (privateKey.length == 0){
             return null;
         }
-        byte[] decoded = Base64.decode(privateKey);
         try {
-            return  (RSAPrivateKey)KeyFactory.getInstance(RSA).generatePrivate(new PKCS8EncodedKeySpec(decoded));
+            return  (RSAPrivateKey)KeyFactory.getInstance(RSA).generatePrivate(new PKCS8EncodedKeySpec(privateKey));
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static String keyEncrypt(Key key) {
-        return Base64.toBase64String(key.getEncoded());
     }
 
     public static byte[] encrypt(byte[] data, RSAPublicKey pubKey) {

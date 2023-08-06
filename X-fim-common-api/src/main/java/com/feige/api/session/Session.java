@@ -1,7 +1,7 @@
 package com.feige.api.session;
 
 import com.feige.api.handler.RemotingException;
-import com.feige.api.cipher.Cipher;
+import com.feige.api.crypto.Cipher;
 
 import java.net.InetSocketAddress;
 
@@ -60,9 +60,20 @@ public interface Session {
     boolean isBindClient();
 
     /**
-     * set is bind client
+     * mark is bind client
      */
-    void setBindClient(boolean isBindClient);
+    void markBindClient();
+
+    /**
+     * is handshake
+     * @return
+     */
+    boolean isHandshake();
+
+    /**
+     * mark is handshake
+     */
+    void markHandshake();
 
     /**
      * 是否有对应属性

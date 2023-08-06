@@ -1,5 +1,7 @@
 package com.feige.api.bind;
 
+import com.feige.api.constant.ClientType;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -35,7 +37,7 @@ public class ClientBindInfo implements Serializable {
     /**
      * session id
      */
-    private String sid;
+    private String sessionId;
 
     public String getHost() {
         return host;
@@ -82,12 +84,12 @@ public class ClientBindInfo implements Serializable {
         return this;
     }
 
-    public String getSid() {
-        return sid;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public ClientBindInfo setSid(String sid) {
-        this.sid = sid;
+    public ClientBindInfo setSessionId(String sessionId) {
+        this.sessionId = sessionId;
         return this;
     }
     
@@ -96,15 +98,15 @@ public class ClientBindInfo implements Serializable {
     }
     
     public boolean isOnline() {
-        return sid != null;
+        return sessionId != null;
     }
 
     public boolean isOffline() {
-        return sid == null;
+        return sessionId == null;
     }
 
     public ClientBindInfo offline() {
-        this.sid = null;
+        this.sessionId = null;
         return this;
     }
 

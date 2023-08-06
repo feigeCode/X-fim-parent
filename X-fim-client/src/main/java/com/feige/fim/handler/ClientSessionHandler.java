@@ -64,7 +64,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
                 .setIv(clientConfig.getIvString())
                 .setClientVersion(clientConfig.getClientVersion())
                 .setOsName(clientConfig.getOsName())
-                .setOsCode(clientConfig.getOsCode())
+                .setClientType(clientConfig.getClientType())
                 .setClientId(clientConfig.getClientId())
                 .setToken(clientConfig.getToken())
                 .build();

@@ -33,14 +33,14 @@ public final class MsgProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\tMsg.proto\022\021com.feige.fim.msg\"\217\001\n\021Hands" +
+      "\n\tMsg.proto\022\021com.feige.fim.msg\"\247\001\n\021Hands" +
       "hakeMsgProto\022\022\n\nclient_key\030\001 \001(\t\022\n\n\002iv\030\002" +
       " \001(\t\022\026\n\016client_version\030\003 \001(\t\022\017\n\007os_name\030" +
-      "\004 \001(\t\022\017\n\007os_code\030\005 \001(\r\022\021\n\tclient_id\030\006 \001(" +
-      "\t\022\r\n\005token\030\007 \001(\t\"<\n\023FastConnectMsgProto\022" +
-      "\021\n\tclient_id\030\001 \001(\t\022\022\n\nsession_id\030\002 \001(\tB%" +
-      "\n\027com.feige.fim.msg.protoB\010MsgProtoP\001b\006p" +
-      "roto3"
+      "\004 \001(\t\022\022\n\nos_version\030\005 \001(\t\022\023\n\013client_type" +
+      "\030\006 \001(\r\022\021\n\tclient_id\030\007 \001(\t\022\r\n\005token\030\010 \001(\t" +
+      "\"<\n\023FastConnectMsgProto\022\021\n\tclient_id\030\001 \001" +
+      "(\t\022\022\n\nsession_id\030\002 \001(\tB%\n\027com.feige.fim." +
+      "msg.protoB\010MsgProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -51,7 +51,7 @@ public final class MsgProto {
     internal_static_com_feige_fim_msg_HandshakeMsgProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_fim_msg_HandshakeMsgProto_descriptor,
-        new java.lang.String[] { "ClientKey", "Iv", "ClientVersion", "OsName", "OsCode", "ClientId", "Token", });
+        new java.lang.String[] { "ClientKey", "Iv", "ClientVersion", "OsName", "OsVersion", "ClientType", "ClientId", "Token", });
     internal_static_com_feige_fim_msg_FastConnectMsgProto_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_feige_fim_msg_FastConnectMsgProto_fieldAccessorTable = new

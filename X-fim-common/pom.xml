@@ -20,6 +20,10 @@
             <groupId>com.feige</groupId>
             <artifactId>X-fim-protocol</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>X-fim-cache</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <resources>

@@ -1,4 +1,4 @@
-package com.feige.fim.utils.encrypt;
+package com.feige.fim.utils.crypto;
 
 
 import javax.crypto.Cipher;
@@ -27,7 +27,7 @@ public class DesUtils {
             SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(DES);
             SecretKey secretKey = secretKeyFactory.generateSecret(desKeySpec);
             Cipher cipher = Cipher.getInstance(DES);
-            cipher.init(1, secretKey, secureRandom);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, secureRandom);
             return Base64.getEncoder().encodeToString(cipher.doFinal(data));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -45,7 +45,7 @@ public class DesUtils {
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(DES);
             SecretKey secretKey = keyFactory.generateSecret(desKey);
             Cipher cipher = Cipher.getInstance(DES);
-            cipher.init(2, secretKey, random);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, random);
             return cipher.doFinal(Base64.getDecoder().decode(encryptData));
         } catch (Exception e) {
             throw new RuntimeException(e);

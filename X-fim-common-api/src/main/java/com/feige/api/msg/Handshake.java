@@ -1,6 +1,6 @@
 package com.feige.api.msg;
 
-import com.feige.framework.annotation.MsgComp;
+import com.feige.api.annotation.MsgComp;
 
 @MsgComp(classKey = 1)
 public interface Handshake extends Msg {
@@ -9,7 +9,8 @@ public interface Handshake extends Msg {
     String getIv();
     String getClientVersion();
     String getOsName();
-    int getOsCode();
+    String getOsVersion();
+    int getClientType();
     String getClientId();
     String getToken();
 }

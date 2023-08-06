@@ -34,12 +34,6 @@ public interface Const {
      * 压缩
      */
     byte COMPRESS_FEATURE = 2;
-
-
-
-    int PC = 1;
-    int MOBILE = 2;
-    int WEB = 3;
     
     
     String COMMA = ",";
