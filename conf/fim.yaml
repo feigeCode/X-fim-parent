@@ -18,6 +18,8 @@ fim:
       public-key: 
   server: 
     enable-epoll: true
+    session:
+      expire-time: 3600
     tcp:
       enable: true
       ip: 127.0.0.1

@@ -40,6 +40,11 @@ public interface ServerConfigKey {
        String SERVER_CRYPTO_AES_KEY_LENGTH = "fim.crypto.aes.key-length";
        String SERVER_CRYPTO_RSA_PRI_K = "fim.crypto.rsa.private-key";
        String SERVER_CRYPTO_RSA_PUB_K = "fim.crypto.rsa.public-key";
+
+        /**
+         * session
+        */
+        String SERVER_SESSION_EXPIRE_TIME = "fim.server.session.expire-time";
         /**
          * 注册中心
          */

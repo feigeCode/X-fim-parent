@@ -1,10 +1,10 @@
 package com.feige.fim.handler;
 
 import com.feige.api.bind.ClientBindManager;
+import com.feige.api.cache.Bucket;
 import com.feige.api.cache.CacheManager;
-import com.feige.api.cache.MapCache;
+import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
-import com.feige.api.session.SessionContext;
 import com.feige.fim.config.ServerConfigKey;
 import com.feige.fim.utils.StringUtils;
 import com.feige.fim.utils.crypto.CryptoUtils;
@@ -21,6 +21,8 @@ import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Value;
 import com.google.auto.service.AutoService;
 import org.bouncycastle.util.encoders.Base64;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author feige<br />
@@ -48,20 +50,8 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     @Value(ServerConfigKey.SERVER_CRYPTO_ENABLE)
     private boolean enableCrypto;
     
+    @Value(ServerConfigKey.SERVER_SESSION_EXPIRE_TIME)
     private long sessionExpireTime;
-    
-    public MapCache<String, SessionContext> getCache(){
-        MapCache<String, SessionContext> mapCache = cacheManager.get(CACHE_NAME, MapCache.class);
-        if (mapCache == null){
-            synchronized (this){
-                mapCache = cacheManager.get(CACHE_NAME, MapCache.class);
-                if (mapCache == null) {
-                    mapCache = cacheManager.createMapCache(CACHE_NAME, String.class, SessionContext.class);
-                }
-            }
-        }
-        return mapCache;
-    }
     
     @Override
     public byte getCmd() {
@@ -107,11 +97,28 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
         session.setCipher(cipherFactory.create(clientKey, iv));
         
         
+        
+        
     }
 
 
     private void doHandshake(Session session, Packet packet){
 
+    }
+    
+    
+    
+    private void setCache(Session session, Handshake handshake){
+        Bucket<String> bucket = cacheManager.createBucket(handshake.getClientId(), String.class);
+        Cipher cipher = session.getCipher();
+        String[] args = cipher.getArgs();
+        String[] sessionContext = new String[4 + args.length];
+        sessionContext[0] = handshake.getOsName();
+        sessionContext[1] = handshake.getOsVersion();
+        sessionContext[2] = handshake.getClientVersion();
+        sessionContext[3] = handshake.getClientId();
+        System.arraycopy(args, 0, sessionContext, 4, args.length);
+        bucket.set(StringUtils.commaJoiner.join(sessionContext), sessionExpireTime, TimeUnit.SECONDS);
     }
     
 }

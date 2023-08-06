@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class AbstractCacheManager implements CacheManager {
     
-    private final Map<String, Cacheable> instanceHolderPool = new ConcurrentHashMap<>();
+    protected final Map<String, Cacheable> instanceHolderPool = new ConcurrentHashMap<>();
 
     @Override
     public Set<String> getNames() {

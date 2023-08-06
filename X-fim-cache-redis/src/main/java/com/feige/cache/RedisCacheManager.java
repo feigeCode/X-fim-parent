@@ -1,7 +1,9 @@
 package com.feige.cache;
 
 import com.feige.api.cache.AbstractCacheManager;
+import com.feige.api.cache.Bucket;
 import com.feige.api.cache.MapCache;
+import org.redisson.api.RBucket;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 
@@ -20,5 +22,11 @@ public class RedisCacheManager extends AbstractCacheManager {
         RedisMapCache<K, V> cache = new RedisMapCache<>(name, rMap);
         addCacheable(name, cache);
         return cache;
+    }
+
+    @Override
+    public <V extends Serializable> Bucket<V> createBucket(String name, Class<V> v) {
+        RBucket<V> bucket = client.getBucket(name);
+        return new RedisBucket<>(name, bucket);
     }
 }

@@ -18,4 +18,7 @@ public interface CacheManager {
     <T extends Cacheable> T get(String name, Class<T> type);
 
     <K extends Serializable, V extends Serializable> MapCache<K, V> createMapCache(String name, Class<K> k, Class<V> v);
+    
+    
+    <V extends Serializable> Bucket<V> createBucket(String name, Class<V> v);
 }
