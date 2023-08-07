@@ -7,60 +7,89 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.Lock;
 
 public class LocalBucket<V extends Serializable> extends AbstractCacheable implements Bucket<V> {
-    
-    
-    private AtomicReference<V> valRef = new AtomicReference<>();
-    
+
+    private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
+    private final Lock readLock = rwLock.readLock();
+    private final Lock writeLock = rwLock.writeLock();
+
+    private final AtomicReference<V> valRef = new AtomicReference<>();
     private volatile long expiryTime = -1;
-    
+
     public LocalBucket(String name) {
         super(name);
     }
 
     @Override
     public V get() {
-        checkExpired();
-        return this.valRef.get();
+        readLock.lock();
+        try {
+            checkExpired();
+            return this.valRef.get();
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @Override
     public void set(V val) {
-        checkExpired();
-       this.valRef.set(val);
+        writeLock.lock();
+        try {
+            checkExpired();
+            this.valRef.set(val);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
     public void set(V val, long expiryTime, TimeUnit unit) {
-        checkExpired();
-        set(val);
-        this.expiryTime = System.currentTimeMillis() + unit.convert(expiryTime, TimeUnit.MILLISECONDS);
+        writeLock.lock();
+        try {
+            checkExpired();
+            this.valRef.set(val);
+            this.expiryTime = System.currentTimeMillis() + unit.toMillis(expiryTime);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
     public V getAndDelete() {
-        checkExpired();
-        V v = this.valRef.get();
-        this.valRef.set(null);
-        return v;
+        writeLock.lock();
+        try {
+            checkExpired();
+            V v = this.valRef.get();
+            this.valRef.set(null);
+            return v;
+        } finally {
+            writeLock.unlock();
+        }
     }
-    
-    private void checkExpired(){
+
+    private void checkExpired() {
         if (isExpired()) {
-            this.valRef = null;
             throw new IllegalStateException("The current cache has expired.");
         }
     }
 
     @Override
     public boolean isExpired() {
-        return this.expiryTime == -1 || this.expiryTime > System.currentTimeMillis() ;
+        return this.expiryTime != -1 && this.expiryTime > System.currentTimeMillis();
     }
 
     @Override
     public void setEx(Duration duration) {
-        this.expiryTime = System.currentTimeMillis() + duration.toMillis();
+        writeLock.lock();
+        try {
+            this.expiryTime = System.currentTimeMillis() + duration.toMillis();
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
