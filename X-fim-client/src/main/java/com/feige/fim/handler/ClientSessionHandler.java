@@ -1,7 +1,7 @@
 package com.feige.fim.handler;
 
 import com.feige.api.msg.FastConnect;
-import com.feige.api.msg.Handshake;
+import com.feige.api.msg.HandshakeReq;
 import com.feige.fim.api.SessionStorage;
 import com.feige.fim.config.ClientConfig;
 import com.feige.fim.config.ClientConfigKey;
@@ -58,7 +58,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
     }
     
     private void handshake(Session session, ClientConfig clientConfig) throws RemotingException {
-        Packet packet = PacketUtils.createPacket(Command.HANDSHAKE, Handshake.class);
+        Packet packet = PacketUtils.createPacket(Command.HANDSHAKE, HandshakeReq.class);
         HandshakeMsgProto msgProto = HandshakeMsgProto.newBuilder()
                 .setClientKey(clientConfig.getClientKeyString())
                 .setIv(clientConfig.getIvString())

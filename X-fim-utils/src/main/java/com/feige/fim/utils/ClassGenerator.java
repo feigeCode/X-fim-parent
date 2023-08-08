@@ -108,12 +108,16 @@ public class ClassGenerator implements AutoCloseable {
         getFields().add(field);
         return this;
     }
-    
+
     public ClassGenerator addField(String name, int mod, Class<?> type, boolean isGenGetterAndSetter) {
-        return addField(name, mod, type, isGenGetterAndSetter, null);
+        return addField(name, mod, type, isGenGetterAndSetter, void.class, null);
+    }
+    
+    public ClassGenerator addField(String name, int mod, Class<?> type, boolean isGenGetterAndSetter, Class<?> setterReturnType) {
+        return addField(name, mod, type, isGenGetterAndSetter, setterReturnType, null);
     }
 
-    public ClassGenerator addField(String name, int mod, Class<?> type,  boolean isGenGetterAndSetter, String def) {
+    public ClassGenerator addField(String name, int mod, Class<?> type,  boolean isGenGetterAndSetter, Class<?> setterReturnType, String def) {
         StringBuilder sb = new StringBuilder();
         sb.append(modifier(mod)).append(' ').append(ReflectionUtils.getName(type)).append(' ');
         sb.append(name);
@@ -134,7 +138,11 @@ public class ClassGenerator implements AutoCloseable {
                 getterMethodName = "get" + capitalizeName;
             }
             addMethod(getterMethodName, Modifier.PUBLIC, type, null, "\nreturn " + name + ";\n");
-            addMethod("set" + capitalizeName, Modifier.PUBLIC, void.class, new Class[]{type}, "\nthis." + name + " = arg0;\n");
+            String setterMethodBody = "\nthis." + name + " = arg0;\n";
+            if (!void.class.equals(setterReturnType)){
+                setterMethodBody += "return this;\n";
+            }
+            addMethod("set" + capitalizeName, Modifier.PUBLIC, setterReturnType, new Class[]{type}, setterMethodBody);
         }
         return this;
     }

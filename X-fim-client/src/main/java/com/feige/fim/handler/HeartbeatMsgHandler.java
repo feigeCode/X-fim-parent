@@ -6,6 +6,7 @@ import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
+import com.feige.fim.utils.Pair;
 import com.feige.framework.annotation.SpiComp;
 import com.google.auto.service.AutoService;
 
@@ -28,7 +29,7 @@ public class HeartbeatMsgHandler extends AbstractMsgHandler<Packet> {
     }
 
     @Override
-    public Class<?> getProtoClass() {
+    public Pair<Class<?>, Class<?>> getProtoClass() {
         return null;
     }
 }

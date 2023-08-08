@@ -1,5 +1,6 @@
 package com.feige.fim.handler;
 
+import com.feige.fim.utils.Pair;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.api.handler.AbstractMsgHandler;
 import com.feige.api.handler.MsgHandler;
@@ -28,7 +29,7 @@ public class HeartbeatMsgHandler extends AbstractMsgHandler<Packet> {
     }
 
     @Override
-    public Class<?> getProtoClass() {
+    public Pair<Class<?>, Class<?>> getProtoClass() {
         return null;
     }
 }

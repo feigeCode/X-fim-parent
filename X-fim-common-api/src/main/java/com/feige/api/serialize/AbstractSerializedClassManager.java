@@ -41,6 +41,18 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
     }
 
     @Override
+    public <T> T newObject(byte serializerType, byte classKey) {
+        Class<?> realClass = getClass(serializerType, classKey);
+        Object instance;
+        try {
+            instance = realClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return (T) instance;
+    }
+
+    @Override
     public Object getDeserializedObject(byte serializerType, byte classKey, byte[] bytes) {
         Serializer serializer = getSerializer(serializerType);
         Class<?> serializedClass = getClass(serializerType, classKey);

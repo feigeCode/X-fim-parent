@@ -15,6 +15,8 @@ public interface SerializedClassManager {
     
     Class<?> getClass(byte serializerType, byte classKey);
     
+    <T> T newObject(byte serializerType, byte classKey);
+    
     Object getDeserializedObject(byte serializerType, byte classKey, byte[] bytes);
 
     default <T extends Msg> T getDeserializedObject(byte serializerType, byte classKey, byte[] bytes, Class<T> msgClass) {

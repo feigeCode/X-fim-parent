@@ -38,5 +38,17 @@ public interface ProtocolConst {
     String CHECK_SUM_DEFAULT = "default";
     String CHECK_SUM_CRC32 = "crc32";
     
-   
+   enum SerializedClass {
+       HANDSHAKE(1),
+       FAST_CONNECT(2),
+       ACK(3);
+       SerializedClass(int classKey){
+           this.classKey = (byte) classKey;
+       }
+       private final byte classKey;
+
+       public byte getClassKey() {
+           return classKey;
+       }
+   }
 }
