@@ -11,7 +11,7 @@ option java_package = "com.feige.fim.msg.proto";
 //生成 proto 文件名
 option java_outer_classname="MsgProto";
 
-message HandshakeMsgProto {
+message HandshakeReqProto {
     string client_key = 1;
     string iv = 2;
     string client_version = 3;
@@ -22,9 +22,19 @@ message HandshakeMsgProto {
     string token = 8;
 }
 
+message HandshakeRespProto {
+    string server_key = 1;
+    
+    string session_id = 2;
+    
+    sint64  expire_time = 3;
+}
 
-message FastConnectMsgProto {
+
+message FastConnectReqProto {
     string client_id = 1;
     string session_id = 2;
 }
+
+
 

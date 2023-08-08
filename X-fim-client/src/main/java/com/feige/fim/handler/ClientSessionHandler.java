@@ -6,8 +6,8 @@ import com.feige.fim.api.SessionStorage;
 import com.feige.fim.config.ClientConfig;
 import com.feige.fim.config.ClientConfigKey;
 import com.feige.fim.lg.Logs;
-import com.feige.fim.msg.proto.FastConnectMsgProto;
-import com.feige.fim.msg.proto.HandshakeMsgProto;
+import com.feige.fim.msg.proto.FastConnectReqProto;
+import com.feige.fim.msg.proto.HandshakeReqProto;
 import com.feige.fim.utils.AssertUtil;
 import com.feige.fim.utils.PacketUtils;
 import com.feige.fim.utils.StringUtils;
@@ -48,7 +48,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
             handshake(session, clientConfig);
             return;
         }
-        FastConnectMsgProto fastConnect = FastConnectMsgProto.newBuilder()
+        FastConnectReqProto fastConnect = FastConnectReqProto.newBuilder()
                 .setClientId(clientConfig.getClientId())
                 .setSessionId(clientConfig.getSessionId())
                 .build();
@@ -59,7 +59,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
     
     private void handshake(Session session, ClientConfig clientConfig) throws RemotingException {
         Packet packet = PacketUtils.createPacket(Command.HANDSHAKE, HandshakeReq.class);
-        HandshakeMsgProto msgProto = HandshakeMsgProto.newBuilder()
+        HandshakeReqProto msgProto = HandshakeReqProto.newBuilder()
                 .setClientKey(clientConfig.getClientKeyString())
                 .setIv(clientConfig.getIvString())
                 .setClientVersion(clientConfig.getClientVersion())

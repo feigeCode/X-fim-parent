@@ -36,6 +36,16 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
     @InitMethod
     public void initialize(){
         Class<?> type = getMsgInterface();
+        Pair<Class<?>, Class<?>> protoClassPair = getProtoClass();
+        genClass(type, protoClassPair);
+    }
+    
+    public abstract Class<?> getMsgInterface();
+    
+    public abstract Pair<Class<?>, Class<?>> getProtoClass();
+    
+    
+    protected void genClass(Class<?> type, Pair<Class<?>, Class<?>> protoClassPair){
         if (type == null || !type.isAnnotationPresent(MsgComp.class)){
             // TODO: LOGGER
             return;
@@ -44,14 +54,10 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
         byte classKey = msgComp.classKey();
         Method[] methods = ReflectionUtils.getAllDeclaredMethods(type);
         serializedClassManager.registerClass(ProtocolConst.JSON, classKey, genBasicClass(type, methods));
-        if (this.getProtoClass() != null && this.getProtoClass().getK() != null && this.getProtoClass().getV() != null){
-            serializedClassManager.registerClass(ProtocolConst.PROTOCOL_BUFFER, classKey, wrapperProtoClass(type, methods));
+        if (protoClassPair != null && protoClassPair.getK() != null && protoClassPair.getV() != null){
+            serializedClassManager.registerClass(ProtocolConst.PROTOCOL_BUFFER, classKey, wrapperProtoClass(type, methods, protoClassPair));
         }
     }
-    
-    public abstract Class<?> getMsgInterface();
-    
-    public abstract Pair<Class<?>, Class<?>> getProtoClass();
     
     protected Class<?> genBasicClass(Class<?> type, Method[] methods){
         try(ClassGenerator classGenerator = new ClassGenerator()) {
@@ -80,16 +86,16 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
         }
     }
     
-    protected Class<?>  wrapperProtoClass(Class<?> type, Method[] methods){
+    protected Class<?>  wrapperProtoClass(Class<?> type, Method[] methods, Pair<Class<?>, Class<?>> protoClassPair ){
         try(ClassGenerator classGenerator = new ClassGenerator()) {
             classGenerator.setClassName(type.getSimpleName());
             classGenerator.addInterface(type.getName())
-                    .addField("protoTarget", Modifier.PRIVATE, getProtoClass().getK(), true)
-                    .addField("builder", Modifier.PRIVATE, getProtoClass().getV(), false)
+                    .addField("protoTarget", Modifier.PRIVATE, protoClassPair.getK(), true)
+                    .addField("builder", Modifier.PRIVATE, protoClassPair.getV(), false)
                     .addMethod(
-                            "private " + getProtoClass().getV().getName() + " getBuilder(){\n" +
+                            "private " + protoClassPair.getV().getName() + " getBuilder(){\n" +
                                 "if (this.builder == null){\n" +
-                                "   this.builder = " + getProtoClass().getK().getName() + ".newBuilder();\n" +
+                                "   this.builder = " + protoClassPair.getK().getName() + ".newBuilder();\n" +
                                 "}\n" +
                                 " return this.builder;\n" +
                             " }"
@@ -114,11 +120,11 @@ public abstract class AbstractMsgHandler<T> implements MsgHandler<T> {
                         "}\n" +
                         "return new byte[0];\n" +
                     "}\n"
-            )
-            .addMethod(
+            );
+            classGenerator.addMethod(
                     "public void deserialize(byte[] bytes){\n" +
                         "try{\n" +
-                            "this.protoTarget = " + getProtoClass().getK().getName() + ".parseFrom(bytes);\n" +
+                            "this.protoTarget = " + protoClassPair.getK().getName() + ".parseFrom(bytes);\n" +
                         "}catch(" + Exception.class.getName() + " e){\n" +
                             "throw new " + RuntimeException.class.getName() + "(e);\n" +
                         "}\n" +

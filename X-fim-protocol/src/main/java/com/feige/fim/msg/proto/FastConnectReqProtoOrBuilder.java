@@ -3,8 +3,8 @@
 
 package com.feige.fim.msg.proto;
 
-public interface FastConnectMsgProtoOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.feige.fim.msg.FastConnectMsgProto)
+public interface FastConnectReqProtoOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:com.feige.fim.msg.FastConnectReqProto)
     com.google.protobuf.MessageOrBuilder {
 
   /**

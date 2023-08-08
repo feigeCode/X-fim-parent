@@ -3,12 +3,19 @@ package com.feige.fim.handler;
 import com.feige.api.bind.ClientBindManager;
 import com.feige.api.cache.Bucket;
 import com.feige.api.cache.CacheManager;
+import com.feige.api.constant.ProtocolConst.SerializedClass;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
+import com.feige.api.msg.HandshakeResp;
+import com.feige.api.msg.Msg;
 import com.feige.fim.config.ServerConfigKey;
+import com.feige.fim.msg.proto.HandshakeReqProto;
+import com.feige.fim.msg.proto.HandshakeRespProto;
 import com.feige.fim.utils.Pair;
 import com.feige.fim.utils.StringUtils;
 import com.feige.fim.utils.crypto.CryptoUtils;
+import com.feige.fim.utils.crypto.Md5Utils;
+import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.api.handler.MsgHandler;
@@ -17,7 +24,6 @@ import com.feige.api.msg.HandshakeReq;
 import com.feige.api.constant.Command;
 import com.feige.api.handler.AbstractMsgHandler;
 import com.feige.api.session.Session;
-import com.feige.fim.msg.proto.HandshakeMsgProto;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Value;
 import com.google.auto.service.AutoService;
@@ -54,6 +60,11 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     @Value(ServerConfigKey.SERVER_SESSION_EXPIRE_TIME)
     private long sessionExpireTime;
     
+    @InitMethod
+    public void initHandshakeResp(){
+        genClass(HandshakeResp.class, Pair.of(HandshakeRespProto.class, HandshakeRespProto.Builder.class));
+    }
+    
     @Override
     public byte getCmd() {
         return Command.HANDSHAKE.getCmd();
@@ -80,26 +91,35 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
 
     @Override
     public Pair<Class<?>, Class<?>> getProtoClass() {
-        return Pair.of(HandshakeMsgProto.class, HandshakeMsgProto.Builder.class);
+        return Pair.of(HandshakeReqProto.class, HandshakeReqProto.Builder.class);
     }
 
-    private void doSecurityHandshake(Session session, Packet packet){
-        HandshakeReq handshakeReq = serializedClassManager.getDeserializedObject(packet.getSerializerType(), packet.getClassKey(), packet.getData(), getMsgInterface());
+    private void doSecurityHandshake(Session session, Packet packet) throws RemotingException {
+        byte serializerType = packet.getSerializerType();
+        HandshakeReq handshakeReq = serializedClassManager.getDeserializedObject(serializerType, packet.getClassKey(), packet.getData(), getMsgInterface());
         byte[] clientKey = Base64.decode(handshakeReq.getClientKey());
         byte[] iv = Base64.decode(handshakeReq.getIv());
-        byte[] sessionKey = CryptoUtils.mixKey(clientKey, CryptoUtils.randomAesKey(keyLength), keyLength);
-
+        byte[] serverKey = CryptoUtils.randomAesKey(keyLength);
+        byte[] sessionKey = CryptoUtils.mixKey(clientKey, serverKey, keyLength);
         String clientId = handshakeReq.getClientId();
         if (StringUtils.isBlank(clientId) || iv.length != keyLength || clientKey.length != keyLength){
             // TODO error msg and log
             return;
         }
-        
+        // 根据秘钥生成cipher
         session.setCipher(cipherFactory.create(clientKey, iv));
+
+        // 创建握手响应包
+        Packet handshakeRespPacket = createHandshakeRespPacket(handshakeReq, serverKey, packet);
         
-        //serializedClassManager.newObject(packet.getSerializerType(), SerializedClass.ACK.getClassKey());
+        // 发送响应包
+        session.write(handshakeRespPacket);
+
+        // 根据秘钥生成cipher
+        session.setCipher(cipherFactory.create(sessionKey, iv));
         
-        
+        // 保存会话信息
+        setCache(session, handshakeReq);
     }
 
 
@@ -107,6 +127,23 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
 
     }
     
+    
+    private Packet createHandshakeRespPacket(HandshakeReq handshakeReq, byte[] serverKey, Packet packet){
+        byte serializerType = packet.getSerializerType();
+        HandshakeResp handshakeResp = serializedClassManager.newObject(serializerType, SerializedClass.HANDSHAKE_RESP.getClassKey());
+        long now = System.currentTimeMillis();
+        long expireTime = now + sessionExpireTime * 1000;
+        String sessionId = Md5Utils.encrypt(handshakeReq.getClientId() + now);
+        handshakeResp.setExpireTime(expireTime)
+                .setServerKey(Base64.toBase64String(serverKey))
+                .setSessionId(sessionId);
+        Packet packetResp = Packet.create(Command.HANDSHAKE);
+        packetResp.setSequenceNum(packetResp.getSequenceNum() + 1);
+        packetResp.setSerializerType(serializerType);
+        packetResp.setClassKey(SerializedClass.HANDSHAKE_RESP.getClassKey());
+        packetResp.setData(serializedClassManager.getSerializedObject(serializerType, handshakeResp));
+        return packetResp;
+    }
     
     
     private void setCache(Session session, HandshakeReq handshakeReq){

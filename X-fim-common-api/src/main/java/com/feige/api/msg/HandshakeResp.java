@@ -1,6 +1,9 @@
 package com.feige.api.msg;
 
-public interface HandshakeResp {
+import com.feige.api.annotation.MsgComp;
+
+@MsgComp(classKey = 3)
+public interface HandshakeResp extends Msg{
     
     String getServerKey();
 

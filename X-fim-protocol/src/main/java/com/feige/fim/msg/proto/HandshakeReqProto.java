@@ -4,18 +4,18 @@
 package com.feige.fim.msg.proto;
 
 /**
- * Protobuf type {@code com.feige.fim.msg.HandshakeMsgProto}
+ * Protobuf type {@code com.feige.fim.msg.HandshakeReqProto}
  */
-public final class HandshakeMsgProto extends
+public final class HandshakeReqProto extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.feige.fim.msg.HandshakeMsgProto)
-    HandshakeMsgProtoOrBuilder {
+    // @@protoc_insertion_point(message_implements:com.feige.fim.msg.HandshakeReqProto)
+    HandshakeReqProtoOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use HandshakeMsgProto.newBuilder() to construct.
-  private HandshakeMsgProto(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use HandshakeReqProto.newBuilder() to construct.
+  private HandshakeReqProto(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private HandshakeMsgProto() {
+  private HandshakeReqProto() {
     clientKey_ = "";
     iv_ = "";
     clientVersion_ = "";
@@ -29,7 +29,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new HandshakeMsgProto();
+    return new HandshakeReqProto();
   }
 
   @java.lang.Override
@@ -37,7 +37,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private HandshakeMsgProto(
+  private HandshakeReqProto(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -123,15 +123,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeMsgProto_descriptor;
+    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeReqProto_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeMsgProto_fieldAccessorTable
+    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeReqProto_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.feige.fim.msg.proto.HandshakeMsgProto.class, com.feige.fim.msg.proto.HandshakeMsgProto.Builder.class);
+            com.feige.fim.msg.proto.HandshakeReqProto.class, com.feige.fim.msg.proto.HandshakeReqProto.Builder.class);
   }
 
   public static final int CLIENT_KEY_FIELD_NUMBER = 1;
@@ -493,10 +493,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.feige.fim.msg.proto.HandshakeMsgProto)) {
+    if (!(obj instanceof com.feige.fim.msg.proto.HandshakeReqProto)) {
       return super.equals(obj);
     }
-    com.feige.fim.msg.proto.HandshakeMsgProto other = (com.feige.fim.msg.proto.HandshakeMsgProto) obj;
+    com.feige.fim.msg.proto.HandshakeReqProto other = (com.feige.fim.msg.proto.HandshakeReqProto) obj;
 
     if (!getClientKey()
         .equals(other.getClientKey())) return false;
@@ -546,69 +546,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseFrom(byte[] data)
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseFrom(java.io.InputStream input)
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseDelimitedFrom(java.io.InputStream input)
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseDelimitedFrom(
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.feige.fim.msg.proto.HandshakeMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.HandshakeReqProto parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -621,7 +621,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.feige.fim.msg.proto.HandshakeMsgProto prototype) {
+  public static Builder newBuilder(com.feige.fim.msg.proto.HandshakeReqProto prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -637,26 +637,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code com.feige.fim.msg.HandshakeMsgProto}
+   * Protobuf type {@code com.feige.fim.msg.HandshakeReqProto}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.feige.fim.msg.HandshakeMsgProto)
-      com.feige.fim.msg.proto.HandshakeMsgProtoOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.feige.fim.msg.HandshakeReqProto)
+      com.feige.fim.msg.proto.HandshakeReqProtoOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeMsgProto_descriptor;
+      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeReqProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeMsgProto_fieldAccessorTable
+      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeReqProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.feige.fim.msg.proto.HandshakeMsgProto.class, com.feige.fim.msg.proto.HandshakeMsgProto.Builder.class);
+              com.feige.fim.msg.proto.HandshakeReqProto.class, com.feige.fim.msg.proto.HandshakeReqProto.Builder.class);
     }
 
-    // Construct using com.feige.fim.msg.proto.HandshakeMsgProto.newBuilder()
+    // Construct using com.feige.fim.msg.proto.HandshakeReqProto.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -696,17 +696,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeMsgProto_descriptor;
+      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_HandshakeReqProto_descriptor;
     }
 
     @java.lang.Override
-    public com.feige.fim.msg.proto.HandshakeMsgProto getDefaultInstanceForType() {
-      return com.feige.fim.msg.proto.HandshakeMsgProto.getDefaultInstance();
+    public com.feige.fim.msg.proto.HandshakeReqProto getDefaultInstanceForType() {
+      return com.feige.fim.msg.proto.HandshakeReqProto.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.feige.fim.msg.proto.HandshakeMsgProto build() {
-      com.feige.fim.msg.proto.HandshakeMsgProto result = buildPartial();
+    public com.feige.fim.msg.proto.HandshakeReqProto build() {
+      com.feige.fim.msg.proto.HandshakeReqProto result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -714,8 +714,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.feige.fim.msg.proto.HandshakeMsgProto buildPartial() {
-      com.feige.fim.msg.proto.HandshakeMsgProto result = new com.feige.fim.msg.proto.HandshakeMsgProto(this);
+    public com.feige.fim.msg.proto.HandshakeReqProto buildPartial() {
+      com.feige.fim.msg.proto.HandshakeReqProto result = new com.feige.fim.msg.proto.HandshakeReqProto(this);
       result.clientKey_ = clientKey_;
       result.iv_ = iv_;
       result.clientVersion_ = clientVersion_;
@@ -762,16 +762,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.feige.fim.msg.proto.HandshakeMsgProto) {
-        return mergeFrom((com.feige.fim.msg.proto.HandshakeMsgProto)other);
+      if (other instanceof com.feige.fim.msg.proto.HandshakeReqProto) {
+        return mergeFrom((com.feige.fim.msg.proto.HandshakeReqProto)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.feige.fim.msg.proto.HandshakeMsgProto other) {
-      if (other == com.feige.fim.msg.proto.HandshakeMsgProto.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.feige.fim.msg.proto.HandshakeReqProto other) {
+      if (other == com.feige.fim.msg.proto.HandshakeReqProto.getDefaultInstance()) return this;
       if (!other.getClientKey().isEmpty()) {
         clientKey_ = other.clientKey_;
         onChanged();
@@ -818,11 +818,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.feige.fim.msg.proto.HandshakeMsgProto parsedMessage = null;
+      com.feige.fim.msg.proto.HandshakeReqProto parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.feige.fim.msg.proto.HandshakeMsgProto) e.getUnfinishedMessage();
+        parsedMessage = (com.feige.fim.msg.proto.HandshakeReqProto) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -1407,41 +1407,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.feige.fim.msg.HandshakeMsgProto)
+    // @@protoc_insertion_point(builder_scope:com.feige.fim.msg.HandshakeReqProto)
   }
 
-  // @@protoc_insertion_point(class_scope:com.feige.fim.msg.HandshakeMsgProto)
-  private static final com.feige.fim.msg.proto.HandshakeMsgProto DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.feige.fim.msg.HandshakeReqProto)
+  private static final com.feige.fim.msg.proto.HandshakeReqProto DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.feige.fim.msg.proto.HandshakeMsgProto();
+    DEFAULT_INSTANCE = new com.feige.fim.msg.proto.HandshakeReqProto();
   }
 
-  public static com.feige.fim.msg.proto.HandshakeMsgProto getDefaultInstance() {
+  public static com.feige.fim.msg.proto.HandshakeReqProto getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<HandshakeMsgProto>
-      PARSER = new com.google.protobuf.AbstractParser<HandshakeMsgProto>() {
+  private static final com.google.protobuf.Parser<HandshakeReqProto>
+      PARSER = new com.google.protobuf.AbstractParser<HandshakeReqProto>() {
     @java.lang.Override
-    public HandshakeMsgProto parsePartialFrom(
+    public HandshakeReqProto parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new HandshakeMsgProto(input, extensionRegistry);
+      return new HandshakeReqProto(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<HandshakeMsgProto> parser() {
+  public static com.google.protobuf.Parser<HandshakeReqProto> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<HandshakeMsgProto> getParserForType() {
+  public com.google.protobuf.Parser<HandshakeReqProto> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.feige.fim.msg.proto.HandshakeMsgProto getDefaultInstanceForType() {
+  public com.feige.fim.msg.proto.HandshakeReqProto getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

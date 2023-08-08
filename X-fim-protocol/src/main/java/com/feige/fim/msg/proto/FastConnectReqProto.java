@@ -4,18 +4,18 @@
 package com.feige.fim.msg.proto;
 
 /**
- * Protobuf type {@code com.feige.fim.msg.FastConnectMsgProto}
+ * Protobuf type {@code com.feige.fim.msg.FastConnectReqProto}
  */
-public final class FastConnectMsgProto extends
+public final class FastConnectReqProto extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.feige.fim.msg.FastConnectMsgProto)
-    FastConnectMsgProtoOrBuilder {
+    // @@protoc_insertion_point(message_implements:com.feige.fim.msg.FastConnectReqProto)
+    FastConnectReqProtoOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use FastConnectMsgProto.newBuilder() to construct.
-  private FastConnectMsgProto(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use FastConnectReqProto.newBuilder() to construct.
+  private FastConnectReqProto(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private FastConnectMsgProto() {
+  private FastConnectReqProto() {
     clientId_ = "";
     sessionId_ = "";
   }
@@ -24,7 +24,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new FastConnectMsgProto();
+    return new FastConnectReqProto();
   }
 
   @java.lang.Override
@@ -32,7 +32,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private FastConnectMsgProto(
+  private FastConnectReqProto(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -83,15 +83,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectMsgProto_descriptor;
+    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectReqProto_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectMsgProto_fieldAccessorTable
+    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectReqProto_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.feige.fim.msg.proto.FastConnectMsgProto.class, com.feige.fim.msg.proto.FastConnectMsgProto.Builder.class);
+            com.feige.fim.msg.proto.FastConnectReqProto.class, com.feige.fim.msg.proto.FastConnectReqProto.Builder.class);
   }
 
   public static final int CLIENT_ID_FIELD_NUMBER = 1;
@@ -215,10 +215,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.feige.fim.msg.proto.FastConnectMsgProto)) {
+    if (!(obj instanceof com.feige.fim.msg.proto.FastConnectReqProto)) {
       return super.equals(obj);
     }
-    com.feige.fim.msg.proto.FastConnectMsgProto other = (com.feige.fim.msg.proto.FastConnectMsgProto) obj;
+    com.feige.fim.msg.proto.FastConnectReqProto other = (com.feige.fim.msg.proto.FastConnectReqProto) obj;
 
     if (!getClientId()
         .equals(other.getClientId())) return false;
@@ -244,69 +244,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseFrom(byte[] data)
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseFrom(java.io.InputStream input)
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseDelimitedFrom(java.io.InputStream input)
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseDelimitedFrom(
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.feige.fim.msg.proto.FastConnectMsgProto parseFrom(
+  public static com.feige.fim.msg.proto.FastConnectReqProto parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -319,7 +319,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.feige.fim.msg.proto.FastConnectMsgProto prototype) {
+  public static Builder newBuilder(com.feige.fim.msg.proto.FastConnectReqProto prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -335,26 +335,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code com.feige.fim.msg.FastConnectMsgProto}
+   * Protobuf type {@code com.feige.fim.msg.FastConnectReqProto}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.feige.fim.msg.FastConnectMsgProto)
-      com.feige.fim.msg.proto.FastConnectMsgProtoOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.feige.fim.msg.FastConnectReqProto)
+      com.feige.fim.msg.proto.FastConnectReqProtoOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectMsgProto_descriptor;
+      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectReqProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectMsgProto_fieldAccessorTable
+      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectReqProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.feige.fim.msg.proto.FastConnectMsgProto.class, com.feige.fim.msg.proto.FastConnectMsgProto.Builder.class);
+              com.feige.fim.msg.proto.FastConnectReqProto.class, com.feige.fim.msg.proto.FastConnectReqProto.Builder.class);
     }
 
-    // Construct using com.feige.fim.msg.proto.FastConnectMsgProto.newBuilder()
+    // Construct using com.feige.fim.msg.proto.FastConnectReqProto.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -382,17 +382,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectMsgProto_descriptor;
+      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectReqProto_descriptor;
     }
 
     @java.lang.Override
-    public com.feige.fim.msg.proto.FastConnectMsgProto getDefaultInstanceForType() {
-      return com.feige.fim.msg.proto.FastConnectMsgProto.getDefaultInstance();
+    public com.feige.fim.msg.proto.FastConnectReqProto getDefaultInstanceForType() {
+      return com.feige.fim.msg.proto.FastConnectReqProto.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.feige.fim.msg.proto.FastConnectMsgProto build() {
-      com.feige.fim.msg.proto.FastConnectMsgProto result = buildPartial();
+    public com.feige.fim.msg.proto.FastConnectReqProto build() {
+      com.feige.fim.msg.proto.FastConnectReqProto result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -400,8 +400,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.feige.fim.msg.proto.FastConnectMsgProto buildPartial() {
-      com.feige.fim.msg.proto.FastConnectMsgProto result = new com.feige.fim.msg.proto.FastConnectMsgProto(this);
+    public com.feige.fim.msg.proto.FastConnectReqProto buildPartial() {
+      com.feige.fim.msg.proto.FastConnectReqProto result = new com.feige.fim.msg.proto.FastConnectReqProto(this);
       result.clientId_ = clientId_;
       result.sessionId_ = sessionId_;
       onBuilt();
@@ -442,16 +442,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.feige.fim.msg.proto.FastConnectMsgProto) {
-        return mergeFrom((com.feige.fim.msg.proto.FastConnectMsgProto)other);
+      if (other instanceof com.feige.fim.msg.proto.FastConnectReqProto) {
+        return mergeFrom((com.feige.fim.msg.proto.FastConnectReqProto)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.feige.fim.msg.proto.FastConnectMsgProto other) {
-      if (other == com.feige.fim.msg.proto.FastConnectMsgProto.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.feige.fim.msg.proto.FastConnectReqProto other) {
+      if (other == com.feige.fim.msg.proto.FastConnectReqProto.getDefaultInstance()) return this;
       if (!other.getClientId().isEmpty()) {
         clientId_ = other.clientId_;
         onChanged();
@@ -475,11 +475,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.feige.fim.msg.proto.FastConnectMsgProto parsedMessage = null;
+      com.feige.fim.msg.proto.FastConnectReqProto parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.feige.fim.msg.proto.FastConnectMsgProto) e.getUnfinishedMessage();
+        parsedMessage = (com.feige.fim.msg.proto.FastConnectReqProto) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -653,41 +653,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.feige.fim.msg.FastConnectMsgProto)
+    // @@protoc_insertion_point(builder_scope:com.feige.fim.msg.FastConnectReqProto)
   }
 
-  // @@protoc_insertion_point(class_scope:com.feige.fim.msg.FastConnectMsgProto)
-  private static final com.feige.fim.msg.proto.FastConnectMsgProto DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.feige.fim.msg.FastConnectReqProto)
+  private static final com.feige.fim.msg.proto.FastConnectReqProto DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.feige.fim.msg.proto.FastConnectMsgProto();
+    DEFAULT_INSTANCE = new com.feige.fim.msg.proto.FastConnectReqProto();
   }
 
-  public static com.feige.fim.msg.proto.FastConnectMsgProto getDefaultInstance() {
+  public static com.feige.fim.msg.proto.FastConnectReqProto getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<FastConnectMsgProto>
-      PARSER = new com.google.protobuf.AbstractParser<FastConnectMsgProto>() {
+  private static final com.google.protobuf.Parser<FastConnectReqProto>
+      PARSER = new com.google.protobuf.AbstractParser<FastConnectReqProto>() {
     @java.lang.Override
-    public FastConnectMsgProto parsePartialFrom(
+    public FastConnectReqProto parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new FastConnectMsgProto(input, extensionRegistry);
+      return new FastConnectReqProto(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<FastConnectMsgProto> parser() {
+  public static com.google.protobuf.Parser<FastConnectReqProto> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<FastConnectMsgProto> getParserForType() {
+  public com.google.protobuf.Parser<FastConnectReqProto> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.feige.fim.msg.proto.FastConnectMsgProto getDefaultInstanceForType() {
+  public com.feige.fim.msg.proto.FastConnectReqProto getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

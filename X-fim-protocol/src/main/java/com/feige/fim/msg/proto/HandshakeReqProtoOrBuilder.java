@@ -3,8 +3,8 @@
 
 package com.feige.fim.msg.proto;
 
-public interface HandshakeMsgProtoOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.feige.fim.msg.HandshakeMsgProto)
+public interface HandshakeReqProtoOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:com.feige.fim.msg.HandshakeReqProto)
     com.google.protobuf.MessageOrBuilder {
 
   /**
