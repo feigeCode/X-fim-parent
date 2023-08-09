@@ -9,10 +9,7 @@ import com.feige.framework.api.config.Config;
  * @date: 2023/5/20 10:08<br/>
  */
 public class SystemConfig implements Config {
-    @Override
-    public void parseConfig(Object obj) throws Exception {
-        
-    }
+  
     @Override
     public Object getObject(String key) {
         return System.getProperty(key);

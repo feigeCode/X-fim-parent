@@ -8,5 +8,6 @@ public interface Environment extends  Lifecycle, Config {
      Config getSystemConfig();
      Config getAppConfig();
      Config getEnvConfig();
+     Config getMemoryConfig();
      Config getCompositeConfig();
 }

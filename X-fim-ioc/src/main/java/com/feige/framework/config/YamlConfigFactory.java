@@ -1,5 +1,6 @@
 package com.feige.framework.config;
 
+import com.feige.fim.utils.YamlUtils;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.config.Config;
 import com.feige.framework.api.config.ConfigFactory;
@@ -7,6 +8,9 @@ import com.feige.framework.utils.Configs;
 import com.google.auto.service.AutoService;
 
 import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.Map;
 
 
 @SpiComp("yaml")
@@ -14,13 +18,13 @@ import java.io.File;
 public class YamlConfigFactory implements ConfigFactory {
     @Override
     public Config create() throws IllegalStateException{
-        YamlConfig yamlConfig = new YamlConfig();
         try {
-            yamlConfig.parseFile(getFile());
+            InputStream is = Files.newInputStream(getFile().toPath());
+            Map<String, Object> parser = YamlUtils.parser(is);
+            return new MapConfig(parser);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-        return yamlConfig;
     }
 
     private File getFile() {

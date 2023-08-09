@@ -10,10 +10,6 @@ import com.feige.framework.api.config.Config;
  */
 public class EnvConfig implements Config {
     
-    @Override
-    public void parseConfig(Object config) throws Exception {
-        
-    }
 
     @Override
     public Object getObject(String key) {

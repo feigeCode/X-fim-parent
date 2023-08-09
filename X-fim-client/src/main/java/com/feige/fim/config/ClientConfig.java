@@ -21,6 +21,8 @@ public class ClientConfig {
     private String token;
     private String serverIp;
     private int serverPort;
+    private String pubKey;
+    private boolean enableCrypto;
 
     public String serializeString() {
         String[] strings = {

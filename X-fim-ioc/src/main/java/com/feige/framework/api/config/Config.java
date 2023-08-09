@@ -1,31 +1,16 @@
 package com.feige.framework.api.config;
 
-import java.io.File;
-import java.nio.file.Files;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
 public interface Config {
-
-    /**
-     * parse config file
-     * @param file config file
-     * @throws Exception
-     */
-    default void parseFile(File file) throws Exception {
-        parseConfig(Files.newInputStream(file.toPath()));
+    
+    default void setConfig(String key, Object value){
+        throw new UnsupportedOperationException();
     }
-    /**
-     * parse config object
-     * @param config config object
-     * @throws Exception
-     */
-    void parseConfig(Object config) throws Exception;
     
-    
-
     /**
      *  get int config
      * @param key key

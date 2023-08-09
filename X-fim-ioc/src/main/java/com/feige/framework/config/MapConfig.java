@@ -9,15 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class YamlConfig implements Config {
-    private Map<String, Object> config;
+public class MapConfig implements Config {
+    protected final Map<String, Object> config;
 
-    @Override
-    public void parseConfig(Object obj) throws Exception {
-        if (obj instanceof InputStream){
-            InputStream is = (InputStream) obj;
-            this.config = YamlUtils.parser(is);
-        }
+    public MapConfig(Map<String, Object> config) {
+        this.config = config;
     }
 
     @Override
