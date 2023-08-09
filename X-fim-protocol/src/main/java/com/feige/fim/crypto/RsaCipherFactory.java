@@ -5,7 +5,7 @@ import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
 import com.google.auto.service.AutoService;
 
-@SpiComp("rsa")
+@SpiComp("asymmetricEncryption")
 @AutoService(CipherFactory.class)
 public class RsaCipherFactory implements CipherFactory {
     @Override

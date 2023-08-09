@@ -47,9 +47,9 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     
     @Inject
     private CacheManager cacheManager;
-    
-    @Inject
-    private CipherFactory cipherFactory;
+
+    @Inject("symmetricEncryption")
+    private CipherFactory symmetricCipherFactory;
     
     @Value(ServerConfigKey.SERVER_CRYPTO_AES_KEY_LENGTH)
     private int keyLength;
@@ -107,7 +107,7 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
             return;
         }
         // 根据秘钥生成cipher
-        session.setCipher(cipherFactory.create(clientKey, iv));
+        session.setCipher(symmetricCipherFactory.create(clientKey, iv));
 
         // 创建握手响应包
         Packet handshakeRespPacket = createHandshakeRespPacket(handshakeReq, serverKey, packet);
@@ -116,7 +116,7 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
         session.write(handshakeRespPacket);
 
         // 根据秘钥生成cipher
-        session.setCipher(cipherFactory.create(sessionKey, iv));
+        session.setCipher(symmetricCipherFactory.create(sessionKey, iv));
         
         // 保存会话信息
         setCache(session, handshakeReq);

@@ -1,5 +1,6 @@
 package com.feige.fim.handler;
 
+import com.feige.api.crypto.CipherFactory;
 import com.feige.api.msg.FastConnect;
 import com.feige.api.msg.HandshakeReq;
 import com.feige.fim.api.SessionStorage;
@@ -18,6 +19,7 @@ import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
 import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
+import com.feige.framework.api.context.Environment;
 import com.google.auto.service.AutoService;
 
 
@@ -28,9 +30,16 @@ public class ClientSessionHandler extends AbstractSessionHandler {
     @Inject
     private SessionStorage sessionStorage;
     
+    @Inject("asymmetricEncryption")
+    private CipherFactory rsaCipherFactory;
+    
+    @Inject("symmetricEncryption")
+    private CipherFactory aesCipherFactory;
     
     @Override
     public void connected(Session session) throws RemotingException {
+        ClientConfig clientConfig = applicationContext.get(ClientConfig.class);
+        AssertUtil.notNull(clientConfig, "clientConfig");
         tryFastConnect(session);
     }
     

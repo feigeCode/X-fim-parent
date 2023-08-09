@@ -43,7 +43,7 @@ public class PacketCodec implements Codec {
             byteBuf.writeByte(getHeartbeat());
         }else {
             Cipher cipher = session.getCipher();
-            if (cipher != null){
+            if (cipher != null && packet.hasFeature(ProtocolConst.ENCRYPT)){
                 byte[] data = packet.getData();
                 byte[] encryptData = cipher.encrypt(data);
                 packet.setData(encryptData);
@@ -93,7 +93,7 @@ public class PacketCodec implements Codec {
                     packet.setSerializerType(serializerType);
                     packet.setClassKey(classKey);
                     Cipher cipher = session.getCipher();
-                    if (cipher != null){
+                    if (cipher != null && packet.hasFeature(ProtocolConst.ENCRYPT)){
                         data = cipher.decrypt(data);
                     }
                     packet.setData(data);

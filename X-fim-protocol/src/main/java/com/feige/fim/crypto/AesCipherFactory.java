@@ -6,7 +6,7 @@ import com.feige.api.crypto.CipherFactory;
 import com.google.auto.service.AutoService;
 
 
-@SpiComp("aes")
+@SpiComp("symmetricEncryption")
 @AutoService(CipherFactory.class)
 public class AesCipherFactory  implements CipherFactory {
     @Override
