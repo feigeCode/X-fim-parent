@@ -44,11 +44,13 @@ public class MethodDefine {
         this.annotationDefines = annotationDefines;
     }
     
-    public void addAnnotationDefine(AnnotationDefine... annotationDefine){
+    public MethodDefine addAnnotationDefine(AnnotationDefine... annotationDefine){
         getAnnotationDefines().addAll(Arrays.asList(annotationDefine));
+        return this;
     }
     
-    public void addAnnotationDefine(int parameterIndex, AnnotationDefine... annotationDefines){
+    public MethodDefine addAnnotationDefine(int parameterIndex, AnnotationDefine... annotationDefines){
         this.getParametersAnnotations().computeIfAbsent(parameterIndex, k -> new ArrayList<>()).addAll(Arrays.asList(annotationDefines));
+        return this;
     }
 }

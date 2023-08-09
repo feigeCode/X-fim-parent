@@ -118,9 +118,10 @@ public class ClassGenerator implements AutoCloseable {
         this.interfaces = interfaces;
     }
 
-    public ClassGenerator addConstructor(MethodDefine constructor){
-        getConstructors().add(constructor);
-        return this;
+    public MethodDefine addConstructor(String constructor){
+        MethodDefine methodDefine = new MethodDefine(constructor);
+        getConstructors().add(methodDefine);
+        return methodDefine;
     }
     
     public List<MethodDefine> getConstructors() {
@@ -273,7 +274,7 @@ public class ClassGenerator implements AutoCloseable {
         ParameterAnnotationsAttribute parameterAnnotationsAttribute = new ParameterAnnotationsAttribute(constPool, ParameterAnnotationsAttribute.visibleTag);
         Integer idxMax = Collections.max(annotationDefinesMap.keySet());
         Integer annotationMax = Collections.max(annotationDefinesMap.values().stream().map(List::size).collect(Collectors.toList()));
-        Annotation[][] annotations = new Annotation[idxMax][annotationMax];
+        Annotation[][] annotations = new Annotation[idxMax + 1][annotationMax];
         annotationDefinesMap.forEach((paramIdx, annotationDefineList) -> {
             for (int i = 0; i < annotationDefineList.size(); i++) {
                 annotations[paramIdx][i] = parse(annotationDefineList.get(i), constPool);
@@ -363,7 +364,17 @@ public class ClassGenerator implements AutoCloseable {
                     ctClass.addInterface(classPool.get(interfaceName));
                 }
             }
-            
+
+            if (CollectionUtils.isNotEmpty(fields)){
+                for (FieldDefine fieldDefine : fields) {
+                    String field = fieldDefine.getField();
+                    CtField ctField = CtField.make(field, ctClass);
+                    addAnnotations(fieldDefine.getAnnotationDefines(), ctField, constPool);
+                    ctClass.addField(ctField);
+                }
+            }
+
+
             if (CollectionUtils.isNotEmpty(constructors)){
                 for (MethodDefine constructor : constructors) {
                     String method = constructor.getMethod();
@@ -378,14 +389,6 @@ public class ClassGenerator implements AutoCloseable {
                 ctClass.addConstructor(CtNewConstructor.defaultConstructor(ctClass));
             }
             
-            if (CollectionUtils.isNotEmpty(fields)){
-                for (FieldDefine fieldDefine : fields) {
-                    String field = fieldDefine.getField();
-                    CtField ctField = CtField.make(field, ctClass);
-                    addAnnotations(fieldDefine.getAnnotationDefines(), ctField, constPool);
-                    ctClass.addField(ctField);
-                }
-            }
             
             if (CollectionUtils.isNotEmpty(methods)){
                 for (MethodDefine methodDefine : methods) {
