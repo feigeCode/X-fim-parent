@@ -10,6 +10,7 @@ import com.feige.api.session.Session;
 import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
 import com.feige.api.constant.ProtocolConst;
+import com.feige.framework.utils.Configs;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.TooLongFrameException;
 
@@ -42,12 +43,7 @@ public class PacketCodec implements Codec {
         if (packet.getCmd() == Command.HEARTBEAT.getCmd()){
             byteBuf.writeByte(getHeartbeat());
         }else {
-            Cipher cipher = session.getCipher();
-            if (cipher != null && packet.hasFeature(ProtocolConst.ENCRYPT)){
-                byte[] data = packet.getData();
-                byte[] encryptData = cipher.encrypt(data);
-                packet.setData(encryptData);
-            }
+            encrypt(packet, session);
             int dataLength = packet.getDataLength();
             byteBuf.writeByte(getVersion());
             byteBuf.writeInt(dataLength);
@@ -60,6 +56,20 @@ public class PacketCodec implements Codec {
             if (dataLength > 0){
                 byteBuf.writeBytes(packet.getData());
             }
+        }
+    }
+    
+    private void encrypt(Packet packet, Session session){
+        Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
+        if (enable){
+            Cipher cipher = session.getCipher();
+            if (cipher == null){
+                throw new EncoderException("cipher is null");
+            }
+            byte[] data = packet.getData();
+            byte[] encryptData = cipher.encrypt(data);
+            packet.setData(encryptData);
+            packet.addFeature(ProtocolConst.ENCRYPT);
         }
     }
 
@@ -92,16 +102,24 @@ public class PacketCodec implements Codec {
                     packet.setCs(checksum);
                     packet.setSerializerType(serializerType);
                     packet.setClassKey(classKey);
-                    Cipher cipher = session.getCipher();
-                    if (cipher != null && packet.hasFeature(ProtocolConst.ENCRYPT)){
-                        data = cipher.decrypt(data);
-                    }
                     packet.setData(data);
+                    decrypt(packet, session);
                     out.add(packet);
                 }else {
                     byteBuf.resetReaderIndex();
                 }
             }
+        }
+    }
+    
+    private void decrypt(Packet packet, Session session){
+        Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
+        if (enable && packet.hasFeature(ProtocolConst.ENCRYPT)) {
+            Cipher cipher = session.getCipher();
+            if (cipher == null) {
+                throw new DecoderException("cipher is null");
+            }
+            packet.setData(cipher.decrypt(packet.getData()));
         }
     }
 

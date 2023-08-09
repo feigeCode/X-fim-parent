@@ -9,8 +9,8 @@ import com.feige.api.handler.SessionHandler;
 import com.feige.fim.handler.AbstractSessionHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
-import com.feige.framework.annotation.Value;
 import com.feige.framework.api.context.Environment;
+import com.feige.framework.utils.Configs;
 import com.google.auto.service.AutoService;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -19,17 +19,17 @@ import org.bouncycastle.util.encoders.Base64;
 @AutoService(SessionHandler.class)
 public class SingleSessionHandler extends AbstractSessionHandler {
 
-    @Value(ServerConfigKey.SERVER_CRYPTO_ENABLE)
-    private boolean enableCrypto;
+   
 
     @Inject("asymmetricEncryption")
     private CipherFactory asymmetricCipherFactory;
 
     @Override
     public void connected(Session session) throws RemotingException {
-        if (enableCrypto){
+        Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
+        if (enable){
             Environment environment = applicationContext.getEnvironment();
-            String priKey = environment.getString(ServerConfigKey.SERVER_CRYPTO_RSA_PRI_K);
+            String priKey = environment.getString(ServerConfigKey.SERVER_CRYPTO_ASYMMETRIC_PRI_K);
             session.setCipher(asymmetricCipherFactory.create(Base64.decode(priKey), null));
         }
         super.connected(session);

@@ -22,20 +22,19 @@ public class NettyClientDemo {
     
     public static void createClient(){
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
+        ClientConfig.setClientKey(CryptoUtils.randomAesKey(16));
+        ClientConfig.setIv(CryptoUtils.randomAesIv(16));
+        ClientConfig.setEnableCrypto(true);
+        ClientConfig.setClientId("1234");
+        ClientConfig.setClientVersion("1.0");
+        ClientConfig.setClientType(ClientType.ANDROID.getCode());
+        ClientConfig.setOsName("android");
+        ClientConfig.setOsVersion("14.0");
+        ClientConfig.setSessionId("12345");
+        ClientConfig.setToken("123");
+        ClientConfig.setServerIp("127.0.0.1");
+        ClientConfig.setServerPort(8001);
         ApplicationContext applicationContext = new StandardApplicationContext(JdkSpiLoader.TYPE);
-        ClientConfig clientConfig = new ClientConfig();
-        clientConfig.setClientKey(CryptoUtils.randomAesKey(16));
-        clientConfig.setIv(CryptoUtils.randomAesIv(16));
-        clientConfig.setClientId("1234");
-        clientConfig.setClientVersion("1.0");
-        clientConfig.setClientType(ClientType.ANDROID.getCode());
-        clientConfig.setOsName("android");
-        clientConfig.setOsVersion("14.0");
-        clientConfig.setSessionId("12345");
-        clientConfig.setToken("123");
-        clientConfig.setServerIp("127.0.0.1");
-        clientConfig.setServerPort(8001);
-        applicationContext.register("clientConfig", clientConfig);
         Client client = applicationContext.get("nettyClient", Client.class);
         client.syncStart();
     }

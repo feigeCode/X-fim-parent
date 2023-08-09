@@ -26,6 +26,7 @@ import com.feige.api.handler.AbstractMsgHandler;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Value;
+import com.feige.framework.utils.Configs;
 import com.google.auto.service.AutoService;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -51,12 +52,6 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     @Inject("symmetricEncryption")
     private CipherFactory symmetricCipherFactory;
     
-    @Value(ServerConfigKey.SERVER_CRYPTO_AES_KEY_LENGTH)
-    private int keyLength;
-    
-    @Value(ServerConfigKey.SERVER_CRYPTO_ENABLE)
-    private boolean enableCrypto;
-    
     @Value(ServerConfigKey.SERVER_SESSION_EXPIRE_TIME)
     private long sessionExpireTime;
     
@@ -76,7 +71,8 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
             // TODO repeat handshake
             return;
         }
-        if (enableCrypto){
+        Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
+        if (enable){
             doSecurityHandshake(session, packet);
         }else {
             doHandshake(session, packet);
@@ -95,6 +91,7 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     }
 
     private void doSecurityHandshake(Session session, Packet packet) throws RemotingException {
+        int keyLength = Configs.getInt(Configs.ConfigKey.CRYPTO_SYMMETRIC_KEY_LENGTH, 16);
         byte serializerType = packet.getSerializerType();
         HandshakeReq handshakeReq = serializedClassManager.getDeserializedObject(serializerType, packet.getClassKey(), packet.getData(), getMsgInterface());
         byte[] clientKey = Base64.decode(handshakeReq.getClientKey());

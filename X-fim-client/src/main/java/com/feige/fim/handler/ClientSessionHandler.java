@@ -9,7 +9,6 @@ import com.feige.fim.config.ClientConfigKey;
 import com.feige.fim.lg.Logs;
 import com.feige.fim.msg.proto.FastConnectReqProto;
 import com.feige.fim.msg.proto.HandshakeReqProto;
-import com.feige.fim.utils.AssertUtil;
 import com.feige.fim.utils.PacketUtils;
 import com.feige.fim.utils.StringUtils;
 import com.feige.framework.annotation.Inject;
@@ -19,7 +18,6 @@ import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
 import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.api.context.Environment;
 import com.google.auto.service.AutoService;
 
 
@@ -31,51 +29,50 @@ public class ClientSessionHandler extends AbstractSessionHandler {
     private SessionStorage sessionStorage;
     
     @Inject("asymmetricEncryption")
-    private CipherFactory rsaCipherFactory;
+    private CipherFactory asymmetricCipherFactory;
     
     @Inject("symmetricEncryption")
-    private CipherFactory aesCipherFactory;
+    private CipherFactory symmetricCipherFactory;
     
     @Override
     public void connected(Session session) throws RemotingException {
-        ClientConfig clientConfig = applicationContext.get(ClientConfig.class);
-        AssertUtil.notNull(clientConfig, "clientConfig");
+        if (ClientConfig.enableCrypto()) {
+            session.setCipher(asymmetricCipherFactory.create(null, ClientConfig.getPublicKey()));
+        }
         tryFastConnect(session);
     }
     
     private void tryFastConnect(Session session) throws RemotingException {
         String sessionConfig = sessionStorage.getItem(ClientConfigKey.SESSION_PERSISTENT_KEY);
-        ClientConfig clientConfig = applicationContext.get(ClientConfig.class);
-        AssertUtil.notNull(clientConfig, "clientConfig");
         if (StringUtils.isBlank(sessionConfig)){
-            handshake(session, clientConfig);
+            handshake(session);
             return;
         }
-        if (clientConfig.isExpired()) {
+        if (ClientConfig.isExpired()) {
             sessionStorage.removeItem(ClientConfigKey.SESSION_PERSISTENT_KEY);
             Logs.getInstance().warn("fast connect failure session expired, session=%s", session);
-            handshake(session, clientConfig);
+            handshake(session);
             return;
         }
         FastConnectReqProto fastConnect = FastConnectReqProto.newBuilder()
-                .setClientId(clientConfig.getClientId())
-                .setSessionId(clientConfig.getSessionId())
+                .setClientId(ClientConfig.getClientId())
+                .setSessionId(ClientConfig.getSessionId())
                 .build();
         Packet packet = PacketUtils.createPacket(Command.FAST_CONNECT, FastConnect.class);
         packet.setData(fastConnect.toByteArray());
         session.write(packet);
     }
     
-    private void handshake(Session session, ClientConfig clientConfig) throws RemotingException {
+    private void handshake(Session session) throws RemotingException {
         Packet packet = PacketUtils.createPacket(Command.HANDSHAKE, HandshakeReq.class);
         HandshakeReqProto msgProto = HandshakeReqProto.newBuilder()
-                .setClientKey(clientConfig.getClientKeyString())
-                .setIv(clientConfig.getIvString())
-                .setClientVersion(clientConfig.getClientVersion())
-                .setOsName(clientConfig.getOsName())
-                .setClientType(clientConfig.getClientType())
-                .setClientId(clientConfig.getClientId())
-                .setToken(clientConfig.getToken())
+                .setClientKey(ClientConfig.getClientKeyString())
+                .setIv(ClientConfig.getIvString())
+                .setClientVersion(ClientConfig.getClientVersion())
+                .setOsName(ClientConfig.getOsName())
+                .setClientType(ClientConfig.getClientType())
+                .setClientId(ClientConfig.getClientId())
+                .setToken(ClientConfig.getToken())
                 .build();
         packet.setData(msgProto.toByteArray());
         session.write(packet);

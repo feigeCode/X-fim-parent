@@ -37,12 +37,10 @@ public class Configs implements EnvironmentAware  {
         String CODEC_VERSION_KEY = "fim.codec.version";
         String CODEC_HEADER_LENGTH_KEY = "fim.codec.header-length";
         String CODEC_CHECK_SUM_KEY = "fim.codec.check-sum-key";
-        
-        /**
-         * spi key
-         */
-        String SPI_LOADER_KEY = "spi.loader";
-        String SPI_LOADER_TYPE = "spi.loader.type";
+
+        String CRYPTO_ASYMMETRIC_PUBLIC_KEY = "fim.crypto.asymmetric.public-key";
+        String CRYPTO_ENABLE = "fim.crypto.enable";
+        String CRYPTO_SYMMETRIC_KEY_LENGTH = "fim.crypto.symmetric.key-length";
         
     }
     private static Environment environment;
@@ -60,7 +58,9 @@ public class Configs implements EnvironmentAware  {
         return environment.getCompositeConfig();
     }
 
-
+    public static Config getMemoryConfig(){
+        return environment.getMemoryConfig();
+    }
     public static Config getSystemConfig(){
         return environment.getSystemConfig();
     }
@@ -199,6 +199,9 @@ public class Configs implements EnvironmentAware  {
         return getCompositeConfig().convert(clazz, key, null);
     }
 
+    public static void setConfig(String key, Object value){
+        getMemoryConfig().setConfig(key, value);
+    }
     /**
      * get stream by config key
      * @param key config key

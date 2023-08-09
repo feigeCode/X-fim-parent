@@ -2,174 +2,181 @@ package com.feige.fim.config;
 
 
 import com.feige.fim.utils.StringUtils;
+import com.feige.framework.utils.Configs;
 import org.bouncycastle.util.encoders.Base64;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class ClientConfig {
 
-    private String sessionId;
-    private long expireTime;
-    private byte[] clientKey;
-    private byte[] iv;
-    private String clientVersion;
-    private String clientId;
-    private String osName;
-    private String osVersion;
-    private int clientType;
-    private String token;
-    private String serverIp;
-    private int serverPort;
-    private String pubKey;
-    private boolean enableCrypto;
-
-    public String serializeString() {
+    public static String serializeString() {
         String[] strings = {
-                String.valueOf(this.expireTime),
-                this.sessionId,
-                Base64.toBase64String(this.clientKey),
-                Base64.toBase64String(this.iv),
-                this.token
+                String.valueOf(getExpireTime()),
+                getSessionId(),
+                Base64.toBase64String(getClientKey()),
+                Base64.toBase64String(getIv()),
+                getToken()
         };
         return StringUtils.commaJoiner.join(strings);
     }
 
-    public boolean isExpired() {
-        return expireTime < System.currentTimeMillis();
+    public static boolean isExpired() {
+        return getExpireTime() < System.currentTimeMillis();
     }
 
-    public void deserializeString(String str) {
+    public static void deserializeString(String str) {
         List<String> list = StringUtils.commaSplitter.splitToList(str);
         if (list.size() == 5){
-            this.expireTime = Long.parseLong(list.get(0));
+            setExpireTime(Long.parseLong(list.get(0)));
             if (isExpired()){
                 return;
             }
-            this.sessionId = list.get(1);
-            this.clientKey = Base64.decode(list.get(2));
-            this.iv = Base64.decode(list.get(3));
-            this.token = list.get(4);
+            setSessionId(list.get(1));
+            setClientKey(Base64.decode(list.get(2)));
+            setIv(Base64.decode(list.get(3)));
+            setToken(list.get(4));
         }
     }
 
-    public String getSessionId() {
-        return sessionId;
+    public static String getSessionId() {
+        return  Configs.getString(ClientConfigKey.SESSION_ID);
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public static void setSessionId(String sessionId) {
+        Configs.setConfig(ClientConfigKey.SESSION_ID, sessionId);
     }
 
-    public long getExpireTime() {
-        return expireTime;
+    public static long getExpireTime() {
+        return Configs.getLong(ClientConfigKey.EXPIRE_TIME, -1L);
     }
 
-    public void setExpireTime(long expireTime) {
-        this.expireTime = expireTime;
+    public static void setExpireTime(long expireTime) {
+        Configs.setConfig(ClientConfigKey.EXPIRE_TIME, expireTime);
     }
 
-    public byte[] getClientKey() {
-        return clientKey;
+    public static byte[] getClientKey() {
+        String clientKey = Configs.getString(ClientConfigKey.CLIENT_KEY);
+        if (StringUtils.isNotBlank(clientKey)){
+            return Base64.decode(clientKey);
+        }
+        return new byte[0];
     }
 
-    public void setClientKey(byte[] clientKey) {
-        this.clientKey = clientKey;
-    }
-
-    public String getClientKeyString() {
-        return Base64.toBase64String(clientKey);
+    public static void setClientKey(byte[] clientKey) {
+        Configs.setConfig(ClientConfigKey.CLIENT_KEY, Base64.toBase64String(clientKey));
     }
     
-    public byte[] getIv() {
-        return iv;
+    
+    public static byte[] getIv() {
+        String iv = Configs.getString(ClientConfigKey.IV);
+        if (StringUtils.isNotBlank(iv)){
+            return Base64.decode(iv);
+        }
+        return new byte[0];
     }
 
-    public String getIvString() {
-        return Base64.toBase64String(iv);
+    public static void setIv(byte[] iv) {
+        Configs.setConfig(ClientConfigKey.IV, Base64.toBase64String(iv));
     }
 
-    public void setIv(byte[] iv) {
-        this.iv = iv;
+    public static String getClientVersion() {
+        return Configs.getString(ClientConfigKey.CLIENT_VERSION);
     }
 
-    public String getClientVersion() {
-        return clientVersion;
+    public static void setClientVersion(String clientVersion) {
+        Configs.setConfig(ClientConfigKey.CLIENT_VERSION, clientVersion);
     }
 
-    public void setClientVersion(String clientVersion) {
-        this.clientVersion = clientVersion;
+    public static String getClientId() {
+        return Configs.getString(ClientConfigKey.CLIENT_ID);
     }
 
-    public String getClientId() {
-        return clientId;
+    public static void setClientId(String clientId) {
+        Configs.setConfig(ClientConfigKey.CLIENT_ID, clientId);
     }
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
+    public static String getOsName() {
+        return Configs.getString(ClientConfigKey.OS_NAME);
     }
 
-    public String getOsName() {
-        return osName;
+    public static void setOsName(String osName) {
+        Configs.setConfig(ClientConfigKey.OS_NAME, osName);
     }
 
-    public void setOsName(String osName) {
-        this.osName = osName;
+    public static String getOsVersion() {
+        return Configs.getString(ClientConfigKey.OS_VERSION);
     }
 
-    public String getOsVersion() {
-        return osVersion;
+    public static void setOsVersion(String osVersion) {
+        Configs.setConfig(ClientConfigKey.OS_VERSION, osVersion);
     }
 
-    public void setOsVersion(String osVersion) {
-        this.osVersion = osVersion;
+    public static int getClientType() {
+        return Configs.getInt(ClientConfigKey.CLIENT_TYPE, 0);
     }
 
-    public int getClientType() {
-        return clientType;
+    public static void setClientType(int clientType) {
+        Configs.setConfig(ClientConfigKey.CLIENT_TYPE, clientType);
     }
 
-    public void setClientType(int clientType) {
-        this.clientType = clientType;
+    public static String getToken() {
+        return Configs.getString(ClientConfigKey.TOKEN);
     }
 
-    public String getToken() {
-        return token;
+    public static void setToken(String token) {
+        Configs.setConfig(ClientConfigKey.TOKEN, token);
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public static String getServerIp() {
+        return Configs.getString(ClientConfigKey.SERVER_IP);
     }
 
-    public String getServerIp() {
-        return serverIp;
+    public static void setServerIp(String serverIp) {
+        Configs.setConfig(ClientConfigKey.SERVER_IP, serverIp);
     }
 
-    public void setServerIp(String serverIp) {
-        this.serverIp = serverIp;
+    public static int getServerPort() {
+        return  Configs.getInt(ClientConfigKey.SERVER_PORT, 8000);
     }
 
-    public int getServerPort() {
-        return serverPort;
+    public static void setServerPort(int serverPort) {
+        Configs.setConfig(ClientConfigKey.SERVER_PORT, serverPort);
     }
 
-    public void setServerPort(int serverPort) {
-        this.serverPort = serverPort;
+    public static byte[] getPublicKey(){
+        String publicKey = Configs.getString(Configs.ConfigKey.CRYPTO_ASYMMETRIC_PUBLIC_KEY);
+        if (StringUtils.isNotBlank(publicKey)){
+            return Base64.decode(publicKey);
+        }
+        return new byte[0];
     }
 
-    @Override
-    public String toString() {
-        return "ClientConfig{" +
-                "sessionId='" + sessionId + '\'' +
-                ", expireTime=" + expireTime +
-                ", clientKey=" + Arrays.toString(clientKey) +
-                ", iv=" + Arrays.toString(iv) +
-                ", clientVersion='" + clientVersion + '\'' +
-                ", clientId='" + clientId + '\'' +
-                ", osName='" + osName + '\'' +
-                ", osVersion='" + osVersion + '\'' +
-                ", clientType=" + clientType +
-                ", token='" + token + '\'' +
-                '}';
+    public static void setPublicKey(byte[] publicKey){
+        Configs.setConfig(Configs.ConfigKey.CRYPTO_ASYMMETRIC_PUBLIC_KEY, Base64.toBase64String(publicKey));
+    }
+     
+    public static boolean enableCrypto(){
+        return Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
+    }
+    
+    public static int getKeyLength(){
+        return Configs.getInt(Configs.ConfigKey.CRYPTO_SYMMETRIC_KEY_LENGTH, 16);
+    }
+    
+    public static void setKeyLength(int keyLength){
+        Configs.setConfig(Configs.ConfigKey.CRYPTO_SYMMETRIC_KEY_LENGTH, keyLength);
+    }
+    
+    public static void setEnableCrypto(boolean enableCrypto){
+        Configs.setConfig(Configs.ConfigKey.CRYPTO_ENABLE, enableCrypto);
+    }
+
+
+    public static String getClientKeyString() {
+        return Configs.getString(ClientConfigKey.CLIENT_KEY);
+    }
+    
+    public static String getIvString(){
+        return Configs.getString(ClientConfigKey.IV);
     }
 }

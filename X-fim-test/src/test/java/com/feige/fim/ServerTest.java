@@ -17,6 +17,7 @@ import com.feige.fim.crypto.RsaCipherFactory;
 import com.feige.fim.utils.crypto.RsaUtils;
 import com.feige.fim.server.NettyTcpServerProvider;
 import com.feige.fim.utils.ReflectionUtils;
+import org.bouncycastle.util.encoders.Base64;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -103,5 +104,14 @@ public class ServerTest {
         byte[] encrypt = cipher.encrypt(data.getBytes(StandardCharsets.UTF_8));
         byte[] decrypt = cipher.decrypt(encrypt);
         Assert.assertEquals(data, new String(decrypt, 0, decrypt.length));
+    }
+    
+    @Test
+    public void rsaKeyPair(){
+        KeyPair keyPair = RsaUtils.generateKey();
+        PrivateKey aPrivate = keyPair.getPrivate();
+        PublicKey aPublic = keyPair.getPublic();
+        System.out.println("private-key:" + Base64.toBase64String(aPrivate.getEncoded()));
+        System.out.println("public-key:" + Base64.toBase64String(aPublic.getEncoded()));
     }
 }
