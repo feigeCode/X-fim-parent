@@ -148,6 +148,9 @@ public class ClassGenerator implements AutoCloseable {
     public ClassGenerator addField(String name, int mod, Class<?> type, boolean isGenGetterAndSetter, Class<?> setterReturnType) {
         return addField(name, mod, type, null, isGenGetterAndSetter, setterReturnType, null);
     }
+    public ClassGenerator addField(String name, int mod, Class<?> type, List<AnnotationDefine> annotationDefines) {
+        return addField(name, mod, type, annotationDefines, false, void.class, null);
+    }
 
     public ClassGenerator addField(String name, int mod, Class<?> type, List<AnnotationDefine> annotationDefines, boolean isGenGetterAndSetter, Class<?> setterReturnType, String def) {
         StringBuilder sb = new StringBuilder();
