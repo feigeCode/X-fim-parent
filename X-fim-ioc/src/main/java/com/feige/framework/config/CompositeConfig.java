@@ -17,10 +17,6 @@ import java.util.Map;
 public class CompositeConfig implements Config {
     
     private final List<Config> configList = new ArrayList<>();
-    @Override
-    public void parseConfig(Object config) throws Exception {
-        
-    }
 
     @Override
     public Object getObject(String key) {
