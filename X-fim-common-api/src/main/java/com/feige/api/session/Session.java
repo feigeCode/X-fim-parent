@@ -2,6 +2,8 @@ package com.feige.api.session;
 
 import com.feige.api.handler.RemotingException;
 import com.feige.api.crypto.Cipher;
+import com.feige.api.sc.FutureListener;
+import com.feige.api.sc.Listener;
 
 import java.net.InetSocketAddress;
 
@@ -30,7 +32,15 @@ public interface Session {
      *
      * @param msg
      */
-    void write(Object msg) throws RemotingException;
+    default void write(Object msg) throws RemotingException{
+        write(msg, null);
+    }
+    /**
+     * 往会话中写数据
+     * @param listener 监听
+     * @param msg 消息
+     */
+    void write(Object msg, Listener listener)  throws RemotingException;
 
 
     /**

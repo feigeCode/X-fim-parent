@@ -8,6 +8,7 @@ import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
 import com.feige.api.msg.HandshakeResp;
 import com.feige.api.msg.Msg;
+import com.feige.api.sc.Listener;
 import com.feige.fim.config.ServerConfigKey;
 import com.feige.fim.msg.proto.HandshakeReqProto;
 import com.feige.fim.msg.proto.HandshakeRespProto;
@@ -110,16 +111,25 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
         Packet handshakeRespPacket = createHandshakeRespPacket(handshakeReq, serverKey, packet);
         
         // 发送响应包
-        session.write(handshakeRespPacket);
+        session.write(handshakeRespPacket, new Listener() {
+            @Override
+            public void onSuccess(Object... args) {
+                // 根据秘钥生成cipher
+                session.setCipher(symmetricCipherFactory.create(sessionKey, iv));
 
-        // 根据秘钥生成cipher
-        session.setCipher(symmetricCipherFactory.create(sessionKey, iv));
+                // 保存会话信息
+                setCache(session, handshakeReq);
+
+                // 标记握手
+                session.markHandshake();
+            }
+
+            @Override
+            public void onFailure(Throwable cause) {
+
+            }
+        });
         
-        // 保存会话信息
-        setCache(session, handshakeReq);
-        
-        // 标记握手
-        session.markHandshake();
     }
 
 

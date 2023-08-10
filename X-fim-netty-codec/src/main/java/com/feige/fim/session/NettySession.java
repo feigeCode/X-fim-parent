@@ -1,8 +1,12 @@
 package com.feige.fim.session;
 
 import com.feige.api.handler.RemotingException;
+import com.feige.api.sc.FutureListener;
+import com.feige.api.sc.Listener;
 import com.feige.api.session.AbstractSession;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 
 import java.net.InetSocketAddress;
 
@@ -33,13 +37,25 @@ public class NettySession extends AbstractSession {
     }
 
     @Override
-    public void write(Object msg) throws RemotingException {
+    public void write(Object msg, Listener listener) throws RemotingException {
         if (isClosed()) {
-            throw new RemotingException(this, "Failed to write message " + 
-                    (msg == null ? "" : msg.getClass().getName()) + 
+            throw new RemotingException(this, "Failed to write message " +
+                    (msg == null ? "" : msg.getClass().getName()) +
                     ", cause: Channel closed. channel: " + getLocalAddress() + " -> " + getRemoteAddress());
         }
-        channel.writeAndFlush(msg);
+        ChannelFuture channelFuture = channel.writeAndFlush(msg);
+        
+        if (listener != null){
+            channelFuture.addListener((ChannelFutureListener) f -> {
+                if (f.isSuccess()) {
+                    listener.onSuccess();
+                } else {
+                    listener.onFailure(new RemotingException(this, "Failed to write message " +
+                            (msg == null ? "" : msg.getClass().getName()) +
+                            ", cause: Channel closed. channel: " + getLocalAddress() + " -> " + getRemoteAddress()));
+                }
+            });
+        }
     }
 
     @Override
