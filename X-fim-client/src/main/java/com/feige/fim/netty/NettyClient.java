@@ -178,9 +178,8 @@ public class NettyClient extends AbstractClient {
 
     @Override
     public InetSocketAddress getAddress() {
-        ClientConfig clientConfig = AppContext.get(ClientConfig.class);
         if (this.remoteAddress == null) {
-            this.remoteAddress = new InetSocketAddress(clientConfig.getServerIp(), clientConfig.getServerPort());
+            this.remoteAddress = new InetSocketAddress(ClientConfig.getServerIp(), ClientConfig.getServerPort());
         }
         return remoteAddress;
     }

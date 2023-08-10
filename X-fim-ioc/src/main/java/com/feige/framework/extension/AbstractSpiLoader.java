@@ -138,7 +138,9 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         
         if (singleton == null) {
             Map<String, T> instanceMap = createInstances(type);
-            instanceName = getFirstInstanceName(type);
+            if (StringUtils.isBlank(instanceName)){
+                instanceName = getFirstInstanceName(type);
+            }
             if (StringUtils.isNotBlank(instanceName)){
                 singleton  = instanceMap.get(instanceName);
             }

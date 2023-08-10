@@ -37,7 +37,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
     @Override
     public void connected(Session session) throws RemotingException {
         if (ClientConfig.enableCrypto()) {
-            session.setCipher(asymmetricCipherFactory.create(null, ClientConfig.getPublicKey()));
+            session.setCipher(asymmetricCipherFactory.create(new byte[0], ClientConfig.getPublicKey()));
         }
         tryFastConnect(session);
     }
@@ -61,6 +61,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
         Packet packet = PacketUtils.createPacket(Command.FAST_CONNECT, FastConnect.class);
         packet.setData(fastConnect.toByteArray());
         session.write(packet);
+        
     }
     
     private void handshake(Session session) throws RemotingException {

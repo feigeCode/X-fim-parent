@@ -117,6 +117,9 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
         
         // 保存会话信息
         setCache(session, handshakeReq);
+        
+        // 标记握手
+        session.markHandshake();
     }
 
 

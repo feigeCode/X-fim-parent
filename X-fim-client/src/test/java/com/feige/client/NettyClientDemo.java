@@ -22,6 +22,7 @@ public class NettyClientDemo {
     
     public static void createClient(){
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
+        ApplicationContext applicationContext = new StandardApplicationContext(JdkSpiLoader.TYPE);
         ClientConfig.setClientKey(CryptoUtils.randomAesKey(16));
         ClientConfig.setIv(CryptoUtils.randomAesIv(16));
         ClientConfig.setEnableCrypto(true);
@@ -34,7 +35,6 @@ public class NettyClientDemo {
         ClientConfig.setToken("123");
         ClientConfig.setServerIp("127.0.0.1");
         ClientConfig.setServerPort(8001);
-        ApplicationContext applicationContext = new StandardApplicationContext(JdkSpiLoader.TYPE);
         Client client = applicationContext.get("nettyClient", Client.class);
         client.syncStart();
     }

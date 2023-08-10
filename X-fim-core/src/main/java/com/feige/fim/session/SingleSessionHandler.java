@@ -30,7 +30,7 @@ public class SingleSessionHandler extends AbstractSessionHandler {
         if (enable){
             Environment environment = applicationContext.getEnvironment();
             String priKey = environment.getString(ServerConfigKey.SERVER_CRYPTO_ASYMMETRIC_PRI_K);
-            session.setCipher(asymmetricCipherFactory.create(Base64.decode(priKey), null));
+            session.setCipher(asymmetricCipherFactory.create(Base64.decode(priKey), new byte[0]));
         }
         super.connected(session);
     }
