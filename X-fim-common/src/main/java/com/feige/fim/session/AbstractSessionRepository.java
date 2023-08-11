@@ -1,6 +1,7 @@
 package com.feige.fim.session;
 
 import com.feige.api.handler.RemotingException;
+import com.feige.api.sc.Listener;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
 import com.feige.fim.utils.StringUtils;
@@ -33,9 +34,9 @@ public abstract class AbstractSessionRepository implements SessionRepository {
     
 
     @Override
-    public void write(String id, Object msg) throws RemotingException {
+    public void write(String id, Object msg, Listener listener) throws RemotingException {
         Session session = get(id);
-        session.write(msg);
+        session.write(msg, listener);
     }
 
     @Override

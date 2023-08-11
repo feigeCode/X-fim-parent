@@ -1,6 +1,7 @@
 package com.feige.api.session;
 
 import com.feige.api.handler.RemotingException;
+import com.feige.api.sc.Listener;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -52,9 +53,11 @@ public interface SessionRepository {
      * @param msg message
      * @throws RemotingException
      */
-    void write(String id, Object msg) throws RemotingException;
-
-
+    default void write(String id, Object msg) throws RemotingException {
+        write(id, msg, null);
+    }
+    
+    void write(String id, Object msg, Listener listener) throws RemotingException;
 
     /**
      * Whether to include session
