@@ -4,6 +4,7 @@ import com.feige.api.crypto.CipherFactory;
 import com.feige.api.msg.FastConnect;
 import com.feige.api.msg.HandshakeReq;
 import com.feige.api.sc.Listener;
+import com.feige.api.serialize.SerializedClassManager;
 import com.feige.fim.api.SessionStorage;
 import com.feige.fim.config.ClientConfig;
 import com.feige.fim.config.ClientConfigKey;
@@ -34,6 +35,9 @@ public class ClientSessionHandler extends AbstractSessionHandler {
     
     @Inject("symmetricEncryption")
     private CipherFactory symmetricCipherFactory;
+    
+    @Inject
+    private SerializedClassManager serializedClassManager;
     
     @Override
     public void connected(Session session) throws RemotingException {
@@ -82,8 +86,6 @@ public class ClientSessionHandler extends AbstractSessionHandler {
             @Override
             public void onSuccess(Object... args) {
                 session.setCipher(symmetricCipherFactory.create(ClientConfig.getClientKey(), ClientConfig.getIv()));
-                String sessionConfig = ClientConfig.serializeString();
-                sessionStorage.setItem(ClientConfigKey.SESSION_PERSISTENT_KEY, sessionConfig);
             }
 
             @Override

@@ -21,6 +21,6 @@ public class PacketDispatcher extends AbstractMsgDispatcher<Packet> {
             msgHandler.handle(session, packet);
             return;
         }
-        throw new RemotingException(session, "cmd="+ cmd + "not found handler");
+        throw new RemotingException(session, "cmd=["+ cmd + "] not found handler");
     }
 }

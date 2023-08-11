@@ -134,7 +134,7 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
 
 
     private void doHandshake(Session session, Packet packet){
-
+        
     }
     
     
