@@ -1,6 +1,5 @@
 package com.feige.fim.handler;
 
-import com.feige.fim.utils.Pair;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.api.handler.AbstractMsgHandler;
 import com.feige.api.handler.MsgHandler;
@@ -9,6 +8,8 @@ import com.feige.api.session.Session;
 import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
 import com.google.auto.service.AutoService;
+
+import java.util.List;
 
 @SpiComp("heartbeat")
 @AutoService(MsgHandler.class)
@@ -23,13 +24,9 @@ public class HeartbeatMsgHandler extends AbstractMsgHandler<Packet> {
         session.write(Packet.create(Command.HEARTBEAT));
     }
 
-    @Override
-    public Class<?> getMsgInterface() {
-        return null;
-    }
 
     @Override
-    public Pair<Class<?>, Class<?>> getProtoClass() {
+    public List<ClassGenerateParam> getClassGenerateParams() {
         return null;
     }
 }

@@ -1,0 +1,86 @@
+package com.feige.fim.serialize;
+
+import com.feige.api.constant.ProtocolConst;
+import com.feige.api.serialize.AbstractSerializedClassGenerator;
+import com.feige.api.serialize.SerializedClassGenerator;
+import com.feige.fim.utils.ClassGenerator;
+import com.feige.fim.utils.Pair;
+import com.feige.fim.utils.StringUtils;
+import com.feige.framework.annotation.SpiComp;
+import com.google.auto.service.AutoService;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
+@SpiComp
+@AutoService(SerializedClassGenerator.class)
+public class ProtoBufSerializedClassGenerator extends AbstractSerializedClassGenerator {
+
+    @Override
+    public Class<? > generate(Class<? > msgInterface, Method[] methods, Object... args) {
+        if (args.length < 2){
+            throw new IllegalArgumentException("args length < 2");
+        }
+        Class<?> protoClass = (Class<?>) args[0];
+        Class<?> protoBuilderClass = (Class<?>) args[1];
+        Pair<Class<?>, Class<?>> protoClassPair = Pair.of(protoClass, protoBuilderClass);
+        return wrapperProtoClass(msgInterface, methods, protoClassPair);
+        
+    }
+
+
+    protected Class<?>  wrapperProtoClass(Class<?> type, Method[] methods, Pair<Class<?>, Class<?>> protoClassPair ){
+        try(ClassGenerator classGenerator = new ClassGenerator()) {
+            classGenerator.setClassName(type.getSimpleName());
+            classGenerator.addInterface(type.getName())
+                    .addField("protoTarget", Modifier.PRIVATE, protoClassPair.getK(), true)
+                    .addField("builder", Modifier.PRIVATE, protoClassPair.getV(), false)
+                    .addMethod(
+                            "private " + protoClassPair.getV().getName() + " getBuilder(){\n" +
+                                    "if (this.builder == null){\n" +
+                                    "   this.builder = " + protoClassPair.getK().getName() + ".newBuilder();\n" +
+                                    "}\n" +
+                                    " return this.builder;\n" +
+                                    " }"
+                    );
+            for (Method method : methods) {
+                String name = method.getName();
+                if (CUSTOM_METHOD.contains(name) || name.startsWith("set")) {
+                    continue;
+                }
+                Class<?> returnType = method.getReturnType();
+                String setterName = "set" + StringUtils.capitalize(getFieldName(returnType, name));
+                classGenerator.addMethod(name, Modifier.PUBLIC, returnType, null, "\nreturn this.protoTarget." + name + "();\n")
+                        .addMethod(setterName, Modifier.PUBLIC, type, new Class[]{returnType}, "\ngetBuilder()." + setterName + "(arg0);\nreturn this;\n");
+            }
+            classGenerator.addMethod(
+                    "public byte[] serialize(){\n" +
+                            "if (this.protoTarget == null && this.builder != null){\n" +
+                            "    this.protoTarget = this.builder.build();\n" +
+                            "}\n" +
+                            "if (this.protoTarget != null){\n" +
+                            "     return this.protoTarget.toByteArray();\n" +
+                            "}\n" +
+                            "return new byte[0];\n" +
+                            "}\n"
+            );
+            classGenerator.addMethod(
+                    "public void deserialize(byte[] bytes){\n" +
+                            "try{\n" +
+                            "this.protoTarget = " + protoClassPair.getK().getName() + ".parseFrom(bytes);\n" +
+                            "}catch(" + Exception.class.getName() + " e){\n" +
+                            "throw new " + RuntimeException.class.getName() + "(e);\n" +
+                            "}\n" +
+                            "}\n"
+            );
+            return classGenerator.generate(type);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public byte getSerializerType() {
+        return ProtocolConst.PROTOCOL_BUFFER;
+    }
+}

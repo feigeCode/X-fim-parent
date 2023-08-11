@@ -3,6 +3,7 @@ package com.feige.fim.handler;
 import com.feige.api.bind.ClientBindManager;
 import com.feige.api.cache.Bucket;
 import com.feige.api.cache.CacheManager;
+import com.feige.api.constant.ProtocolConst;
 import com.feige.api.constant.ProtocolConst.SerializedClass;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
@@ -29,8 +30,10 @@ import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Value;
 import com.feige.framework.utils.Configs;
 import com.google.auto.service.AutoService;
+import com.google.common.collect.Lists;
 import org.bouncycastle.util.encoders.Base64;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,6 +47,7 @@ import java.util.concurrent.TimeUnit;
 public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     public static final String CACHE_NAME = "SESSION_CONTEXT";
     
+    
     @Inject
     private ClientBindManager clientBindManager;
     
@@ -55,11 +59,6 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     
     @Value(ServerConfigKey.SERVER_SESSION_EXPIRE_TIME)
     private long sessionExpireTime;
-    
-    @InitMethod
-    public void initHandshakeResp(){
-        genClass(HandshakeResp.class, Pair.of(HandshakeRespProto.class, HandshakeRespProto.Builder.class));
-    }
     
     @Override
     public byte getCmd() {
@@ -80,21 +79,20 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
         }
         
     }
-    
     @Override
-    public  Class<HandshakeReq> getMsgInterface() {
-        return HandshakeReq.class;
-    }
-
-    @Override
-    public Pair<Class<?>, Class<?>> getProtoClass() {
-        return Pair.of(HandshakeReqProto.class, HandshakeReqProto.Builder.class);
+    public List<ClassGenerateParam> getClassGenerateParams() {
+        return Lists.newArrayList(
+                new ClassGenerateParam(ProtocolConst.JSON, HandshakeReq.HANDSHAKE_REQ_CLASS),
+                new ClassGenerateParam(ProtocolConst.PROTOCOL_BUFFER, HandshakeReq.HANDSHAKE_REQ_CLASS, HandshakeReqProto.class, HandshakeReqProto.Builder.class),
+                new ClassGenerateParam(ProtocolConst.JSON, HandshakeResp.HANDSHAKE_RESP_CLASS),
+                new ClassGenerateParam(ProtocolConst.PROTOCOL_BUFFER, HandshakeResp.HANDSHAKE_RESP_CLASS, HandshakeRespProto.class, HandshakeRespProto.Builder.class)
+        );
     }
 
     private void doSecurityHandshake(Session session, Packet packet) throws RemotingException {
         int keyLength = Configs.getInt(Configs.ConfigKey.CRYPTO_SYMMETRIC_KEY_LENGTH, 16);
         byte serializerType = packet.getSerializerType();
-        HandshakeReq handshakeReq = serializedClassManager.getDeserializedObject(serializerType, packet.getClassKey(), packet.getData(), getMsgInterface());
+        HandshakeReq handshakeReq = serializedClassManager.getDeserializedObject(serializerType, packet.getClassKey(), packet.getData(), HandshakeReq.HANDSHAKE_REQ_CLASS);
         byte[] clientKey = Base64.decode(handshakeReq.getClientKey());
         byte[] iv = Base64.decode(handshakeReq.getIv());
         byte[] serverKey = CryptoUtils.randomAesKey(keyLength);
@@ -168,5 +166,6 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
         System.arraycopy(args, 0, sessionContext, 4, args.length);
         bucket.set(StringUtils.commaJoiner.join(sessionContext), sessionExpireTime, TimeUnit.SECONDS);
     }
-    
+
+   
 }

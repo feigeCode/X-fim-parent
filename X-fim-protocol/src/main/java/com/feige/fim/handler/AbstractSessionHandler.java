@@ -2,6 +2,7 @@ package com.feige.fim.handler;
 
 
 import com.feige.api.handler.MsgHandler;
+import com.feige.api.serialize.SerializedClassGenerator;
 import com.feige.api.serialize.SerializedClassManager;
 import com.feige.api.serialize.Serializer;
 import com.feige.framework.annotation.InitMethod;
@@ -46,14 +47,7 @@ public abstract class AbstractSessionHandler implements SessionHandler, Applicat
         }
        
     }
-
-    @InitMethod
-    public void initializeSerializer(){
-        List<Serializer> serializers = applicationContext.getByType(Serializer.class);
-        for (Serializer serializer : serializers) {
-            serializedClassManager.register(serializer);
-        }
-    }
+    
     
     @Override
     public void connected(Session session) throws RemotingException {
