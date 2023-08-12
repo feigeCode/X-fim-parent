@@ -6,12 +6,11 @@ import com.feige.api.serialize.SerializedClassGenerator;
 import com.feige.fim.utils.ClassGenerator;
 import com.feige.fim.utils.StringUtils;
 import com.feige.framework.annotation.SpiComp;
-import com.google.auto.service.AutoService;
+
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-@SpiComp
-@AutoService(SerializedClassGenerator.class)
+@SpiComp(interfaces = SerializedClassGenerator.class)
 public class JsonSerializedClassGenerator extends AbstractSerializedClassGenerator {
 
     

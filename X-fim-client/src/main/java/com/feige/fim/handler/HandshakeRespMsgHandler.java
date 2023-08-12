@@ -14,14 +14,13 @@ import com.feige.fim.msg.proto.HandshakeRespProto;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
-import com.google.auto.service.AutoService;
+
 import com.google.common.collect.Lists;
 import org.bouncycastle.util.encoders.Base64;
 
 import java.util.List;
 
-@SpiComp("handshake")
-@AutoService(MsgHandler.class)
+@SpiComp(value="handshake", interfaces = MsgHandler.class)
 public class HandshakeRespMsgHandler extends AbstractMsgHandler<Packet> {
     
     @Inject

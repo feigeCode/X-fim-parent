@@ -7,10 +7,9 @@ import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
-import com.google.auto.service.AutoService;
 
-@SpiComp
-@AutoService(MsgDispatcher.class)
+
+@SpiComp(interfaces = MsgDispatcher.class)
 public class PacketDispatcher extends AbstractMsgDispatcher<Packet> {
     
     @Override

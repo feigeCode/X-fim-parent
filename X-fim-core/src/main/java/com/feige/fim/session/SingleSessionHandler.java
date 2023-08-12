@@ -11,12 +11,11 @@ import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.framework.api.context.Environment;
 import com.feige.framework.utils.Configs;
-import com.google.auto.service.AutoService;
+
 import org.bouncycastle.util.encoders.Base64;
 
 
-@SpiComp("single")
-@AutoService(SessionHandler.class)
+@SpiComp(value="single", interfaces = SessionHandler.class)
 public class SingleSessionHandler extends AbstractSessionHandler {
 
    

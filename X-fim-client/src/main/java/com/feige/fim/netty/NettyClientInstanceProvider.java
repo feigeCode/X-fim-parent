@@ -6,10 +6,9 @@ import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.Client;
 import com.feige.framework.api.spi.InstanceProvider;
-import com.google.auto.service.AutoService;
 
-@SpiComp("nettyClient")
-@AutoService(InstanceProvider.class)
+
+@SpiComp(value="nettyClient", interfaces = InstanceProvider.class)
 public class NettyClientInstanceProvider implements InstanceProvider<Client> {
     
     @Inject

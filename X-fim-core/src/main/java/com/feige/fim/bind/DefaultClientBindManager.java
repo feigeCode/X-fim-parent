@@ -6,7 +6,7 @@ import com.feige.api.bind.ClientBindInfo;
 import com.feige.api.constant.ClientType;
 import com.feige.api.cache.MapCache;
 import com.feige.api.constant.Const;
-import com.google.auto.service.AutoService;
+
 
 import java.util.Arrays;
 import java.util.Map;
@@ -19,8 +19,7 @@ import java.util.stream.Collectors;
  * @Description: <br/>
  * @date: 2023/5/27 10:47<br/>
  */
-@SpiComp("default")
-@AutoService(ClientBindManager.class)
+@SpiComp(value="default", interfaces = ClientBindManager.class)
 public class DefaultClientBindManager extends AbstractClientBindManager {
     
     public static final String CACHE_NAME = "BIND_CLIENT";

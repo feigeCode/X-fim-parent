@@ -7,7 +7,7 @@ import com.feige.fim.utils.AssertUtil;
 import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
-import com.google.auto.service.AutoService;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,8 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-@AutoService(SessionStorage.class)
-@SpiComp
+@SpiComp(interfaces = SessionStorage.class)
 public class FileSessionStorage implements SessionStorage {
     public static final String FILE_NAME = "client.dat";
     private final Map<String, String> sessionMap = new ConcurrentHashMap<>();
@@ -30,7 +29,7 @@ public class FileSessionStorage implements SessionStorage {
     private final ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
     @Value(value = ClientConfigKey.FILE_SESSION_STORAGE_PATH_KEY)
     private String path;
-    
+
     public void writeSession(Map<String, String> copyMap) {
         File file = new File(path ,FILE_NAME);
         if (!file.exists()){
@@ -42,12 +41,12 @@ public class FileSessionStorage implements SessionStorage {
             }
         }
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
-           oos.writeObject(copyMap);
+            oos.writeObject(copyMap);
         } catch (Exception e) {
             throw new RuntimeException("write session failure", e);
         }
     }
-    
+
     @InitMethod
     public void readSession() {
         File file = new File(path ,FILE_NAME);
@@ -87,7 +86,7 @@ public class FileSessionStorage implements SessionStorage {
             }
         }
     }
-    
+
     @Override
     public void setItem(String key, String value) {
         AssertUtil.notBlank(key, "key");
@@ -105,12 +104,12 @@ public class FileSessionStorage implements SessionStorage {
 
     @Override
     public String getItem(String key) {
-       readLock.lock();
-       try {
-           return sessionMap.get(key);
-       }finally {
-           readLock.unlock();
-       }
+        readLock.lock();
+        try {
+            return sessionMap.get(key);
+        }finally {
+            readLock.unlock();
+        }
     }
 
     @Override
@@ -143,3 +142,4 @@ public class FileSessionStorage implements SessionStorage {
         }
     }
 }
+

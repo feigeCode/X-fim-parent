@@ -4,10 +4,9 @@ import com.feige.framework.annotation.SpiComp;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
 import com.feige.framework.api.spi.InstanceProvider;
-import com.google.auto.service.AutoService;
 
-@SpiComp("local")
-@AutoService(InstanceProvider.class)
+
+@SpiComp(value="local", interfaces = InstanceProvider.class)
 public class LocalCacheManagerFactory implements CacheManagerFactory, InstanceProvider<CacheManager> {
     @Override
     public CacheManager create() {

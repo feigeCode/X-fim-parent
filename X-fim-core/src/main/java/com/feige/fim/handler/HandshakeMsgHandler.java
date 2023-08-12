@@ -26,7 +26,7 @@ import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Value;
 import com.feige.framework.utils.Configs;
-import com.google.auto.service.AutoService;
+
 import com.google.common.collect.Lists;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -39,8 +39,7 @@ import java.util.concurrent.TimeUnit;
  * @Description: <br/>
  * @date: 2023/5/25 21:52<br/>
  */
-@SpiComp("handshake")
-@AutoService(MsgHandler.class)
+@SpiComp(value="handshake", interfaces = MsgHandler.class)
 public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     public static final String CACHE_NAME = "SESSION_CONTEXT";
     

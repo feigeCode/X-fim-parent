@@ -9,12 +9,11 @@ import com.feige.api.sc.ServerProvider;
 import com.feige.api.session.SessionRepository;
 import com.feige.fim.config.ServerConfigKey;
 import com.feige.fim.server.ws.NettyWsServer;
-import com.google.auto.service.AutoService;
+
 
 import java.net.InetSocketAddress;
 
-@SpiComp("ws")
-@AutoService(ServerProvider.class)
+@SpiComp(value="ws", interfaces = ServerProvider.class)
 public class NettyWsServerProvider extends AbstractServerProvider {
 
     @Value(ServerConfigKey.SERVER_WS_IP_KEY)

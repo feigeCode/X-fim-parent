@@ -10,10 +10,11 @@ import java.lang.annotation.Target;
 
 
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
 @Inherited
 @Documented
 public @interface SpiComp {
     
     String value() default "";
+
+    Class<?>[] interfaces() default Object.class;
 }

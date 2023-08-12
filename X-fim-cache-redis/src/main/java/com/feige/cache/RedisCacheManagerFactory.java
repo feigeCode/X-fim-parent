@@ -7,7 +7,7 @@ import com.feige.fim.config.ServerConfigKey;
 import com.feige.framework.api.context.Environment;
 import com.feige.framework.api.context.EnvironmentAware;
 import com.feige.framework.api.spi.InstanceProvider;
-import com.google.auto.service.AutoService;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -19,8 +19,7 @@ import org.redisson.config.SingleServerConfig;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-@SpiComp("redis")
-@AutoService(InstanceProvider.class)
+@SpiComp(value="redis", interfaces = InstanceProvider.class)
 public class RedisCacheManagerFactory implements CacheManagerFactory, InstanceProvider<CacheManager>, EnvironmentAware {
     
 

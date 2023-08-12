@@ -7,12 +7,11 @@ import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.SpiComp;
-import com.google.auto.service.AutoService;
+
 
 import java.util.List;
 
-@SpiComp("heartbeat")
-@AutoService(MsgHandler.class)
+@SpiComp(value="heartbeat", interfaces = MsgHandler.class)
 public class HeartbeatMsgHandler extends AbstractMsgHandler<Packet> {
     @Override
     public byte getCmd() {

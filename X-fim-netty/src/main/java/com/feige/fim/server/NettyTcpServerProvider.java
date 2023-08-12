@@ -9,13 +9,12 @@ import com.feige.api.sc.ServerProvider;
 import com.feige.api.session.SessionRepository;
 import com.feige.fim.config.ServerConfigKey;
 import com.feige.fim.server.tcp.NettyTcpServer;
-import com.google.auto.service.AutoService;
+
 
 
 import java.net.InetSocketAddress;
 
-@SpiComp("tcp")
-@AutoService(ServerProvider.class)
+@SpiComp(value="tcp", interfaces = ServerProvider.class)
 public class NettyTcpServerProvider extends AbstractServerProvider {
     
     @Value(ServerConfigKey.SERVER_TCP_IP_KEY)
