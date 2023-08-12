@@ -1,9 +1,11 @@
 package com.feige.fim.serialize;
 
 import com.feige.api.constant.ProtocolConst;
+import com.feige.api.msg.MsgFactory;
 import com.feige.api.serialize.AbstractSerializedClassGenerator;
 import com.feige.api.serialize.SerializedClassGenerator;
 import com.feige.fim.utils.ClassGenerator;
+import com.feige.fim.utils.Pair;
 import com.feige.fim.utils.StringUtils;
 import com.feige.framework.annotation.SpiComp;
 
@@ -14,14 +16,15 @@ import java.lang.reflect.Modifier;
 public class JsonSerializedClassGenerator extends AbstractSerializedClassGenerator {
 
     
+    
     @Override
-    public Class<?> generate(Class<?> msgInterface, Method[] methods, Object... args) {
+    public Pair<Class<?> , Class<MsgFactory>> generate(Class<?> msgInterface, Method[] methods, Object... args) {
         return genBasicClass(msgInterface, methods);
         
         
     }
 
-    protected Class<?> genBasicClass(Class<?> type, Method[] methods){
+    protected Pair<Class<?> , Class<MsgFactory>> genBasicClass(Class<?> type, Method[] methods){
         try(ClassGenerator classGenerator = new ClassGenerator()) {
             classGenerator.addInterface(type.getName());
             classGenerator.setClassName(type.getSimpleName());
@@ -42,7 +45,9 @@ public class JsonSerializedClassGenerator extends AbstractSerializedClassGenerat
             classGenerator.addMethod(
                     "public void deserialize(byte[] bytes){}\n"
             );
-            return classGenerator.generate(type);
+            Class<?> implClass = classGenerator.generate(type);
+            Class<MsgFactory> msgFactoryClass = this.generateMsgFactory(type, implClass);
+            return Pair.of(implClass, msgFactoryClass);
         }catch (Exception e){
             throw new RuntimeException(e);
         }

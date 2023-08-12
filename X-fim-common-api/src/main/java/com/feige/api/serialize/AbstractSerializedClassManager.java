@@ -2,7 +2,9 @@ package com.feige.api.serialize;
 
 import com.feige.api.annotation.MsgComp;
 import com.feige.api.msg.Msg;
+import com.feige.api.msg.MsgFactory;
 import com.feige.fim.utils.AssertUtil;
+import com.feige.fim.utils.Pair;
 import com.feige.fim.utils.ReflectionUtils;
 import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.api.context.ApplicationContext;
@@ -19,6 +21,7 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
     protected final Map<String, Class<?>> classMap = new ConcurrentHashMap<>();
     protected final Map<Class<?>, Byte> classKeyMap = new ConcurrentHashMap<>();
     protected final Map<Byte, SerializedClassGenerator> generatorMap = new ConcurrentHashMap<>();
+    protected final Map<String, MsgFactory> msgFactoryMap = new ConcurrentHashMap<>();
 
     protected ApplicationContext applicationContext;
 
@@ -57,7 +60,11 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
     public void registerClassGenerator(SerializedClassGenerator serializedClassGenerator) {
         generatorMap.put(serializedClassGenerator.getSerializerType(), serializedClassGenerator);
     }
-    
+
+    @Override
+    public void registerMsgFactory(byte serializerType, byte classKey, MsgFactory msgFactory) {
+        msgFactoryMap.put(joinClassKey(serializerType, classKey), msgFactory);
+    }
 
     @Override
     public Serializer unregister(byte serializerType) {
@@ -73,6 +80,11 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
     @Override
     public Class<?> unregisterClass(byte serializerType, byte classKey) {
         return classMap.remove(joinClassKey(serializerType, classKey));
+    }
+
+    @Override
+    public MsgFactory unregisterMsgFactory(byte serializerType, byte classKey) {
+        return msgFactoryMap.get(joinClassKey(serializerType, classKey));
     }
 
     @Override
@@ -111,8 +123,10 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
                 if (realClass == null){
                     SerializedClassGenerator classGenerator = getClassGenerator(serializerType);
                     try {
-                        realClass = classGenerator.generate(msgInterface, supplier == null ? null : supplier.get());
+                        Pair<Class<?>, Class<MsgFactory>> classPair = classGenerator.generate(msgInterface, supplier == null ? null : supplier.get());
+                        realClass = classPair.getK();
                         registerClass(serializerType, classKey, realClass);
+                        registerMsgFactory(serializerType, classKey, ReflectionUtils.accessibleConstructor(classPair.getV()).newInstance());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -124,12 +138,17 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
     }
 
     @Override
+    public MsgFactory getMsgFactory(byte serializerType, byte classKey) {
+        return this.msgFactoryMap.get(joinClassKey(serializerType, classKey));
+    }
+
+    @Override
     public <T extends Msg> T newObject(byte serializerType, byte classKey) {
-        Class<?> realClass = getClass(serializerType, classKey);
-        AssertUtil.notNull(realClass, "generate class");
+        MsgFactory msgFactory = getMsgFactory(serializerType, classKey);
+        AssertUtil.notNull(msgFactory, "msgFactory");
         Object instance;
         try {
-            instance = ReflectionUtils.accessibleConstructor(realClass).newInstance();
+            instance = msgFactory.create();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -138,10 +157,12 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
 
     @Override
     public <T extends Msg> T newObject(byte serializerType, Class<T> msgInterface, Supplier<Object[]> supplier) {
-        Class<T> realClass = getClass(serializerType, msgInterface, supplier);
+        Byte classKey = this.classKeyMap.get(msgInterface);
+        MsgFactory msgFactory = getMsgFactory(serializerType, classKey);
+        AssertUtil.notNull(msgFactory, "msgFactory");
         Object instance;
         try {
-            instance = ReflectionUtils.accessibleConstructor(realClass).newInstance();
+            instance = msgFactory.create();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

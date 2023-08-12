@@ -1,6 +1,7 @@
 package com.feige.api.serialize;
 
 import com.feige.api.msg.Msg;
+import com.feige.api.msg.MsgFactory;
 
 import java.util.function.Supplier;
 
@@ -11,11 +12,15 @@ public interface SerializedClassManager {
     
     void registerClass(byte serializerType, byte classKey, Class<?> clazz);
     
+    void registerMsgFactory(byte serializerType, byte classKey, MsgFactory msgFactory);
+    
     Serializer unregister(byte serializerType);
     
     SerializedClassGenerator unregisterClassGenerator(byte serializerType);
     
     Class<?> unregisterClass(byte serializerType, byte classKey);
+    
+    MsgFactory unregisterMsgFactory(byte serializerType, byte classKey);
     
     Serializer getSerializer(byte serializerType);
 
@@ -28,6 +33,8 @@ public interface SerializedClassManager {
     }
     
     <T extends Msg> Class<T> getClass(byte serializerType, Class<T> msgInterface, Supplier<Object[]> supplier)  throws IllegalStateException;
+    
+    MsgFactory getMsgFactory(byte serializerType, byte classKey);
 
     <T extends Msg> T newObject(byte serializerType, byte classKey) throws IllegalStateException;
     

@@ -3,6 +3,7 @@ package com.feige.client;
 import com.feige.api.constant.ClientType;
 import com.feige.api.sc.Client;
 import com.feige.fim.config.ClientConfig;
+import com.feige.fim.utils.ClassGenerator;
 import com.feige.fim.utils.crypto.AesUtils;
 import com.feige.fim.utils.crypto.CryptoUtils;
 import com.feige.framework.api.context.ApplicationContext;
@@ -22,6 +23,7 @@ public class NettyClientDemo {
     }
     
     public static void createClient(){
+        ClassGenerator.setDebugDump("E:\\project\\my\\X-fim-parent\\X-fim-client\\target\\classes");
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         ApplicationContext applicationContext = new StandardApplicationContext(ConfigSpiLoader.TYPE);
         ClientConfig.setClientKey(CryptoUtils.randomAesKey(16));
