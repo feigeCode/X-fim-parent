@@ -7,6 +7,7 @@ import com.feige.framework.annotation.Value;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.context.ApplicationContextAware;
 import com.feige.framework.api.context.EnvironmentAware;
+import com.feige.framework.api.context.InitializingInstance;
 import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.framework.api.context.SpiLoaderAware;
 import com.feige.framework.api.spi.InstanceCreationException;
@@ -230,7 +231,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     
     
     
-    private <T> Map<String, T> doCreateInstances(Class<T> type){
+    private <T> Map<String, T> doCreateInstances(Class<T> type) throws Exception {
         List<T> instances;
         // 创建实例
         if (type.isInterface() || ClassUtils.isAbstractClass(type)){
@@ -262,7 +263,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         return Collections.emptyMap();
     }
     
-    private <T> Map<String, T> initializeInstances(Class<T> type, List<T> instances){
+    private <T> Map<String, T> initializeInstances(Class<T> type, List<T> instances) throws Exception {
         Map<String, T> result = new HashMap<>();
         // 实现aware接口的调用对应的set方法
         for (T instance : instances) {
@@ -408,7 +409,11 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         return StringUtils.uncapitalize(clazz.getSimpleName());
     }
     
-    private void invokeInitMethods(Object instance){
+    private void invokeInitMethods(Object instance) throws Exception {
+        if (instance instanceof InitializingInstance){
+            ((InitializingInstance) instance).afterPropertiesSet();
+        }
+        
         ReflectionUtils.doWithMethods(instance.getClass(), (method) -> {
             if (method.isAnnotationPresent(InitMethod.class)) {
                 Class<?>[] parameterTypes = method.getParameterTypes();

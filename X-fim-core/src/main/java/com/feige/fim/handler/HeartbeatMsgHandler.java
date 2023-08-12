@@ -9,7 +9,6 @@ import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
 
 
-import java.util.List;
 
 @SpiComp(value="heartbeat", interfaces = MsgHandler.class)
 public class HeartbeatMsgHandler extends AbstractMsgHandler<Packet> {
@@ -22,10 +21,5 @@ public class HeartbeatMsgHandler extends AbstractMsgHandler<Packet> {
     public void handle(Session session, Packet packet) throws RemotingException {
         session.write(Packet.create(Command.HEARTBEAT));
     }
-
-
-    @Override
-    public List<ClassGenerateParam> getClassGenerateParams() {
-        return null;
-    }
+    
 }

@@ -75,15 +75,7 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
         }
         
     }
-    @Override
-    public List<ClassGenerateParam> getClassGenerateParams() {
-        return Lists.newArrayList(
-                new ClassGenerateParam(ProtocolConst.JSON, HandshakeReq.TYPE),
-                new ClassGenerateParam(ProtocolConst.PROTOCOL_BUFFER, HandshakeReq.TYPE, HandshakeReqProto.class, HandshakeReqProto.Builder.class),
-                new ClassGenerateParam(ProtocolConst.JSON, HandshakeResp.TYPE),
-                new ClassGenerateParam(ProtocolConst.PROTOCOL_BUFFER, HandshakeResp.TYPE, HandshakeRespProto.class, HandshakeRespProto.Builder.class)
-        );
-    }
+
 
     private void doSecurityHandshake(Session session, Packet packet) throws RemotingException {
         int keyLength = Configs.getInt(Configs.ConfigKey.CRYPTO_SYMMETRIC_KEY_LENGTH, 16);

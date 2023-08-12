@@ -97,15 +97,9 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
     public SerializedClassGenerator getClassGenerator(byte serializerType) {
         return generatorMap.get(serializerType);
     }
-    
-    @Override
-    public Class<?> getClass(byte serializerType, byte classKey) {
-        return classMap.get(joinClassKey(serializerType, classKey));
-    }
 
     @Override
-    public <T extends Msg> Class<T> getClass(byte serializerType, Class<T> msgInterface, Supplier<Object[]> supplier) throws IllegalStateException {
-        AssertUtil.notNull(msgInterface, "msg interface");
+    public byte getClassKey(Class<?> msgInterface) {
         Byte classKey = classKeyMap.get(msgInterface);
         if (classKey == null){
             if (!msgInterface.isAnnotationPresent(MsgComp.class)){
@@ -115,26 +109,43 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
             classKey = msgComp.classKey();
             classKeyMap.put(msgInterface, classKey);
         }
+        return classKey;
+    }
 
+    @Override
+    public Class<?> getClass(byte serializerType, byte classKey) {
+        return classMap.get(joinClassKey(serializerType, classKey));
+    }
+
+    @Override
+    public <T extends Msg> Class<T> getClass(byte serializerType, Class<T> msgInterface, Supplier<Object[]> supplier) throws IllegalStateException {
+        AssertUtil.notNull(msgInterface, "msg interface");
+        byte classKey = getClassKey(msgInterface);
         Class<?> realClass = getClass(serializerType, classKey);
         if (realClass == null){
             synchronized (this){
                 realClass = getClass(serializerType, classKey);
                 if (realClass == null){
-                    SerializedClassGenerator classGenerator = getClassGenerator(serializerType);
-                    try {
-                        Pair<Class<?>, Class<MsgFactory>> classPair = classGenerator.generate(msgInterface, supplier == null ? null : supplier.get());
-                        realClass = classPair.getK();
-                        registerClass(serializerType, classKey, realClass);
-                        registerMsgFactory(serializerType, classKey, ReflectionUtils.accessibleConstructor(classPair.getV()).newInstance());
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+                    realClass = generateClass(serializerType, classKey, msgInterface, supplier);
                 }
             }
         }
         AssertUtil.notNull(realClass, "generate class");
         return (Class<T>) realClass;
+    }
+    
+    private Class<?> generateClass(byte serializerType, byte classKey, Class<?> msgInterface, Supplier<Object[]> supplier){
+        SerializedClassGenerator classGenerator = getClassGenerator(serializerType);
+        try {
+            Pair<Class<?>, Class<MsgFactory>> classPair = classGenerator.generate(msgInterface, supplier == null ? null : supplier.get());
+            Class<?> realClass = classPair.getK();
+            registerClass(serializerType, classKey, realClass);
+            MsgFactory msgFactory = ReflectionUtils.accessibleConstructor(classPair.getV()).newInstance();
+            registerMsgFactory(serializerType, classKey, msgFactory);
+            return realClass;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

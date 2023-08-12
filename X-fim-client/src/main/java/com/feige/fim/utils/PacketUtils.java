@@ -15,11 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PacketUtils {
     
-    private static final Map<Class<?>, Byte> classKeyMap = new ConcurrentHashMap<>(32);
     private static final AtomicInteger cnt = new AtomicInteger();
     private static SerializedClassManager serializedClassManager;
+    
     public static Packet createPacket(Command cmd, Class<?> msgInterface){
-        Byte classKey = classKeyMap.computeIfAbsent(msgInterface, PacketUtils::getClassKey);
+        byte classKey = getSerializedClassManager().getClassKey(msgInterface);
         Packet packet = Packet.create(cmd);
         packet.setSerializerType(ClientConfig.getSerializerType());
         packet.setClassKey(classKey);
@@ -27,19 +27,14 @@ public class PacketUtils {
         return packet;
     }
 
-    public static <T extends Msg>  Pair<Packet, T> createPacketPair(Command cmd, Class<T> msgInterface){
+    public static <T extends Msg> T newObject(Class<T> msgInterface){
         byte serializerType = ClientConfig.getSerializerType();
-        T t =  getSerializedClassManager().newObject(serializerType, msgInterface);
-        Byte classKey = classKeyMap.computeIfAbsent(msgInterface, PacketUtils::getClassKey);
-        Packet packet = Packet.create(cmd);
-        packet.setSerializerType(serializerType);
-        packet.setClassKey(classKey);
-        packet.setSequenceNum(cnt.incrementAndGet());
-        return Pair.of(packet, t);
+        return getSerializedClassManager().newObject(serializerType, msgInterface);
     }
     
     public static byte[] getSerializedObject(Msg msg){
-        return getSerializedClassManager().getSerializedObject(ClientConfig.getSerializerType(), msg);
+        byte serializerType = ClientConfig.getSerializerType();
+        return getSerializedClassManager().getSerializedObject(serializerType, msg);
     }
     
     public static SerializedClassManager getSerializedClassManager(){
@@ -49,11 +44,4 @@ public class PacketUtils {
         return serializedClassManager;
     }
     
-    public static byte getClassKey(Class<?> msgClass) {
-        MsgComp msgComp = msgClass.getAnnotation(MsgComp.class);
-        if (msgComp != null){
-            return msgComp.classKey();
-        }
-        throw new RuntimeException("not found class key " + msgClass.getName());
-    }
 }

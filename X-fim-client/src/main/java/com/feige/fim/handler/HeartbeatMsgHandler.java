@@ -9,8 +9,6 @@ import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.SpiComp;
 
 
-import java.util.List;
-
 @SpiComp(value="heartbeat", interfaces = MsgHandler.class)
 public class HeartbeatMsgHandler extends AbstractMsgHandler<Packet> {
     @Override
@@ -23,8 +21,4 @@ public class HeartbeatMsgHandler extends AbstractMsgHandler<Packet> {
         session.write(Packet.create(Command.HEARTBEAT));
     }
 
-    @Override
-    public List<ClassGenerateParam> getClassGenerateParams() {
-        return null;
-    }
 }

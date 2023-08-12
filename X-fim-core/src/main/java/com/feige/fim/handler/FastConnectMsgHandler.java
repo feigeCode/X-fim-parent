@@ -9,8 +9,6 @@ import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.SpiComp;
 
 
-import java.util.List;
-
 @SpiComp(value="fastConnect", interfaces = MsgHandler.class)
 public class FastConnectMsgHandler extends AbstractMsgHandler<Packet> {
     @Override
@@ -24,8 +22,4 @@ public class FastConnectMsgHandler extends AbstractMsgHandler<Packet> {
     }
 
 
-    @Override
-    public List<ClassGenerateParam> getClassGenerateParams() {
-        return null;
-    }
 }

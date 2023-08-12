@@ -26,6 +26,8 @@ public interface SerializedClassManager {
 
     SerializedClassGenerator getClassGenerator(byte serializerType);
     
+    byte getClassKey(Class<?> msgInterface);
+    
     Class<?> getClass(byte serializerType, byte classKey)  throws IllegalStateException;
 
     default <T extends Msg> Class<T> getClass(byte serializerType, Class<T> msgInterface) throws IllegalStateException {
