@@ -1,7 +1,9 @@
 package com.feige.framework.apt;
 
+import com.feige.fim.utils.StringUtils;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.utils.ServicesFiles;
+import com.feige.framework.utils.SpiConfigsLoader;
 import com.google.auto.common.MoreElements;
 import com.google.auto.common.MoreTypes;
 import com.google.auto.service.AutoService;
@@ -34,9 +36,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -101,10 +107,14 @@ public class SpiCompProcessor extends AbstractProcessor {
                 }
                 for (DeclaredType providerInterface : providerInterfaces) {
                     TypeElement providerType = MoreTypes.asTypeElement(providerInterface);
+                    String binaryName = getBinaryName(providerType);
+                    if (Object.class.getName().equals(getBinaryName(providerType))){
+                        continue;
+                    }
                     log("provider interface: " + providerType.getQualifiedName());
                     log("provider implementer: " + providerImplementer.getQualifiedName());
                     if (checkImplementer(providerImplementer, providerType, annotationMirror)) {
-                        providers.put(getBinaryName(providerType), getBinaryName(providerImplementer));
+                        providers.put(binaryName, getBinaryName(providerImplementer));
                     } else {
                         String message =
                                 "ServiceProviders must implement their service provider interface. "
@@ -213,6 +223,7 @@ public class SpiCompProcessor extends AbstractProcessor {
     
     private void generateSource(){
         generateServices();
+        generateSpiConfigs();
     }
     
     
@@ -265,7 +276,37 @@ public class SpiCompProcessor extends AbstractProcessor {
     
     
     private void generateSpiConfigs(){
-        
+        Set<String> providerInterfaces = new HashSet<>(providers.keySet());
+        Filer filer = processingEnv.getFiler();
+        try {
+            Properties prop = new Properties();
+            try {
+                FileObject existingFile =
+                        filer.getResource(StandardLocation.CLASS_OUTPUT, "", SpiConfigsLoader.FACTORIES_RESOURCE_LOCATION);
+                log("Looking for existing resource file at " + existingFile.toUri());
+                prop.load(existingFile.openInputStream());
+                log("Existing service entries: " + prop);
+            } catch (IOException e) {
+                log("Resource file did not already exist.");
+            }
+            
+            for (String providerInterface : providerInterfaces) {
+                Set<String> impls = new HashSet<>(this.providers.get(providerInterface));
+                String oldImpls = prop.getProperty(providerInterface);
+                if (StringUtils.isNotBlank(oldImpls)){
+                    impls.addAll(StringUtils.commaSplitter.splitToList(oldImpls));
+                }
+                prop.setProperty(providerInterface, StringUtils.commaJoiner.join(impls));
+            }
+            FileObject fileObject =
+                    filer.createResource(StandardLocation.CLASS_OUTPUT, "", SpiConfigsLoader.FACTORIES_RESOURCE_LOCATION);
+            try (OutputStream out = fileObject.openOutputStream()) {
+                prop.store(out, "Automatic generation");
+            }
+            log("Wrote to: " + fileObject.toUri());
+        } catch (IOException e) {
+            fatalError("Unable to create " + SpiConfigsLoader.FACTORIES_RESOURCE_LOCATION + ", " + e);
+        }
     }
 
     private void log(String msg) {

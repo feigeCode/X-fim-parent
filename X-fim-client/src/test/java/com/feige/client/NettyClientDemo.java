@@ -7,6 +7,7 @@ import com.feige.fim.utils.crypto.AesUtils;
 import com.feige.fim.utils.crypto.CryptoUtils;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.context.StandardApplicationContext;
+import com.feige.framework.extension.ConfigSpiLoader;
 import com.feige.framework.extension.JdkSpiLoader;
 import com.feige.framework.utils.Configs;
 
@@ -22,7 +23,7 @@ public class NettyClientDemo {
     
     public static void createClient(){
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
-        ApplicationContext applicationContext = new StandardApplicationContext(JdkSpiLoader.TYPE);
+        ApplicationContext applicationContext = new StandardApplicationContext(ConfigSpiLoader.TYPE);
         ClientConfig.setClientKey(CryptoUtils.randomAesKey(16));
         ClientConfig.setIv(CryptoUtils.randomAesIv(16));
         ClientConfig.setEnableCrypto(true);

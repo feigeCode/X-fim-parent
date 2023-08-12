@@ -5,6 +5,7 @@ import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.config.Config;
 import com.feige.framework.api.config.ConfigFactory;
 import com.feige.framework.utils.Configs;
+import com.google.auto.service.AutoService;
 
 
 import java.io.File;
@@ -13,7 +14,7 @@ import java.nio.file.Files;
 import java.util.Map;
 
 
-@SpiComp(value="yaml", interfaces = ConfigFactory.class)
+@AutoService(ConfigFactory.class)
 public class YamlConfigFactory implements ConfigFactory {
     @Override
     public Config create() throws IllegalStateException{
