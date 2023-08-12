@@ -4,7 +4,7 @@ import com.feige.api.annotation.MsgComp;
 
 @MsgComp(classKey = 1)
 public interface HandshakeReq extends Msg {
-    Class<HandshakeReq> HANDSHAKE_REQ_CLASS = HandshakeReq.class;
+    Class<HandshakeReq> TYPE = HandshakeReq.class;
     
     String getClientKey();
     HandshakeReq setClientKey(String clientKey);

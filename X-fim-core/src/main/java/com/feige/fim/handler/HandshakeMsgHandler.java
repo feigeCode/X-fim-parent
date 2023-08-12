@@ -8,16 +8,13 @@ import com.feige.api.constant.ProtocolConst.SerializedClass;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
 import com.feige.api.msg.HandshakeResp;
-import com.feige.api.msg.Msg;
 import com.feige.api.sc.Listener;
 import com.feige.fim.config.ServerConfigKey;
 import com.feige.fim.msg.proto.HandshakeReqProto;
 import com.feige.fim.msg.proto.HandshakeRespProto;
-import com.feige.fim.utils.Pair;
 import com.feige.fim.utils.StringUtils;
 import com.feige.fim.utils.crypto.CryptoUtils;
 import com.feige.fim.utils.crypto.Md5Utils;
-import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.api.handler.MsgHandler;
@@ -82,17 +79,17 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     @Override
     public List<ClassGenerateParam> getClassGenerateParams() {
         return Lists.newArrayList(
-                new ClassGenerateParam(ProtocolConst.JSON, HandshakeReq.HANDSHAKE_REQ_CLASS),
-                new ClassGenerateParam(ProtocolConst.PROTOCOL_BUFFER, HandshakeReq.HANDSHAKE_REQ_CLASS, HandshakeReqProto.class, HandshakeReqProto.Builder.class),
-                new ClassGenerateParam(ProtocolConst.JSON, HandshakeResp.HANDSHAKE_RESP_CLASS),
-                new ClassGenerateParam(ProtocolConst.PROTOCOL_BUFFER, HandshakeResp.HANDSHAKE_RESP_CLASS, HandshakeRespProto.class, HandshakeRespProto.Builder.class)
+                new ClassGenerateParam(ProtocolConst.JSON, HandshakeReq.TYPE),
+                new ClassGenerateParam(ProtocolConst.PROTOCOL_BUFFER, HandshakeReq.TYPE, HandshakeReqProto.class, HandshakeReqProto.Builder.class),
+                new ClassGenerateParam(ProtocolConst.JSON, HandshakeResp.TYPE),
+                new ClassGenerateParam(ProtocolConst.PROTOCOL_BUFFER, HandshakeResp.TYPE, HandshakeRespProto.class, HandshakeRespProto.Builder.class)
         );
     }
 
     private void doSecurityHandshake(Session session, Packet packet) throws RemotingException {
         int keyLength = Configs.getInt(Configs.ConfigKey.CRYPTO_SYMMETRIC_KEY_LENGTH, 16);
         byte serializerType = packet.getSerializerType();
-        HandshakeReq handshakeReq = serializedClassManager.getDeserializedObject(serializerType, packet.getClassKey(), packet.getData(), HandshakeReq.HANDSHAKE_REQ_CLASS);
+        HandshakeReq handshakeReq = serializedClassManager.getDeserializedObject(serializerType, packet.getClassKey(), packet.getData(), HandshakeReq.TYPE);
         byte[] clientKey = Base64.decode(handshakeReq.getClientKey());
         byte[] iv = Base64.decode(handshakeReq.getIv());
         byte[] serverKey = CryptoUtils.randomAesKey(keyLength);

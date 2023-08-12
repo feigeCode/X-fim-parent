@@ -50,8 +50,8 @@ public class HandshakeRespMsgHandler extends AbstractMsgHandler<Packet> {
     @Override
     public List<ClassGenerateParam> getClassGenerateParams() {
         return Lists.newArrayList(
-                new ClassGenerateParam(ProtocolConst.JSON, HandshakeResp.HANDSHAKE_RESP_CLASS),
-                new ClassGenerateParam(ProtocolConst.PROTOCOL_BUFFER, HandshakeResp.HANDSHAKE_RESP_CLASS, HandshakeRespProto.class, HandshakeRespProto.Builder.class)
+                new ClassGenerateParam(ProtocolConst.JSON, HandshakeResp.TYPE),
+                new ClassGenerateParam(ProtocolConst.PROTOCOL_BUFFER, HandshakeResp.TYPE, HandshakeRespProto.class, HandshakeRespProto.Builder.class)
         );
     }
 }

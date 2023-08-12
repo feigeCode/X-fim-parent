@@ -1,6 +1,7 @@
 package com.feige.fim.config;
 
 
+import com.feige.api.constant.ProtocolConst;
 import com.feige.fim.utils.StringUtils;
 import com.feige.framework.utils.Configs;
 import org.bouncycastle.util.encoders.Base64;
@@ -179,4 +180,15 @@ public class ClientConfig {
     public static String getIvString(){
         return Configs.getString(ClientConfigKey.IV);
     }
+    
+    
+    public static byte getSerializerType(){
+        Integer value = Configs.getInt(ClientConfigKey.SERIALIZER_TYPE, (int) ProtocolConst.PROTOCOL_BUFFER);
+        return value.byteValue();
+    }
+    
+    public static void setSerializerType(byte serializerType){
+        Configs.setConfig(ClientConfigKey.SERIALIZER_TYPE, (int) serializerType);
+    }
+    
 }

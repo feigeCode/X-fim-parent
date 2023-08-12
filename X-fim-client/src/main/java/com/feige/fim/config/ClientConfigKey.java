@@ -16,6 +16,8 @@ public interface ClientConfigKey {
     String TOKEN = "t";
     String SERVER_IP = "s_i";
     String SERVER_PORT = "s_p";
+    
+    String SERIALIZER_TYPE = "s_t";
   
     
 }
