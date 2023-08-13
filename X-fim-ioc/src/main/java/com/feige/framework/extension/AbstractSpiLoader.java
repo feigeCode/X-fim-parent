@@ -340,6 +340,9 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
 
     private <T> T getObjectForInstance(String instanceName, Object instance, Class<T> requireType) {
         if (instance instanceof InstanceProvider && !InstanceProvider.class.isAssignableFrom(requireType)) {
+            if (isSingletonCurrentlyInCreation(requireType)){
+                throw new InstanceCurrentlyInCreationException(requireType);
+            }
             InstanceProvider<T> instanceProvider = (InstanceProvider<T>) instance;
             if (!isSingleton(instance)){
                 return instanceProvider.getInstance();
