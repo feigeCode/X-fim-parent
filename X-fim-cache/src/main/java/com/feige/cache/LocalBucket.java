@@ -7,15 +7,8 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.Lock;
 
 public class LocalBucket<V extends Serializable> extends AbstractCacheable implements Bucket<V> {
-
-    private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
-    private final Lock readLock = rwLock.readLock();
-    private final Lock writeLock = rwLock.writeLock();
 
     private final AtomicReference<V> valRef = new AtomicReference<>();
     private volatile long expiryTime = -1;
@@ -26,49 +19,29 @@ public class LocalBucket<V extends Serializable> extends AbstractCacheable imple
 
     @Override
     public V get() {
-        readLock.lock();
-        try {
-            checkExpired();
-            return this.valRef.get();
-        } finally {
-            readLock.unlock();
-        }
+        checkExpired();
+        return this.valRef.get();
     }
 
     @Override
     public void set(V val) {
-        writeLock.lock();
-        try {
-            checkExpired();
-            this.valRef.set(val);
-        } finally {
-            writeLock.unlock();
-        }
+        checkExpired();
+        this.valRef.set(val);
     }
 
     @Override
     public void set(V val, long expiryTime, TimeUnit unit) {
-        writeLock.lock();
-        try {
-            checkExpired();
-            this.valRef.set(val);
-            this.expiryTime = System.currentTimeMillis() + unit.toMillis(expiryTime);
-        } finally {
-            writeLock.unlock();
-        }
+        checkExpired();
+        this.valRef.set(val);
+        this.expiryTime = System.currentTimeMillis() + unit.toMillis(expiryTime);
     }
 
     @Override
     public V getAndDelete() {
-        writeLock.lock();
-        try {
-            checkExpired();
-            V v = this.valRef.get();
-            this.valRef.set(null);
-            return v;
-        } finally {
-            writeLock.unlock();
-        }
+        checkExpired();
+        V v = this.valRef.get();
+        this.valRef.set(null);
+        return v;
     }
 
     private void checkExpired() {
@@ -84,12 +57,7 @@ public class LocalBucket<V extends Serializable> extends AbstractCacheable imple
 
     @Override
     public void setEx(Duration duration) {
-        writeLock.lock();
-        try {
-            this.expiryTime = System.currentTimeMillis() + duration.toMillis();
-        } finally {
-            writeLock.unlock();
-        }
+        this.expiryTime = System.currentTimeMillis() + duration.toMillis();
     }
 
     @Override
@@ -107,3 +75,4 @@ public class LocalBucket<V extends Serializable> extends AbstractCacheable imple
         throw new UnsupportedOperationException();
     }
 }
+
