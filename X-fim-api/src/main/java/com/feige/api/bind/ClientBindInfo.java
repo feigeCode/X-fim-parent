@@ -22,7 +22,7 @@ public class ClientBindInfo implements Serializable {
      * client os code
      * @see ClientType
      */
-    private int osCode;
+    private int clientType;
 
     /**
      * client version
@@ -33,6 +33,8 @@ public class ClientBindInfo implements Serializable {
      *  client id
      */
     private String clientId;
+    
+    private String tags;
 
     /**
      * session id
@@ -57,12 +59,12 @@ public class ClientBindInfo implements Serializable {
         return this;
     }
 
-    public int getOsCode() {
-        return osCode;
+    public int getClientType() {
+        return clientType;
     }
 
-    public ClientBindInfo setOsCode(int osCode) {
-        this.osCode = osCode;
+    public ClientBindInfo setClientType(int clientType) {
+        this.clientType = clientType;
         return this;
     }
 
@@ -83,6 +85,15 @@ public class ClientBindInfo implements Serializable {
         this.clientId = clientId;
         return this;
     }
+    
+    public String getTags(){
+        return tags;
+    }
+    
+    public ClientBindInfo setTags(String tags){
+        this.tags = tags;
+        return this;
+    }
 
     public String getSessionId() {
         return sessionId;
@@ -91,10 +102,6 @@ public class ClientBindInfo implements Serializable {
     public ClientBindInfo setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
-    }
-    
-    public ClientType getClientType() {
-        return ClientType.valueOf(this.osCode);
     }
     
     public boolean isOnline() {
@@ -119,11 +126,11 @@ public class ClientBindInfo implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientBindInfo that = (ClientBindInfo) o;
-        return osCode == that.osCode && Objects.equals(this.clientId, that.clientId);
+        return clientType == that.clientType && Objects.equals(this.clientId, that.clientId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(osCode, clientId);
+        return Objects.hash(clientType, clientId);
     }
 }

@@ -42,7 +42,10 @@ public interface ProtocolConst {
        HANDSHAKE_REQ(1),
        FAST_CONNECT_REQ(2),
        HANDSHAKE_RESP(3),
-       ACK(4);
+       FAST_CONNECT_RESP(4),
+       BIND_CLIENT(5),
+       ACK(6),
+       ERROR_RESP(7);
        SerializedClass(int classKey){
            this.classKey = (byte) classKey;
        }

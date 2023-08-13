@@ -15,6 +15,7 @@ public class StringUtils {
     public static final String EMPTY_STR = "";
     public final static Joiner   commaJoiner = Joiner.on(",");
     public final static Splitter commaSplitter = Splitter.on(",").omitEmptyStrings();
+    public final static Splitter originCommaSplitter = Splitter.on(",");
 
     public static boolean isEmpty(Object str) {
         return str == null || EMPTY_STR.equals(str);

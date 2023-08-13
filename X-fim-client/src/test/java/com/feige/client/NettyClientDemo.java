@@ -38,6 +38,7 @@ public class NettyClientDemo {
         ClientConfig.setToken("123");
         ClientConfig.setServerIp("127.0.0.1");
         ClientConfig.setServerPort(8001);
+        ClientConfig.setTags("test");
         Client client = applicationContext.get("nettyClient", Client.class);
         client.syncStart();
     }

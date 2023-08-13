@@ -44,7 +44,7 @@ public class DefaultClientBindManager extends AbstractClientBindManager {
     @Override
     public void register(ClientBindInfo clientBindInfo) {
         MapCache<String, ClientBindInfo> mapCache = getMapCache();
-        mapCache.put(getKey(clientBindInfo.getClientId(), clientBindInfo.getOsCode()), clientBindInfo);
+        mapCache.put(getKey(clientBindInfo.getClientId(), clientBindInfo.getClientType()), clientBindInfo);
     }
 
     @Override

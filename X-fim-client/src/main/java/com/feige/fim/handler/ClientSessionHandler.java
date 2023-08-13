@@ -37,6 +37,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
             session.setCipher(asymmetricCipherFactory.create(new byte[0], ClientConfig.getPublicKey()));
         }
         tryFastConnect(session);
+//        handshake(session);
     }
     
     private void tryFastConnect(Session session) throws RemotingException {
@@ -58,7 +59,17 @@ public class ClientSessionHandler extends AbstractSessionHandler {
                 .setSessionId(ClientConfig.getSessionId());
         byte[] serializedObject = PacketUtils.getSerializedObject(fastConnectReq);
         packet.setData(serializedObject);
-        session.write(packet);
+        session.write(packet, new Listener() {
+            @Override
+            public void onSuccess(Object... args) {
+                session.setCipher(symmetricCipherFactory.create(ClientConfig.getClientKey(), ClientConfig.getIv()));
+            }
+
+            @Override
+            public void onFailure(Throwable cause) {
+                cause.printStackTrace();
+            }
+        });
     }
     
     private void handshake(Session session) throws RemotingException {
@@ -68,6 +79,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
                 .setIv(ClientConfig.getIvString())
                 .setClientVersion(ClientConfig.getClientVersion())
                 .setOsName(ClientConfig.getOsName())
+                .setOsVersion(ClientConfig.getOsVersion())
                 .setClientType(ClientConfig.getClientType())
                 .setClientId(ClientConfig.getClientId())
                 .setToken(ClientConfig.getToken());

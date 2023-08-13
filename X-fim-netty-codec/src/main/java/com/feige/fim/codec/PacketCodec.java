@@ -14,6 +14,7 @@ import com.feige.framework.utils.Configs;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.TooLongFrameException;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class PacketCodec implements Codec {

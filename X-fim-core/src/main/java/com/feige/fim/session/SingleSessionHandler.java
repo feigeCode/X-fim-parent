@@ -1,7 +1,10 @@
 package com.feige.fim.session;
 
 
+import com.feige.api.bind.ClientBindManager;
+import com.feige.api.constant.ClientType;
 import com.feige.api.crypto.CipherFactory;
+import com.feige.api.session.SessionContext;
 import com.feige.fim.config.ServerConfigKey;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
@@ -22,6 +25,9 @@ public class SingleSessionHandler extends AbstractSessionHandler {
 
     @Inject("asymmetricEncryption")
     private CipherFactory asymmetricCipherFactory;
+    
+    @Inject
+    private ClientBindManager clientBindManager;
 
     @Override
     public void connected(Session session) throws RemotingException {
@@ -29,6 +35,7 @@ public class SingleSessionHandler extends AbstractSessionHandler {
         if (enable){
             Environment environment = applicationContext.getEnvironment();
             String priKey = environment.getString(ServerConfigKey.SERVER_CRYPTO_ASYMMETRIC_PRI_K);
+            //String pubKey = environment.getString(Configs.ConfigKey.CRYPTO_ASYMMETRIC_PUBLIC_KEY);
             session.setCipher(asymmetricCipherFactory.create(Base64.decode(priKey), new byte[0]));
         }
         super.connected(session);
@@ -37,5 +44,13 @@ public class SingleSessionHandler extends AbstractSessionHandler {
     @Override
     public void received(Session session, Object message) throws RemotingException {
         super.received(session, message);
+    }
+
+    @Override
+    public void disconnected(Session session) throws RemotingException {
+        SessionContext sessionContext = (SessionContext)session.getAttr("sessionContext");
+        if (sessionContext != null){
+            clientBindManager.unregister(sessionContext.getClientId(), ClientType.valueOf(sessionContext.getClientType()));
+        }
     }
 }

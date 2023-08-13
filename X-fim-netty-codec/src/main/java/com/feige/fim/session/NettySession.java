@@ -50,9 +50,7 @@ public class NettySession extends AbstractSession {
                 if (f.isSuccess()) {
                     listener.onSuccess();
                 } else {
-                    listener.onFailure(new RemotingException(this, "Failed to write message " +
-                            (msg == null ? "" : msg.getClass().getName()) +
-                            ", cause: Channel closed. channel: " + getLocalAddress() + " -> " + getRemoteAddress()));
+                    listener.onFailure(f.cause());
                 }
             });
         }

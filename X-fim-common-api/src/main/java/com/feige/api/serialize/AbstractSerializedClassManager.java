@@ -27,17 +27,14 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
 
     @InitMethod
     public void initializeSerializer(){
-        List<Serializer> serializers = applicationContext.getByType(Serializer.class);
-        for (Serializer serializer : serializers) {
-            this.register(serializer);
-        }
-    }
-
-    @InitMethod
-    public void initializeSerializedClassGenerator(){
         List<SerializedClassGenerator> serializedClassGenerators = applicationContext.getByType(SerializedClassGenerator.class);
         for (SerializedClassGenerator serializedClassGenerator : serializedClassGenerators) {
             this.registerClassGenerator(serializedClassGenerator);
+        }
+        
+        List<Serializer> serializers = applicationContext.getByType(Serializer.class);
+        for (Serializer serializer : serializers) {
+            this.register(serializer);
         }
     }
 
@@ -144,7 +141,7 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
             registerMsgFactory(serializerType, classKey, msgFactory);
             return realClass;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("[" + msgInterface.getName() + "]", e);
         }
     }
 

@@ -36,5 +36,14 @@ message FastConnectReqProto {
     string session_id = 2;
 }
 
+message FastConnectRespProto {
+    int32 status_code = 1;
+}
+
+message BindClientReqProto {
+    string session_id = 1;
+    string tags = 2;
+}
+
 
 

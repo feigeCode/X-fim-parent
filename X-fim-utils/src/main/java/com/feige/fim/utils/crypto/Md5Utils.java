@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 public class Md5Utils {
-    public static String encrypt(String text) {
+    public static String digest(String text) {
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(text.getBytes(StandardCharsets.UTF_8));

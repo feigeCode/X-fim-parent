@@ -2,6 +2,7 @@ package com.feige.fim.utils;
 
 import com.feige.api.constant.Command;
 import com.feige.api.constant.ProtocolConst;
+import com.feige.api.msg.BindClientReq;
 import com.feige.api.msg.Msg;
 import com.feige.api.serialize.SerializedClassManager;
 import com.feige.fim.config.ClientConfig;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class PacketUtils {
+public final class PacketUtils {
     
     private static final AtomicInteger cnt = new AtomicInteger();
     private static SerializedClassManager serializedClassManager;
@@ -42,6 +43,16 @@ public class PacketUtils {
             serializedClassManager = AppContext.get(SerializedClassManager.class);
         }
         return serializedClassManager;
+    }
+    
+    
+    public static Packet createBindClientPacket(){
+        Packet packet = createPacket(Command.BIND, BindClientReq.TYPE);
+        BindClientReq bindClientReq = newObject(BindClientReq.TYPE)
+                .setSessionId(ClientConfig.getSessionId())
+                .setTags(ClientConfig.getTags());
+        packet.setData(getSerializedObject(bindClientReq));
+        return packet;
     }
     
 }

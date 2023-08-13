@@ -79,7 +79,7 @@ public class LocalBucket<V extends Serializable> extends AbstractCacheable imple
 
     @Override
     public boolean isExpired() {
-        return this.expiryTime != -1 && this.expiryTime > System.currentTimeMillis();
+        return this.expiryTime != -1 && this.expiryTime < System.currentTimeMillis();
     }
 
     @Override

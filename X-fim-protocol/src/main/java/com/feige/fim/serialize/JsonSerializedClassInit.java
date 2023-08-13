@@ -1,7 +1,9 @@
 package com.feige.fim.serialize;
 
 import com.feige.api.constant.ProtocolConst;
+import com.feige.api.msg.BindClientReq;
 import com.feige.api.msg.FastConnectReq;
+import com.feige.api.msg.FastConnectResp;
 import com.feige.api.msg.HandshakeReq;
 import com.feige.api.msg.HandshakeResp;
 import com.feige.api.msg.Msg;
@@ -24,6 +26,8 @@ public class JsonSerializedClassInit {
         generateClass(HandshakeReq.TYPE);
         generateClass(HandshakeResp.TYPE);
         generateClass(FastConnectReq.TYPE);
+        generateClass(FastConnectResp.TYPE);
+        generateClass(BindClientReq.TYPE);
     }
     
     private <T extends Msg> void generateClass(Class<T> type, Object... args){

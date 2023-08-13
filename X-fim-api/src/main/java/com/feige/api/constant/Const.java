@@ -39,4 +39,7 @@ public interface Const {
     String COMMA = ",";
 
     String UNDERLINE = "_";
+    
+    
+    long DEFAULT_SESSION_EXPIRE_TIME = 3600;
 }

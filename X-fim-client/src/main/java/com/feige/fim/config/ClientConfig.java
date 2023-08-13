@@ -26,7 +26,7 @@ public class ClientConfig {
     }
 
     public static void deserializeString(String str) {
-        List<String> list = StringUtils.commaSplitter.splitToList(str);
+        List<String> list = StringUtils.originCommaSplitter.splitToList(str);
         if (list.size() == 5){
             setExpireTime(Long.parseLong(list.get(0)));
             if (isExpired()){
@@ -189,6 +189,15 @@ public class ClientConfig {
     
     public static void setSerializerType(byte serializerType){
         Configs.setConfig(ClientConfigKey.SERIALIZER_TYPE, (int) serializerType);
+    }
+    
+    public static String getTags(){
+        return Configs.getString(ClientConfigKey.TAGS);
+    }
+
+
+    public static void setTags(String tags) {
+        Configs.setConfig(ClientConfigKey.TAGS, tags);
     }
     
 }

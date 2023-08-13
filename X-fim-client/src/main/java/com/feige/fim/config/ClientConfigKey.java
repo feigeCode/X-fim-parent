@@ -18,6 +18,8 @@ public interface ClientConfigKey {
     String SERVER_PORT = "s_p";
     
     String SERIALIZER_TYPE = "s_t";
+    
+    String TAGS = "tags";
   
     
 }

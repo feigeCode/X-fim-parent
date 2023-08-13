@@ -415,14 +415,12 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         }
         
         ReflectionUtils.doWithMethods(instance.getClass(), (method) -> {
-            if (method.isAnnotationPresent(InitMethod.class)) {
-                Class<?>[] parameterTypes = method.getParameterTypes();
-                if (parameterTypes.length == 0){
-                    ReflectionUtils.makeAccessible(method);
-                    ReflectionUtils.invokeMethod(method, instance);
-                }else {
-                    Loggers.LOADER.warn("initMethod不支持传入参数！");
-                }
+            Class<?>[] parameterTypes = method.getParameterTypes();
+            if (parameterTypes.length == 0){
+                ReflectionUtils.makeAccessible(method);
+                ReflectionUtils.invokeMethod(method, instance);
+            }else {
+                Loggers.LOADER.warn("initMethod不支持传入参数！");
             }
         }, method -> method.isAnnotationPresent(InitMethod.class));
     }

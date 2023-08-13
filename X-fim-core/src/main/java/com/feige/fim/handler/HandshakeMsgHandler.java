@@ -1,17 +1,15 @@
 package com.feige.fim.handler;
 
-import com.feige.api.bind.ClientBindManager;
 import com.feige.api.cache.Bucket;
 import com.feige.api.cache.CacheManager;
-import com.feige.api.constant.ProtocolConst;
+import com.feige.api.constant.Const;
 import com.feige.api.constant.ProtocolConst.SerializedClass;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
 import com.feige.api.msg.HandshakeResp;
 import com.feige.api.sc.Listener;
+import com.feige.api.session.SessionContext;
 import com.feige.fim.config.ServerConfigKey;
-import com.feige.fim.msg.proto.HandshakeReqProto;
-import com.feige.fim.msg.proto.HandshakeRespProto;
 import com.feige.fim.utils.StringUtils;
 import com.feige.fim.utils.crypto.CryptoUtils;
 import com.feige.fim.utils.crypto.Md5Utils;
@@ -21,16 +19,12 @@ import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.msg.HandshakeReq;
 import com.feige.api.constant.Command;
-import com.feige.api.handler.AbstractMsgHandler;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.annotation.Value;
 import com.feige.framework.utils.Configs;
 
-import com.google.common.collect.Lists;
 import org.bouncycastle.util.encoders.Base64;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,21 +34,14 @@ import java.util.concurrent.TimeUnit;
  * @date: 2023/5/25 21:52<br/>
  */
 @SpiComp(value="handshake", interfaces = MsgHandler.class)
-public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
+public class HandshakeMsgHandler extends AbstractMsgHandler {
     public static final String CACHE_NAME = "SESSION_CONTEXT";
-    
-    
-    @Inject
-    private ClientBindManager clientBindManager;
     
     @Inject
     private CacheManager cacheManager;
 
     @Inject("symmetricEncryption")
     private CipherFactory symmetricCipherFactory;
-    
-    @Value(ServerConfigKey.SERVER_SESSION_EXPIRE_TIME)
-    private long sessionExpireTime;
     
     @Override
     public byte getCmd() {
@@ -67,20 +54,27 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
             // TODO repeat handshake
             return;
         }
+        handshake(session, packet);
+        
+    }
+    
+    private void handshake(Session session, Packet packet) throws RemotingException {
+        HandshakeReq handshakeReq = this.getMsg(packet, HandshakeReq.TYPE);
+        if (!validateToken(handshakeReq)) {
+            // TODO validate token fail
+            return;
+        }
         Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
         if (enable){
-            doSecurityHandshake(session, packet);
+            doSecurityHandshake(session, packet, handshakeReq);
         }else {
-            doHandshake(session, packet);
+            doHandshake(session, packet, handshakeReq);
         }
-        
     }
 
 
-    private void doSecurityHandshake(Session session, Packet packet) throws RemotingException {
+    private void doSecurityHandshake(Session session, Packet packet, HandshakeReq handshakeReq) throws RemotingException {
         int keyLength = Configs.getInt(Configs.ConfigKey.CRYPTO_SYMMETRIC_KEY_LENGTH, 16);
-        byte serializerType = packet.getSerializerType();
-        HandshakeReq handshakeReq = serializedClassManager.getDeserializedObject(serializerType, packet.getClassKey(), packet.getData(), HandshakeReq.TYPE);
         byte[] clientKey = Base64.decode(handshakeReq.getClientKey());
         byte[] iv = Base64.decode(handshakeReq.getIv());
         byte[] serverKey = CryptoUtils.randomAesKey(keyLength);
@@ -94,7 +88,7 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
         session.setCipher(symmetricCipherFactory.create(clientKey, iv));
 
         // 创建握手响应包
-        Packet handshakeRespPacket = createHandshakeRespPacket(handshakeReq, serverKey, packet);
+        Packet handshakeRespPacket = createHandshakeRespPacket(session, handshakeReq, sessionKey, packet);
         
         // 发送响应包
         session.write(handshakeRespPacket, new Listener() {
@@ -103,11 +97,9 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
                 // 根据秘钥生成cipher
                 session.setCipher(symmetricCipherFactory.create(sessionKey, iv));
 
-                // 保存会话信息
-                setCache(session, handshakeReq);
-
-                // 标记握手
-                session.markHandshake();
+               // 完成握手
+               finishHandshake(session, handshakeReq);
+                
             }
 
             @Override
@@ -119,19 +111,41 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     }
 
 
-    private void doHandshake(Session session, Packet packet){
+    private void doHandshake(Session session, Packet packet, HandshakeReq handshakeReq) throws RemotingException {
+        // 创建握手响应包
+        Packet handshakeRespPacket = createHandshakeRespPacket(session, handshakeReq, new byte[0], packet);
+
+        // 发送响应包
+        session.write(handshakeRespPacket, new Listener() {
+            @Override
+            public void onSuccess(Object... args) {
+                // 完成握手
+                finishHandshake(session, handshakeReq);
+            }
+
+            @Override
+            public void onFailure(Throwable cause) {
+
+            }
+        });
         
     }
     
+    private long getSessionExpireTime(){
+        return Configs.getLong(ServerConfigKey.SERVER_SESSION_EXPIRE_TIME, Const.DEFAULT_SESSION_EXPIRE_TIME);
+    }
     
-    private Packet createHandshakeRespPacket(HandshakeReq handshakeReq, byte[] serverKey, Packet packet){
+    private Packet createHandshakeRespPacket(Session session, HandshakeReq handshakeReq, byte[] serverKey, Packet packet){
         byte serializerType = packet.getSerializerType();
         HandshakeResp handshakeResp = serializedClassManager.newObject(serializerType, SerializedClass.HANDSHAKE_RESP.getClassKey());
         long now = System.currentTimeMillis();
-        long expireTime = now + sessionExpireTime * 1000;
-        String sessionId = Md5Utils.encrypt(handshakeReq.getClientId() + now);
+        long expireTime = now + getSessionExpireTime() * 1000;
+        String sessionId = Md5Utils.digest(handshakeReq.getClientId() + now);
+        session.setAttr("sessionId", sessionId);
+        session.setAttr("expireTime", expireTime);
+        String serverKeyString = Base64.toBase64String(serverKey);
         handshakeResp.setExpireTime(expireTime)
-                .setServerKey(Base64.toBase64String(serverKey))
+                .setServerKey(serverKeyString)
                 .setSessionId(sessionId);
         Packet packetResp = Packet.create(Command.HANDSHAKE);
         packetResp.setSequenceNum(packetResp.getSequenceNum() + 1);
@@ -143,17 +157,33 @@ public class HandshakeMsgHandler extends AbstractMsgHandler<Packet> {
     
     
     private void setCache(Session session, HandshakeReq handshakeReq){
-        Bucket<String> bucket = cacheManager.createBucket(handshakeReq.getClientId(), String.class);
+        String sessionId = (String)session.getAttr("sessionId");
+        Bucket<String> bucket = cacheManager.createBucket(sessionId, String.class);
         Cipher cipher = session.getCipher();
         String[] args = cipher.getArgs();
-        String[] sessionContext = new String[4 + args.length];
-        sessionContext[0] = handshakeReq.getOsName();
-        sessionContext[1] = handshakeReq.getOsVersion();
-        sessionContext[2] = handshakeReq.getClientVersion();
-        sessionContext[3] = handshakeReq.getClientId();
-        System.arraycopy(args, 0, sessionContext, 4, args.length);
-        bucket.set(StringUtils.commaJoiner.join(sessionContext), sessionExpireTime, TimeUnit.SECONDS);
+        SessionContext sessionContext = new SessionContext()
+                .setOsName(handshakeReq.getOsName()) 
+                .setOsVersion(handshakeReq.getOsVersion()) 
+                .setClientVersion(handshakeReq.getClientVersion()) 
+                .setClientId(handshakeReq.getClientId())
+                .setClientType(handshakeReq.getClientType())
+                .setCipherArgs(args);
+        bucket.set(sessionContext.serializeString(), getSessionExpireTime(), TimeUnit.SECONDS);
+        session.setAttr("sessionContext", sessionContext);
     }
 
+    private boolean validateToken(HandshakeReq handshakeReq){
+        return handshakeReq.getToken() != null;
+    }
+    
+    
+    private void finishHandshake(Session session, HandshakeReq handshakeReq){
+        // 保存会话信息
+        setCache(session, handshakeReq);
+
+        // 标记握手
+        session.markHandshake();
+        
+    }
    
 }
