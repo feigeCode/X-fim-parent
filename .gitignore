@@ -31,3 +31,4 @@ target
 logs
 
 *.iml
+conf/client.dat
