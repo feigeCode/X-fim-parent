@@ -55,4 +55,18 @@ public interface ProtocolConst {
            return classKey;
        }
    }
+   
+   enum ErrorCode {
+       DUPLICATE_HANDSHAKE(100);
+       
+       private final int errorCode;
+
+       public int getErrorCode() {
+           return errorCode;
+       }
+
+       ErrorCode(int errorCode) {
+           this.errorCode = errorCode;
+       }
+   }
 }

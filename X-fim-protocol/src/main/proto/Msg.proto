@@ -46,4 +46,12 @@ message BindClientReqProto {
 }
 
 
+message ErrorRespProto {
+    int32 error_code = 1;
+    
+    string reason = 2;
+    
+    string extra = 3;
+}
+
 
