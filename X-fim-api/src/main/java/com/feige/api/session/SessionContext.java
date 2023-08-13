@@ -79,14 +79,20 @@ public class SessionContext {
 
     public String serializeString(){
         String[] args = getCipherArgs();
-        String[] sessionContext = new String[6 + args.length];
+        int argLength = 0;
+        if (args != null){
+            argLength = args.length;
+        }
+        String[] sessionContext = new String[6 + argLength];
         sessionContext[0] = this.getOsName();
         sessionContext[1] = this.getOsVersion();
         sessionContext[2] = this.getClientVersion();
         sessionContext[3] = this.getClientId();
         sessionContext[4] = String.valueOf(this.getClientType());
         sessionContext[5] = String.valueOf(this.getExpireTime());
-        System.arraycopy(args, 0, sessionContext, 6, args.length);
+        if (args != null){
+            System.arraycopy(args, 0, sessionContext, 6, argLength);
+        }
         return StringUtils.commaJoiner.join(sessionContext);
     }
     
@@ -99,7 +105,10 @@ public class SessionContext {
                 .setClientId(list.get(3))
                 .setClientType(Integer.parseInt(list.get(4)))
                 .setExpireTime(Integer.parseInt(list.get(5)));
-        String[] args = list.subList(6, list.size()).toArray(new String[list.size() - 6]);
-        return setCipherArgs(args);
+        if (list.size() > 6){
+            String[] args = list.subList(6, list.size()).toArray(new String[list.size() - 6]);
+            setCipherArgs(args);
+        }
+        return this;
     }
 }

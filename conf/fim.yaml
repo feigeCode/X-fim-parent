@@ -10,7 +10,7 @@ fim:
     header-length: 11
     check-sum-key: 
   crypto:
-    enable: true
+    enable: false
     symmetric:
       key-length: 16
     asymmetric: 

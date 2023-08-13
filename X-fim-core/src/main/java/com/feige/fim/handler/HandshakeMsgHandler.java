@@ -159,15 +159,19 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
     private void setCache(Session session, HandshakeReq handshakeReq){
         String sessionId = (String)session.getAttr("sessionId");
         Bucket<String> bucket = cacheManager.createBucket(sessionId, String.class);
-        Cipher cipher = session.getCipher();
-        String[] args = cipher.getArgs();
+       
         SessionContext sessionContext = new SessionContext()
                 .setOsName(handshakeReq.getOsName()) 
                 .setOsVersion(handshakeReq.getOsVersion()) 
                 .setClientVersion(handshakeReq.getClientVersion()) 
                 .setClientId(handshakeReq.getClientId())
-                .setClientType(handshakeReq.getClientType())
-                .setCipherArgs(args);
+                .setClientType(handshakeReq.getClientType());
+        Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
+        if (enable){
+            Cipher cipher = session.getCipher();
+            String[] args = cipher.getArgs();
+            sessionContext.setCipherArgs(args);
+        }
         bucket.set(sessionContext.serializeString(), getSessionExpireTime(), TimeUnit.SECONDS);
         session.setAttr("sessionContext", sessionContext);
     }

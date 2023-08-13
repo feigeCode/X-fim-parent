@@ -4,7 +4,7 @@ fim:
     level: debug
     conf-path: E:\project\my\X-fim-parent\conf\logback.xml
   crypto:
-    enable: true
+    enable: false
     symmetric :
       key-length: 16
     asymmetric:

@@ -28,7 +28,6 @@ public class NettyClientDemo {
         ApplicationContext applicationContext = new StandardApplicationContext(ConfigSpiLoader.TYPE);
         ClientConfig.setClientKey(CryptoUtils.randomAesKey(16));
         ClientConfig.setIv(CryptoUtils.randomAesIv(16));
-        ClientConfig.setEnableCrypto(true);
         ClientConfig.setClientId("1234");
         ClientConfig.setClientVersion("1.0");
         ClientConfig.setClientType(ClientType.ANDROID.getCode());
