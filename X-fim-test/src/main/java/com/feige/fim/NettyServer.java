@@ -17,7 +17,7 @@ public class NettyServer {
         ClassGenerator.setDebugDump("E:\\project\\my\\X-fim-parent\\X-fim-test\\target\\classes");
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         StandardApplicationContext applicationContext = new StandardApplicationContext();
-        final ServerProvider serverProvider = applicationContext.get("tcp", ServerProvider.class);
+        final ServerProvider serverProvider = applicationContext.get("ws", ServerProvider.class);
         Server server = serverProvider.get();
         boolean start = server.syncStart();
         System.out.println(start);

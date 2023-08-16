@@ -13,6 +13,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.handler.codec.MessageToMessageDecoder;
+import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import org.slf4j.Logger;
 
@@ -61,6 +62,7 @@ public class NettyCodecAdapter {
 
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
+           
             try {
                 Codec codec = getCodec();
                 codec.encode(NettySessionFactory.getOrAddSession(ctx, getSessionRepository()), msg, out);
@@ -69,6 +71,13 @@ public class NettyCodecAdapter {
                 throw e;
             }
         }
+        @Override
+        public boolean acceptOutboundMessage(Object msg) throws Exception {
+            if (msg instanceof FullHttpResponse){
+               return false;
+            }
+            return super.acceptOutboundMessage(msg);
+        } 
     }
 
     private class InternalDecoder extends ByteToMessageDecoder {

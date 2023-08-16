@@ -1,6 +1,5 @@
 package com.feige.api.crypto;
 
-import java.util.Map;
 
 public interface Cipher {
     

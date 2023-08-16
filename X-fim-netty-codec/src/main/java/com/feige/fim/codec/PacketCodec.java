@@ -39,6 +39,9 @@ public class PacketCodec implements Codec {
 
     @Override
     public void encode(Session session ,Object msg, Object b) throws EncoderException {
+        if (!(msg instanceof Packet)){
+            return;
+        }
         Packet packet = (Packet) msg; 
         ByteBuf byteBuf = (ByteBuf) b;
         if (packet.getCmd() == Command.HEARTBEAT.getCmd()){
@@ -76,6 +79,9 @@ public class PacketCodec implements Codec {
 
     @Override
     public void decode(Session session, Object b, List<Object> out) throws DecoderException {
+        if (!(b instanceof ByteBuf)){
+            return;
+        }
         ByteBuf byteBuf = (ByteBuf) b;
         byteBuf.markReaderIndex();
         if (byteBuf.isReadable()) {
