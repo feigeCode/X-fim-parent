@@ -60,7 +60,7 @@ public class WsServerInitializer extends ChannelInitializer<SocketChannel> {
         //对于websocket来讲，都是以frames进行传输的，不同的数据类型对应的frames也不同
         pipeline.addLast(new WebSocketServerProtocolHandler(wsPath, null, true, 65536, false, true));
         pipeline.addLast(codec.getWsDecoder());
-        pipeline.addLast(codec.getEncoder());
+        pipeline.addLast(codec.getWsEncoder());
         pipeline.addLast(new IdleStateHandler(30,60,0, TimeUnit.SECONDS));
         pipeline.addLast(this.serverHandler);
 

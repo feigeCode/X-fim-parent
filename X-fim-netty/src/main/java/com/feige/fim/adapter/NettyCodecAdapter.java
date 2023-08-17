@@ -13,6 +13,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.handler.codec.MessageToMessageDecoder;
+import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import org.slf4j.Logger;
@@ -41,6 +42,9 @@ public class NettyCodecAdapter {
         return new InternalEncoder();
     }
 
+    public ChannelHandler getWsEncoder() {
+        return new InternalWsEncoder();
+    }
 
     public ChannelHandler getDecoder(){
         return new InternalDecoder();
@@ -62,7 +66,6 @@ public class NettyCodecAdapter {
 
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-           
             try {
                 Codec codec = getCodec();
                 codec.encode(NettySessionFactory.getOrAddSession(ctx, getSessionRepository()), msg, out);
@@ -71,13 +74,6 @@ public class NettyCodecAdapter {
                 throw e;
             }
         }
-        @Override
-        public boolean acceptOutboundMessage(Object msg) throws Exception {
-            if (msg instanceof FullHttpResponse){
-               return false;
-            }
-            return super.acceptOutboundMessage(msg);
-        } 
     }
 
     private class InternalDecoder extends ByteToMessageDecoder {
@@ -93,6 +89,37 @@ public class NettyCodecAdapter {
             }
         }
     }
+
+
+    private class InternalWsEncoder extends MessageToMessageEncoder<Object> {
+
+        protected ByteBuf allocateBuffer(ChannelHandlerContext ctx, Object msg, boolean preferDirect) throws Exception {
+            return preferDirect ? ctx.alloc().ioBuffer() : ctx.alloc().heapBuffer();
+        }
+
+        @Override
+        public boolean acceptOutboundMessage(Object msg) throws Exception {
+            if (msg instanceof FullHttpResponse){
+                return false;
+            }
+            return super.acceptOutboundMessage(msg);
+        }
+
+        @Override
+        protected void encode(ChannelHandlerContext ctx, Object msg, List<Object> list) throws Exception {
+            try {
+                // 申请buffer
+                ByteBuf out = this.allocateBuffer(ctx, msg, true);
+                Codec codec = getCodec();
+                codec.encode(NettySessionFactory.getOrAddSession(ctx, getSessionRepository()), msg, out);
+                list.add(new BinaryWebSocketFrame(out));
+            }catch (EncoderException e){
+                ctx.channel().close();
+                throw e;
+            }
+        }
+    }
+    
     private class InternalWsDecoder extends MessageToMessageDecoder<BinaryWebSocketFrame> {
         
         @Override
