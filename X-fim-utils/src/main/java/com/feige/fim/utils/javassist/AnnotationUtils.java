@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.feige.fim.utils;
+package com.feige.fim.utils.javassist;
 
 
 public abstract class AnnotationUtils {

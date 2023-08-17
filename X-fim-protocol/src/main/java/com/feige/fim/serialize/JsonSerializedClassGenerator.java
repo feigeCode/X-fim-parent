@@ -4,7 +4,7 @@ import com.feige.api.constant.ProtocolConst;
 import com.feige.api.msg.MsgFactory;
 import com.feige.api.serialize.AbstractSerializedClassGenerator;
 import com.feige.api.serialize.SerializedClassGenerator;
-import com.feige.fim.utils.ClassGenerator;
+import com.feige.fim.utils.javassist.ClassGenerator;
 import com.feige.fim.utils.Pair;
 import com.feige.fim.utils.StringUtils;
 import com.feige.framework.annotation.SpiComp;

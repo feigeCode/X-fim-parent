@@ -2,7 +2,7 @@ package com.feige.fim;
 
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
-import com.feige.fim.utils.ClassGenerator;
+import com.feige.fim.utils.javassist.ClassGenerator;
 import com.feige.framework.context.StandardApplicationContext;
 import com.feige.framework.utils.Configs;
 

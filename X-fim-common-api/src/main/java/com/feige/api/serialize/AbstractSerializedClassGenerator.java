@@ -2,10 +2,7 @@ package com.feige.api.serialize;
 
 
 import com.feige.api.msg.MsgFactory;
-import com.feige.fim.utils.ClassGenerator;
-import com.feige.fim.utils.ClassPoolUtils;
-import javassist.ClassClassPath;
-import javassist.ClassPool;
+import com.feige.fim.utils.javassist.ClassGenerator;
 
 import java.lang.reflect.Modifier;
 import java.util.HashSet;

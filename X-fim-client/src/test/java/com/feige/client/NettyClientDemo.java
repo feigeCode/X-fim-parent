@@ -3,13 +3,11 @@ package com.feige.client;
 import com.feige.api.constant.ClientType;
 import com.feige.api.sc.Client;
 import com.feige.fim.config.ClientConfig;
-import com.feige.fim.utils.ClassGenerator;
-import com.feige.fim.utils.crypto.AesUtils;
+import com.feige.fim.utils.javassist.ClassGenerator;
 import com.feige.fim.utils.crypto.CryptoUtils;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.context.StandardApplicationContext;
 import com.feige.framework.extension.ConfigSpiLoader;
-import com.feige.framework.extension.JdkSpiLoader;
 import com.feige.framework.utils.Configs;
 
 

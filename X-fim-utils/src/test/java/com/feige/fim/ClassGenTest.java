@@ -1,6 +1,6 @@
 package com.feige.fim;
 
-import com.feige.fim.utils.ClassGenerator;
+import com.feige.fim.utils.javassist.ClassGenerator;
 import com.feige.fim.utils.ReflectionUtils;
 import com.feige.fim.utils.StringUtils;
 import org.junit.Test;

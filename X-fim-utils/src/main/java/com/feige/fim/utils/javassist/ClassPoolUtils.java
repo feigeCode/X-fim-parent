@@ -1,4 +1,4 @@
-package com.feige.fim.utils;
+package com.feige.fim.utils.javassist;
 
 
 import javassist.ClassClassPath;
