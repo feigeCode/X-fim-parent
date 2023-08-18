@@ -1,6 +1,8 @@
 package com.feige.fim.utils.crypto;
 
 
+import org.bouncycastle.util.encoders.Base64;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -25,14 +27,14 @@ public class AesUtils {
             return null;
         }
         try {
-            KeyGenerator keygen = KeyGenerator.getInstance(AES);
-            SecureRandom random = SecureRandom.getInstance(SHA1_PRNG);
-            random.setSeed(key);
-            keygen.init(random);
-            SecretKey secretKey = keygen.generateKey();
-            byte[] enCodeFormat = secretKey.getEncoded();
-            return new SecretKeySpec(enCodeFormat, AES);
-        } catch (NoSuchAlgorithmException e) {
+//            KeyGenerator keygen = KeyGenerator.getInstance(AES);
+//            SecureRandom random = SecureRandom.getInstance(SHA1_PRNG);
+//            random.setSeed(key);
+//            keygen.init(random);
+//            SecretKey secretKey = keygen.generateKey();
+//            byte[] enCodeFormat = secretKey.getEncoded();
+            return new SecretKeySpec(key, AES);
+        } catch (Exception e) {
            throw new RuntimeException(e);
         }
        
@@ -49,7 +51,7 @@ public class AesUtils {
         try {
             Cipher cipher = Cipher.getInstance(KEY_ALGORITHM_PADDING);
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, zeroIv);
-            return cipher.doFinal(data);
+            return Base64.encode(cipher.doFinal(data));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -57,6 +59,7 @@ public class AesUtils {
 
     public static byte[] decrypt(byte[] data, SecretKeySpec secretKeySpec, IvParameterSpec zeroIv) {
         try {
+            data = Base64.decode(data);
             Cipher cipher = Cipher.getInstance(KEY_ALGORITHM_PADDING);
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, zeroIv);
             return cipher.doFinal(data);
