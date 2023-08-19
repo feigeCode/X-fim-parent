@@ -72,5 +72,6 @@ public abstract class AbstractSessionHandler implements SessionHandler, Applicat
     @Override
     public void caught(Session session, Throwable exception) throws RemotingException {
         exception.printStackTrace();
+        session.close();
     }
 }

@@ -27,7 +27,7 @@ public class LocalCacheManager extends AbstractCacheManager {
                     Map.Entry<String, Cacheable> next = iterator.next();
                     Cacheable value = next.getValue();
                     if (value instanceof Bucket && ((Bucket<?>) value).isExpired()){
-                        System.out.println(((Bucket<?>) value).get());
+                        System.out.println(value);
                         iterator.remove();
                     }
                 }

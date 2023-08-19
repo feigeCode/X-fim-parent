@@ -165,7 +165,8 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
                 .setOsVersion(handshakeReq.getOsVersion()) 
                 .setClientVersion(handshakeReq.getClientVersion()) 
                 .setClientId(handshakeReq.getClientId())
-                .setClientType(handshakeReq.getClientType());
+                .setClientType(handshakeReq.getClientType())
+                .setExpireTime((Long) session.getAttr("expireTime"));
         Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
         if (enable){
             Cipher cipher = session.getCipher();

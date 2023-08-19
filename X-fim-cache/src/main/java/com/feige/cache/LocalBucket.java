@@ -74,5 +74,13 @@ public class LocalBucket<V extends Serializable> extends AbstractCacheable imple
     public void clear() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public String toString() {
+        return "LocalBucket{" +
+                "valRef=" + valRef.get() +
+                ", expiryTime=" + expiryTime +
+                '}';
+    }
 }
 

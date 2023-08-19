@@ -42,14 +42,13 @@ public class FastConnectMsgHandler extends AbstractMsgHandler {
         String sessionId = fastConnectReq.getSessionId();
         SessionContext sessionContext = getCache(sessionId);
         // sessionContext 为空 或者 clientId不相等时快速连接失败
-        if (sessionContext == null || !Objects.equals(clientId, sessionContext.getClientId())){
-            Packet respPacket = createRespPacket(packet, 0);
-            session.write(respPacket);
-            return;
+        long expireTime;
+        if (sessionContext == null || System.currentTimeMillis() > (expireTime = sessionContext.getExpireTime()) || !Objects.equals(clientId, sessionContext.getClientId())){
+            throw new RemotingException(session, "sessionContext is null or expire");
         }
         setSessionContext(session, sessionContext);
         session.setAttr("sessionId", sessionId);
-        session.setAttr("expireTime", sessionContext.getExpireTime());
+        session.setAttr("expireTime", expireTime);
         Packet respPacket = createRespPacket(packet, 1);
         session.write(respPacket, new Listener() {
             @Override

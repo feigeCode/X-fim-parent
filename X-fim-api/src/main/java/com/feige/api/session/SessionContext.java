@@ -104,7 +104,7 @@ public class SessionContext {
                 .setClientVersion(list.get(2))
                 .setClientId(list.get(3))
                 .setClientType(Integer.parseInt(list.get(4)))
-                .setExpireTime(Integer.parseInt(list.get(5)));
+                .setExpireTime(Long.parseLong(list.get(5)));
         if (list.size() > 6){
             String[] args = list.subList(6, list.size()).toArray(new String[list.size() - 6]);
             setCipherArgs(args);
