@@ -33,11 +33,13 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        Session session = toSession(ctx);
+        session.removeAttr(HEARTBEAT_CNT);
         if (msg instanceof FullHttpResponse){
             super.channelRead(ctx, msg);
             return;
         }
-        sessionHandler.received(toSession(ctx), msg);
+        sessionHandler.received(session, msg);
     }
 
     @Override
