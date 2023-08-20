@@ -97,7 +97,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             }
             if (idleStateEvent.state() == IdleState.WRITER_IDLE){
                 session.close();
-                Loggers.HEARTBEAT.warn("No message was written to the session for 50 seconds. Closed, id = {}, remote address = {}", session.getId(), session.getRemoteAddress());
+                Loggers.HEARTBEAT.warn("No message was written to the session for 60 seconds. Closed, id = {}, remote address = {}", session.getId(), session.getRemoteAddress());
             }
         }
         super.userEventTriggered(ctx, evt);

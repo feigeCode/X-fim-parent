@@ -50,8 +50,8 @@ public class TcpServerInitializer extends ChannelInitializer<SocketChannel> {
         }
         pipeline.addLast(codec.getDecoder());
         pipeline.addLast(codec.getEncoder());
-        // 30秒内未完成握手则关闭连接， 60秒内未绑定客户端则关闭连接，90秒内未收到心跳则关闭连接，50秒未往通道里写信息关闭
-        pipeline.addLast(new IdleStateHandler(30,50,0, TimeUnit.SECONDS));
+        // 30秒内未完成握手则关闭连接， 60秒内未绑定客户端则关闭连接，90秒内未收到心跳则关闭连接，60秒未往通道里写信息关闭
+        pipeline.addLast(new IdleStateHandler(30,60,0, TimeUnit.SECONDS));
         pipeline.addLast(this.serverHandler);
 
     }
