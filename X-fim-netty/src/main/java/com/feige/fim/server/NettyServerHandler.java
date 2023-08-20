@@ -70,8 +70,22 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 Integer hbCnt = (Integer) session.getAttr(HEARTBEAT_CNT);
                 if (hbCnt == null){
                     hbCnt = 1;
+                    if (!session.isHandshake()){
+                        Loggers.HEARTBEAT.warn("Close the session of the not handshake, id = {}, remote address = {}", session.getId(), session.getRemoteAddress());
+                        session.close();
+                        return;
+                    }
                 }else {
-                    if (hbCnt >= MAX_TIMEOUT_CNT){
+                    
+                    if (hbCnt == 2){
+                        if (!session.isBindClient()){
+                            Loggers.HEARTBEAT.warn("Close the session of the unbound client, id = {}, remote address = {}", session.getId(), session.getRemoteAddress());
+                            session.close();
+                            return;
+                        }
+                    }
+                    
+                    if (hbCnt > MAX_TIMEOUT_CNT){
                         session.close();
                         Loggers.HEARTBEAT.warn("The session is closed because the client heartbeat is not received for a long time. Procedure, id = {}, remote address = {}", session.getId(), session.getRemoteAddress());
                         return;
@@ -82,10 +96,8 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 Loggers.HEARTBEAT.debug("read idle, id = {}, remote address = {}, heartbeat count = {}", session.getId(), session.getRemoteAddress(), hbCnt);
             }
             if (idleStateEvent.state() == IdleState.WRITER_IDLE){
-                if (!session.isBindClient()) {
-                    session.close();
-                    Loggers.HEARTBEAT.warn("Close the session of the unbound client, id = {}, remote address = {}", session.getId(), session.getRemoteAddress());
-                }
+                session.close();
+                Loggers.HEARTBEAT.warn("No message was written to the session for 50 seconds. Closed, id = {}, remote address = {}", session.getId(), session.getRemoteAddress());
             }
         }
         super.userEventTriggered(ctx, evt);

@@ -140,7 +140,7 @@ public class NettyClient extends AbstractClient {
     
     
     protected IdleStateHandler createIdleStateHandler(){
-        return new IdleStateHandler(60,30,0, TimeUnit.SECONDS);
+        return new IdleStateHandler(30,50,0, TimeUnit.SECONDS);
     }
 
     protected void initBootstrap() {
