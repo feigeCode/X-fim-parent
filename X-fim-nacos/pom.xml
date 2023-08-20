@@ -16,6 +16,7 @@
         <dependency>
             <groupId>com.feige</groupId>
             <artifactId>X-fim-common</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.alibaba.nacos</groupId>

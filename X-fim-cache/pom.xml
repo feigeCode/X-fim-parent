@@ -14,7 +14,12 @@
     <dependencies>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>X-fim-api</artifactId>
+            <artifactId>X-fim-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
         </dependency>
     </dependencies>
 

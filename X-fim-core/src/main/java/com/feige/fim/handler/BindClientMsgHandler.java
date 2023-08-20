@@ -9,7 +9,7 @@ import com.feige.api.handler.RemotingException;
 import com.feige.api.msg.BindClientReq;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionContext;
-import com.feige.fim.config.ServerConfigKey;
+import com.feige.api.constant.ServerConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;

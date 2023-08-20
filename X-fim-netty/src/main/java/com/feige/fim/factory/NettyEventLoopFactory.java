@@ -1,6 +1,6 @@
 package com.feige.fim.factory;
 
-import com.feige.fim.config.ServerConfigKey;
+import com.feige.api.constant.ServerConfigKey;
 import com.feige.fim.utils.NameThreadFactory;
 import com.feige.fim.utils.OsUtil;
 import com.feige.framework.utils.Configs;

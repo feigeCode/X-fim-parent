@@ -10,12 +10,10 @@
     <version>1.0</version>
 
     <modules>
-        <module>X-fim-api</module>
         <module>X-fim-common</module>
         <module>X-fim-core</module>
         <module>X-fim-netty</module>
         <module>X-fim-cache</module>
-        <module>X-fim-cache-redis</module>
         <module>X-fim-test</module>
         <module>X-fim-client</module>
         <module>X-fim-cluster</module>
@@ -243,11 +241,6 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
                 <artifactId>X-fim-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -289,11 +282,6 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>X-fim-nacos</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-cache-redis</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

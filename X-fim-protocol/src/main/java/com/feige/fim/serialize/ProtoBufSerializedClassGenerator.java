@@ -2,7 +2,7 @@ package com.feige.fim.serialize;
 
 import com.feige.api.constant.ProtocolConst;
 import com.feige.api.msg.MsgFactory;
-import com.feige.api.serialize.AbstractSerializedClassGenerator;
+import com.feige.api.serialize.MsgGen;
 import com.feige.api.serialize.SerializedClassGenerator;
 import com.feige.fim.utils.javassist.ClassGenerator;
 import com.feige.fim.utils.Pair;
@@ -17,7 +17,7 @@ import java.lang.reflect.Modifier;
 public class ProtoBufSerializedClassGenerator extends AbstractSerializedClassGenerator {
 
     @Override
-    public Pair<Class<?> , Class<MsgFactory>> generate(Class<? > msgInterface, Method[] methods, Object... args) {
+    public MsgGen generate(Class<? > msgInterface, Method[] methods, Object... args) {
         if (args.length < 2){
             throw new IllegalArgumentException("args length < 2");
         }
@@ -29,7 +29,7 @@ public class ProtoBufSerializedClassGenerator extends AbstractSerializedClassGen
     }
 
 
-    protected Pair<Class<?> , Class<MsgFactory>>  wrapperProtoClass(Class<?> type, Method[] methods, Pair<Class<?>, Class<?>> protoClassPair ){
+    protected MsgGen  wrapperProtoClass(Class<?> type, Method[] methods, Pair<Class<?>, Class<?>> protoClassPair ){
         try(ClassGenerator classGenerator = new ClassGenerator()) {
             classGenerator.setClassName(type.getSimpleName());
             classGenerator.addInterface(type.getName())
@@ -75,7 +75,7 @@ public class ProtoBufSerializedClassGenerator extends AbstractSerializedClassGen
             );
             Class<?> implClass = classGenerator.generate(type);
             Class<MsgFactory> msgFactoryClass = this.generateMsgFactory(type, implClass);
-            return Pair.of(implClass, msgFactoryClass);
+            return new MsgGen(implClass, msgFactoryClass);
         } catch (Exception e){
             throw new RuntimeException(e);
         }

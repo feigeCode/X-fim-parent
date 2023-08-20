@@ -24,7 +24,10 @@
         <dependency>
             <groupId>com.feige</groupId>
             <artifactId>X-fim-common-api</artifactId>
-            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>X-fim-ioc</artifactId>
         </dependency>
     </dependencies>
 

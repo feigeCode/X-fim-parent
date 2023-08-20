@@ -9,7 +9,7 @@ import com.feige.api.sc.ServerProvider;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.spi.InstanceProvider;
 import com.feige.fim.codec.PacketCodecInstanceProvider;
-import com.feige.fim.config.ServerConfigKey;
+import com.feige.api.constant.ServerConfigKey;
 import com.feige.framework.context.StandardApplicationContext;
 import com.feige.framework.utils.Configs;
 import com.feige.fim.utils.crypto.RsaUtils;

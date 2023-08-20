@@ -9,7 +9,7 @@ import com.feige.api.crypto.CipherFactory;
 import com.feige.api.msg.HandshakeResp;
 import com.feige.api.sc.Listener;
 import com.feige.api.session.SessionContext;
-import com.feige.fim.config.ServerConfigKey;
+import com.feige.api.constant.ServerConfigKey;
 import com.feige.fim.utils.StringUtils;
 import com.feige.fim.utils.crypto.CryptoUtils;
 import com.feige.fim.utils.crypto.Md5Utils;

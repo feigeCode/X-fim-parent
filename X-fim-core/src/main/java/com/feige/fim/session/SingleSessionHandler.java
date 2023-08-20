@@ -5,7 +5,7 @@ import com.feige.api.bind.ClientBindManager;
 import com.feige.api.constant.ClientType;
 import com.feige.api.crypto.CipherFactory;
 import com.feige.api.session.SessionContext;
-import com.feige.fim.config.ServerConfigKey;
+import com.feige.api.constant.ServerConfigKey;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.api.handler.SessionHandler;

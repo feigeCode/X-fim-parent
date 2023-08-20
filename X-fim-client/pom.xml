@@ -23,10 +23,6 @@
         </dependency>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>X-fim-common-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.feige</groupId>
             <artifactId>X-fim-netty-codec</artifactId>
         </dependency>
         <dependency>
