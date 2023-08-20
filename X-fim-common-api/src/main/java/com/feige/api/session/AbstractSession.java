@@ -76,7 +76,7 @@ public abstract class AbstractSession implements Session {
 
     @Override
     public boolean isBindClient() {
-        return sessionState.get() == 2;
+        return sessionState.get() >= 2;
     }
 
     @Override
@@ -86,7 +86,7 @@ public abstract class AbstractSession implements Session {
 
     @Override
     public boolean isHandshake() {
-        return sessionState.get() == 1;
+        return sessionState.get() >= 1;
     }
 
     @Override
