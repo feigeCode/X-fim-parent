@@ -17,10 +17,10 @@ public class NacosClient {
    
    public static NamingService getNamingService(){
        try {
-           Properties prop = new Properties();
-           String serverList = Configs.getString(ServerConfigKey.NACOS_SERVER_LIST_KEY);
-           prop.setProperty(SERVER_ADDR_KEY, serverList);
            if (namingService == null){
+               Properties prop = new Properties();
+               String serverList = Configs.getString(ServerConfigKey.NACOS_SERVER_LIST_KEY);
+               prop.setProperty(SERVER_ADDR_KEY, serverList);
                namingService = NamingFactory.createNamingService(prop);
            }
        } catch (NacosException e) {

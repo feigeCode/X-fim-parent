@@ -40,5 +40,7 @@ public interface IServerInstance {
 
 
     void setMetadata(Map<String, String> metadata);
+    
+    Map<String, String> getMetadata();
 
 }

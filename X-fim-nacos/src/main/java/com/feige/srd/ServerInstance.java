@@ -114,6 +114,7 @@ public class ServerInstance implements IServerInstance {
         this.serviceName = serviceName;
     }
 
+    @Override
     public Map<String, String> getMetadata() {
         return metadata;
     }
