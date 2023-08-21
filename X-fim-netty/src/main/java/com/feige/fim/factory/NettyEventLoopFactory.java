@@ -1,8 +1,8 @@
 package com.feige.fim.factory;
 
 import com.feige.api.constant.ServerConfigKey;
-import com.feige.fim.utils.NameThreadFactory;
-import com.feige.fim.utils.OsUtil;
+import com.feige.utils.thread.NameThreadFactory;
+import com.feige.utils.common.OsUtil;
 import com.feige.framework.utils.Configs;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.Epoll;

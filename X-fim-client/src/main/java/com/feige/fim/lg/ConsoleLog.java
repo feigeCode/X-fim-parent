@@ -1,7 +1,7 @@
 package com.feige.fim.lg;
 
 import com.feige.fim.api.Log;
-import com.feige.fim.utils.lg.Loggers;
+import com.feige.utils.logger.Loggers;
 
 /**
  * @author feige<br />

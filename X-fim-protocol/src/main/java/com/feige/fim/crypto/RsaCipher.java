@@ -1,7 +1,7 @@
 package com.feige.fim.crypto;
 
 import com.feige.api.crypto.Cipher;
-import com.feige.fim.utils.crypto.RsaUtils;
+import com.feige.utils.crypto.RsaUtils;
 import org.bouncycastle.util.encoders.Base64;
 
 

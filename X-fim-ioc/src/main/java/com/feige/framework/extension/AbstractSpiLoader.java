@@ -12,16 +12,17 @@ import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.framework.api.context.SpiLoaderAware;
 import com.feige.framework.api.spi.InstanceCreationException;
 import com.feige.framework.api.spi.InstanceCurrentlyInCreationException;
+import com.feige.framework.api.spi.InstantiationStrategy;
 import com.feige.framework.api.spi.ObjectFactory;
 import com.feige.framework.api.spi.InstanceProvider;
 import com.feige.framework.api.spi.SpiLoader;
 import com.feige.framework.api.spi.NoSuchInstanceException;
 import com.feige.framework.api.spi.InstancePostProcessor;
-import com.feige.fim.utils.AssertUtil;
-import com.feige.fim.utils.lg.Loggers;
-import com.feige.fim.utils.ClassUtils;
-import com.feige.fim.utils.ReflectionUtils;
-import com.feige.fim.utils.StringUtils;
+import com.feige.utils.common.AssertUtil;
+import com.feige.utils.logger.Loggers;
+import com.feige.utils.clazz.ClassUtils;
+import com.feige.utils.clazz.ReflectionUtils;
+import com.feige.utils.common.StringUtils;
 import com.feige.framework.utils.AppContext;
 import com.feige.framework.utils.Configs;
 import org.apache.commons.collections4.CollectionUtils;
@@ -47,6 +48,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     protected final Map<Class<?>, String> instanceNameCache = new ConcurrentHashMap<>(64);
     protected final Map<Class<?>, List<String>> classInstancesNameCache = new ConcurrentHashMap<>(32);
     protected final List<InstancePostProcessor> processors = new ArrayList<>();
+    protected final InstantiationStrategy instantiationStrategy = new SimpleInstantiateStrategy();
     private final AtomicBoolean isInitialized = new AtomicBoolean(false);
     
     private final ApplicationContext applicationContext;
@@ -327,7 +329,7 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
     protected <T> T createInstance(Class<T> clazz){
         if (checkInstance(clazz)){
             try {
-                return ReflectionUtils.accessibleConstructor(clazz).newInstance();
+                return instantiationStrategy.instantiate(clazz);
             } catch (Exception e) {
                 LOG.error("instance error:" , e);
                 throw new RuntimeException(e);
@@ -335,14 +337,20 @@ public abstract class AbstractSpiLoader extends LifecycleAdapter implements SpiL
         }
         return null;
     }
+
+    protected <T> T createInstance(String className){
+        try {
+            return (T) instantiationStrategy.instantiate(className);
+        } catch (Exception e) {
+            LOG.error("instance error:" , e);
+            throw new RuntimeException(e);
+        }
+    }
     
     
 
     private <T> T getObjectForInstance(String instanceName, Object instance, Class<T> requireType) {
         if (instance instanceof InstanceProvider && !InstanceProvider.class.isAssignableFrom(requireType)) {
-//            if (isSingletonCurrentlyInCreation(requireType)){
-//                throw new InstanceCurrentlyInCreationException(requireType);
-//            }
             InstanceProvider<T> instanceProvider = (InstanceProvider<T>) instance;
             if (!isSingleton(instance)){
                 return instanceProvider.getInstance();

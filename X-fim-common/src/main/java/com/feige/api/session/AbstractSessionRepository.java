@@ -2,7 +2,7 @@ package com.feige.api.session;
 
 import com.feige.api.handler.RemotingException;
 import com.feige.api.sc.Listener;
-import com.feige.fim.utils.StringUtils;
+import com.feige.utils.common.StringUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -2,7 +2,7 @@ package com.feige.fim.config;
 
 
 import com.feige.api.constant.ProtocolConst;
-import com.feige.fim.utils.StringUtils;
+import com.feige.utils.common.StringUtils;
 import com.feige.framework.utils.Configs;
 import org.bouncycastle.util.encoders.Base64;
 

@@ -3,7 +3,7 @@ package com.feige.fim.serialize;
 
 import com.feige.api.msg.MsgFactory;
 import com.feige.api.serialize.SerializedClassGenerator;
-import com.feige.fim.utils.javassist.ClassGenerator;
+import com.feige.utils.javassist.ClassGenerator;
 
 import java.lang.reflect.Modifier;
 import java.util.HashSet;

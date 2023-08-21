@@ -1,6 +1,6 @@
 package com.feige.api.session;
 
-import com.feige.fim.utils.StringUtils;
+import com.feige.utils.common.StringUtils;
 
 import java.util.List;
 

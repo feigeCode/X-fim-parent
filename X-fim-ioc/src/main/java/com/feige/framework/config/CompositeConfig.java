@@ -1,7 +1,7 @@
 package com.feige.framework.config;
 
 import com.feige.framework.api.config.Config;
-import com.feige.fim.utils.StringUtils;
+import com.feige.utils.common.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;

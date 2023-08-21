@@ -1,7 +1,6 @@
 package com.feige.framework.config;
 
-import com.feige.fim.utils.YamlUtils;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.common.YamlUtils;
 import com.feige.framework.api.config.Config;
 import com.feige.framework.api.config.ConfigFactory;
 import com.feige.framework.utils.Configs;

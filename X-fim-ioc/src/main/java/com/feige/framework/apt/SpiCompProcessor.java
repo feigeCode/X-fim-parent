@@ -1,9 +1,9 @@
 package com.feige.framework.apt;
 
-import com.feige.fim.utils.StringUtils;
+import com.feige.utils.common.StringUtils;
 import com.feige.framework.annotation.SpiComp;
-import com.feige.framework.utils.ServicesFiles;
-import com.feige.framework.utils.SpiConfigsLoader;
+import com.feige.utils.spi.ServicesLoader;
+import com.feige.utils.spi.SpiConfigsLoader;
 import com.google.auto.common.MoreElements;
 import com.google.auto.common.MoreTypes;
 import com.google.auto.service.AutoService;
@@ -36,12 +36,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
@@ -230,7 +227,7 @@ public class SpiCompProcessor extends AbstractProcessor {
     private void generateServices(){
         Filer filer = processingEnv.getFiler();
         for (String providerInterface : providers.keySet()) {
-            String resourceFile = "META-INF/services/" + providerInterface;
+            String resourceFile = ServicesLoader.getPath(providerInterface);
             log("Working on resource file: " + resourceFile);
             try {
                 SortedSet<String> allServices = Sets.newTreeSet();
@@ -242,7 +239,7 @@ public class SpiCompProcessor extends AbstractProcessor {
                     FileObject existingFile =
                             filer.getResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
                     log("Looking for existing resource file at " + existingFile.toUri());
-                    Set<String> oldServices = ServicesFiles.readServiceFile(existingFile.openInputStream());
+                    Set<String> oldServices = ServicesLoader.readServiceFile(existingFile.openInputStream());
                     log("Existing service entries: " + oldServices);
                     allServices.addAll(oldServices);
                 } catch (IOException e) {
@@ -264,7 +261,7 @@ public class SpiCompProcessor extends AbstractProcessor {
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
                 try (OutputStream out = fileObject.openOutputStream()) {
-                    ServicesFiles.writeServiceFile(allServices, out);
+                    ServicesLoader.writeServiceFile(allServices, out);
                 }
                 log("Wrote to: " + fileObject.toUri());
             } catch (IOException e) {
@@ -282,7 +279,7 @@ public class SpiCompProcessor extends AbstractProcessor {
             Properties prop = new Properties();
             try {
                 FileObject existingFile =
-                        filer.getResource(StandardLocation.CLASS_OUTPUT, "", SpiConfigsLoader.FACTORIES_RESOURCE_LOCATION);
+                        filer.getResource(StandardLocation.CLASS_OUTPUT, "", SpiConfigsLoader.SPI_CONFIGS);
                 log("Looking for existing resource file at " + existingFile.toUri());
                 prop.load(existingFile.openInputStream());
                 log("Existing service entries: " + prop);
@@ -299,13 +296,13 @@ public class SpiCompProcessor extends AbstractProcessor {
                 prop.setProperty(providerInterface, StringUtils.commaJoiner.join(impls));
             }
             FileObject fileObject =
-                    filer.createResource(StandardLocation.CLASS_OUTPUT, "", SpiConfigsLoader.FACTORIES_RESOURCE_LOCATION);
+                    filer.createResource(StandardLocation.CLASS_OUTPUT, "", SpiConfigsLoader.SPI_CONFIGS);
             try (OutputStream out = fileObject.openOutputStream()) {
                 prop.store(out, "Automatic generation");
             }
             log("Wrote to: " + fileObject.toUri());
         } catch (IOException e) {
-            fatalError("Unable to create " + SpiConfigsLoader.FACTORIES_RESOURCE_LOCATION + ", " + e);
+            fatalError("Unable to create " + SpiConfigsLoader.SPI_CONFIGS + ", " + e);
         }
     }
 

@@ -2,11 +2,12 @@ package com.feige.framework.extension;
 
 
 import com.feige.framework.api.context.ApplicationContext;
-import com.feige.framework.order.OrderComparator;
+import com.feige.utils.order.OrderComparator;
+import com.feige.utils.spi.ServicesLoader;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.ServiceLoader;
+import java.util.stream.Collectors;
 
 public class JdkSpiLoader extends AbstractSpiLoader {
     
@@ -19,20 +20,16 @@ public class JdkSpiLoader extends AbstractSpiLoader {
 
     @Override
     public <T> List<T> doLoadSpiInstance(Class<T> loadClass) {
-        List<T> instanceList = new ArrayList<>();
         try {
-            ServiceLoader<T> loader = ServiceLoader.load(loadClass);
-            for (T next : loader) {
-                if (this.checkInstance(next)){
-                    instanceList.add(next);
-                }
-            }
-            if (instanceList.size() > 1){
-                instanceList.sort(OrderComparator.getInstance());
-            }
-        }catch (Exception e){
+            List<String> list = ServicesLoader.loadServices(loadClass, this.getClass().getClassLoader());
+            return list.stream()
+                    .map(this::<T>createInstance)
+                    .filter(this::checkInstance)
+                    .sorted(OrderComparator.getInstance())
+                    .collect(Collectors.toList());
+        }catch (Throwable e){
             LOG.error("spi loader error:", e);
         }
-        return instanceList;
+        return Collections.emptyList();
     }
 }

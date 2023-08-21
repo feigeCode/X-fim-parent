@@ -5,7 +5,7 @@ import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.feige.api.sc.Callback;
 import com.feige.api.srd.IServerInstance;
 import com.feige.api.srd.ServiceRegistryAndDiscovery;
-import com.feige.fim.utils.lg.Loggers;
+import com.feige.utils.logger.Loggers;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.srd.InstanceConvert;
 

@@ -3,7 +3,7 @@ package com.feige.fim.serialize;
 import com.feige.api.constant.ProtocolConst;
 import com.feige.api.serialize.SerializedClassManager;
 import com.feige.api.serialize.Serializer;
-import com.feige.fim.utils.json.JsonUtils;
+import com.feige.utils.json.JsonUtils;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.context.InitializingInstance;

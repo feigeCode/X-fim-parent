@@ -1,8 +1,8 @@
 package com.feige.fim;
 
-import com.feige.fim.utils.javassist.ClassGenerator;
-import com.feige.fim.utils.ReflectionUtils;
-import com.feige.fim.utils.StringUtils;
+import com.feige.utils.javassist.ClassGenerator;
+import com.feige.utils.clazz.ReflectionUtils;
+import com.feige.utils.common.StringUtils;
 import org.junit.Test;
 
 import java.lang.reflect.Method;

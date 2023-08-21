@@ -1,7 +1,7 @@
 package com.feige.fim.crypto;
 
 import com.feige.api.crypto.Cipher;
-import com.feige.fim.utils.crypto.AesUtils;
+import com.feige.utils.crypto.AesUtils;
 import org.bouncycastle.util.encoders.Base64;
 
 import javax.crypto.spec.IvParameterSpec;

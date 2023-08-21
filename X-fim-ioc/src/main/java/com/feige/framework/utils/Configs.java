@@ -4,7 +4,7 @@ package com.feige.framework.utils;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.config.Config;
 import com.feige.framework.api.context.Environment;
-import com.feige.fim.utils.StringUtils;
+import com.feige.utils.common.StringUtils;
 import com.feige.framework.api.context.EnvironmentAware;
 
 import java.io.File;

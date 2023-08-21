@@ -4,7 +4,7 @@ import com.feige.framework.annotation.Inject;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.SessionRepository;
-import com.feige.fim.utils.StringUtils;
+import com.feige.utils.common.StringUtils;
 
 import java.net.InetSocketAddress;
 

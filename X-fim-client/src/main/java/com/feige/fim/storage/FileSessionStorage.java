@@ -3,7 +3,7 @@ package com.feige.fim.storage;
 
 import com.feige.fim.api.SessionStorage;
 import com.feige.fim.config.ClientConfigKey;
-import com.feige.fim.utils.AssertUtil;
+import com.feige.utils.common.AssertUtil;
 import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.annotation.Value;

@@ -9,7 +9,7 @@ import com.feige.fim.config.ClientConfig;
 import com.feige.fim.config.ClientConfigKey;
 import com.feige.fim.lg.Logs;
 import com.feige.fim.utils.PacketUtils;
-import com.feige.fim.utils.StringUtils;
+import com.feige.utils.common.StringUtils;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.api.handler.RemotingException;
