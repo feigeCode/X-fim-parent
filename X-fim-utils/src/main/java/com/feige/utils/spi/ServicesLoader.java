@@ -1,6 +1,10 @@
 package com.feige.utils.spi;
 
-import com.google.common.io.Closer;
+import com.feige.utils.clazz.ClassUtils;
+import com.feige.utils.clazz.ReflectionUtils;
+import com.feige.utils.common.AssertUtil;
+import com.feige.utils.order.OrderComparator;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,6 +28,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class ServicesLoader {
   public static final String SERVICES_PATH = "META-INF/services";
 
@@ -38,7 +43,27 @@ public class ServicesLoader {
   }
 
   private ServicesLoader() {}
-  
+
+
+  public static  <T> List<T> load(Class<T> spiType, ClassLoader classLoader) {
+    AssertUtil.notNull(spiType, "'spiType' must not be null");
+    ClassLoader classLoaderToUse = classLoader;
+    if (classLoaderToUse == null) {
+      classLoaderToUse = SpiConfigsLoader.class.getClassLoader();
+    }
+    List<String> factoryImplementationNames = loadServices(spiType, classLoaderToUse);
+    if (log.isTraceEnabled()) {
+      log.trace("Loaded [" + spiType.getName() + "] names: " + factoryImplementationNames);
+    }
+    List<T> result = new ArrayList<>(factoryImplementationNames.size());
+    for (String factoryImplementationName : factoryImplementationNames) {
+      result.add(createInstance(factoryImplementationName, spiType, classLoaderToUse));
+    }
+    if (result.size() > 1){
+      result.sort(OrderComparator.getInstance());
+    }
+    return result;
+  }
   
   public static List<String> loadServices(Class<?> serviceType, ClassLoader classLoader){
     ClassLoader classLoaderToUse = classLoader;
@@ -74,7 +99,7 @@ public class ServicesLoader {
       cache.put(classLoader, result);
     }
     catch (IOException ex) {
-      throw new IllegalArgumentException("Unable to load factories from location [" +
+      throw new IllegalArgumentException("Unable to load services from location [" +
               path + "]", ex);
     }
     return result;
@@ -99,14 +124,12 @@ public class ServicesLoader {
    * @return a not {@code null Set} of service class names.
    * @throws IOException
    */
+  
   public static Set<String> readServiceFile(InputStream input) throws IOException {
-    HashSet<String> serviceClasses = new HashSet<String>();
-    Closer closer = Closer.create();
-    try {
-      // TODO(gak): use CharStreams
-      BufferedReader r = closer.register(new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8)));
+    HashSet<String> serviceClasses = new HashSet<>();
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
       String line;
-      while ((line = r.readLine()) != null) {
+      while ((line = br.readLine()) != null) {
         int commentStart = line.indexOf('#');
         if (commentStart >= 0) {
           line = line.substring(0, commentStart);
@@ -117,10 +140,6 @@ public class ServicesLoader {
         }
       }
       return serviceClasses;
-    } catch (Throwable t) {
-      throw closer.rethrow(t);
-    } finally {
-      closer.close();
     }
   }
 
@@ -139,5 +158,22 @@ public class ServicesLoader {
       writer.newLine();
     }
     writer.flush();
+  }
+  
+  @SuppressWarnings("unchecked")
+  private static  <T> T createInstance(String factoryImplementationName, Class<T> factoryType, ClassLoader classLoader) {
+    try {
+      Class<?> factoryImplementationClass = ClassUtils.forName(factoryImplementationName, classLoader);
+      if (!factoryType.isAssignableFrom(factoryImplementationClass)) {
+        throw new IllegalArgumentException(
+                "Class [" + factoryImplementationName + "] is not assignable to spi type [" + factoryType.getName() + "]");
+      }
+      return (T) ReflectionUtils.accessibleConstructor(factoryImplementationClass).newInstance();
+    }
+    catch (Throwable ex) {
+      throw new IllegalArgumentException(
+              "Unable to instantiate spi class [" + factoryImplementationName + "] for spi type [" + factoryType.getName() + "]",
+              ex);
+    }
   }
 }
