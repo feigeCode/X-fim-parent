@@ -1,8 +1,10 @@
-package com.feige.framework.extension;
+package com.feige.framework.context;
 
+import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.spi.InstantiationStrategy;
 import com.feige.utils.clazz.ReflectionUtils;
 
+@SpiComp(interfaces = InstantiationStrategy.class)
 public class SimpleInstantiateStrategy implements InstantiationStrategy {
     @Override
     public <T> T instantiate(Class<T> cl, Object... args) {

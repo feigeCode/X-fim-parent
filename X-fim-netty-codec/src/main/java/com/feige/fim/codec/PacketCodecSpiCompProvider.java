@@ -3,12 +3,12 @@ package com.feige.fim.codec;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
 import com.feige.api.codec.Codec;
-import com.feige.framework.api.spi.InstanceProvider;
+import com.feige.framework.api.spi.SpiCompProvider;
 import com.feige.framework.utils.Configs.ConfigKey;
 
 
-@SpiComp(value="packet", interfaces = InstanceProvider.class)
-public class PacketCodecInstanceProvider implements InstanceProvider<Codec> {
+@SpiComp(value="packet", interfaces = SpiCompProvider.class, provideTypes = Codec.class)
+public class PacketCodecSpiCompProvider implements SpiCompProvider<Codec> {
     
     @Value(ConfigKey.CODEC_MAX_PACKET_SIZE_KEY)
     private int maxPacketSize;
@@ -25,9 +25,5 @@ public class PacketCodecInstanceProvider implements InstanceProvider<Codec> {
     public PacketCodec getInstance() {
         return new PacketCodec(this.maxPacketSize, this.heartbeat, this.version, this.headerLength, this.checkSumKey);
     }
-
-    @Override
-    public Class<Codec> getType() {
-        return Codec.class;
-    }
+    
 }

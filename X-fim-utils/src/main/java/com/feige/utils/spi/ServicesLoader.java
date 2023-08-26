@@ -45,13 +45,13 @@ public class ServicesLoader {
   private ServicesLoader() {}
 
 
-  public static  <T> List<T> load(Class<T> spiType, ClassLoader classLoader) {
+  public static  <T> List<T> loadServices(Class<T> spiType, ClassLoader classLoader) {
     AssertUtil.notNull(spiType, "'spiType' must not be null");
     ClassLoader classLoaderToUse = classLoader;
     if (classLoaderToUse == null) {
       classLoaderToUse = SpiConfigsLoader.class.getClassLoader();
     }
-    List<String> factoryImplementationNames = loadServices(spiType, classLoaderToUse);
+    List<String> factoryImplementationNames = loadServiceNames(spiType, classLoaderToUse);
     if (log.isTraceEnabled()) {
       log.trace("Loaded [" + spiType.getName() + "] names: " + factoryImplementationNames);
     }
@@ -65,7 +65,7 @@ public class ServicesLoader {
     return result;
   }
   
-  public static List<String> loadServices(Class<?> serviceType, ClassLoader classLoader){
+  public static List<String> loadServiceNames(Class<?> serviceType, ClassLoader classLoader){
     ClassLoader classLoaderToUse = classLoader;
     if (classLoaderToUse == null) {
       classLoaderToUse = SpiConfigsLoader.class.getClassLoader();
@@ -161,18 +161,18 @@ public class ServicesLoader {
   }
   
   @SuppressWarnings("unchecked")
-  private static  <T> T createInstance(String factoryImplementationName, Class<T> factoryType, ClassLoader classLoader) {
+  private static  <T> T createInstance(String serviceImplName, Class<T> factoryType, ClassLoader classLoader) {
     try {
-      Class<?> factoryImplementationClass = ClassUtils.forName(factoryImplementationName, classLoader);
+      Class<?> factoryImplementationClass = ClassUtils.forName(serviceImplName, classLoader);
       if (!factoryType.isAssignableFrom(factoryImplementationClass)) {
         throw new IllegalArgumentException(
-                "Class [" + factoryImplementationName + "] is not assignable to spi type [" + factoryType.getName() + "]");
+                "Class [" + serviceImplName + "] is not assignable to spi type [" + factoryType.getName() + "]");
       }
       return (T) ReflectionUtils.accessibleConstructor(factoryImplementationClass).newInstance();
     }
     catch (Throwable ex) {
       throw new IllegalArgumentException(
-              "Unable to instantiate spi class [" + factoryImplementationName + "] for spi type [" + factoryType.getName() + "]",
+              "Unable to instantiate spi class [" + serviceImplName + "] for spi type [" + factoryType.getName() + "]",
               ex);
     }
   }

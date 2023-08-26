@@ -5,11 +5,11 @@ import com.feige.framework.annotation.SpiComp;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.Client;
-import com.feige.framework.api.spi.InstanceProvider;
+import com.feige.framework.api.spi.SpiCompProvider;
 
 
-@SpiComp(value="nettyClient", interfaces = InstanceProvider.class)
-public class NettyClientInstanceProvider implements InstanceProvider<Client> {
+@SpiComp(value="nettyClient", interfaces = SpiCompProvider.class, provideTypes = Client.class)
+public class NettyClientSpiCompProvider implements SpiCompProvider<Client> {
     
     @Inject
     private SessionHandler sessionHandler;
@@ -21,11 +21,7 @@ public class NettyClientInstanceProvider implements InstanceProvider<Client> {
     public Client getInstance() {
         return new NettyClient(codec, sessionHandler);
     }
-
-    @Override
-    public Class<Client> getType() {
-        return Client.class;
-    }
+    
     
     
 }

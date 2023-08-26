@@ -3,11 +3,11 @@ package com.feige.cache.local;
 import com.feige.framework.annotation.SpiComp;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
-import com.feige.framework.api.spi.InstanceProvider;
+import com.feige.framework.api.spi.SpiCompProvider;
 
 
-@SpiComp(value="local", interfaces = InstanceProvider.class)
-public class LocalCacheManagerFactory implements CacheManagerFactory, InstanceProvider<CacheManager> {
+@SpiComp(value="local", interfaces = SpiCompProvider.class, provideTypes = CacheManager.class)
+public class LocalCacheManagerFactory implements CacheManagerFactory, SpiCompProvider<CacheManager> {
     @Override
     public CacheManager create() {
         return new LocalCacheManager();
@@ -17,9 +17,5 @@ public class LocalCacheManagerFactory implements CacheManagerFactory, InstancePr
     public CacheManager getInstance() {
         return create();
     }
-
-    @Override
-    public Class<CacheManager> getType() {
-        return CacheManager.class;
-    }
+    
 }

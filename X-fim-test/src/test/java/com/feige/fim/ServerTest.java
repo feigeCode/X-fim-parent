@@ -1,20 +1,23 @@
 package com.feige.fim;
 
 import com.feige.api.crypto.CipherFactory;
+import com.feige.framework.annotation.Comp;
 import com.feige.framework.annotation.Inject;
+import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
 import com.feige.framework.api.context.ApplicationContext;
-import com.feige.framework.api.spi.InstanceProvider;
-import com.feige.fim.codec.PacketCodecInstanceProvider;
+import com.feige.framework.api.spi.SpiCompProvider;
+import com.feige.fim.codec.PacketCodecSpiCompProvider;
 import com.feige.api.constant.ServerConfigKey;
 import com.feige.framework.context.StandardApplicationContext;
 import com.feige.framework.utils.Configs;
 import com.feige.utils.crypto.RsaUtils;
 import com.feige.fim.server.NettyTcpServerProvider;
 import com.feige.utils.clazz.ReflectionUtils;
+import com.feige.utils.javassist.AnnotationUtils;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -26,8 +29,10 @@ import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+@SpiComp(interfaces = ApplicationContext.class)
 public class ServerTest {
     public static final String CONFIG_PATH = "E:\\project\\my\\X-fim-parent\\conf\\fim.yaml";
     private static ApplicationContext applicationContext;
@@ -76,7 +81,7 @@ public class ServerTest {
 
     @Test
     public void implTest(){
-        Assert.assertTrue(InstanceProvider.class.isAssignableFrom(PacketCodecInstanceProvider.class));
+        Assert.assertTrue(SpiCompProvider.class.isAssignableFrom(PacketCodecSpiCompProvider.class));
     }
     
     @Test
@@ -111,5 +116,10 @@ public class ServerTest {
         PublicKey aPublic = keyPair.getPublic();
         System.out.println("private-key:" + Base64.toBase64String(aPrivate.getEncoded()));
         System.out.println("public-key:" + Base64.toBase64String(aPublic.getEncoded()));
+    }
+    
+    @Test
+    public void t(){
+        System.out.println(Arrays.toString(AnnotationUtils.findAnnotation(this.getClass(), SpiComp.class).provideTypes()));
     }
 }

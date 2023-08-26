@@ -6,11 +6,11 @@ import com.feige.framework.annotation.SpiComp;
 import com.feige.api.msg.Msg;
 import com.feige.api.serialize.Serializer;
 import com.feige.api.constant.ProtocolConst;
-import com.feige.framework.api.context.InitializingInstance;
+import com.feige.framework.api.context.InitializingComp;
 
 
 @SpiComp(interfaces = Serializer.class)
-public class ProtoBufSerializer implements Serializer, InitializingInstance {
+public class ProtoBufSerializer implements Serializer, InitializingComp {
 
     @Inject
     private SerializedClassManager serializedClassManager;

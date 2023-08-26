@@ -1,6 +1,6 @@
 package com.feige.framework.utils;
 
-import com.feige.framework.annotation.SpiComp;
+import com.feige.framework.annotation.Comp;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.context.ApplicationContextAware;
 import com.feige.framework.api.spi.NoSuchInstanceException;
@@ -15,7 +15,7 @@ import java.util.List;
  * @Description: <br/>
  * @date: 2023/5/20 15:13<br/>
  */
-@SpiComp
+@Comp
 public class AppContext  implements ApplicationContextAware {
 
     

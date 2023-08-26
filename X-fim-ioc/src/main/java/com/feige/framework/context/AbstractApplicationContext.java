@@ -1,33 +1,55 @@
 package com.feige.framework.context;
 
+import com.feige.framework.api.context.CompFactory;
+import com.feige.framework.api.context.CompInjection;
+import com.feige.framework.api.context.CompNameGenerate;
+import com.feige.framework.api.context.CompPostProcessor;
+import com.feige.framework.api.spi.InstantiationStrategy;
+import com.feige.framework.spi.JdkSpiCompLoader;
+import com.feige.framework.utils.AppContext;
+import com.feige.framework.utils.Configs;
 import com.feige.utils.logger.Loggers;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.context.Environment;
 import com.feige.framework.api.context.LifecycleAdapter;
-import com.feige.framework.api.spi.SpiLoader;
+import com.feige.framework.api.spi.SpiCompLoader;
 import com.feige.framework.api.spi.NoSuchInstanceException;
-import com.feige.framework.extension.ConfigSpiLoader;
-import com.feige.framework.extension.JdkSpiLoader;
+import com.feige.framework.spi.ConfigSpiCompLoader;
 
 import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractApplicationContext extends LifecycleAdapter implements ApplicationContext {
-    public static final String DEFAULT_LOADER_TYPE = ConfigSpiLoader.TYPE;
+    public static final String DEFAULT_LOADER_TYPE = ConfigSpiCompLoader.TYPE;
     private final Environment environment;
     
-    private final SpiLoader spiLoader;
+    private final SpiCompLoader spiCompLoader;
+    
+    private CompFactory compFactory;
+    
+    private InstantiationStrategy instantiationStrategy;
+    
+    private CompInjection compInjection;
+    
+    private CompNameGenerate compNameGenerate;
+    
+    private List<CompPostProcessor> processors;
 
-    public AbstractApplicationContext(Environment environment, SpiLoader spiLoader) {
+    public AbstractApplicationContext(Environment environment, SpiCompLoader spiCompLoader) {
         this.environment = environment;
-        this.spiLoader = spiLoader;
+        this.spiCompLoader = spiCompLoader;
         initialize();
     }
 
     public AbstractApplicationContext(String type) {
-        this.spiLoader = createSpiLoader(type);
+        this.spiCompLoader = createSpiLoader(type);
         this.environment = createEnvironment();
         initialize();
+    }
+
+    @Override
+    public ClassLoader getClassLoader() {
+        return this.getClass().getClassLoader();
     }
 
     public AbstractApplicationContext() {
@@ -37,24 +59,34 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     private Environment createEnvironment(){
         return new StandardEnvironment();
     }
-    private SpiLoader createSpiLoader(String type){
-        SpiLoader spiLoader;
-        if (Objects.equals(type, ConfigSpiLoader.TYPE)){
-            spiLoader = new ConfigSpiLoader(this);
-            Loggers.LOADER.info("使用" + ConfigSpiLoader.class.getName() + "加载器");
+    private SpiCompLoader createSpiLoader(String type){
+        SpiCompLoader spiCompLoader;
+        if (Objects.equals(type, ConfigSpiCompLoader.TYPE)){
+            spiCompLoader = new ConfigSpiCompLoader(this);
+            Loggers.LOADER.info("使用" + ConfigSpiCompLoader.class.getName() + "加载器");
         }else {
-            spiLoader = new JdkSpiLoader(this);
-            Loggers.LOADER.info("使用" + JdkSpiLoader.class.getName() + "加载器");
+            spiCompLoader = new JdkSpiCompLoader(this);
+            Loggers.LOADER.info("使用" + JdkSpiCompLoader.class.getName() + "加载器");
         }
-        return spiLoader;
+        return spiCompLoader;
     }
 
     @Override
     public void initialize() throws IllegalStateException {
         this.environment.initialize();
-        this.spiLoader.initialize();
+        this.compFactory = this.getSpiCompLoader().loadSpiComp(CompFactory.class);
+        this.compNameGenerate = this.getSpiCompLoader().loadSpiComp(CompNameGenerate.class);
+        this.instantiationStrategy = this.getSpiCompLoader().loadSpiComp(InstantiationStrategy.class);
+        this.compInjection = this.getSpiCompLoader().loadSpiComp(CompInjection.class);
+        this.processors = this.getSpiCompLoader().loadSpiComps(CompPostProcessor.class);
+        this.get(Configs.class);
+        this.get(AppContext.class);
     }
 
+    @Override
+    public CompFactory getCompFactory() {
+        return this.compFactory;
+    }
 
     @Override
     public Environment getEnvironment() {
@@ -62,29 +94,47 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     }
 
     @Override
-    public SpiLoader getSpiLoader() {
-        return spiLoader;
+    public SpiCompLoader getSpiCompLoader() {
+        return spiCompLoader;
     }
 
+    @Override
+    public InstantiationStrategy getInstantiationStrategy() {
+        return instantiationStrategy;
+    }
 
+    @Override
+    public CompInjection getCompInjection() {
+        return this.compInjection;
+    }
+
+    @Override
+    public CompNameGenerate getCompNameGenerate() {
+        return this.compNameGenerate;
+    }
+
+    @Override
+    public List<CompPostProcessor> getPostProcessors() {
+        return this.processors;
+    }
 
     @Override
     public void register(String instanceName, Object instance) {
-        this.spiLoader.register(instanceName, instance);
+        this.compFactory.register(instanceName, instance);
     }
 
     @Override
-    public <T> T get(String key, Class<T> clazz) throws NoSuchInstanceException {
-        return this.spiLoader.get(key, clazz);
+    public <T> T get(String key, Class<T> requireType, Object... args) throws NoSuchInstanceException {
+        return this.compFactory.get(key, requireType);
     }
 
     @Override
-    public <T> T get(Class<T> clazz) throws NoSuchInstanceException {
-        return this.spiLoader.get(clazz);
+    public <T> T get(Class<T> requireType, Object... args) throws NoSuchInstanceException {
+        return this.compFactory.get(requireType);
     }
 
     @Override
-    public <T> List<T> getByType(Class<T> clazz) throws NoSuchInstanceException {
-        return this.spiLoader.getByType(clazz);
+    public <T> List<T> getByType(Class<T> requireType) throws NoSuchInstanceException {
+        return this.compFactory.getByType(requireType);
     }
 }

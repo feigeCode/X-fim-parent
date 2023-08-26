@@ -1,13 +1,33 @@
 package com.feige.framework.api.context;
 
 
-import com.feige.framework.api.spi.SpiLoader;
+import com.feige.framework.api.spi.InstantiationStrategy;
+import com.feige.framework.api.spi.SpiCompLoader;
 
-public interface ApplicationContext extends SpiLoader {
+import java.util.List;
+
+
+public interface ApplicationContext extends CompFactory {
     
+    CompFactory getCompFactory();
 
     Environment getEnvironment();
     
-    SpiLoader getSpiLoader();
+    SpiCompLoader getSpiCompLoader();
+    
+    
+    InstantiationStrategy getInstantiationStrategy();
+    
+    
+    CompInjection getCompInjection();
+    
+    
+    CompNameGenerate getCompNameGenerate();
+    
+    
+    ClassLoader getClassLoader();
+    
+    
+    List<CompPostProcessor> getPostProcessors();
 
 }

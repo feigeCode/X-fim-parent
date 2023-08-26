@@ -6,7 +6,7 @@ import com.feige.api.cache.CacheManagerFactory;
 import com.feige.api.constant.ServerConfigKey;
 import com.feige.framework.api.context.Environment;
 import com.feige.framework.api.context.EnvironmentAware;
-import com.feige.framework.api.spi.InstanceProvider;
+import com.feige.framework.api.spi.SpiCompProvider;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.redisson.Redisson;
@@ -19,8 +19,8 @@ import org.redisson.config.SingleServerConfig;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-@SpiComp(value="redis", interfaces = InstanceProvider.class)
-public class RedisCacheManagerFactory implements CacheManagerFactory, InstanceProvider<CacheManager>, EnvironmentAware {
+@SpiComp(value="redis", interfaces = SpiCompProvider.class, provideTypes = CacheManager.class)
+public class RedisCacheManagerFactory implements CacheManagerFactory, SpiCompProvider<CacheManager>, EnvironmentAware {
     
 
     public static final String TYPE_SINGLE = "single";
@@ -81,10 +81,5 @@ public class RedisCacheManagerFactory implements CacheManagerFactory, InstancePr
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public Class<CacheManager> getType() {
-        return CacheManager.class;
     }
 }

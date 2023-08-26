@@ -1,6 +1,6 @@
-package com.feige.framework.api.spi;
+package com.feige.framework.api.context;
 
-public interface InstancePostProcessor {
+public interface CompPostProcessor {
 
     /**
      * invokeAwareMethods之后invokeInitMethods之前

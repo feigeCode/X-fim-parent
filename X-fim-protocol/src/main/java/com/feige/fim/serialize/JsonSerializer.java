@@ -6,10 +6,10 @@ import com.feige.api.serialize.Serializer;
 import com.feige.utils.json.JsonUtils;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.annotation.SpiComp;
-import com.feige.framework.api.context.InitializingInstance;
+import com.feige.framework.api.context.InitializingComp;
 
 @SpiComp(interfaces = Serializer.class)
-public class JsonSerializer implements Serializer, InitializingInstance {
+public class JsonSerializer implements Serializer, InitializingComp {
 
     @Inject
     private SerializedClassManager serializedClassManager;
