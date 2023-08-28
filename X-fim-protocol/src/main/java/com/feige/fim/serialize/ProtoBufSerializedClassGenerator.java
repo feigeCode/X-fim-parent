@@ -7,7 +7,7 @@ import com.feige.api.serialize.SerializedClassGenerator;
 import com.feige.utils.javassist.ClassGenerator;
 import com.feige.utils.common.Pair;
 import com.feige.utils.common.StringUtils;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 
 
 import java.lang.reflect.Method;

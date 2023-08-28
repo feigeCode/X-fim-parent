@@ -11,7 +11,7 @@ import com.feige.fim.lg.Logs;
 import com.feige.fim.utils.PacketUtils;
 import com.feige.utils.common.StringUtils;
 import com.feige.framework.annotation.Inject;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;

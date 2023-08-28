@@ -1,8 +1,6 @@
 package com.feige.framework.context;
 
-import com.feige.framework.annotation.Comp;
 import com.feige.framework.annotation.InitMethod;
-import com.feige.framework.annotation.Prototype;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.context.ApplicationContextAware;
 import com.feige.framework.api.context.CompFactory;
@@ -14,42 +12,30 @@ import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.framework.api.context.SpiCompLoaderAware;
 import com.feige.framework.api.spi.InstanceCreationException;
 import com.feige.framework.api.spi.InstanceCurrentlyInCreationException;
-import com.feige.framework.api.spi.NoSuchInstanceException;
-import com.feige.framework.api.spi.ObjectFactory;
 import com.feige.framework.api.spi.SpiCompLoader;
-import com.feige.framework.api.spi.SpiCompProvider;
-import com.feige.utils.clazz.ClassUtils;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.common.AssertUtil;
-import com.feige.utils.common.StringUtils;
 import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
+import com.feige.utils.spi.SpiScope;
+import com.feige.utils.spi.annotation.SpiComp;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public abstract class AbstractCompFactory extends LifecycleAdapter implements CompFactory, ApplicationContextAware {
 
     protected static final Logger LOG = Loggers.LOADER;
-    private final Set<String> singletonsCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
-    protected final Map<String, Object> singletonObjectCache = new ConcurrentHashMap<>(64);
-    private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>(16);
-    private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
-    protected final Map<String, Object> instanceProviderObjectCache = new ConcurrentHashMap<>(32);
-    protected final Map<Class<?>, List<String>> classInstancesNameCache = new ConcurrentHashMap<>(32);
-    protected final List<CompPostProcessor> processors = new ArrayList<>();
-    private final AtomicBoolean isInitialized = new AtomicBoolean(false);
-    
-    protected boolean allowCircularReferences;
+    private final Set<String> globalCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
+    protected final Map<String, Object> globalObjectCache = new ConcurrentHashMap<>(64);
 
+    
     protected ApplicationContext applicationContext;
 
     @Override
@@ -64,95 +50,54 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
     protected CompNameGenerate getCompNameGenerate(){
         return applicationContext.getCompNameGenerate();
     }
-
-    @Override
-    public void initialize() throws IllegalStateException {
-        if (isInitialized.compareAndSet(false, true)){
-           
-        }
+    
+    protected List<CompPostProcessor> getProcessors(){
+        return applicationContext.getPostProcessors();
     }
 
     @Override
     public void register(String instanceName, Object instance) {
         AssertUtil.notNull(instanceName, "instanceName");
         AssertUtil.notNull(instance, "instance");
-        synchronized (this.singletonObjectCache) {
-            Object oldObject = this.singletonObjectCache.get(instanceName);
+        synchronized (this.globalObjectCache) {
+            Object oldObject = this.globalObjectCache.get(instanceName);
             if (oldObject != null) {
                 throw new IllegalStateException("Could not register object [" + instance +
                         "] under instance name '" + instanceName + "': there is already object [" + oldObject + "] bound");
             }
-            this.classInstancesNameCache.computeIfAbsent(instance.getClass(), k -> new ArrayList<>()).add(instanceName);
-            addSingleton(instanceName, instance);
+            addGlobal(instanceName, instance);
         }
     }
     
 
-    public boolean isSingletonCurrentlyInCreation(String instanceName) {
-        return this.singletonsCurrentlyInCreation.contains(instanceName);
+    public boolean isGlobalCurrentlyInCreation(String instanceName) {
+        return this.globalCurrentlyInCreation.contains(instanceName);
     }
 
-    protected Object getSingleton(String instanceName) {
-        Object singletonObject = this.singletonObjectCache.get(instanceName);
-        if (singletonObject == null && isSingletonCurrentlyInCreation(instanceName)) {
-            singletonObject = this.earlySingletonObjects.get(instanceName);
-            if (singletonObject == null) {
-                synchronized (this.singletonObjectCache) {
-                    singletonObject = this.singletonObjectCache.get(instanceName);
-                    if (singletonObject == null) {
-                        singletonObject = this.earlySingletonObjects.get(instanceName);
-                        if (singletonObject == null) {
-                            ObjectFactory<?> singletonFactory = this.singletonFactories.get(instanceName);
-                            if (singletonFactory != null) {
-                                singletonObject = singletonFactory.getObject();
-                                this.earlySingletonObjects.put(instanceName, singletonObject);
-                                this.singletonFactories.remove(instanceName);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return singletonObject;
-    }
-
-    public <T> T getEarlyInstanceReference(String instanceName, T instance){
-
-        return instance;
+    protected Object getGlobal(String instanceName) {
+        return this.globalObjectCache.get(instanceName);
     }
     
     protected <T> T createInstance(String instanceName, Class<T> cls, Object... args){
-        if (!isPrototype(cls) && isSingletonCurrentlyInCreation(instanceName)){
+        if (isGlobalCurrentlyInCreation(instanceName) || !this.globalCurrentlyInCreation.add(instanceName)){
             throw new InstanceCurrentlyInCreationException(cls);
         }
         try {
-            this.singletonsCurrentlyInCreation.add(instanceName);
             return doCreateInstance(instanceName, cls, args);
         }catch (Throwable e){
             LOG.error("create " + cls.getName() + " instance failure:", e);
             throw new InstanceCreationException(e, cls);
         }finally {
-            this.singletonsCurrentlyInCreation.remove(instanceName);
+            this.globalCurrentlyInCreation.remove(instanceName);
         }
     }
-
-
-
 
     protected <T> T doCreateInstance(String instanceName, Class<T> type, Object... args) throws Exception {
         // 创建实例
         T instance = createInstance(type, args);
-        // 设置配置属性值并放入三级缓存
-        
-        boolean earlySingletonExposure = (isSingleton(instance) && this.allowCircularReferences &&
-                isSingletonCurrentlyInCreation(instanceName));
-        if (earlySingletonExposure){
-            addSingletonFactory(instanceName, () -> this.getEarlyInstanceReference(instanceName, instance));
-        }
         // 为实例注入属性
         applicationContext.getCompInjection().inject(instance);
         // 初始化实例
-        
         return initializeInstances(instanceName, instance) ;
     }
 
@@ -169,23 +114,12 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         return (T) instance;
     }
 
-    protected void addSingleton(String instanceName, Object singletonObject) {
-        synchronized (this.singletonObjectCache) {
-            this.singletonObjectCache.put(instanceName, singletonObject);
-            this.singletonFactories.remove(instanceName);
-            this.earlySingletonObjects.remove(instanceName);
+    protected void addGlobal(String instanceName, Object singletonObject) {
+        synchronized (this.globalObjectCache) {
+            this.globalObjectCache.put(instanceName, singletonObject);
         }
     }
-
-
-    protected void addSingletonFactory(String instanceName, ObjectFactory<?> singletonFactory) {
-        synchronized (this.singletonObjectCache) {
-            if (!this.singletonObjectCache.containsKey(instanceName)) {
-                this.singletonFactories.put(instanceName, singletonFactory);
-                this.earlySingletonObjects.remove(instanceName);
-            }
-        }
-    }
+    
 
     protected <T> T createInstance(Class<T> cls, Object... args){
         try {
@@ -196,17 +130,41 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         }
     }
 
-    protected boolean isSingleton(Object instance){
-        return !isPrototype(instance.getClass());
+    @Override
+    public boolean isGlobal(Class<?> type, String compName) {
+        return isEqual(type, compName, SpiScope.GLOBAL);
     }
 
-    protected boolean isPrototype(Class<?> cls){
-        return cls.isAnnotationPresent(Prototype.class);
+    @Override
+    public boolean isModule(Class<?> type, String compName) {
+        return isEqual(type, compName, SpiScope.MODULE);
     }
+
+    @Override
+    public boolean isOne(Class<?> type, String compName) {
+        return isEqual(type, compName, SpiScope.ONE);
+    }
+    
+    
+    private boolean isEqual(Class<?> type, String compName, SpiScope scope){
+        try {
+            Class<?> cls = getSpiCompLoader().get(compName, type);
+            SpiComp spiComp = AnnotationUtils.findAnnotation(cls, SpiComp.class);
+            return Objects.equals(spiComp.scope(), scope);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean isGlobal(Object instance){
+        SpiComp spiComp = AnnotationUtils.findAnnotation(instance.getClass(), SpiComp.class);
+        return Objects.equals(spiComp.scope(), SpiScope.GLOBAL);
+    }
+    
 
     private Object applyBeanPostProcessorsBeforeInitialization(Object instance,  String instanceName) {
         Object result = instance;
-        for (CompPostProcessor processor : processors) {
+        for (CompPostProcessor processor : getProcessors()) {
             Object currentInstance = processor.postProcessBeforeInitialization(instance, instanceName);
             if (currentInstance == null) {
                 return result;
@@ -219,7 +177,7 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
 
     private Object applyBeanPostProcessorsAfterInitialization(Object instance,  String instanceName) {
         Object result = instance;
-        for (CompPostProcessor processor : processors) {
+        for (CompPostProcessor processor : getProcessors()) {
             Object currentInstance = processor.postProcessAfterInitialization(instance, instanceName);
             if (currentInstance == null) {
                 return result;

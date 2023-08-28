@@ -1,8 +1,7 @@
 package com.feige.framework.spi;
 
 
-import com.feige.framework.annotation.Prototype;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.context.ApplicationContextAware;
 import com.feige.framework.api.context.EnvironmentAware;
@@ -21,6 +20,7 @@ import org.slf4j.Logger;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +36,6 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     protected final Map<String, Class<?>> compNameAndImplClassCache = new ConcurrentHashMap<>(32);
     protected final Map<Class<?>, List<String>> spiTypeAndCompNamesCache = new ConcurrentHashMap<>(32);
     protected final Map<Class<?>, List<String>> providerTypeAndCompNamesCache = new ConcurrentHashMap<>(16);
-    protected final Set<String> prototypeCompName = new HashSet<>();
     private final Map<Class<?>, Object> lockMap = new ConcurrentHashMap<>();
     protected final Set<String> ignoredClasses = new HashSet<>();
     private final AtomicBoolean isInitialized = new AtomicBoolean(false);
@@ -61,67 +60,38 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     }
     
     @Override
-    public <T> Class<T> get(String compName, Class<T> requireType) throws ClassNotFoundException {
+    public Class<?> get(String compName, Class<?> requireType) throws ClassNotFoundException {
         AssertUtil.notBlank(compName, "compName");
         AssertUtil.notNull(requireType, "requireType");
         return doGetImplClass(compName, requireType);
     }
 
-   
-
 
     @Override
-    public <T> Class<T> get(Class<T> requireType) throws ClassNotFoundException {
+    public String get(Class<?> requireType) throws ClassNotFoundException {
         AssertUtil.notNull(requireType, "requireType");
-        List<Class<T>> classes = doGetImplClasses(requireType);
+        List<String> classes = doGetImplClasses(requireType);
         if (classes == null || classes.isEmpty()){
             return null;
         }
         return classes.get(0);
     }
 
-    
     @Override
-    public <T> List<Class<T>> getByType(Class<T> requireType) throws ClassNotFoundException {
+    public List<String> getByType(Class<?> requireType) throws ClassNotFoundException {
         AssertUtil.notNull(requireType, "requireType");
         return doGetImplClasses(requireType);
     }
 
 
-    @Override
-    public <T> List<Class<SpiCompProvider<T>>> getByProviderType(Class<T> requireType){
-        List<String> compNames = this.providerTypeAndCompNamesCache.getOrDefault(requireType, new ArrayList<>());
-        return compNames.stream()
-                .map(this::<SpiCompProvider<T>>convert)
-                .sorted(OrderClassComparator.getInstance())
-                .collect(Collectors.toList());
-    }
 
-    @Override
-    public List<String> getCompNames(Class<?> requireType) throws ClassNotFoundException {
-        if (!this.spiTypeAndCompNamesCache.containsKey(requireType)){
-            getByType(requireType);
-        }
-        return this.spiTypeAndCompNamesCache.get(requireType);
-    }
-
-    @Override
-    public boolean isPrototype(String compName) {
-        return this.prototypeCompName.contains(compName);
-    }
-
-    @Override
-    public boolean isSingleton(String compName) {
-        return !this.prototypeCompName.contains(compName);
-    }
-
-    protected <T> Class<T> doGetImplClass(String compName, Class<T> requireType) throws ClassNotFoundException {
+    protected Class<?> doGetImplClass(String compName, Class<?> requireType) throws ClassNotFoundException {
         Class<?> cls = this.compNameAndImplClassCache.get(compName);
         if (cls == null){
             doGetImplClasses(requireType);
             cls = this.compNameAndImplClassCache.get(compName);
         }
-        return this.convert(cls);
+        return cls;
     }
     
     
@@ -134,7 +104,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
         this.lockMap.remove(requireType);
     }
 
-    protected <T> List<Class<T>> doGetImplClasses(Class<T> requireType) throws ClassNotFoundException {
+    protected <T> List<String> doGetImplClasses(Class<T> requireType) throws ClassNotFoundException {
         List<String> compNames = this.spiTypeAndCompNamesCache.get(requireType);
         if (compNames == null){
             synchronized (this.getLock(requireType)){
@@ -163,15 +133,17 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
             }
             this.removeLock(requireType);
         }
+        List<String> providerNames = this.providerTypeAndCompNamesCache.getOrDefault(requireType, Collections.emptyList());
+        compNames.addAll(providerNames);
         return compNames.stream()
-                .map(this::<T>convert)
+                .sorted((c1, c2) -> {
+                    Class<?> cls1 = this.compNameAndImplClassCache.get(c1);
+                    Class<?> cls2 = this.compNameAndImplClassCache.get(c2);
+                    return OrderClassComparator.getInstance().compare(cls1, cls2);
+                })
                 .collect(Collectors.toList());
     }
     
-    protected <T> Class<T> convert(String compName){
-        Class<?> cls = this.compNameAndImplClassCache.get(compName);
-        return this.convert(cls);
-    }
     
     protected <T> Class<T> convert(Class<?> cls){
         return (Class<T>) cls;
@@ -196,9 +168,6 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
         this.compNameAndImplClassCache.put(compName, compClass);
         List<String> list = this.spiTypeAndCompNamesCache.computeIfAbsent(requireType, k -> new ArrayList<>());
         list.add(compName);
-        if (compClass.isAnnotationPresent(Prototype.class)){
-            prototypeCompName.add(compName);
-        }
         if (SpiCompProvider.class.isAssignableFrom(compClass)){
             SpiComp spiComp = AnnotationUtils.findAnnotation(compClass, SpiComp.class);
             if (spiComp == null){
@@ -227,9 +196,10 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     @Override
     public <T> List<T> loadSpiComps(Class<T> requireType) {
         try {
-            List<Class<T>> classes = this.getByType(requireType);
+            List<String> compNames = this.getByType(requireType);
             List<T> ts = new ArrayList<>();
-            for (Class<T> cls : classes) {
+            for (String compName : compNames) {
+                Class<T> cls = this.convert(this.get(compName, requireType));
                 T t = ReflectionUtils.accessibleConstructor(cls).newInstance();
                 invokeAwareMethods(t);
                 ts.add(t);
@@ -243,7 +213,8 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     @Override
     public <T> T loadSpiComp(Class<T> requireType) {
         try {
-            Class<T> cls = this.get(requireType);
+            String compName = this.get(requireType);
+            Class<T> cls = this.convert(this.get(compName, requireType));
             AssertUtil.notNull(cls, "cls");
             T t = ReflectionUtils.accessibleConstructor(cls).newInstance();
             invokeAwareMethods(t);

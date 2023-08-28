@@ -1,23 +1,30 @@
 package com.feige.framework.api.context;
 
 
-import com.feige.framework.api.spi.InstantiationStrategy;
 import com.feige.framework.api.spi.SpiCompLoader;
 
 import java.util.List;
 
 
 public interface ApplicationContext extends CompFactory {
+
+    enum AppState {CREATED, INITIALIZED, DESTROY}
+
+    ModuleContext findModule(String moduleName);
+
+    List<ModuleContext> getModules();
+
+    void addModule(ModuleContext module);
+
+    ModuleContext removeModule(String moduleName);
     
-    CompFactory getCompFactory();
+    List<CompFactory> getCompFactories();
 
     Environment getEnvironment();
     
     SpiCompLoader getSpiCompLoader();
     
-    
     InstantiationStrategy getInstantiationStrategy();
-    
     
     CompInjection getCompInjection();
     
@@ -29,5 +36,7 @@ public interface ApplicationContext extends CompFactory {
     
     
     List<CompPostProcessor> getPostProcessors();
+    
+   
 
 }

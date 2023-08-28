@@ -1,6 +1,6 @@
 package com.feige.fim.codec;
 
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.framework.api.spi.SpiCompProvider;

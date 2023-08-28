@@ -1,6 +1,6 @@
 package com.feige.fim.crypto;
 
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
 

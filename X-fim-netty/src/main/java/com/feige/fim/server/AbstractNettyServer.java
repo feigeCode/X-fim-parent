@@ -35,7 +35,7 @@ public abstract class AbstractNettyServer extends AbstractServer {
 
     @Override
     public void initialize() {
-        if (!serverState.compareAndSet(ServerState.Created, ServerState.Initialized)) {
+        if (!serverState.compareAndSet(ServerState.CREATED, ServerState.INITIALIZED)) {
             throw new ServiceException("Server already init");
         }
         this.bossGroup = createBossGroup();
@@ -46,7 +46,7 @@ public abstract class AbstractNettyServer extends AbstractServer {
     @Override
     protected void doStart(Listener listener) {
         try {
-            if (!serverState.compareAndSet(ServerState.Initialized, ServerState.Starting)) {
+            if (!serverState.compareAndSet(ServerState.INITIALIZED, ServerState.STARTING)) {
                 throw new ServiceException("Server already started or have not init");
             }
             initServerBootstrap();
@@ -54,7 +54,7 @@ public abstract class AbstractNettyServer extends AbstractServer {
                     .bind(address)
                     .addListener(future -> {
                         if (future.isSuccess()) {
-                            serverState.set(ServerState.Started);
+                            serverState.set(ServerState.STARTED);
                             LOG.info("netty [{}] server in {} port start finish....", getClass().getSimpleName() ,getAddress().getPort());
                             if (listener != null){
                                 listener.onSuccess(address);
@@ -78,7 +78,7 @@ public abstract class AbstractNettyServer extends AbstractServer {
 
     @Override
     protected void doStop(Listener listener) {
-        if (!serverState.compareAndSet(ServerState.Started, ServerState.Shutdown)) {
+        if (!serverState.compareAndSet(ServerState.STARTED, ServerState.SHUTDOWN)) {
             if (listener != null) {
                 listener.onFailure(new ServiceException("server was already shutdown."));
             }

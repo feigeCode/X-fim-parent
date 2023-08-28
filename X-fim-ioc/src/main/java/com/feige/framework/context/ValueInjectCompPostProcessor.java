@@ -1,6 +1,6 @@
 package com.feige.framework.context;
 
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
 import com.feige.framework.api.context.CompPostProcessor;
 import com.feige.framework.api.context.Environment;

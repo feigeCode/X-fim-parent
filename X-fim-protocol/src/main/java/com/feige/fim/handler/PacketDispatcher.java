@@ -1,6 +1,6 @@
 package com.feige.fim.handler;
 
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.handler.AbstractMsgDispatcher;
 import com.feige.api.handler.MsgDispatcher;
 import com.feige.api.handler.MsgHandler;

@@ -12,7 +12,7 @@ import com.feige.api.session.SessionContext;
 import com.feige.api.constant.ServerConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Inject;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.utils.Configs;
 
 import java.util.Objects;

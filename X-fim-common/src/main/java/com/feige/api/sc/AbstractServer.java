@@ -17,9 +17,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract class AbstractServer extends ServiceAdapter implements Server {
 
     
-    public enum ServerState {Created, Initialized, Starting, Started, Shutdown}
+    public enum ServerState {CREATED, INITIALIZED, STARTING, STARTED, SHUTDOWN}
 
-    protected final AtomicReference<ServerState> serverState = new AtomicReference<>(ServerState.Created);
+    protected final AtomicReference<ServerState> serverState = new AtomicReference<>(ServerState.CREATED);
 
     protected SessionHandler sessionHandler;
     
@@ -41,7 +41,7 @@ public abstract class AbstractServer extends ServiceAdapter implements Server {
 
     @Override
     public boolean isRunning() {
-        return ServerState.Started == serverState.get();
+        return ServerState.STARTED == serverState.get();
     }
     
 

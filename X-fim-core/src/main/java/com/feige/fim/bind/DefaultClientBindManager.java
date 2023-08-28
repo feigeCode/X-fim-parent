@@ -2,7 +2,7 @@ package com.feige.fim.bind;
 
 import com.feige.api.bind.AbstractClientBindManager;
 import com.feige.api.bind.ClientBindManager;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.bind.ClientBindInfo;
 import com.feige.api.constant.ClientType;
 import com.feige.api.cache.MapCache;

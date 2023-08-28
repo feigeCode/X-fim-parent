@@ -1,9 +1,8 @@
 package com.feige.fim;
 
 import com.feige.api.crypto.CipherFactory;
-import com.feige.framework.annotation.Comp;
 import com.feige.framework.annotation.Inject;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.sc.Server;

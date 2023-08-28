@@ -5,7 +5,7 @@ import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 
 
 @SpiComp(value="heartbeat", interfaces = MsgHandler.class)

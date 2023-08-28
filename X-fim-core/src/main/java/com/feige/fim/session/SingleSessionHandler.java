@@ -7,7 +7,7 @@ import com.feige.api.crypto.CipherFactory;
 import com.feige.api.session.SessionContext;
 import com.feige.api.constant.ServerConfigKey;
 import com.feige.framework.annotation.Inject;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.handler.SessionHandler;
 import com.feige.fim.handler.AbstractSessionHandler;
 import com.feige.api.handler.RemotingException;

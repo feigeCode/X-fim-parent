@@ -1,7 +1,7 @@
 package com.feige.fim.server;
 
 import com.feige.api.sc.AbstractServerProvider;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;

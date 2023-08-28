@@ -1,7 +1,7 @@
 package com.feige.framework.context;
 
 import com.feige.framework.annotation.Inject;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.context.CompInjection;
 import com.feige.utils.clazz.ReflectionUtils;

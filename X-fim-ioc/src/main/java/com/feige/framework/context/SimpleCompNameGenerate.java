@@ -1,7 +1,7 @@
 package com.feige.framework.context;
 
-import com.feige.framework.annotation.Comp;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.Comp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.api.context.CompNameGenerate;
 import com.feige.utils.common.StringUtils;
 

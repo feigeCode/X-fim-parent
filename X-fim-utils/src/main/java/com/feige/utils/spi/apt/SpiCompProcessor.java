@@ -1,9 +1,9 @@
-package com.feige.framework.apt;
+package com.feige.utils.spi.apt;
 
 import com.feige.utils.common.StringUtils;
-import com.feige.framework.annotation.SpiComp;
 import com.feige.utils.spi.ServicesLoader;
 import com.feige.utils.spi.SpiConfigsLoader;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.google.auto.common.MoreElements;
 import com.google.auto.common.MoreTypes;
 import com.google.auto.service.AutoService;

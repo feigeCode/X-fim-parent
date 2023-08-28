@@ -6,7 +6,7 @@ import com.feige.api.sc.Callback;
 import com.feige.api.srd.IServerInstance;
 import com.feige.api.srd.ServiceRegistryAndDiscovery;
 import com.feige.utils.logger.Loggers;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.srd.InstanceConvert;
 
 import java.util.ArrayList;

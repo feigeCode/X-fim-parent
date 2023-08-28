@@ -5,7 +5,7 @@ import com.feige.api.serialize.SerializedClassManager;
 import com.feige.api.serialize.Serializer;
 import com.feige.utils.json.JsonUtils;
 import com.feige.framework.annotation.Inject;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.api.context.InitializingComp;
 
 @SpiComp(interfaces = Serializer.class)

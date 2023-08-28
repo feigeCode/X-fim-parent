@@ -4,7 +4,8 @@ import com.feige.framework.api.context.CompFactory;
 import com.feige.framework.api.context.CompInjection;
 import com.feige.framework.api.context.CompNameGenerate;
 import com.feige.framework.api.context.CompPostProcessor;
-import com.feige.framework.api.spi.InstantiationStrategy;
+import com.feige.framework.api.context.InstantiationStrategy;
+import com.feige.framework.api.context.ModuleContext;
 import com.feige.framework.spi.JdkSpiCompLoader;
 import com.feige.framework.utils.AppContext;
 import com.feige.framework.utils.Configs;
@@ -16,16 +17,31 @@ import com.feige.framework.api.spi.SpiCompLoader;
 import com.feige.framework.api.spi.NoSuchInstanceException;
 import com.feige.framework.spi.ConfigSpiCompLoader;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractApplicationContext extends LifecycleAdapter implements ApplicationContext {
+
+    
     public static final String DEFAULT_LOADER_TYPE = ConfigSpiCompLoader.TYPE;
+
+    protected final Map<String, Object> registerInstanceCache = new ConcurrentHashMap<>(64);
+    
+    protected final Map<String, ModuleContext> modelContextCache = new ConcurrentHashMap<>(16);
+
+    
+    private final AtomicReference<AppState> appState = new AtomicReference<>(AppState.CREATED);
+    
     private final Environment environment;
     
     private final SpiCompLoader spiCompLoader;
     
-    private CompFactory compFactory;
+    private List<CompFactory> compFactories;
     
     private InstantiationStrategy instantiationStrategy;
     
@@ -47,13 +63,48 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
         initialize();
     }
 
-    @Override
-    public ClassLoader getClassLoader() {
-        return this.getClass().getClassLoader();
-    }
 
     public AbstractApplicationContext() {
         this(DEFAULT_LOADER_TYPE);
+    }
+
+    @Override
+    public ModuleContext findModule(String moduleName) {
+        return modelContextCache.get(moduleName);
+    }
+
+    @Override
+    public List<ModuleContext> getModules() {
+        return new ArrayList<>(modelContextCache.values());
+    }
+
+    @Override
+    public void addModule(ModuleContext module) {
+        module.initialize();
+        modelContextCache.put(module.moduleName(), module);
+    }
+
+    @Override
+    public ModuleContext removeModule(String moduleName) {
+        ModuleContext moduleContext = modelContextCache.remove(moduleName);
+        moduleContext.destroy();
+        return moduleContext;
+    }
+
+    @Override
+    public void destroy() throws IllegalStateException {
+        if (appState.compareAndSet(AppState.INITIALIZED, AppState.DESTROY)){
+            super.destroy();
+            Collection<ModuleContext> values = modelContextCache.values();
+            for (ModuleContext moduleContext : values) {
+                moduleContext.destroy();
+            }
+        }
+    }
+
+    @Override
+    public ClassLoader getClassLoader() {
+        return this.getClass().getClassLoader();
     }
 
     private Environment createEnvironment(){
@@ -73,19 +124,21 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
 
     @Override
     public void initialize() throws IllegalStateException {
-        this.environment.initialize();
-        this.compFactory = this.getSpiCompLoader().loadSpiComp(CompFactory.class);
-        this.compNameGenerate = this.getSpiCompLoader().loadSpiComp(CompNameGenerate.class);
-        this.instantiationStrategy = this.getSpiCompLoader().loadSpiComp(InstantiationStrategy.class);
-        this.compInjection = this.getSpiCompLoader().loadSpiComp(CompInjection.class);
-        this.processors = this.getSpiCompLoader().loadSpiComps(CompPostProcessor.class);
-        this.get(Configs.class);
-        this.get(AppContext.class);
+        if (appState.compareAndSet(AppState.CREATED, AppState.INITIALIZED)){
+            this.environment.initialize();
+            this.compFactories = this.getSpiCompLoader().loadSpiComps(CompFactory.class);
+            this.compNameGenerate = this.getSpiCompLoader().loadSpiComp(CompNameGenerate.class);
+            this.instantiationStrategy = this.getSpiCompLoader().loadSpiComp(InstantiationStrategy.class);
+            this.compInjection = this.getSpiCompLoader().loadSpiComp(CompInjection.class);
+            this.processors = this.getSpiCompLoader().loadSpiComps(CompPostProcessor.class);
+            this.get(Configs.class);
+            this.get(AppContext.class);
+        }
     }
 
     @Override
-    public CompFactory getCompFactory() {
-        return this.compFactory;
+    public List<CompFactory> getCompFactories() {
+        return this.compFactories;
     }
 
     @Override
@@ -120,21 +173,66 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
 
     @Override
     public void register(String instanceName, Object instance) {
-        this.compFactory.register(instanceName, instance);
+        registerInstanceCache.put(instanceName, instance);
     }
 
     @Override
-    public <T> T get(String key, Class<T> requireType, Object... args) throws NoSuchInstanceException {
-        return this.compFactory.get(key, requireType);
+    public <T> T get(String compName, Class<T> requireType, Object... args) throws NoSuchInstanceException {
+        for (CompFactory compFactory : this.compFactories) {
+            if (compFactory.isSupported(requireType)) {
+                return compFactory.get(compName, requireType);
+            }
+        }
+        throw new NoSuchInstanceException(requireType);
     }
 
     @Override
     public <T> T get(Class<T> requireType, Object... args) throws NoSuchInstanceException {
-        return this.compFactory.get(requireType);
+        for (CompFactory compFactory : this.compFactories) {
+            if (compFactory.isSupported(requireType)) {
+                return compFactory.get(requireType);
+            }
+        }
+        throw new NoSuchInstanceException(requireType);
     }
 
     @Override
     public <T> List<T> getByType(Class<T> requireType) throws NoSuchInstanceException {
-        return this.compFactory.getByType(requireType);
+        for (CompFactory compFactory : this.compFactories) {
+            if (compFactory.isSupported(requireType)) {
+                return compFactory.getByType( requireType);
+            }
+        }
+        throw new NoSuchInstanceException(requireType);
+    }
+
+    @Override
+    public boolean isGlobal(Class<?> type, String compName) {
+        for (CompFactory compFactory : this.compFactories) {
+            if (compFactory.isSupported(type)) {
+                return compFactory.isGlobal(type, compName);
+            }
+        }
+        throw new NoSuchInstanceException(type);
+    }
+
+    @Override
+    public boolean isModule(Class<?> type, String compName) {
+        for (CompFactory compFactory : this.compFactories) {
+            if (compFactory.isSupported(type)) {
+                return compFactory.isModule(type, compName);
+            }
+        }
+        throw new NoSuchInstanceException(type);
+    }
+
+    @Override
+    public boolean isOne(Class<?> type, String compName) {
+        for (CompFactory compFactory : this.compFactories) {
+            if (compFactory.isSupported(type)) {
+                return compFactory.isOne(type, compName);
+            }
+        }
+        throw new NoSuchInstanceException(type);
     }
 }

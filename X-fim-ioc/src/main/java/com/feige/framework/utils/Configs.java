@@ -1,8 +1,6 @@
 package com.feige.framework.utils;
 
 
-import com.feige.framework.annotation.Comp;
-import com.feige.framework.annotation.SpiComp;
 import com.feige.framework.api.config.Config;
 import com.feige.framework.api.context.Environment;
 import com.feige.utils.common.StringUtils;
@@ -14,7 +12,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-@Comp
 public class Configs implements EnvironmentAware  {
 
     public final static String CONFIG_FILE_KEY = "fim.path";

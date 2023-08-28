@@ -1,6 +1,6 @@
 package com.feige.cache.redis;
 
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
 import com.feige.api.constant.ServerConfigKey;

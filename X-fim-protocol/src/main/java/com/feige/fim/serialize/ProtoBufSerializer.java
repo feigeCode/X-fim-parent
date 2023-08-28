@@ -2,7 +2,7 @@ package com.feige.fim.serialize;
 
 import com.feige.api.serialize.SerializedClassManager;
 import com.feige.framework.annotation.Inject;
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.msg.Msg;
 import com.feige.api.serialize.Serializer;
 import com.feige.api.constant.ProtocolConst;

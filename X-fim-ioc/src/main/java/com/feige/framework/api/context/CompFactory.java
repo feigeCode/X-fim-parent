@@ -1,8 +1,10 @@
 package com.feige.framework.api.context;
 
+
 import com.feige.framework.api.spi.NoSuchInstanceException;
 
 import java.util.List;
+
 
 public interface CompFactory extends Lifecycle {
     /**
@@ -46,5 +48,17 @@ public interface CompFactory extends Lifecycle {
     <T> List<T> getByType(Class<T> requireType) throws NoSuchInstanceException;
     
     
-    boolean isSupported(Class<?> type);
+    default boolean isSupported(Class<?> type) {
+        return false;
+    }
+    
+    
+    boolean isGlobal(Class<?> type, String compName);
+    
+    
+    boolean isModule(Class<?> type, String compName);
+    
+    
+    boolean isOne(Class<?> type, String compName);
+    
 }

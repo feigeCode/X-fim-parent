@@ -1,6 +1,6 @@
 package com.feige.fim.serialize;
 
-import com.feige.framework.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.serialize.SerializedClassManager;
 
 
