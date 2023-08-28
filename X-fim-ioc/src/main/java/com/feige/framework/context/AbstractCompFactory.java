@@ -6,6 +6,7 @@ import com.feige.framework.api.context.ApplicationContextAware;
 import com.feige.framework.api.context.CompFactory;
 import com.feige.framework.api.context.CompNameGenerate;
 import com.feige.framework.api.context.CompPostProcessor;
+import com.feige.framework.api.context.CompRegistry;
 import com.feige.framework.api.context.EnvironmentAware;
 import com.feige.framework.api.context.InitializingComp;
 import com.feige.framework.api.context.LifecycleAdapter;
@@ -14,27 +15,22 @@ import com.feige.framework.api.spi.InstanceCreationException;
 import com.feige.framework.api.spi.InstanceCurrentlyInCreationException;
 import com.feige.framework.api.spi.SpiCompLoader;
 import com.feige.utils.clazz.ReflectionUtils;
-import com.feige.utils.common.AssertUtil;
 import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.spi.SpiScope;
 import com.feige.utils.spi.annotation.SpiComp;
 import org.slf4j.Logger;
 
-import java.util.Collections;
+
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 
 public abstract class AbstractCompFactory extends LifecycleAdapter implements CompFactory, ApplicationContextAware {
 
     protected static final Logger LOG = Loggers.LOADER;
-    private final Set<String> globalCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
-    protected final Map<String, Object> globalObjectCache = new ConcurrentHashMap<>(64);
-
+   
     
     protected ApplicationContext applicationContext;
 
@@ -54,32 +50,21 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
     protected List<CompPostProcessor> getProcessors(){
         return applicationContext.getPostProcessors();
     }
-
-    @Override
-    public void register(String instanceName, Object instance) {
-        AssertUtil.notNull(instanceName, "instanceName");
-        AssertUtil.notNull(instance, "instance");
-        synchronized (this.globalObjectCache) {
-            Object oldObject = this.globalObjectCache.get(instanceName);
-            if (oldObject != null) {
-                throw new IllegalStateException("Could not register object [" + instance +
-                        "] under instance name '" + instanceName + "': there is already object [" + oldObject + "] bound");
-            }
-            addGlobal(instanceName, instance);
-        }
-    }
     
+    protected CompRegistry getCompRegistry(){
+        return applicationContext.getCompRegistry();
+    }
 
     public boolean isGlobalCurrentlyInCreation(String instanceName) {
-        return this.globalCurrentlyInCreation.contains(instanceName);
+        return this.getCompRegistry().isGlobalCurrentlyInCreation(instanceName);
     }
 
-    protected Object getGlobal(String instanceName) {
-        return this.globalObjectCache.get(instanceName);
+    protected Object getCompFromCache(String instanceName) {
+        return this.getCompRegistry().getCompFromCache(instanceName);
     }
     
     protected <T> T createInstance(String instanceName, Class<T> cls, Object... args){
-        if (isGlobalCurrentlyInCreation(instanceName) || !this.globalCurrentlyInCreation.add(instanceName)){
+        if (isGlobalCurrentlyInCreation(instanceName) || !this.getCompRegistry().addGlobalCurrentlyInCreation(instanceName)){
             throw new InstanceCurrentlyInCreationException(cls);
         }
         try {
@@ -88,7 +73,7 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
             LOG.error("create " + cls.getName() + " instance failure:", e);
             throw new InstanceCreationException(e, cls);
         }finally {
-            this.globalCurrentlyInCreation.remove(instanceName);
+            this.getCompRegistry().removeGlobalCurrentlyInCreation(instanceName);
         }
     }
 
@@ -114,11 +99,7 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         return (T) instance;
     }
 
-    protected void addGlobal(String instanceName, Object singletonObject) {
-        synchronized (this.globalObjectCache) {
-            this.globalObjectCache.put(instanceName, singletonObject);
-        }
-    }
+  
     
 
     protected <T> T createInstance(Class<T> cls, Object... args){

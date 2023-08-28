@@ -7,14 +7,7 @@ import java.util.List;
 
 
 public interface CompFactory extends Lifecycle {
-    /**
-     * register object
-     * @param instanceName instance name
-     * @param instance object 
-     */
-    void register(String instanceName, Object instance);
-
-
+    
     /**
      * get object by compName
      * @param compName compName

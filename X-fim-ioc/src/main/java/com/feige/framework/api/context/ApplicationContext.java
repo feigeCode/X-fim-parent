@@ -6,7 +6,7 @@ import com.feige.framework.api.spi.SpiCompLoader;
 import java.util.List;
 
 
-public interface ApplicationContext extends CompFactory {
+public interface ApplicationContext extends CompFactory, CompRegistry {
 
     enum AppState {CREATED, INITIALIZED, DESTROY}
 
@@ -17,6 +17,8 @@ public interface ApplicationContext extends CompFactory {
     void addModule(ModuleContext module);
 
     ModuleContext removeModule(String moduleName);
+    
+    CompRegistry getCompRegistry();
     
     List<CompFactory> getCompFactories();
 
