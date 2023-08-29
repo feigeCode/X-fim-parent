@@ -42,8 +42,9 @@ public class SpiCompFactory extends AbstractCompFactory {
             if (instance == null){
                 Class<?> cls = this.getSpiCompLoader().get(compName, requireType);
                 instance = createInstance(compName, cls, args);
+                boolean global = this.isGlobal(instance);
                 instance = getInstanceIfNecessary(instance, requireType);
-                if (this.isGlobal(instance)){
+                if (global){
                     getCompRegistry().register(compName, instance);
                 }
             }
@@ -57,6 +58,9 @@ public class SpiCompFactory extends AbstractCompFactory {
     protected   <T> T doGetInstance(Class<T> requireType, Object... args) {
         try {
             String compName = this.getSpiCompLoader().get(requireType);
+            if (compName == null){
+                throw new NoSuchInstanceException(requireType);
+            }
             return doGetInstance(compName, requireType, args);
         }catch (Throwable e){
             throw new InstanceCreationException(e, requireType);

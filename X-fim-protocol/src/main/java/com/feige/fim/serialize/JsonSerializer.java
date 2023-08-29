@@ -1,18 +1,12 @@
 package com.feige.fim.serialize;
 
 import com.feige.api.constant.ProtocolConst;
-import com.feige.api.serialize.SerializedClassManager;
 import com.feige.api.serialize.Serializer;
 import com.feige.utils.json.JsonUtils;
-import com.feige.framework.annotation.Inject;
 import com.feige.utils.spi.annotation.SpiComp;
-import com.feige.framework.api.context.InitializingComp;
 
 @SpiComp(interfaces = Serializer.class)
-public class JsonSerializer implements Serializer, InitializingComp {
-
-    @Inject
-    private SerializedClassManager serializedClassManager;
+public class JsonSerializer implements Serializer {
     
     @Override
     public byte[] serialize(Object obj) {
@@ -27,10 +21,5 @@ public class JsonSerializer implements Serializer, InitializingComp {
     @Override
     public byte getType() {
         return ProtocolConst.JSON;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        new JsonSerializedClassInit(serializedClassManager).initialize();
     }
 }

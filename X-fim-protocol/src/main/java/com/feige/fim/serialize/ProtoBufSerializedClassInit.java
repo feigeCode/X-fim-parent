@@ -8,6 +8,7 @@ import com.feige.api.msg.FastConnectResp;
 import com.feige.api.msg.HandshakeReq;
 import com.feige.api.msg.HandshakeResp;
 import com.feige.api.msg.Msg;
+import com.feige.api.serialize.SerializedClassInit;
 import com.feige.api.serialize.SerializedClassManager;
 import com.feige.fim.msg.proto.BindClientReqProto;
 import com.feige.fim.msg.proto.ErrorRespProto;
@@ -15,15 +16,19 @@ import com.feige.fim.msg.proto.FastConnectReqProto;
 import com.feige.fim.msg.proto.FastConnectRespProto;
 import com.feige.fim.msg.proto.HandshakeReqProto;
 import com.feige.fim.msg.proto.HandshakeRespProto;
-public class ProtoBufSerializedClassInit {
+import com.feige.framework.annotation.Inject;
+import com.feige.framework.api.context.InitializingComp;
+import com.feige.utils.spi.annotation.SpiComp;
+
+@SpiComp(interfaces = SerializedClassInit.class)
+public class ProtoBufSerializedClassInit implements SerializedClassInit, InitializingComp {
     
     
-    private final SerializedClassManager serializedClassManager;
+    @Inject
+    private SerializedClassManager serializedClassManager;
+    
 
-    public ProtoBufSerializedClassInit(SerializedClassManager serializedClassManager) {
-        this.serializedClassManager = serializedClassManager;
-    }
-
+    @Override
     public void initialize() {
         generateClass();
     }
@@ -39,5 +44,10 @@ public class ProtoBufSerializedClassInit {
     
     private <T extends Msg> void generateClass(Class<T> type, Object... args){
         serializedClassManager.getClass(ProtocolConst.PROTOCOL_BUFFER, type, args == null || args.length == 0 ? null : () -> args);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.initialize();
     }
 }

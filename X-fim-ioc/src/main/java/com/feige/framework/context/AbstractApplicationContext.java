@@ -113,13 +113,14 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     @Override
     public void initialize() throws IllegalStateException {
         if (appState.compareAndSet(AppState.CREATED, AppState.INITIALIZED)){
+            this.spiCompLoader.initialize();
             this.environment.initialize();
+            this.compNameGenerate = this.getSpiCompLoader().loadSpiComp(CompNameGenerate.class);
+            this.compNameGenerate.initialize();
             this.compRegistry = this.getSpiCompLoader().loadSpiComp(CompRegistry.class);
             this.compRegistry.initialize();
             this.compFactory = this.getSpiCompLoader().loadSpiComp(CompFactory.class);
             this.compFactory.initialize();
-            this.compNameGenerate = this.getSpiCompLoader().loadSpiComp(CompNameGenerate.class);
-            this.compNameGenerate.initialize();
             this.instantiationStrategy = this.getSpiCompLoader().loadSpiComp(InstantiationStrategy.class);
             this.instantiationStrategy.initialize();
             this.compInjection = this.getSpiCompLoader().loadSpiComp(CompInjection.class);
@@ -128,8 +129,8 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
             for (CompPostProcessor processor : this.processors) {
                 processor.initialize();
             }
-            this.get(Configs.class);
-            this.get(AppContext.class);
+            Configs.setEnvironment(environment);
+            AppContext.setApplicationContext(this);
         }
     }
 

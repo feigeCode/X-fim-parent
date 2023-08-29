@@ -4,7 +4,6 @@ package com.feige.framework.utils;
 import com.feige.framework.api.config.Config;
 import com.feige.framework.api.context.Environment;
 import com.feige.utils.common.StringUtils;
-import com.feige.framework.api.context.EnvironmentAware;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +11,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-public class Configs implements EnvironmentAware  {
+public class Configs  {
 
     public final static String CONFIG_FILE_KEY = "fim.path";
     public final static String DEFAULT_CONFIG_PATH = "conf" + File.separator + "fim.";
@@ -43,8 +42,8 @@ public class Configs implements EnvironmentAware  {
     }
     private static Environment environment;
 
-    @Override
-    public void setEnvironment(Environment environment) {
+   
+    public static void setEnvironment(Environment environment) {
         Configs.environment = environment;
     }
 

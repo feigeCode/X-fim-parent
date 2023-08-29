@@ -8,17 +8,21 @@ import com.feige.api.msg.FastConnectResp;
 import com.feige.api.msg.HandshakeReq;
 import com.feige.api.msg.HandshakeResp;
 import com.feige.api.msg.Msg;
+import com.feige.api.serialize.SerializedClassInit;
 import com.feige.api.serialize.SerializedClassManager;
+import com.feige.framework.annotation.Inject;
+import com.feige.framework.api.context.InitializingComp;
+import com.feige.utils.spi.annotation.SpiComp;
 
-public class JsonSerializedClassInit {
+
+@SpiComp(interfaces = SerializedClassInit.class)
+public class JsonSerializedClassInit implements SerializedClassInit, InitializingComp {
     
-    private final SerializedClassManager serializedClassManager;
+    @Inject
+    private SerializedClassManager serializedClassManager;
 
-    public JsonSerializedClassInit(SerializedClassManager serializedClassManager) {
-        this.serializedClassManager = serializedClassManager;
-    }
-
-    public void initialize() throws Exception {
+    @Override
+    public void initialize() {
             generateClass();
         
     }
@@ -34,5 +38,10 @@ public class JsonSerializedClassInit {
     
     private <T extends Msg> void generateClass(Class<T> type, Object... args){
         serializedClassManager.getClass(ProtocolConst.JSON, type, args == null || args.length == 0 ? null : () -> args);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.initialize();
     }
 }

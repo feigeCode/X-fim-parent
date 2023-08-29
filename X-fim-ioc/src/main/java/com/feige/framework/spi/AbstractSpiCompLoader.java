@@ -1,6 +1,8 @@
 package com.feige.framework.spi;
 
 
+import com.feige.framework.api.context.CompNameGenerate;
+import com.feige.framework.context.SimpleCompNameGenerate;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.api.context.ApplicationContext;
 import com.feige.framework.api.context.ApplicationContextAware;
@@ -50,7 +52,6 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     @Override
     public void initialize() throws IllegalStateException {
         if (isInitialized.compareAndSet(false, true)){
-            this.applicationContext.initialize();
             try {
                 this.doGetImplClasses(SpiCompProvider.class);
             } catch (ClassNotFoundException e) {
@@ -118,7 +119,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
                             continue;
                         }
                         Class<?> cls = ClassUtils.forName(className, this.applicationContext.getClassLoader());
-                        if (isSpiComp(cls)){
+                        if (!isSpiComp(cls)){
                             LOG.warn(cls.getName() + " is not spiComp!");
                             continue;
                         }
@@ -164,7 +165,11 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     }
 
     private String addImplClass(Class<?> requireType, Class<?> compClass){
-        String compName = applicationContext.getCompNameGenerate().generateName(compClass);
+        CompNameGenerate compNameGenerate = applicationContext.getCompNameGenerate();
+        if (compNameGenerate == null){
+            compNameGenerate = new SimpleCompNameGenerate();
+        }
+        String compName = compNameGenerate.generateName(compClass);
         this.compNameAndImplClassCache.put(compName, compClass);
         List<String> list = this.spiTypeAndCompNamesCache.computeIfAbsent(requireType, k -> new ArrayList<>());
         list.add(compName);

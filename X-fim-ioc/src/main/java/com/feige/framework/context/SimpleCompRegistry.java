@@ -3,12 +3,14 @@ package com.feige.framework.context;
 import com.feige.framework.api.context.CompRegistry;
 import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.utils.common.AssertUtil;
+import com.feige.utils.spi.annotation.SpiComp;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+@SpiComp(interfaces = CompRegistry.class)
 public class SimpleCompRegistry extends LifecycleAdapter implements CompRegistry {
 
     private final Set<String> globalCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));

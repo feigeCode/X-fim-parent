@@ -1,19 +1,16 @@
 package com.feige.fim.serialize;
 
-import com.feige.api.serialize.SerializedClassManager;
-import com.feige.framework.annotation.Inject;
+
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.msg.Msg;
 import com.feige.api.serialize.Serializer;
 import com.feige.api.constant.ProtocolConst;
-import com.feige.framework.api.context.InitializingComp;
+
 
 
 @SpiComp(interfaces = Serializer.class)
-public class ProtoBufSerializer implements Serializer, InitializingComp {
-
-    @Inject
-    private SerializedClassManager serializedClassManager;
+public class ProtoBufSerializer implements Serializer {
+    
     
     @Override
     public byte[] serialize(Object obj) {
@@ -41,9 +38,5 @@ public class ProtoBufSerializer implements Serializer, InitializingComp {
     public byte getType() {
         return ProtocolConst.PROTOCOL_BUFFER;
     }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        new ProtoBufSerializedClassInit(serializedClassManager).initialize();
-    }
+    
 }

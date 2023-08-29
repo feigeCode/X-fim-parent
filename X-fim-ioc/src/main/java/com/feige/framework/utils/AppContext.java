@@ -1,7 +1,6 @@
 package com.feige.framework.utils;
 
 import com.feige.framework.api.context.ApplicationContext;
-import com.feige.framework.api.context.ApplicationContextAware;
 import com.feige.framework.api.spi.NoSuchInstanceException;
 
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @date: 2023/5/20 15:13<br/>
  */
 
-public class AppContext  implements ApplicationContextAware {
+public class AppContext {
 
     
     private static ApplicationContext applicationContext;
@@ -57,8 +56,7 @@ public class AppContext  implements ApplicationContextAware {
         return applicationContext.getByType(clazz);
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
+    public static void setApplicationContext(ApplicationContext applicationContext) {
         AppContext.applicationContext = applicationContext;
     }
 }
