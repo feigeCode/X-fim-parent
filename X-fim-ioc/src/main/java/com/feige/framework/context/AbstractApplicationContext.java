@@ -1,5 +1,6 @@
 package com.feige.framework.context;
 
+import com.feige.framework.api.config.ConfigFactory;
 import com.feige.framework.api.context.CompFactory;
 import com.feige.framework.api.context.CompInjection;
 import com.feige.framework.api.context.CompNameGenerate;
@@ -114,6 +115,7 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     public void initialize() throws IllegalStateException {
         if (appState.compareAndSet(AppState.CREATED, AppState.INITIALIZED)){
             this.spiCompLoader.initialize();
+            this.environment.setConfigFactory(this.spiCompLoader.loadSpiComp(ConfigFactory.class));
             this.environment.initialize();
             this.compNameGenerate = this.getSpiCompLoader().loadSpiComp(CompNameGenerate.class);
             this.compNameGenerate.initialize();
@@ -137,11 +139,19 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     @Override
     public void destroy() throws IllegalStateException {
         if (appState.compareAndSet(AppState.INITIALIZED, AppState.DESTROY)){
-            super.destroy();
-            
             Collection<ModuleContext> values = modelContextCache.values();
             for (ModuleContext moduleContext : values) {
                 moduleContext.destroy();
+            }
+            this.spiCompLoader.destroy();
+            this.environment.destroy();
+            this.compNameGenerate.destroy();
+            this.compRegistry.destroy();
+            this.compFactory.destroy();
+            this.instantiationStrategy.destroy();
+            this.compInjection.destroy();
+            for (CompPostProcessor processor : this.processors) {
+                processor.destroy();
             }
         }
     }

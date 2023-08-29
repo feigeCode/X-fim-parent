@@ -22,6 +22,7 @@ public abstract class AbstractEnvironment extends LifecycleAdapter implements En
     private Config envConfig = new EnvConfig();
     private Config appConfig = null;
     private Config memoryConfig = null;
+    private ConfigFactory configFactory;
 
     @Override
     public void initialize() throws IllegalStateException {
@@ -32,15 +33,21 @@ public abstract class AbstractEnvironment extends LifecycleAdapter implements En
         this.compositeConfig.addConfig(this.systemConfig);
         this.compositeConfig.addConfig(this.systemConfig);
         this.compositeConfig.addConfig(this.memoryConfig);
-        ServiceLoader<ConfigFactory> loader = ServiceLoader.load(ConfigFactory.class);
-        Iterator<ConfigFactory> iterator = loader.iterator();
-        if (iterator.hasNext()){
-            appConfig = iterator.next().create();
-        }else {
-            throw new RuntimeException(ConfigFactory.class.getName() + "未发现任何实现，请检查META-INF/services目录下的配置是否正常!");
-        }
+        this.appConfig = getConfigFactory().create();
         this.compositeConfig.addConfig(appConfig);
     }
+
+
+    @Override
+    public void setConfigFactory(ConfigFactory configFactory) {
+        this.configFactory = configFactory;
+    }
+
+    @Override
+    public ConfigFactory getConfigFactory() {
+        return configFactory;
+    }
+
     
     @Override
     public Object getObject(String key) {
