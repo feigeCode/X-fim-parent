@@ -41,10 +41,6 @@ public interface CompFactory extends Lifecycle {
     <T> List<T> getByType(Class<T> requireType) throws NoSuchInstanceException;
     
     
-    default boolean isSupported(Class<?> type) {
-        return false;
-    }
-    
     
     boolean isGlobal(Class<?> type, String compName);
     

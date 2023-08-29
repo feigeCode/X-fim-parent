@@ -2,8 +2,6 @@ package com.feige.framework.api.spi;
 
 
 
-import com.feige.framework.annotation.SPI;
-
 import java.util.List;
 
 /**
@@ -12,7 +10,6 @@ import java.util.List;
  * @Description: <br/>
  * @date: 2023/5/20 14:22<br/>
  */
-@SPI
 public interface SpiCompLoader {
 
     void addIgnoreImpl(String... implNames);
