@@ -43,7 +43,7 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     
     private CompRegistry compRegistry;
     
-    private List<CompFactory> compFactories;
+    private CompFactory compFactory;
     
     private InstantiationStrategy instantiationStrategy;
     
@@ -115,7 +115,7 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
         if (appState.compareAndSet(AppState.CREATED, AppState.INITIALIZED)){
             this.environment.initialize();
             this.compRegistry = this.getSpiCompLoader().loadSpiComp(CompRegistry.class);
-            this.compFactories = this.getSpiCompLoader().loadSpiComps(CompFactory.class);
+            this.compFactory = this.getSpiCompLoader().loadSpiComp(CompFactory.class);
             this.compNameGenerate = this.getSpiCompLoader().loadSpiComp(CompNameGenerate.class);
             this.instantiationStrategy = this.getSpiCompLoader().loadSpiComp(InstantiationStrategy.class);
             this.compInjection = this.getSpiCompLoader().loadSpiComp(CompInjection.class);
@@ -147,8 +147,8 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     }
 
     @Override
-    public List<CompFactory> getCompFactories() {
-        return this.compFactories;
+    public CompFactory getCompFactory() {
+        return this.compFactory;
     }
 
     @Override
@@ -193,61 +193,31 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
 
     @Override
     public <T> T get(String compName, Class<T> requireType, Object... args) throws NoSuchInstanceException {
-        for (CompFactory compFactory : this.compFactories) {
-            if (compFactory.isSupported(requireType)) {
-                return compFactory.get(compName, requireType);
-            }
-        }
-        throw new NoSuchInstanceException(requireType);
+        return compFactory.get(compName, requireType);
     }
 
     @Override
     public <T> T get(Class<T> requireType, Object... args) throws NoSuchInstanceException {
-        for (CompFactory compFactory : this.compFactories) {
-            if (compFactory.isSupported(requireType)) {
-                return compFactory.get(requireType);
-            }
-        }
-        throw new NoSuchInstanceException(requireType);
+        return compFactory.get(requireType);
     }
 
     @Override
     public <T> List<T> getByType(Class<T> requireType) throws NoSuchInstanceException {
-        for (CompFactory compFactory : this.compFactories) {
-            if (compFactory.isSupported(requireType)) {
-                return compFactory.getByType( requireType);
-            }
-        }
-        throw new NoSuchInstanceException(requireType);
+        return compFactory.getByType( requireType);
     }
 
     @Override
     public boolean isGlobal(Class<?> type, String compName) {
-        for (CompFactory compFactory : this.compFactories) {
-            if (compFactory.isSupported(type)) {
-                return compFactory.isGlobal(type, compName);
-            }
-        }
-        throw new NoSuchInstanceException(type);
+        return compFactory.isGlobal(type, compName);
     }
 
     @Override
     public boolean isModule(Class<?> type, String compName) {
-        for (CompFactory compFactory : this.compFactories) {
-            if (compFactory.isSupported(type)) {
-                return compFactory.isModule(type, compName);
-            }
-        }
-        throw new NoSuchInstanceException(type);
+        return compFactory.isModule(type, compName);
     }
 
     @Override
     public boolean isOne(Class<?> type, String compName) {
-        for (CompFactory compFactory : this.compFactories) {
-            if (compFactory.isSupported(type)) {
-                return compFactory.isOne(type, compName);
-            }
-        }
-        throw new NoSuchInstanceException(type);
+        return compFactory.isOne(type, compName);
     }
 }

@@ -20,7 +20,7 @@ public interface ApplicationContext extends CompFactory, CompRegistry {
     
     CompRegistry getCompRegistry();
     
-    List<CompFactory> getCompFactories();
+    CompFactory getCompFactory();
 
     Environment getEnvironment();
     
