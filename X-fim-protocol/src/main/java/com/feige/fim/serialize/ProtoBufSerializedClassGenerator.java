@@ -1,9 +1,22 @@
 package com.feige.fim.serialize;
 
 import com.feige.api.constant.ProtocolConst;
+import com.feige.api.msg.BindClientReq;
+import com.feige.api.msg.ErrorResp;
+import com.feige.api.msg.FastConnectReq;
+import com.feige.api.msg.FastConnectResp;
+import com.feige.api.msg.HandshakeReq;
+import com.feige.api.msg.HandshakeResp;
 import com.feige.api.msg.MsgFactory;
+import com.feige.api.serialize.ClassGen;
 import com.feige.api.serialize.MsgGen;
 import com.feige.api.serialize.SerializedClassGenerator;
+import com.feige.fim.msg.proto.BindClientReqProto;
+import com.feige.fim.msg.proto.ErrorRespProto;
+import com.feige.fim.msg.proto.FastConnectReqProto;
+import com.feige.fim.msg.proto.FastConnectRespProto;
+import com.feige.fim.msg.proto.HandshakeReqProto;
+import com.feige.fim.msg.proto.HandshakeRespProto;
 import com.feige.utils.javassist.ClassGenerator;
 import com.feige.utils.common.Pair;
 import com.feige.utils.common.StringUtils;
@@ -12,6 +25,8 @@ import com.feige.utils.spi.annotation.SpiComp;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpiComp(interfaces = SerializedClassGenerator.class)
 public class ProtoBufSerializedClassGenerator extends AbstractSerializedClassGenerator {
@@ -84,5 +99,17 @@ public class ProtoBufSerializedClassGenerator extends AbstractSerializedClassGen
     @Override
     public byte getSerializerType() {
         return ProtocolConst.PROTOCOL_BUFFER;
+    }
+
+    @Override
+    public List<ClassGen> getClassGen() {
+        List<ClassGen> classGens = new ArrayList<>();
+        classGens.add(new ClassGen(HandshakeReq.TYPE, HandshakeReqProto.class, HandshakeReqProto.Builder.class));
+        classGens.add(new ClassGen(HandshakeResp.TYPE, HandshakeRespProto.class, HandshakeRespProto.Builder.class));
+        classGens.add(new ClassGen(FastConnectReq.TYPE, FastConnectReqProto.class, FastConnectReqProto.Builder.class));
+        classGens.add(new ClassGen(FastConnectResp.TYPE, FastConnectRespProto.class, FastConnectRespProto.Builder.class));
+        classGens.add(new ClassGen(BindClientReq.TYPE, BindClientReqProto.class, BindClientReqProto.Builder.class));
+        classGens.add(new ClassGen(ErrorResp.TYPE, ErrorRespProto.class, ErrorRespProto.Builder.class));
+        return classGens;
     }
 }

@@ -3,6 +3,7 @@ package com.feige.fim.serialize;
 import com.feige.api.annotation.MsgComp;
 import com.feige.api.msg.Msg;
 import com.feige.api.msg.MsgFactory;
+import com.feige.api.serialize.ClassGen;
 import com.feige.api.serialize.MsgGen;
 import com.feige.api.serialize.SerializedClassGenerator;
 import com.feige.api.serialize.SerializedClassManager;
@@ -34,11 +35,20 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
         List<SerializedClassGenerator> serializedClassGenerators = applicationContext.getByType(SerializedClassGenerator.class);
         for (SerializedClassGenerator serializedClassGenerator : serializedClassGenerators) {
             this.registerClassGenerator(serializedClassGenerator);
+            this.classGen(serializedClassGenerator);
         }
         
         List<Serializer> serializers = applicationContext.getByType(Serializer.class);
         for (Serializer serializer : serializers) {
             this.register(serializer);
+        }
+    }
+    
+    private void classGen(SerializedClassGenerator serializedClassGenerator){
+        List<ClassGen> classGens = serializedClassGenerator.getClassGen();
+        for (ClassGen classGen : classGens) {
+            Object[] args = classGen.getArgs();
+            this.getClass(serializedClassGenerator.getSerializerType(), classGen.getMsgClass(), args == null || args.length == 0 ? null : () -> args);
         }
     }
 

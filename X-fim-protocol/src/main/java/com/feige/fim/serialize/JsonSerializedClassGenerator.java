@@ -1,7 +1,14 @@
 package com.feige.fim.serialize;
 
 import com.feige.api.constant.ProtocolConst;
+import com.feige.api.msg.BindClientReq;
+import com.feige.api.msg.ErrorResp;
+import com.feige.api.msg.FastConnectReq;
+import com.feige.api.msg.FastConnectResp;
+import com.feige.api.msg.HandshakeReq;
+import com.feige.api.msg.HandshakeResp;
 import com.feige.api.msg.MsgFactory;
+import com.feige.api.serialize.ClassGen;
 import com.feige.api.serialize.MsgGen;
 import com.feige.api.serialize.SerializedClassGenerator;
 import com.feige.utils.javassist.ClassGenerator;
@@ -11,6 +18,9 @@ import com.feige.utils.spi.annotation.SpiComp;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+
 @SpiComp(interfaces = SerializedClassGenerator.class)
 public class JsonSerializedClassGenerator extends AbstractSerializedClassGenerator {
 
@@ -56,4 +66,19 @@ public class JsonSerializedClassGenerator extends AbstractSerializedClassGenerat
     public byte getSerializerType() {
         return ProtocolConst.JSON;
     }
+
+    @Override
+    public List<ClassGen> getClassGen() {
+        List<ClassGen> classGens = new ArrayList<>();
+        classGens.add(new ClassGen(HandshakeReq.TYPE));
+        classGens.add(new ClassGen(HandshakeResp.TYPE));
+        classGens.add(new ClassGen(FastConnectReq.TYPE));
+        classGens.add(new ClassGen(FastConnectResp.TYPE));
+        classGens.add(new ClassGen(BindClientReq.TYPE));
+        classGens.add(new ClassGen(ErrorResp.TYPE));
+        return classGens;
+    }
+    
+    
+    
 }
