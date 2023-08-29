@@ -1,6 +1,6 @@
 package com.feige.framework.api.context;
 
-public interface CompRegistry {
+public interface CompRegistry extends Lifecycle {
 
     /**
      * register object
@@ -15,6 +15,13 @@ public interface CompRegistry {
      * @return
      */
     Object getCompFromCache(String compName);
+
+    /**
+     * remove object
+     * @param compName compName
+     * @return
+     */
+    Object removeCompFromCache(String compName);
 
 
     default boolean isGlobalCurrentlyInCreation(String compName){

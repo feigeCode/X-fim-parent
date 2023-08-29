@@ -2,7 +2,7 @@ package com.feige.framework.api.context;
 
 import com.feige.utils.clazz.ClassUtils;
 
-public interface InstantiationStrategy {
+public interface InstantiationStrategy extends Lifecycle{
     
     <T> T instantiate(Class<T> cl, Object... args);
     

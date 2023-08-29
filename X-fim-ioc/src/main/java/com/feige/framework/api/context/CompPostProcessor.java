@@ -1,7 +1,7 @@
 package com.feige.framework.api.context;
 
 
-public interface CompPostProcessor {
+public interface CompPostProcessor extends Lifecycle {
 
     /**
      * invokeAwareMethods之后invokeInitMethods之前

@@ -129,6 +129,7 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     public void destroy() throws IllegalStateException {
         if (appState.compareAndSet(AppState.INITIALIZED, AppState.DESTROY)){
             super.destroy();
+            
             Collection<ModuleContext> values = modelContextCache.values();
             for (ModuleContext moduleContext : values) {
                 moduleContext.destroy();
@@ -189,6 +190,11 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     @Override
     public Object getCompFromCache(String compName) {
         return getCompRegistry().getCompFromCache(compName);
+    }
+
+    @Override
+    public Object removeCompFromCache(String compName) {
+        return getCompRegistry().removeCompFromCache(compName);
     }
 
     @Override

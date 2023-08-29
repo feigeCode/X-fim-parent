@@ -2,6 +2,8 @@ package com.feige.framework.api.spi;
 
 
 
+import com.feige.framework.api.context.Lifecycle;
+
 import java.util.List;
 
 /**
@@ -10,7 +12,7 @@ import java.util.List;
  * @Description: <br/>
  * @date: 2023/5/20 14:22<br/>
  */
-public interface SpiCompLoader {
+public interface SpiCompLoader extends Lifecycle {
 
     void addIgnoreImpl(String... implNames);
     

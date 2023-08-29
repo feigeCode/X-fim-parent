@@ -1,6 +1,6 @@
 package com.feige.framework.context;
 
-import com.feige.utils.spi.annotation.Comp;
+import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.api.context.CompNameGenerate;
 import com.feige.utils.common.StringUtils;
@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @SpiComp(interfaces = CompNameGenerate.class)
-public class SimpleCompNameGenerate implements CompNameGenerate {
+public class SimpleCompNameGenerate extends LifecycleAdapter implements CompNameGenerate {
 
     protected final Map<Class<?>, String> compNameCache = new ConcurrentHashMap<>(64);
     @Override
@@ -23,10 +23,7 @@ public class SimpleCompNameGenerate implements CompNameGenerate {
     }
 
     private String generateInstanceName(Class<?> cls){
-        String name = getNameByComp(cls);
-        if (StringUtils.isBlank(name)){
-            name = getNameBySpiComp(cls);
-        }
+        String name = getNameBySpiComp(cls);
         if (StringUtils.isBlank(name)){
             name = StringUtils.uncapitalize(cls.getSimpleName());
         }
@@ -44,15 +41,5 @@ public class SimpleCompNameGenerate implements CompNameGenerate {
         }
         return null;
     }
-
-    private String getNameByComp(Class<?> cls){
-        Comp comp = cls.getAnnotation(Comp.class);
-        if (comp != null){
-            String value = comp.value();
-            if (StringUtils.isNotBlank(value)){
-                return value;
-            }
-        }
-        return null;
-    }
+    
 }

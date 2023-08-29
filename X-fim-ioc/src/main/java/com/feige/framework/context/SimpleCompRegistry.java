@@ -1,6 +1,7 @@
 package com.feige.framework.context;
 
 import com.feige.framework.api.context.CompRegistry;
+import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.utils.common.AssertUtil;
 
 import java.util.Collections;
@@ -8,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SimpleCompRegistry implements CompRegistry {
+public class SimpleCompRegistry extends LifecycleAdapter implements CompRegistry {
 
     private final Set<String> globalCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
     protected final Map<String, Object> globalObjectCache = new ConcurrentHashMap<>(64);
@@ -31,6 +32,11 @@ public class SimpleCompRegistry implements CompRegistry {
     @Override
     public Object getCompFromCache(String compName) {
         return this.globalObjectCache.get(compName);
+    }
+
+    @Override
+    public Object removeCompFromCache(String compName) {
+        return this.globalObjectCache.remove(compName);
     }
 
     @Override
