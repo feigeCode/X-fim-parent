@@ -115,11 +115,19 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
         if (appState.compareAndSet(AppState.CREATED, AppState.INITIALIZED)){
             this.environment.initialize();
             this.compRegistry = this.getSpiCompLoader().loadSpiComp(CompRegistry.class);
+            this.compRegistry.initialize();
             this.compFactory = this.getSpiCompLoader().loadSpiComp(CompFactory.class);
+            this.compFactory.initialize();
             this.compNameGenerate = this.getSpiCompLoader().loadSpiComp(CompNameGenerate.class);
+            this.compNameGenerate.initialize();
             this.instantiationStrategy = this.getSpiCompLoader().loadSpiComp(InstantiationStrategy.class);
+            this.instantiationStrategy.initialize();
             this.compInjection = this.getSpiCompLoader().loadSpiComp(CompInjection.class);
+            this.compInjection.initialize();
             this.processors = this.getSpiCompLoader().loadSpiComps(CompPostProcessor.class);
+            for (CompPostProcessor processor : this.processors) {
+                processor.initialize();
+            }
             this.get(Configs.class);
             this.get(AppContext.class);
         }
