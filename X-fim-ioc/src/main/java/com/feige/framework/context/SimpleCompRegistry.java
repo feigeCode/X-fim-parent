@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @SpiComp(interfaces = CompRegistry.class)
 public class SimpleCompRegistry extends LifecycleAdapter implements CompRegistry {
 
-    private final Set<String> globalCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
     protected final Map<String, Object> globalObjectCache = new ConcurrentHashMap<>(64);
 
     @Override
@@ -27,7 +26,6 @@ public class SimpleCompRegistry extends LifecycleAdapter implements CompRegistry
                         "] under component name '" + compName + "': there is already object [" + oldObject + "] bound");
             }
             this.globalObjectCache.put(compName, instance);
-            removeGlobalCurrentlyInCreation(compName);
         }
     }
     
@@ -41,19 +39,5 @@ public class SimpleCompRegistry extends LifecycleAdapter implements CompRegistry
         return this.globalObjectCache.remove(compName);
     }
 
-    @Override
-    public boolean isGlobalCurrentlyInCreation(String compName) {
-        return this.globalCurrentlyInCreation.contains(compName);
-    }
 
-
-    @Override
-    public boolean addGlobalCurrentlyInCreation(String compName) {
-        return this.globalCurrentlyInCreation.add(compName);
-    }
-
-    @Override
-    public boolean removeGlobalCurrentlyInCreation(String compName) {
-        return this.globalCurrentlyInCreation.remove(compName);
-    }
 }

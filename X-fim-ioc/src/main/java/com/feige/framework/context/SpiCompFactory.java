@@ -10,12 +10,16 @@ import com.feige.utils.spi.annotation.SpiComp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SpiComp(interfaces = CompFactory.class)
 public class SpiCompFactory extends AbstractCompFactory {
 
-    
+    protected final Map<String, SpiCompProvider<?>> providerObjectCache = new ConcurrentHashMap<>(16);
+
+
     @Override
     public <T> T get(String compName, Class<T> requireType, Object... args) throws NoSuchInstanceException {
         AssertUtil.notBlank(compName, "compName");
@@ -36,15 +40,29 @@ public class SpiCompFactory extends AbstractCompFactory {
         return doGetInstances(type);
     }
 
+
+    @Override
+    protected Object getCompFromCache(String compName) {
+        Object instance =  super.getCompFromCache(compName);
+        if (instance == null){
+            instance = providerObjectCache.get(compName);
+        }
+        return instance;
+    }
+
     protected  <T> T doGetInstance(String compName, Class<T> requireType, Object... args) {
         try {
+            boolean isRegistered = true;
             Object instance = getCompFromCache(compName);
             if (instance == null){
                 Class<?> cls = this.getSpiCompLoader().get(compName, requireType);
                 instance = createInstance(compName, cls, args);
+                isRegistered = false;
+            }
+            if (instance != null){
                 boolean global = this.isGlobal(instance);
-                instance = getInstanceIfNecessary(instance, requireType);
-                if (global){
+                instance = getInstanceIfNecessary(compName, instance, requireType);
+                if (global && isRegistered){
                     getCompRegistry().register(compName, instance);
                 }
             }
@@ -83,11 +101,12 @@ public class SpiCompFactory extends AbstractCompFactory {
     }
 
 
-    protected <T> T getInstanceIfNecessary(Object instance, Class<T> requireType) {
+    protected <T> T getInstanceIfNecessary(String compName, Object instance, Class<T> requireType) {
         if (!(instance instanceof SpiCompProvider) || SpiCompProvider.class.isAssignableFrom(requireType)){
             return (T) instance;
         }
         SpiCompProvider<T> spiCompProvider = (SpiCompProvider<T>) instance;
+        providerObjectCache.put(compName, spiCompProvider);
         return spiCompProvider.getInstance();
     }
     

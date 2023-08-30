@@ -22,16 +22,19 @@ import com.feige.utils.spi.annotation.SpiComp;
 import org.slf4j.Logger;
 
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public abstract class AbstractCompFactory extends LifecycleAdapter implements CompFactory, ApplicationContextAware {
 
     protected static final Logger LOG = Loggers.LOADER;
-   
-    
+
+    private final Set<String> globalCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
+
     protected ApplicationContext applicationContext;
 
     @Override
@@ -54,17 +57,14 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
     protected CompRegistry getCompRegistry(){
         return applicationContext.getCompRegistry();
     }
-
-    public boolean isGlobalCurrentlyInCreation(String instanceName) {
-        return this.getCompRegistry().isGlobalCurrentlyInCreation(instanceName);
-    }
+    
 
     protected Object getCompFromCache(String instanceName) {
         return this.getCompRegistry().getCompFromCache(instanceName);
     }
     
     protected <T> T createInstance(String instanceName, Class<T> cls, Object... args){
-        if (isGlobalCurrentlyInCreation(instanceName) || !this.getCompRegistry().addGlobalCurrentlyInCreation(instanceName)){
+        if (isGlobalCurrentlyInCreation(instanceName) || !this.addGlobalCurrentlyInCreation(instanceName)){
             throw new InstanceCurrentlyInCreationException(cls);
         }
         try {
@@ -73,7 +73,7 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
             LOG.error("create " + cls.getName() + " instance failure:", e);
             throw new InstanceCreationException(e, cls);
         }finally {
-            this.getCompRegistry().removeGlobalCurrentlyInCreation(instanceName);
+            this.removeGlobalCurrentlyInCreation(instanceName);
         }
     }
 
@@ -194,6 +194,20 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         if (instance instanceof EnvironmentAware){
             ((EnvironmentAware) instance).setEnvironment(applicationContext.getEnvironment());
         }
+    }
+
+
+    public boolean isGlobalCurrentlyInCreation(String compName) {
+        return this.globalCurrentlyInCreation.contains(compName);
+    }
+
+
+    public boolean addGlobalCurrentlyInCreation(String compName) {
+        return this.globalCurrentlyInCreation.add(compName);
+    }
+
+    public boolean removeGlobalCurrentlyInCreation(String compName) {
+        return this.globalCurrentlyInCreation.remove(compName);
     }
     
 }

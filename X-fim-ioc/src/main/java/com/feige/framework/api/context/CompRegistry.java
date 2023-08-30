@@ -22,18 +22,5 @@ public interface CompRegistry extends Lifecycle {
      * @return
      */
     Object removeCompFromCache(String compName);
-
-
-    default boolean isGlobalCurrentlyInCreation(String compName){
-        return false;
-    }
-    
-    default boolean addGlobalCurrentlyInCreation(String compName){
-        return true;
-    }
-
-    default boolean removeGlobalCurrentlyInCreation(String compName){
-        return true;
-    }
     
 }
