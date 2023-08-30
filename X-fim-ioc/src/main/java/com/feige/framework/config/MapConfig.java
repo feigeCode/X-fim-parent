@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MapConfig implements Config {
+    protected int order;
     protected final Map<String, Object> config;
     protected final Map<String, Object> memoryMapConfig = new ConcurrentHashMap<>();
 
@@ -49,6 +50,11 @@ public class MapConfig implements Config {
 
     @Override
     public int order() {
-        return 2;
+        return this.order;
+    }
+
+    @Override
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

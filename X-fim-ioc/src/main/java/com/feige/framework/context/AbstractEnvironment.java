@@ -6,14 +6,10 @@ import com.feige.framework.api.context.Environment;
 import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.framework.config.CompositeConfig;
 import com.feige.framework.config.EnvConfig;
-import com.feige.framework.config.MemoryMapConfig;
 import com.feige.framework.config.SystemConfig;
 
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractEnvironment extends LifecycleAdapter implements Environment {
@@ -23,16 +19,16 @@ public abstract class AbstractEnvironment extends LifecycleAdapter implements En
     private Config envConfig = new EnvConfig();
     private Config appConfig = null;
     private ConfigFactory configFactory;
-    private final Map<String, Config> moduleConfigMap = new ConcurrentHashMap<>();
 
     @Override
     public void initialize() throws IllegalStateException {
+        this.compositeConfig = new CompositeConfig();
         this.systemConfig = new SystemConfig();
         this.envConfig = new EnvConfig();
-        this.compositeConfig = new CompositeConfig();
+        this.appConfig = getConfigFactory().create();
+        this.appConfig.setOrder(2);
         this.compositeConfig.addConfig(this.systemConfig);
         this.compositeConfig.addConfig(this.envConfig);
-        this.appConfig = getConfigFactory().create();
         this.compositeConfig.addConfig(appConfig);
     }
 

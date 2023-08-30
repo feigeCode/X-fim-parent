@@ -1,7 +1,5 @@
 package com.feige.framework.context;
 
-import com.feige.framework.api.context.ApplicationContext;
-import com.feige.framework.api.context.ApplicationContextAware;
 import com.feige.framework.api.context.Lifecycle;
 import com.feige.framework.api.context.ModuleContext;
 import lombok.extern.slf4j.Slf4j;
@@ -12,28 +10,24 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class ModuleClassLoader extends URLClassLoader implements Lifecycle, ApplicationContextAware {
-    private static final Pattern VALID_CLASS_PATTERN = Pattern.compile("service|dao|mapper|pojo|entity|po|dto|vo|listener|controller|common|api|utils|core|util|quartz");
+public class ModuleClassLoader extends URLClassLoader implements Lifecycle {
+    private static final Pattern VALID_CLASS_PATTERN = Pattern.compile("fim|service|dao|mapper|pojo|entity|po|dto|vo|listener|controller|common|api|utils|core|util|quartz|handle");
     private final List<JarFile> jarFiles = new ArrayList<>();
     private final Map<String, Class<?>> classCacheMap = new HashMap<>();
-    private final Set<String> associatedModuleNames = new HashSet<>();
-    private final String moduleName;
-    private ApplicationContext applicationContext;
+    private final ModuleContext moduleContext;
 
-    public ModuleClassLoader(String moduleName, URL[] urls, ClassLoader parent) {
-        super(urls, parent);
-        this.moduleName = moduleName;
+    public ModuleClassLoader(ModuleContext moduleContext) {
+        super(moduleContext.getURLs(), moduleContext.getParent().getClassLoader());
+        this.moduleContext = moduleContext;
         try {
-            for (URL url : urls) {
+            for (URL url : moduleContext.getURLs()) {
                 if (url.getPath().endsWith(".jar")) {
                     jarFiles.add(new JarFile(url.getPath()));
                 }
@@ -45,17 +39,14 @@ public class ModuleClassLoader extends URLClassLoader implements Lifecycle, Appl
     }
 
     
-    public Class<?> getClassFromCache(String name) throws ClassNotFoundException {
-        if (this.classCacheMap.containsKey(name)) {
-            return this.classCacheMap.get(name);
-        }
-        throw new ClassNotFoundException(name);
+    public Class<?> getClassFromCache(String name) {
+        return this.classCacheMap.get(name);
     }
 
 
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
-        Class<?> clazz = classCacheMap.get(name);
+        Class<?> clazz = getClassFromCache(name);
         if (clazz != null){
             return clazz;
         }
@@ -66,9 +57,9 @@ public class ModuleClassLoader extends URLClassLoader implements Lifecycle, Appl
         try {
             return super.loadClass(name);
         }catch (Throwable t){
-            for (String moduleName : associatedModuleNames) {
-                ModuleContext moduleContext = applicationContext.findModule(moduleName);
-                clazz = moduleContext.getClassLoader().loadClass(name);
+            for (String moduleName : moduleContext.getAssociatedModuleNames()) {
+                ModuleContext associatedModuleContext = moduleContext.getParent().findModule(moduleName);
+                clazz = associatedModuleContext.getClassLoader().loadClass(name);
                 if (clazz != null){
                     return clazz;
                 }
@@ -118,23 +109,5 @@ public class ModuleClassLoader extends URLClassLoader implements Lifecycle, Appl
             throw new IllegalStateException(e);
         }
     }
-
-    public String getModuleName() {
-        return this.moduleName;
-    }
     
-
-    
-    public Set<String> getAssociatedModuleNames() {
-        return associatedModuleNames;
-    }
-
-    public void addAssociatedModuleNames(Set<String> associatedModuleNames){
-        this.associatedModuleNames.addAll(associatedModuleNames);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
 }

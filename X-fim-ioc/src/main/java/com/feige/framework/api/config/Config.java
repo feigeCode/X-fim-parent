@@ -164,6 +164,14 @@ public interface Config {
      * @return order
      */
     int order();
+
+    /**
+     * set order
+     * @param order
+     */
+    default void setOrder(int order) {
+        
+    }
     
     default <T> T convert(Class<T> cls, String key, T defaultValue){
         Object answer = this.getObject(key);
