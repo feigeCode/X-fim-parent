@@ -60,9 +60,12 @@ public class SpiCompFactory extends AbstractCompFactory {
                 isRegistered = false;
             }
             if (instance != null){
-                boolean global = this.isGlobal(instance);
+                boolean global = false;
+                if (!isRegistered){
+                    global = this.isGlobal(instance);
+                }
                 instance = getInstanceIfNecessary(compName, instance, requireType);
-                if (global && isRegistered){
+                if (global){
                     getCompRegistry().register(compName, instance);
                 }
             }
