@@ -31,7 +31,7 @@ public class RedisCacheManagerFactory implements CacheManagerFactory, SpiCompPro
 
     public RedissonClient getRedissonClient() throws InvocationTargetException, IllegalAccessException {
         String type = env.getString(ServerConfigKey.REDIS_TYPE);
-        Map<String, Object> map = env.getMap(ServerConfigKey.REDIS_CONFIG);
+        Map<String, Object> map = env.getMapByKeyPrefix(ServerConfigKey.REDIS_CONFIG);
         Config config = new Config();
         switch (type) {
             case TYPE_SINGLE:
