@@ -7,18 +7,19 @@ import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.framework.api.context.ModuleContext;
 import com.feige.framework.api.context.ModuleEnvironment;
 import com.feige.framework.config.CompositeConfig;
+import com.feige.framework.utils.Configs;
+
+import java.io.File;
 
 
 public abstract class AbstractModuleEnvironment extends LifecycleAdapter implements ModuleEnvironment {
     
     private final ModuleContext moduleContext;
-    private final Environment parent;
     private CompositeConfig compositeConfig;
     private Config moduleConfig;
     private ConfigFactory configFactory;
 
-    public AbstractModuleEnvironment(Environment parent, ModuleContext moduleContext) {
-        this.parent = parent;
+    public AbstractModuleEnvironment(ModuleContext moduleContext) {
         this.moduleContext = moduleContext;
     }
 
@@ -37,25 +38,24 @@ public abstract class AbstractModuleEnvironment extends LifecycleAdapter impleme
         return 0;
     }
     
-
     @Override
     public Config getSystemConfig() {
-        return parent.getSystemConfig();
+        return getParent().getSystemConfig();
     }
 
     @Override
     public Config getAppConfig() {
-        return parent.getAppConfig();
+        return getParent().getAppConfig();
     }
 
     @Override
     public Config getEnvConfig() {
-        return parent.getEnvConfig();
+        return getParent().getEnvConfig();
     }
 
     @Override
     public Config getCompositeConfig() {
-        return parent.getCompositeConfig();
+        return getParent().getCompositeConfig();
     }
 
    
@@ -63,10 +63,13 @@ public abstract class AbstractModuleEnvironment extends LifecycleAdapter impleme
     @Override
     public void initialize() throws IllegalStateException {
         this.compositeConfig = new CompositeConfig();
-        this.moduleConfig = getConfigFactory().create();
-        this.moduleConfig.setOrder(parent.order() - 1);
+        String moduleName = moduleContext.moduleName();
+        String modulesDir = getParent().getString(Configs.ConfigKey.MODULES_DIR_KEY, Configs.DEFAULT_MODULES_DIR);
+        modulesDir = modulesDir + moduleName + File.separator + "fim-module.";
+        this.moduleConfig = getConfigFactory().create(Configs.getFile(modulesDir));
+        this.moduleConfig.setOrder(getParent().order() - 1);
         this.compositeConfig.addConfig(this.moduleConfig);
-        this.compositeConfig.addConfig(parent);
+        this.compositeConfig.addConfig(getParent());
     }
     
     @Override
@@ -82,6 +85,6 @@ public abstract class AbstractModuleEnvironment extends LifecycleAdapter impleme
 
     @Override
     public Environment getParent() {
-        return parent;
+        return moduleContext.getParent().getEnvironment();
     }
 }

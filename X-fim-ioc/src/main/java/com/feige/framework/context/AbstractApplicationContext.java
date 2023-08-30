@@ -35,35 +35,33 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     
     protected final Map<String, ModuleContext> modelContextCache = new ConcurrentHashMap<>(16);
 
+
+    protected final AtomicReference<AppState> appState = new AtomicReference<>(AppState.CREATED);
+
+    protected final Environment environment;
+
+    protected final SpiCompLoader spiCompLoader;
     
-    private final AtomicReference<AppState> appState = new AtomicReference<>(AppState.CREATED);
-    
-    private final Environment environment;
-    
-    private final SpiCompLoader spiCompLoader;
-    
-    private CompRegistry compRegistry;
-    
-    private CompFactory compFactory;
-    
-    private InstantiationStrategy instantiationStrategy;
-    
-    private CompInjection compInjection;
-    
-    private CompNameGenerate compNameGenerate;
-    
-    private List<CompPostProcessor> processors;
+    protected CompRegistry compRegistry;
+
+    protected CompFactory compFactory;
+
+    protected InstantiationStrategy instantiationStrategy;
+
+    protected CompInjection compInjection;
+
+    protected CompNameGenerate compNameGenerate;
+
+    protected List<CompPostProcessor> processors;
 
     public AbstractApplicationContext(Environment environment, SpiCompLoader spiCompLoader) {
         this.environment = environment;
         this.spiCompLoader = spiCompLoader;
-        initialize();
     }
 
     public AbstractApplicationContext(String type) {
         this.spiCompLoader = createSpiLoader(type);
         this.environment = createEnvironment();
-        initialize();
     }
 
 
@@ -96,10 +94,11 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
 
    
 
-    private Environment createEnvironment(){
+    protected Environment createEnvironment(){
         return new StandardEnvironment();
     }
-    private SpiCompLoader createSpiLoader(String type){
+    
+    protected SpiCompLoader createSpiLoader(String type){
         SpiCompLoader spiCompLoader;
         if (Objects.equals(type, ConfigSpiCompLoader.TYPE)){
             spiCompLoader = new ConfigSpiCompLoader(this);

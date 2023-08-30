@@ -1,4 +1,6 @@
 fim:
+  modules:
+    dir: E:\project\my\X-fim-parent\
   log: 
     dir: /logs
     level: debug

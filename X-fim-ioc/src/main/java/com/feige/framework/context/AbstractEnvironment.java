@@ -7,10 +7,11 @@ import com.feige.framework.api.context.LifecycleAdapter;
 import com.feige.framework.config.CompositeConfig;
 import com.feige.framework.config.EnvConfig;
 import com.feige.framework.config.SystemConfig;
+import com.feige.framework.utils.Configs;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractEnvironment extends LifecycleAdapter implements Environment {
 
@@ -25,13 +26,13 @@ public abstract class AbstractEnvironment extends LifecycleAdapter implements En
         this.compositeConfig = new CompositeConfig();
         this.systemConfig = new SystemConfig();
         this.envConfig = new EnvConfig();
-        this.appConfig = getConfigFactory().create();
+        String path = this.systemConfig.getString(Configs.CONFIG_FILE_KEY, Configs.DEFAULT_CONFIG_PATH);
+        this.appConfig = getConfigFactory().create(Configs.getFile(path));
         this.appConfig.setOrder(2);
         this.compositeConfig.addConfig(this.systemConfig);
         this.compositeConfig.addConfig(this.envConfig);
         this.compositeConfig.addConfig(appConfig);
     }
-
 
     @Override
     public void setConfigFactory(ConfigFactory configFactory) {

@@ -16,7 +16,7 @@ public class Configs  {
 
     public final static String CONFIG_FILE_KEY = "fim.path";
     public final static String DEFAULT_CONFIG_PATH = "conf" + File.separator + "fim.";
-    
+    public static final String DEFAULT_MODULES_DIR = "modules" + File.separator;
 
     public interface ConfigKey {
         /**
@@ -26,6 +26,7 @@ public class Configs  {
         String LOG_LEVEL = "fim.log.level";
         String LOG_CONF_PATH = "fim.log.conf-path";
 
+        String MODULES_DIR_KEY = "fim.modules.dir";
 
         /**
          * codec key
@@ -42,8 +43,29 @@ public class Configs  {
         
     }
     private static Environment environment;
-
-   
+    
+    
+    public static File getFile(String path) {
+        String absolutePath = new File("").getAbsolutePath();
+        File file;
+        
+        if (Configs.DEFAULT_CONFIG_PATH.equals(path) || Configs.DEFAULT_MODULES_DIR.equals(path)){
+            path = absolutePath + File.separator + path;
+        }
+        if (!path.endsWith("yaml") && !path.endsWith("yml")) {
+            if (path.charAt(path.length() - 1) != '.') {
+                path = path + ".";
+            }
+            File f = new File(path + "yaml");
+            if (f.exists()) {
+                path += "yaml";
+            }else {
+                path += "yml";
+            }
+        }
+        file = new File(path);
+        return file;
+    }
     public static void setEnvironment(Environment environment) {
         Configs.environment = environment;
     }
