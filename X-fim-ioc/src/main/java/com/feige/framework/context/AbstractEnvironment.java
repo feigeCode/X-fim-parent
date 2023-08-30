@@ -9,6 +9,7 @@ import com.feige.framework.config.EnvConfig;
 import com.feige.framework.config.MemoryMapConfig;
 import com.feige.framework.config.SystemConfig;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,18 +22,16 @@ public abstract class AbstractEnvironment extends LifecycleAdapter implements En
     private Config systemConfig = new SystemConfig();
     private Config envConfig = new EnvConfig();
     private Config appConfig = null;
-    private Config memoryConfig = null;
     private ConfigFactory configFactory;
+    private final Map<String, Config> moduleConfigMap = new ConcurrentHashMap<>();
 
     @Override
     public void initialize() throws IllegalStateException {
         this.systemConfig = new SystemConfig();
         this.envConfig = new EnvConfig();
         this.compositeConfig = new CompositeConfig();
-        this.memoryConfig = new MemoryMapConfig(new ConcurrentHashMap<>());
         this.compositeConfig.addConfig(this.systemConfig);
-        this.compositeConfig.addConfig(this.systemConfig);
-        this.compositeConfig.addConfig(this.memoryConfig);
+        this.compositeConfig.addConfig(this.envConfig);
         this.appConfig = getConfigFactory().create();
         this.compositeConfig.addConfig(appConfig);
     }
@@ -73,17 +72,17 @@ public abstract class AbstractEnvironment extends LifecycleAdapter implements En
     public Config getEnvConfig() {
         return this.envConfig;
     }
-
-    @Override
-    public Config getMemoryConfig() {
-        return this.memoryConfig;
-    }
+    
 
     @Override
     public Config getCompositeConfig() {
         return this.compositeConfig;
     }
 
+    @Override
+    public void setConfig(String key, Object value) {
+        this.appConfig.setConfig(key, value);
+    }
 
     @Override
     public Integer getInt(String key, Integer defaultValue) {
@@ -135,19 +134,15 @@ public abstract class AbstractEnvironment extends LifecycleAdapter implements En
         return compositeConfig.getBoolean(key);
     }
 
+
     @Override
-    public Map<String, Object> getMap(String key) {
-        return compositeConfig.getMap(key);
+    public Map<String, Object> getMapByKeyPrefix(String key) {
+        return compositeConfig.getMapByKeyPrefix(key);
     }
 
     @Override
-    public List<String> getList(String key) {
-        return compositeConfig.getList(key);
-    }
-
-    @Override
-    public String[] getArr(String key) {
-        return compositeConfig.getArr(key);
+    public Collection<String> getCollection(String key) {
+        return compositeConfig.getCollection(key);
     }
 
     @Override

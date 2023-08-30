@@ -2,6 +2,9 @@ package com.feige.framework.api.config;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -108,13 +111,25 @@ public interface Config {
         return getBoolean(key, null);
     }
 
+    default Map<String, Object> convertMap(Map<String, ?> map, String key){
+        Map<String, Object> result = new HashMap<>();
+        for (Map.Entry<String, ?> entry : map.entrySet()) {
+            String entryKey = entry.getKey();
+            Object value = entry.getValue();
+            if (entryKey.startsWith(key + ".")){
+                result.put(entryKey.substring(key.length() + 1), value);
+            }
+        }
+        return result;
+    }
+    
     /**
      * get map config
      * @param key key
      * @return map config
      */
-    default Map<String, Object> getMap(String key) {
-        return convert(Map.class, key, null);
+    default Map<String, Object> getMapByKeyPrefix(String key) {
+        return Collections.emptyMap();
     }
 
     /**
@@ -122,20 +137,10 @@ public interface Config {
      * @param key key
      * @return list config
      */
-    default List<String> getList(String key) {
-        return convert(List.class, key, null);
+    default Collection<String> getCollection(String key){
+        return Collections.emptyList();
     }
-
-    /**
-     * get array config
-     * @param key key
-     * @return array config
-     */
-    default String[] getArr(String key) {
-        return convert(String[].class, key, null);
-    }
-
-
+    
     /**
      * get object
      * @param key key

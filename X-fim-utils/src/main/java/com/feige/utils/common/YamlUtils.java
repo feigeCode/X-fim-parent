@@ -83,7 +83,7 @@ public class YamlUtils {
                 Map<String, Object> map = (Map<String, Object>)value;
                 buildFlattenedMap(result, map, key);
             } else if (value instanceof Collection) {
-                Collection<Object> collection = (Collection<Object>) value;
+//                Collection<Object> collection = (Collection<Object>) value;
 //                if (collection.isEmpty()) {
 //                    result.put(key, "");
 //                } else {

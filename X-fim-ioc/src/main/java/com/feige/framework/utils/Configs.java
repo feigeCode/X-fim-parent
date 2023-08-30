@@ -8,6 +8,7 @@ import com.feige.utils.common.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -55,9 +56,6 @@ public class Configs  {
         return environment.getCompositeConfig();
     }
 
-    public static Config getMemoryConfig(){
-        return environment.getMemoryConfig();
-    }
     public static Config getSystemConfig(){
         return environment.getSystemConfig();
     }
@@ -170,8 +168,8 @@ public class Configs  {
      * @param key key
      * @return map config
      */
-    public static Map<String, Object> getMap(String key){
-        return getCompositeConfig().getMap(key);
+    public static Map<String, Object> getMapByKeyPrefix(String key){
+        return getCompositeConfig().getMapByKeyPrefix(key);
     }
 
     /**
@@ -179,17 +177,8 @@ public class Configs  {
      * @param key key
      * @return list config
      */
-    public static List<String> getList(String key){
-        return getCompositeConfig().getList(key);
-    }
-
-    /**
-     * get array config
-     * @param key key
-     * @return array config
-     */
-    public static String[] getArr(String key){
-        return getCompositeConfig().getArr(key);
+    public static Collection<String> getCollection(String key){
+        return getCompositeConfig().getCollection(key);
     }
     
     public static <T>  T get(Class<T> clazz, String key){
@@ -197,7 +186,7 @@ public class Configs  {
     }
 
     public static void setConfig(String key, Object value){
-        getMemoryConfig().setConfig(key, value);
+        getAppConfig().setConfig(key, value);
     }
     /**
      * get stream by config key

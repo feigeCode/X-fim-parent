@@ -5,6 +5,7 @@ import com.feige.utils.common.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,14 +31,15 @@ public class CompositeConfig implements Config {
     }
 
     @Override
-    public Map<String, Object> getMap(String key) {
+    public Map<String, Object> getMapByKeyPrefix(String key) {
+        Map<String, Object> result = new HashMap<>();
         for (Config config : configList) {
-            Map<String, Object> value = config.getMap(key);
-            if (value != null){
-                return value;
+            Map<String, Object> map = config.getMapByKeyPrefix(key);
+            if (map != null){
+                result.putAll(map);
             }
         }
-        return null;
+        return result;
     }
 
     @Override
