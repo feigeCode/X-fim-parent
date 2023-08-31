@@ -5,7 +5,7 @@ import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.Client;
-import com.feige.framework.api.spi.SpiCompProvider;
+import com.feige.framework.spi.api.SpiCompProvider;
 
 
 @SpiComp(value="nettyClient", interfaces = SpiCompProvider.class, provideTypes = Client.class)

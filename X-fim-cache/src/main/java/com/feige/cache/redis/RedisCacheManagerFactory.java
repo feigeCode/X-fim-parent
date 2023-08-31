@@ -4,9 +4,9 @@ import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
 import com.feige.api.constant.ServerConfigKey;
-import com.feige.framework.api.context.Environment;
-import com.feige.framework.api.context.EnvironmentAware;
-import com.feige.framework.api.spi.SpiCompProvider;
+import com.feige.framework.env.api.Environment;
+import com.feige.framework.aware.EnvironmentAware;
+import com.feige.framework.spi.api.SpiCompProvider;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.redisson.Redisson;

@@ -1,7 +1,7 @@
 package com.feige.framework.utils;
 
-import com.feige.framework.api.context.ApplicationContext;
-import com.feige.framework.api.spi.NoSuchInstanceException;
+import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.spi.api.NoSuchInstanceException;
 
 
 import java.util.List;

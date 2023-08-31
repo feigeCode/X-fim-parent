@@ -5,7 +5,7 @@ import com.feige.api.sc.Client;
 import com.feige.fim.config.ClientConfig;
 import com.feige.utils.javassist.ClassGenerator;
 import com.feige.utils.crypto.CryptoUtils;
-import com.feige.framework.api.context.ApplicationContext;
+import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.context.StandardApplicationContext;
 import com.feige.framework.spi.ConfigSpiCompLoader;
 import com.feige.framework.utils.Configs;

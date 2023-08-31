@@ -12,7 +12,7 @@ import com.feige.api.handler.SessionHandler;
 import com.feige.fim.handler.AbstractSessionHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
-import com.feige.framework.api.context.Environment;
+import com.feige.framework.env.api.Environment;
 import com.feige.framework.utils.Configs;
 
 import org.bouncycastle.util.encoders.Base64;

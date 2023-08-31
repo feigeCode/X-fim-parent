@@ -2,6 +2,7 @@ package com.feige.fim;
 
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
+import com.feige.framework.module.StandardModuleContext;
 import com.feige.framework.spi.JdkSpiCompLoader;
 import com.feige.utils.javassist.ClassGenerator;
 import com.feige.framework.context.StandardApplicationContext;
@@ -22,6 +23,9 @@ public class NettyServer {
         ClassGenerator.setDebugDump("E:\\project\\my\\X-fim-parent\\X-fim-test\\target\\classes");
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         StandardApplicationContext applicationContext = new StandardApplicationContext(JdkSpiCompLoader.TYPE);
+        applicationContext.initialize();
+        StandardModuleContext testModule = new StandardModuleContext(applicationContext, "test");
+        applicationContext.addModule(testModule);
         final ServerProvider serverProvider = applicationContext.get("tcp", ServerProvider.class);
         Server server = serverProvider.get();
         boolean start = server.syncStart();

@@ -1,9 +1,9 @@
 package com.feige.framework.context;
 
-import com.feige.framework.api.context.CompFactory;
-import com.feige.framework.api.spi.InstanceCreationException;
-import com.feige.framework.api.spi.NoSuchInstanceException;
-import com.feige.framework.api.spi.SpiCompProvider;
+import com.feige.framework.context.api.CompFactory;
+import com.feige.framework.spi.api.InstanceCreationException;
+import com.feige.framework.spi.api.NoSuchInstanceException;
+import com.feige.framework.spi.api.SpiCompProvider;
 import com.feige.utils.common.AssertUtil;
 import com.feige.utils.spi.SpiScope;
 import com.feige.utils.spi.annotation.SpiComp;

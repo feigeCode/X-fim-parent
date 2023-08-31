@@ -2,9 +2,7 @@ package com.feige.fim.handler;
 
 
 import com.feige.api.handler.MsgHandler;
-import com.feige.api.serialize.SerializedClassGenerator;
 import com.feige.api.serialize.SerializedClassManager;
-import com.feige.api.serialize.Serializer;
 import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.annotation.Inject;
 import com.feige.api.handler.MsgDispatcher;
@@ -12,8 +10,8 @@ import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.api.context.ApplicationContextAware;
-import com.feige.framework.api.context.ApplicationContext;
+import com.feige.framework.aware.ApplicationContextAware;
+import com.feige.framework.context.api.ApplicationContext;
 
 import java.util.List;
 

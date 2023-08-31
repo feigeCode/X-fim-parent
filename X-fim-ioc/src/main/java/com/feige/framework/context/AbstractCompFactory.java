@@ -1,19 +1,19 @@
 package com.feige.framework.context;
 
 import com.feige.framework.annotation.InitMethod;
-import com.feige.framework.api.context.ApplicationContext;
-import com.feige.framework.api.context.ApplicationContextAware;
-import com.feige.framework.api.context.CompFactory;
-import com.feige.framework.api.context.CompNameGenerate;
-import com.feige.framework.api.context.CompPostProcessor;
-import com.feige.framework.api.context.CompRegistry;
-import com.feige.framework.api.context.EnvironmentAware;
-import com.feige.framework.api.context.InitializingComp;
-import com.feige.framework.api.context.LifecycleAdapter;
-import com.feige.framework.api.context.SpiCompLoaderAware;
-import com.feige.framework.api.spi.InstanceCreationException;
-import com.feige.framework.api.spi.InstanceCurrentlyInCreationException;
-import com.feige.framework.api.spi.SpiCompLoader;
+import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.aware.ApplicationContextAware;
+import com.feige.framework.context.api.CompFactory;
+import com.feige.framework.context.api.CompNameGenerate;
+import com.feige.framework.context.api.CompPostProcessor;
+import com.feige.framework.registry.CompRegistry;
+import com.feige.framework.aware.EnvironmentAware;
+import com.feige.framework.context.api.InitializingComp;
+import com.feige.framework.context.api.LifecycleAdapter;
+import com.feige.framework.aware.SpiCompLoaderAware;
+import com.feige.framework.spi.api.InstanceCreationException;
+import com.feige.framework.spi.api.InstanceCurrentlyInCreationException;
+import com.feige.framework.spi.api.SpiCompLoader;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
@@ -60,7 +60,7 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
     
 
     protected Object getCompFromCache(String instanceName) {
-        return this.getCompRegistry().getCompFromCache(instanceName);
+        return applicationContext.getCompFromCache(instanceName);
     }
     
     protected <T> T createInstance(String instanceName, Class<T> cls, Object... args){

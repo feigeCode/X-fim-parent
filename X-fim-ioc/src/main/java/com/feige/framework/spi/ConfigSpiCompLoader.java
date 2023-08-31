@@ -2,7 +2,7 @@ package com.feige.framework.spi;
 
 
 
-import com.feige.framework.api.context.ApplicationContext;
+import com.feige.framework.context.api.ApplicationContext;
 import com.feige.utils.spi.SpiConfigsLoader;
 
 import java.util.List;

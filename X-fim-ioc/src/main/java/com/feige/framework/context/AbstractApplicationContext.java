@@ -1,22 +1,23 @@
 package com.feige.framework.context;
 
-import com.feige.framework.api.config.ConfigFactory;
-import com.feige.framework.api.context.CompFactory;
-import com.feige.framework.api.context.CompInjection;
-import com.feige.framework.api.context.CompNameGenerate;
-import com.feige.framework.api.context.CompPostProcessor;
-import com.feige.framework.api.context.CompRegistry;
-import com.feige.framework.api.context.InstantiationStrategy;
-import com.feige.framework.api.context.ModuleContext;
+import com.feige.framework.env.StandardEnvironment;
+import com.feige.framework.env.api.ConfigFactory;
+import com.feige.framework.context.api.CompFactory;
+import com.feige.framework.inject.CompInjection;
+import com.feige.framework.context.api.CompNameGenerate;
+import com.feige.framework.context.api.CompPostProcessor;
+import com.feige.framework.registry.CompRegistry;
+import com.feige.framework.context.api.InstantiationStrategy;
+import com.feige.framework.module.api.ModuleContext;
 import com.feige.framework.spi.JdkSpiCompLoader;
 import com.feige.framework.utils.AppContext;
 import com.feige.framework.utils.Configs;
 import com.feige.utils.logger.Loggers;
-import com.feige.framework.api.context.ApplicationContext;
-import com.feige.framework.api.context.Environment;
-import com.feige.framework.api.context.LifecycleAdapter;
-import com.feige.framework.api.spi.SpiCompLoader;
-import com.feige.framework.api.spi.NoSuchInstanceException;
+import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.env.api.Environment;
+import com.feige.framework.context.api.LifecycleAdapter;
+import com.feige.framework.spi.api.SpiCompLoader;
+import com.feige.framework.spi.api.NoSuchInstanceException;
 import com.feige.framework.spi.ConfigSpiCompLoader;
 
 import java.util.ArrayList;

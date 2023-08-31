@@ -1,16 +1,16 @@
 package com.feige.framework.spi;
 
 
-import com.feige.framework.api.context.CompNameGenerate;
+import com.feige.framework.context.api.CompNameGenerate;
 import com.feige.framework.context.SimpleCompNameGenerate;
 import com.feige.utils.spi.annotation.SpiComp;
-import com.feige.framework.api.context.ApplicationContext;
-import com.feige.framework.api.context.ApplicationContextAware;
-import com.feige.framework.api.context.EnvironmentAware;
-import com.feige.framework.api.context.LifecycleAdapter;
-import com.feige.framework.api.context.SpiCompLoaderAware;
-import com.feige.framework.api.spi.SpiCompLoader;
-import com.feige.framework.api.spi.SpiCompProvider;
+import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.aware.ApplicationContextAware;
+import com.feige.framework.aware.EnvironmentAware;
+import com.feige.framework.context.api.LifecycleAdapter;
+import com.feige.framework.aware.SpiCompLoaderAware;
+import com.feige.framework.spi.api.SpiCompLoader;
+import com.feige.framework.spi.api.SpiCompProvider;
 import com.feige.utils.clazz.ClassUtils;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.common.AssertUtil;

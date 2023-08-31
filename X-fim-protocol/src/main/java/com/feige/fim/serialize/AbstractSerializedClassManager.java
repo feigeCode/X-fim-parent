@@ -11,8 +11,8 @@ import com.feige.api.serialize.Serializer;
 import com.feige.utils.common.AssertUtil;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.framework.annotation.InitMethod;
-import com.feige.framework.api.context.ApplicationContext;
-import com.feige.framework.api.context.ApplicationContextAware;
+import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.aware.ApplicationContextAware;
 
 import java.lang.reflect.Method;
 import java.util.List;

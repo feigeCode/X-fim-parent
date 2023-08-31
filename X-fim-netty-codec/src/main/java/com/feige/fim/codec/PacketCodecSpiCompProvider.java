@@ -3,7 +3,7 @@ package com.feige.fim.codec;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
 import com.feige.api.codec.Codec;
-import com.feige.framework.api.spi.SpiCompProvider;
+import com.feige.framework.spi.api.SpiCompProvider;
 import com.feige.framework.utils.Configs.ConfigKey;
 
 
