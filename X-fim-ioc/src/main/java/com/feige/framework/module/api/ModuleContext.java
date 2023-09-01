@@ -8,11 +8,7 @@ import java.util.Set;
 
 public interface ModuleContext extends ApplicationContext {
     
-    ApplicationContext getParent();
-    
-    
     String moduleName();
-    
     
     URL[] getURLs();
     

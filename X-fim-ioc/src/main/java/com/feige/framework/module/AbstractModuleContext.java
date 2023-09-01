@@ -16,6 +16,7 @@ import com.feige.framework.spi.api.SpiCompLoader;
 import com.feige.framework.context.AbstractApplicationContext;
 import com.feige.framework.utils.Configs;
 import com.feige.utils.common.AssertUtil;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -26,7 +27,7 @@ import java.util.Set;
 
 public abstract class AbstractModuleContext extends AbstractApplicationContext implements ModuleContext {
     
-    private final ApplicationContext parent;
+    
     private final String moduleName;
     private ModuleClassLoader moduleClassLoader;
 
@@ -39,11 +40,6 @@ public abstract class AbstractModuleContext extends AbstractApplicationContext i
     public AbstractModuleContext(ApplicationContext parent, String moduleName) {
         this.parent = parent;
         this.moduleName = moduleName;
-    }
-
-    @Override
-    public ApplicationContext getParent() {
-        return parent;
     }
 
     @Override
@@ -119,31 +115,7 @@ public abstract class AbstractModuleContext extends AbstractApplicationContext i
     public Set<String> getAssociatedModuleNames() {
         return new HashSet<>();
     }
-
-
-    @Override
-    public Object getCompFromCache(String compName) {
-        Object comp = super.getCompFromCache(compName);
-        if (comp == null){
-            comp = getParent().getCompFromCache(compName);
-        }
-        return comp;
-    }
-
-    @Override
-    public <T> T get(String compName, Class<T> requireType, Object... args) throws NoSuchInstanceException {
-        return super.get(compName, requireType, args);
-    }
-
-    @Override
-    public <T> T get(Class<T> requireType, Object... args) throws NoSuchInstanceException {
-        return super.get(requireType, args);
-    }
-
-    @Override
-    public <T> List<T> getByType(Class<T> requireType) throws NoSuchInstanceException {
-        return super.getByType(requireType);
-    }
+    
 
     @Override
     public boolean isGlobal(Class<?> type, String compName) {

@@ -6,6 +6,7 @@ import com.feige.framework.context.api.CompFactory;
 import com.feige.framework.inject.CompInjection;
 import com.feige.framework.context.api.CompNameGenerate;
 import com.feige.framework.context.api.CompPostProcessor;
+import com.feige.framework.module.api.ModuleRepository;
 import com.feige.framework.registry.CompRegistry;
 import com.feige.framework.context.api.InstantiationStrategy;
 import com.feige.framework.module.api.ModuleContext;
@@ -30,12 +31,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractApplicationContext extends LifecycleAdapter implements ApplicationContext {
 
+    protected ApplicationContext parent;
     
     public static final String DEFAULT_LOADER_TYPE = ConfigSpiCompLoader.TYPE;
-
-    
-    protected final Map<String, ModuleContext> modelContextCache = new ConcurrentHashMap<>(16);
-
 
     protected final AtomicReference<AppState> appState = new AtomicReference<>(AppState.CREATED);
 
@@ -54,6 +52,8 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     protected CompNameGenerate compNameGenerate;
 
     protected List<CompPostProcessor> processors;
+    
+    protected ModuleRepository moduleRepository;
 
     public AbstractApplicationContext(Environment environment, SpiCompLoader spiCompLoader) {
         this.environment = environment;
@@ -71,29 +71,29 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     }
 
     @Override
+    public ModuleRepository getModuleRepository() {
+        return moduleRepository;
+    }
+
+    @Override
     public ModuleContext findModule(String moduleName) {
-        return modelContextCache.get(moduleName);
+        return moduleRepository.findModule(moduleName);
     }
 
     @Override
     public List<ModuleContext> getModules() {
-        return new ArrayList<>(modelContextCache.values());
+        return moduleRepository.getModules();
     }
 
     @Override
     public void addModule(ModuleContext module) {
-        module.initialize();
-        modelContextCache.put(module.moduleName(), module);
+        moduleRepository.addModule(module);
     }
 
     @Override
     public ModuleContext removeModule(String moduleName) {
-        ModuleContext moduleContext = modelContextCache.remove(moduleName);
-        moduleContext.destroy();
-        return moduleContext;
+        return moduleRepository.removeModule(moduleName);
     }
-
-   
 
     protected Environment createEnvironment(){
         return new StandardEnvironment();
@@ -127,6 +127,8 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
             this.instantiationStrategy.initialize();
             this.compInjection = this.getSpiCompLoader().loadSpiComp(CompInjection.class);
             this.compInjection.initialize();
+            this.moduleRepository = this.getSpiCompLoader().loadSpiComp(ModuleRepository.class);
+            this.moduleRepository.initialize();
             this.processors = this.getSpiCompLoader().loadSpiComps(CompPostProcessor.class);
             for (CompPostProcessor processor : this.processors) {
                 processor.initialize();
@@ -136,24 +138,11 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
         }
     }
 
+   
+
     @Override
-    public void destroy() throws IllegalStateException {
-        if (appState.compareAndSet(AppState.INITIALIZED, AppState.DESTROY)){
-            Collection<ModuleContext> values = modelContextCache.values();
-            for (ModuleContext moduleContext : values) {
-                moduleContext.destroy();
-            }
-            this.spiCompLoader.destroy();
-            this.environment.destroy();
-            this.compNameGenerate.destroy();
-            this.compRegistry.destroy();
-            this.compFactory.destroy();
-            this.instantiationStrategy.destroy();
-            this.compInjection.destroy();
-            for (CompPostProcessor processor : this.processors) {
-                processor.destroy();
-            }
-        }
+    public ApplicationContext getParent() {
+        return parent;
     }
 
     @Override
@@ -208,7 +197,11 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
 
     @Override
     public Object getCompFromCache(String compName) {
-        return getCompRegistry().getCompFromCache(compName);
+        Object comp = getCompRegistry().getCompFromCache(compName);
+        if (comp == null && getParent() != null){
+            comp = getParent().getCompFromCache(compName);
+        }
+        return comp;
     }
 
     @Override
@@ -244,5 +237,22 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
     @Override
     public boolean isOne(Class<?> type, String compName) {
         return compFactory.isOne(type, compName);
+    }
+
+    @Override
+    public void destroy() throws IllegalStateException {
+        if (appState.compareAndSet(AppState.INITIALIZED, AppState.DESTROY)){
+            this.spiCompLoader.destroy();
+            this.environment.destroy();
+            this.compNameGenerate.destroy();
+            this.compRegistry.destroy();
+            this.compFactory.destroy();
+            this.instantiationStrategy.destroy();
+            this.compInjection.destroy();
+            this.moduleRepository.destroy();
+            for (CompPostProcessor processor : this.processors) {
+                processor.destroy();
+            }
+        }
     }
 }

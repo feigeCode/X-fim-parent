@@ -15,6 +15,7 @@ import com.feige.framework.spi.api.InstanceCreationException;
 import com.feige.framework.spi.api.InstanceCurrentlyInCreationException;
 import com.feige.framework.spi.api.SpiCompLoader;
 import com.feige.utils.clazz.ReflectionUtils;
+import com.feige.utils.common.AssertUtil;
 import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.spi.SpiScope;
@@ -128,18 +129,37 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
     
     
     private boolean isEqual(Class<?> type, String compName, SpiScope scope){
+        Class<?> cls = null;
         try {
-            Class<?> cls = getSpiCompLoader().get(compName, type);
-            SpiComp spiComp = AnnotationUtils.findAnnotation(cls, SpiComp.class);
-            return Objects.equals(spiComp.scope(), scope);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            cls = getSpiCompLoader().get(compName, type);
+        } catch (ClassNotFoundException ignored) {
+            
         }
+        if (cls == null){
+            ApplicationContext parent = applicationContext.getParent();
+            if (parent != null){
+                try {
+                    cls = parent.getSpiCompLoader().get(compName, type);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        if (cls == null){
+            throw new RuntimeException(type.getName() + " not found " + compName);
+        }
+        SpiComp spiComp = AnnotationUtils.findAnnotation(cls, SpiComp.class);
+        return Objects.equals(spiComp.scope(), scope);
     }
 
     public boolean isGlobal(Object instance){
         SpiComp spiComp = AnnotationUtils.findAnnotation(instance.getClass(), SpiComp.class);
         return Objects.equals(spiComp.scope(), SpiScope.GLOBAL);
+    }
+
+    public boolean isModule(Object instance){
+        SpiComp spiComp = AnnotationUtils.findAnnotation(instance.getClass(), SpiComp.class);
+        return Objects.equals(spiComp.scope(), SpiScope.MODULE);
     }
     
 

@@ -4,9 +4,6 @@ import com.feige.framework.env.api.Config;
 import com.feige.framework.env.api.ConfigFactory;
 import com.feige.framework.env.api.Environment;
 import com.feige.framework.context.api.LifecycleAdapter;
-import com.feige.framework.env.CompositeConfig;
-import com.feige.framework.env.EnvConfig;
-import com.feige.framework.env.SystemConfig;
 import com.feige.framework.utils.Configs;
 
 import java.util.Collection;

@@ -3,6 +3,7 @@ package com.feige.framework.spi;
 
 import com.feige.framework.context.api.CompNameGenerate;
 import com.feige.framework.context.SimpleCompNameGenerate;
+import com.feige.framework.module.api.ModuleContext;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.aware.ApplicationContextAware;
@@ -17,6 +18,7 @@ import com.feige.utils.common.AssertUtil;
 import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.order.OrderClassComparator;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
@@ -53,7 +55,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     public void initialize() throws IllegalStateException {
         if (isInitialized.compareAndSet(false, true)){
             try {
-                this.doGetImplClasses(SpiCompProvider.class);
+                this.doLoadImplClasses(SpiCompProvider.class);
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException(e);
             }
@@ -87,10 +89,10 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
 
 
     protected Class<?> doGetImplClass(String compName, Class<?> requireType) throws ClassNotFoundException {
-        Class<?> cls = this.compNameAndImplClassCache.get(compName);
+        Class<?> cls = this.getImplClassFormCache(compName, requireType);
         if (cls == null){
             doGetImplClasses(requireType);
-            cls = this.compNameAndImplClassCache.get(compName);
+            cls = this.getImplClassFormCache(compName, requireType);
         }
         return cls;
     }
@@ -105,36 +107,88 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
         this.lockMap.remove(requireType);
     }
 
-    protected <T> List<String> doGetImplClasses(Class<T> requireType) throws ClassNotFoundException {
+    protected Class<?> getImplClassFromParent(String compName, Class<?> requireType) throws ClassNotFoundException {
+        ApplicationContext parent = applicationContext.getParent();
+        if (parent != null){
+            return parent.getSpiCompLoader().get(compName, requireType);
+        }
+        return null;
+    }
+
+    protected Class<?> getImplClassFormCache(String compName, Class<?> requireType) {
+        Class<?> cls = this.compNameAndImplClassCache.get(compName);
+        if (cls == null){
+            try {
+                cls = this.getImplClassFromParent(compName, requireType);
+            }catch (Throwable ignored){
+            }
+        }
+        return cls;
+    }
+    
+    protected List<String> getImplClassesFromParent(Class<?> requireType) throws ClassNotFoundException {
+        ApplicationContext parent = applicationContext.getParent();
+        if (parent != null){
+            return parent.getSpiCompLoader().getByType(requireType);
+        }
+        return null;
+    }
+    
+    protected List<String> getImplClassesFormCache(Class<?> requireType) {
         List<String> compNames = this.spiTypeAndCompNamesCache.get(requireType);
         if (compNames == null){
+            try {
+                compNames = this.getImplClassesFromParent(requireType);
+                if (CollectionUtils.isEmpty(compNames)) {
+                    compNames = null;
+                }
+            }catch (Throwable ignored){
+            }
+        }
+        return compNames;
+    }
+    
+    protected List<String> doLoadImplClasses(Class<?> requireType) throws ClassNotFoundException {
+        List<String> compNames = new ArrayList<>();
+        List<Class<?>> classes = new ArrayList<>();
+        List<String> list = this.doLoadSpiImplClasses(requireType);
+        for (String className : list) {
+            if (this.ignoredClasses.contains(className)) {
+                continue;
+            }
+            Class<?> cls = ClassUtils.forName(className, this.applicationContext.getClassLoader());
+            if (SpiCompProvider.class.isAssignableFrom(cls) && !cls.getClassLoader().equals(this.applicationContext.getClassLoader())){
+                continue;
+            }
+            if (!isSpiComp(cls)){
+                LOG.warn(cls.getName() + " is not spiComp!");
+                continue;
+            }
+            classes.add(cls);
+        }
+        classes.sort(OrderClassComparator.getInstance());
+        for (Class<?> cls : classes) {
+            String compName = addImplClass(requireType, cls);
+            compNames.add(compName);
+        }
+        return compNames;
+    }
+
+    protected <T> List<String> doGetImplClasses(Class<T> requireType) throws ClassNotFoundException {
+        List<String> compNames = this.getImplClassesFormCache(requireType);
+        if (compNames == null){
             synchronized (this.getLock(requireType)){
-                compNames = this.spiTypeAndCompNamesCache.get(requireType);
+                compNames = this.getImplClassesFormCache(requireType);
                 if (compNames == null){
-                    compNames = new ArrayList<>();
-                    List<Class<?>> classes = new ArrayList<>();
-                    List<String> list = this.doLoadSpiImplClasses(requireType);
-                    for (String className : list) {
-                        if (this.ignoredClasses.contains(className)) {
-                            continue;
-                        }
-                        Class<?> cls = ClassUtils.forName(className, this.applicationContext.getClassLoader());
-                        if (!isSpiComp(cls)){
-                            LOG.warn(cls.getName() + " is not spiComp!");
-                            continue;
-                        }
-                        classes.add(cls);
-                    }
-                    classes.sort(OrderClassComparator.getInstance());
-                    for (Class<?> cls : classes) {
-                        String compName = addImplClass(requireType, cls);
-                        compNames.add(compName);
-                    }
+                    compNames = doLoadImplClasses(requireType);
                 }
             }
             this.removeLock(requireType);
         }
         List<String> providerNames = this.providerTypeAndCompNamesCache.getOrDefault(requireType, Collections.emptyList());
+        if (CollectionUtils.isEmpty(providerNames)){
+            return compNames;
+        }
         compNames.addAll(providerNames);
         return compNames.stream()
                 .sorted((c1, c2) -> {
