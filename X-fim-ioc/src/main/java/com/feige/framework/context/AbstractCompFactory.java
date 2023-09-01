@@ -151,8 +151,8 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         SpiComp spiComp = AnnotationUtils.findAnnotation(cls, SpiComp.class);
         return Objects.equals(spiComp.scope(), scope);
     }
-
-    public boolean isGlobal(String compName, Object instance){
+    
+    protected SpiComp getSpiComp(String compName, Object instance){
         SpiComp spiComp = AnnotationUtils.findAnnotation(instance.getClass(), SpiComp.class);
         if (spiComp == null){
             try {
@@ -162,11 +162,16 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
                 throw new RuntimeException(e);
             }
         }
+        return spiComp;
+    }
+
+    public boolean isGlobal(String compName, Object instance){
+        SpiComp spiComp = getSpiComp(compName, instance);
         return Objects.equals(spiComp.scope(), SpiScope.GLOBAL);
     }
 
     public boolean isModule(String compName, Object instance){
-        SpiComp spiComp = AnnotationUtils.findAnnotation(instance.getClass(), SpiComp.class);
+        SpiComp spiComp = getSpiComp(compName, instance);
         return Objects.equals(spiComp.scope(), SpiScope.MODULE);
     }
     

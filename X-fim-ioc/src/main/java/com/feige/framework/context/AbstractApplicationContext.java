@@ -20,6 +20,7 @@ import com.feige.framework.context.api.LifecycleAdapter;
 import com.feige.framework.spi.api.SpiCompLoader;
 import com.feige.framework.spi.api.NoSuchInstanceException;
 import com.feige.framework.spi.ConfigSpiCompLoader;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -211,17 +212,29 @@ public abstract class AbstractApplicationContext extends LifecycleAdapter implem
 
     @Override
     public <T> T get(String compName, Class<T> requireType, Object... args) throws NoSuchInstanceException {
-        return compFactory.get(compName, requireType);
+        T t = compFactory.get(compName, requireType);
+        if (t == null && getParent() != null){
+            t = getParent().get(compName, requireType, args);
+        }
+        return t;
     }
 
     @Override
     public <T> T get(Class<T> requireType, Object... args) throws NoSuchInstanceException {
-        return compFactory.get(requireType);
+        T t = compFactory.get(requireType);
+        if (t == null && getParent() != null){
+            t = getParent().get(requireType, args);
+        }
+        return t;
     }
 
     @Override
     public <T> List<T> getByType(Class<T> requireType) throws NoSuchInstanceException {
-        return compFactory.getByType( requireType);
+        List<T> ts = compFactory.getByType(requireType);
+        if (CollectionUtils.isEmpty(ts) && getParent() != null){
+            ts = getParent().getByType(requireType);
+        }
+        return ts;
     }
 
     @Override

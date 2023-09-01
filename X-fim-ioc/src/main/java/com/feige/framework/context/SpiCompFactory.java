@@ -1,6 +1,5 @@
 package com.feige.framework.context;
 
-import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.context.api.CompFactory;
 import com.feige.framework.spi.api.InstanceCreationException;
 import com.feige.framework.spi.api.NoSuchInstanceException;
@@ -49,33 +48,11 @@ public class SpiCompFactory extends AbstractCompFactory {
         }
         return instance;
     }
-    
-    protected Object getCompFromParentCache(String compName, Class<?> requireType){
-        ApplicationContext parent = applicationContext.getParent();
-        if (parent != null){
-            return parent.get(compName, requireType);
-        }
-        return null;
-    }
-
-    protected Object getCompFromCache(String compName, Class<?> requireType){
-        Object comp = this.getCompFromCache(compName);
-        if (comp == null){
-            comp = this.getCompFromParentCache(compName, requireType);
-            // 存储到子组件中
-            if (comp != null && this.isModule(compName, comp)){
-                if (getCompRegistry().getCompFromCache(compName) == null) {
-                    getCompRegistry().register(compName, comp);
-                }
-            }
-        }
-        return comp;
-    }
 
     protected  <T> T doGetInstance(String compName, Class<T> requireType, Object... args) {
         try {
             boolean isRegistered = true;
-            Object instance = getCompFromCache(compName, requireType);
+            Object instance = getCompFromCache(compName);
             if (instance == null){
                 Class<?> cls = this.getSpiCompLoader().get(compName, requireType);
                 instance = createInstance(compName, cls, args);

@@ -3,7 +3,6 @@ package com.feige.framework.spi;
 
 import com.feige.framework.context.api.CompNameGenerate;
 import com.feige.framework.context.SimpleCompNameGenerate;
-import com.feige.framework.module.api.ModuleContext;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.aware.ApplicationContextAware;
@@ -157,7 +156,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
                 continue;
             }
             Class<?> cls = ClassUtils.forName(className, this.applicationContext.getClassLoader());
-            if (SpiCompProvider.class.isAssignableFrom(cls) && !cls.getClassLoader().equals(this.applicationContext.getClassLoader())){
+            if (!cls.getClassLoader().equals(this.applicationContext.getClassLoader())){
                 continue;
             }
             if (!isSpiComp(cls)){
