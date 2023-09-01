@@ -14,8 +14,8 @@ import com.feige.framework.aware.SpiCompLoaderAware;
 import com.feige.framework.spi.api.InstanceCreationException;
 import com.feige.framework.spi.api.InstanceCurrentlyInCreationException;
 import com.feige.framework.spi.api.SpiCompLoader;
+import com.feige.framework.spi.api.SpiCompProvider;
 import com.feige.utils.clazz.ReflectionUtils;
-import com.feige.utils.common.AssertUtil;
 import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.spi.SpiScope;
@@ -152,12 +152,20 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         return Objects.equals(spiComp.scope(), scope);
     }
 
-    public boolean isGlobal(Object instance){
+    public boolean isGlobal(String compName, Object instance){
         SpiComp spiComp = AnnotationUtils.findAnnotation(instance.getClass(), SpiComp.class);
+        if (spiComp == null){
+            try {
+                Class<?> spiCls = getSpiCompLoader().get(compName, SpiCompProvider.class);
+                spiComp = AnnotationUtils.findAnnotation(spiCls, SpiComp.class);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return Objects.equals(spiComp.scope(), SpiScope.GLOBAL);
     }
 
-    public boolean isModule(Object instance){
+    public boolean isModule(String compName, Object instance){
         SpiComp spiComp = AnnotationUtils.findAnnotation(instance.getClass(), SpiComp.class);
         return Objects.equals(spiComp.scope(), SpiScope.MODULE);
     }

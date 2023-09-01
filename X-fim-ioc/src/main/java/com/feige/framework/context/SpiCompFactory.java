@@ -63,7 +63,7 @@ public class SpiCompFactory extends AbstractCompFactory {
         if (comp == null){
             comp = this.getCompFromParentCache(compName, requireType);
             // 存储到子组件中
-            if (comp != null && this.isModule(comp)){
+            if (comp != null && this.isModule(compName, comp)){
                 if (getCompRegistry().getCompFromCache(compName) == null) {
                     getCompRegistry().register(compName, comp);
                 }
@@ -84,7 +84,7 @@ public class SpiCompFactory extends AbstractCompFactory {
             if (instance != null){
                 boolean global = false;
                 if (!isRegistered){
-                    global = this.isGlobal(instance);
+                    global = this.isGlobal(compName, instance) || this.isModule(compName, instance);
                 }
                 instance = getInstanceIfNecessary(compName, instance, requireType);
                 if (global){
@@ -136,20 +136,20 @@ public class SpiCompFactory extends AbstractCompFactory {
     }
     
     @Override
-    public boolean isGlobal(Object obj){
+    public boolean isGlobal(String compName, Object obj){
         if (obj instanceof SpiCompProvider<?>){
             return Objects.equals(((SpiCompProvider<?>) obj).getScope(), SpiScope.GLOBAL);
         }
-        return super.isGlobal(obj);
+        return super.isGlobal(compName, obj);
     }
 
 
     @Override
-    public boolean isModule(Object obj){
+    public boolean isModule(String compName, Object obj){
         if (obj instanceof SpiCompProvider<?>){
             return Objects.equals(((SpiCompProvider<?>) obj).getScope(), SpiScope.MODULE);
         }
-        return super.isModule(obj);
+        return super.isModule(compName, obj);
     }
     
     
