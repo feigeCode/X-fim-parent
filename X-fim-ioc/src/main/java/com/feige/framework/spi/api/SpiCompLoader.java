@@ -19,6 +19,8 @@ public interface SpiCompLoader extends Lifecycle {
     boolean isSpiComp(Class<?> cls);
 
     Class<?> get(String compName, Class<?> requireType) throws ClassNotFoundException;
+
+    Class<?> getImplClassFormCache(String compName);
     
     String get(Class<?> requireType) throws ClassNotFoundException;
     

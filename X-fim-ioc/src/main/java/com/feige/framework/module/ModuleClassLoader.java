@@ -4,6 +4,7 @@ import com.feige.framework.context.api.Lifecycle;
 import com.feige.framework.module.api.ModuleContext;
 import com.feige.framework.spi.api.SpiCompProvider;
 import lombok.extern.slf4j.Slf4j;
+import sun.misc.CompoundEnumeration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -105,8 +106,9 @@ public class ModuleClassLoader extends URLClassLoader implements Lifecycle {
 
     @Override
     public Enumeration<URL> getResources(String name) throws IOException {
-        Enumeration<URL> resources = super.getResources(name);
-        return resources;
+        Enumeration<URL>[] tmp = (Enumeration<URL>[]) new Enumeration<?>[1];
+        tmp[0] = findResources(name);
+        return new CompoundEnumeration<>(tmp);
     }
 
     @Override

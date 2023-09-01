@@ -55,6 +55,9 @@ public class SpiCompFactory extends AbstractCompFactory {
             Object instance = getCompFromCache(compName);
             if (instance == null){
                 Class<?> cls = this.getSpiCompLoader().get(compName, requireType);
+                if (this.getSpiCompLoader().getImplClassFormCache(compName) == null) {
+                    return null;
+                }
                 instance = createInstance(compName, cls, args);
                 isRegistered = false;
             }

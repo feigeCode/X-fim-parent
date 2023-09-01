@@ -65,33 +65,55 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     public Class<?> get(String compName, Class<?> requireType) throws ClassNotFoundException {
         AssertUtil.notBlank(compName, "compName");
         AssertUtil.notNull(requireType, "requireType");
-        return doGetImplClass(compName, requireType);
+        Class<?> implClass = doGetImplClass(compName, requireType);
+        if (implClass == null){
+            implClass = this.getImplClassFromParent(compName, requireType);
+        }
+        return implClass;
     }
 
 
     @Override
     public String get(Class<?> requireType) throws ClassNotFoundException {
         AssertUtil.notNull(requireType, "requireType");
-        List<String> classes = doGetImplClasses(requireType);
-        if (classes == null || classes.isEmpty()){
+        List<String> compNames = this.getByType(requireType);
+        if (CollectionUtils.isEmpty(compNames)){
             return null;
         }
-        return classes.get(0);
+        return compNames.get(0);
     }
 
     @Override
     public List<String> getByType(Class<?> requireType) throws ClassNotFoundException {
         AssertUtil.notNull(requireType, "requireType");
-        return doGetImplClasses(requireType);
+        List<String> compNames = doGetImplClasses(requireType);
+        if (CollectionUtils.isEmpty(compNames)){
+            compNames = getImplClassNamesFromParent(requireType);
+        }
+        return compNames;
     }
 
+    protected Class<?> getImplClassFromParent(String compName, Class<?> requireType) throws ClassNotFoundException {
+        ApplicationContext parent = applicationContext.getParent();
+        if (parent != null){
+            return parent.getSpiCompLoader().get(compName, requireType);
+        }
+        return null;
+    }
 
+    protected List<String> getImplClassNamesFromParent(Class<?> requireType) throws ClassNotFoundException {
+        ApplicationContext parent = applicationContext.getParent();
+        if (parent != null){
+            return parent.getSpiCompLoader().getByType( requireType);
+        }
+        return null;
+    }
 
     protected Class<?> doGetImplClass(String compName, Class<?> requireType) throws ClassNotFoundException {
-        Class<?> cls = this.getImplClassFormCache(compName, requireType);
+        Class<?> cls = this.getImplClassFormCache(compName);
         if (cls == null){
             doGetImplClasses(requireType);
-            cls = this.getImplClassFormCache(compName, requireType);
+            cls = this.getImplClassFormCache(compName);
         }
         return cls;
     }
@@ -106,45 +128,15 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
         this.lockMap.remove(requireType);
     }
 
-    protected Class<?> getImplClassFromParent(String compName, Class<?> requireType) throws ClassNotFoundException {
-        ApplicationContext parent = applicationContext.getParent();
-        if (parent != null){
-            return parent.getSpiCompLoader().get(compName, requireType);
-        }
-        return null;
-    }
-
-    protected Class<?> getImplClassFormCache(String compName, Class<?> requireType) {
-        Class<?> cls = this.compNameAndImplClassCache.get(compName);
-        if (cls == null){
-            try {
-                cls = this.getImplClassFromParent(compName, requireType);
-            }catch (Throwable ignored){
-            }
-        }
-        return cls;
-    }
     
-    protected List<String> getImplClassesFromParent(Class<?> requireType) throws ClassNotFoundException {
-        ApplicationContext parent = applicationContext.getParent();
-        if (parent != null){
-            return parent.getSpiCompLoader().getByType(requireType);
-        }
-        return null;
+
+    @Override
+    public Class<?> getImplClassFormCache(String compName) {
+        return this.compNameAndImplClassCache.get(compName);
     }
     
     protected List<String> getImplClassesFormCache(Class<?> requireType) {
-        List<String> compNames = this.spiTypeAndCompNamesCache.get(requireType);
-        if (compNames == null){
-            try {
-                compNames = this.getImplClassesFromParent(requireType);
-                if (CollectionUtils.isEmpty(compNames)) {
-                    compNames = null;
-                }
-            }catch (Throwable ignored){
-            }
-        }
-        return compNames;
+        return this.spiTypeAndCompNamesCache.get(requireType);
     }
     
     protected List<String> doLoadImplClasses(Class<?> requireType) throws ClassNotFoundException {
@@ -156,9 +148,6 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
                 continue;
             }
             Class<?> cls = ClassUtils.forName(className, this.applicationContext.getClassLoader());
-            if (!cls.getClassLoader().equals(this.applicationContext.getClassLoader())){
-                continue;
-            }
             if (!isSpiComp(cls)){
                 LOG.warn(cls.getName() + " is not spiComp!");
                 continue;
