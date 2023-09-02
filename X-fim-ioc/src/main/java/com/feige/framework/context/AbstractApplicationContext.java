@@ -22,12 +22,8 @@ import com.feige.framework.spi.api.NoSuchInstanceException;
 import com.feige.framework.spi.ConfigSpiCompLoader;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractApplicationContext extends LifecycleAdapter implements ApplicationContext {
