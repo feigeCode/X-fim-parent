@@ -39,7 +39,6 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     protected final Map<String, Class<?>> compNameAndImplClassCache = new ConcurrentHashMap<>(32);
     protected final Map<Class<?>, List<String>> spiTypeAndCompNamesCache = new ConcurrentHashMap<>(32);
     protected final Map<Class<?>, List<String>> providerTypeAndCompNamesCache = new ConcurrentHashMap<>(16);
-    private final Map<Class<?>, Object> lockMap = new ConcurrentHashMap<>();
     protected final Set<String> ignoredClasses = new HashSet<>();
     private final AtomicBoolean isInitialized = new AtomicBoolean(false);
     
@@ -119,16 +118,6 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     }
     
     
-    private Object getLock(Class<?> requireType){
-        return this.lockMap.computeIfAbsent(requireType, k -> new Object());
-    }
-
-
-    private void removeLock(Class<?> requireType){
-        this.lockMap.remove(requireType);
-    }
-
-    
 
     @Override
     public Class<?> getImplClassFormCache(String compName) {
@@ -165,13 +154,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     protected <T> List<String> doGetImplClasses(Class<T> requireType) throws ClassNotFoundException {
         List<String> compNames = this.getImplClassesFormCache(requireType);
         if (compNames == null){
-            synchronized (this.getLock(requireType)){
-                compNames = this.getImplClassesFormCache(requireType);
-                if (compNames == null){
-                    compNames = doLoadImplClasses(requireType);
-                }
-            }
-            this.removeLock(requireType);
+            compNames = doLoadImplClasses(requireType);
         }
         List<String> providerNames = this.providerTypeAndCompNamesCache.getOrDefault(requireType, Collections.emptyList());
         if (CollectionUtils.isEmpty(providerNames)){

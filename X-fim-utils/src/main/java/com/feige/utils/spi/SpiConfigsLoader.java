@@ -28,15 +28,7 @@ public class SpiConfigsLoader {
     private static final Logger logger = LoggerFactory.getLogger(SpiConfigsLoader.class);
     public static final String SPI_CONFIGS = "META-INF/spi.configs";
     static final Map<ClassLoader, Map<String, List<String>>> cache = new ConcurrentHashMap<>();
-
-    static final Set<String> ignoreServices = new HashSet<>();
-
-    public static void addIgnoreService(String... ignoreService){
-        if (ignoreService != null && ignoreService.length > 0){
-            ignoreServices.addAll(Arrays.asList(ignoreService));
-        }
-    }
-    
+   
     private SpiConfigsLoader(){
         
     }
@@ -88,9 +80,6 @@ public class SpiConfigsLoader {
                     List<String> spiImplNames =
                             StringUtils.commaSplitter.splitToList((String) entry.getValue());
                     for (String spiImplName : spiImplNames) {
-                        if (ignoreServices.contains(spiImplName)){
-                            continue;
-                        }
                         result.computeIfAbsent(spiTypeName, key -> new ArrayList<>())
                                 .add(spiImplName.trim());
                     }

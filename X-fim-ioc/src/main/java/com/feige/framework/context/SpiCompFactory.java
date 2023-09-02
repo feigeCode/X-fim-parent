@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SpiCompFactory extends AbstractCompFactory {
 
     protected final Map<String, SpiCompProvider<?>> providerObjectCache = new ConcurrentHashMap<>(16);
-
+    
 
     @Override
     public <T> T get(String compName, Class<T> requireType, Object... args) throws NoSuchInstanceException {
@@ -55,6 +55,7 @@ public class SpiCompFactory extends AbstractCompFactory {
             Object instance = getCompFromCache(compName);
             if (instance == null){
                 Class<?> cls = this.getSpiCompLoader().get(compName, requireType);
+                // 当前loader中没有，交给父模块去创建
                 if (this.getSpiCompLoader().getImplClassFormCache(compName) == null) {
                     return null;
                 }

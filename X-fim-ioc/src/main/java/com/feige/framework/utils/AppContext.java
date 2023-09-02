@@ -1,6 +1,7 @@
 package com.feige.framework.utils;
 
 import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.module.api.ModuleRepository;
 import com.feige.framework.spi.api.NoSuchInstanceException;
 
 
@@ -54,6 +55,10 @@ public class AppContext {
      */
     public static <T> List<T> getByType(Class<T> clazz) throws NoSuchInstanceException {
         return applicationContext.getByType(clazz);
+    }
+    
+    public static ModuleRepository getModuleRepository(){
+        return applicationContext.getModuleRepository();
     }
 
     public static void setApplicationContext(ApplicationContext applicationContext) {

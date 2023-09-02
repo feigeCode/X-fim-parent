@@ -33,14 +33,6 @@ public class ServicesLoader {
   public static final String SERVICES_PATH = "META-INF/services";
 
   static final Map<ClassLoader, Map<String, List<String>>> cache = new ConcurrentHashMap<>();
-  
-  static final List<String> ignoreServiceList = new ArrayList<>();
-  
-  public static void addIgnoreService(String... ignoreService){
-    if (ignoreService != null && ignoreService.length > 0){
-      ignoreServiceList.addAll(Arrays.asList(ignoreService));
-    }
-  }
 
   private ServicesLoader() {}
 
@@ -135,7 +127,7 @@ public class ServicesLoader {
           line = line.substring(0, commentStart);
         }
         line = line.trim();
-        if (!line.isEmpty() && !ignoreServiceList.contains(line)) {
+        if (!line.isEmpty()) {
           serviceClasses.add(line);
         }
       }
