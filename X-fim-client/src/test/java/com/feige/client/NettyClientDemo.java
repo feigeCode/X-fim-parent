@@ -24,6 +24,7 @@ public class NettyClientDemo {
         ClassGenerator.setDebugDump("E:\\project\\my\\X-fim-parent\\X-fim-client\\target\\classes");
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         ApplicationContext applicationContext = new StandardApplicationContext(ConfigSpiCompLoader.TYPE);
+        applicationContext.initialize();
         ClientConfig.setClientKey(CryptoUtils.randomAesKey(16));
         ClientConfig.setIv(CryptoUtils.randomAesIv(16));
         ClientConfig.setClientId("1234");

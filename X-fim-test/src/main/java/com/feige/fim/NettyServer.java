@@ -2,7 +2,6 @@ package com.feige.fim;
 
 import com.feige.api.sc.Server;
 import com.feige.api.sc.ServerProvider;
-import com.feige.framework.module.StandardModuleContext;
 import com.feige.framework.spi.JdkSpiCompLoader;
 import com.feige.utils.javassist.ClassGenerator;
 import com.feige.framework.context.StandardApplicationContext;
@@ -25,7 +24,5 @@ public class NettyServer {
         Server server = serverProvider.get();
         boolean start = server.syncStart();
         System.out.println(start);
-        StandardModuleContext testModule = new StandardModuleContext(applicationContext, "test");
-        applicationContext.addModule(testModule);
     }
 }
