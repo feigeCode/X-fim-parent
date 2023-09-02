@@ -56,7 +56,7 @@ public class SpiCompFactory extends AbstractCompFactory {
             if (instance == null){
                 Class<?> cls = this.getSpiCompLoader().get(compName, requireType);
                 // 当前loader中没有，交给父模块去创建
-                if (this.getSpiCompLoader().getImplClassFormCache(compName) == null) {
+                if (this.getSpiCompLoader().getImplClassFormCache(compName) == null && !this.isModule(compName, cls)) {
                     return null;
                 }
                 instance = createInstance(compName, cls, args);
@@ -131,6 +131,12 @@ public class SpiCompFactory extends AbstractCompFactory {
             return Objects.equals(((SpiCompProvider<?>) obj).getScope(), SpiScope.MODULE);
         }
         return super.isModule(compName, obj);
+    }
+
+
+    public boolean isModule(String compName, Class<?> cls){
+        SpiComp spiComp = getSpiComp(compName, cls);
+        return Objects.equals(spiComp.scope(), SpiScope.MODULE);
     }
     
     

@@ -61,7 +61,7 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
     
 
     protected Object getCompFromCache(String instanceName) {
-        return applicationContext.getCompFromCache(instanceName);
+        return getCompRegistry().getCompFromCache(instanceName);
     }
     
     protected <T> T createInstance(String instanceName, Class<T> cls, Object... args){
@@ -152,8 +152,8 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         return Objects.equals(spiComp.scope(), scope);
     }
     
-    protected SpiComp getSpiComp(String compName, Object instance){
-        SpiComp spiComp = AnnotationUtils.findAnnotation(instance.getClass(), SpiComp.class);
+    protected SpiComp getSpiComp(String compName, Class<?> cls){
+        SpiComp spiComp = AnnotationUtils.findAnnotation(cls, SpiComp.class);
         if (spiComp == null){
             try {
                 Class<?> spiCls = getSpiCompLoader().get(compName, SpiCompProvider.class);
@@ -166,14 +166,16 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
     }
 
     public boolean isGlobal(String compName, Object instance){
-        SpiComp spiComp = getSpiComp(compName, instance);
+        SpiComp spiComp = getSpiComp(compName, instance.getClass());
         return Objects.equals(spiComp.scope(), SpiScope.GLOBAL);
     }
 
     public boolean isModule(String compName, Object instance){
-        SpiComp spiComp = getSpiComp(compName, instance);
+        SpiComp spiComp = getSpiComp(compName, instance.getClass());
         return Objects.equals(spiComp.scope(), SpiScope.MODULE);
     }
+    
+    
     
 
     private Object applyBeanPostProcessorsBeforeInitialization(Object instance,  String instanceName) {
