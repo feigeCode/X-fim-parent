@@ -1,6 +1,6 @@
-package com.feige.framework.context;
+package com.feige.framework.factory;
 
-import com.feige.framework.context.api.CompFactory;
+import com.feige.framework.factory.api.CompFactory;
 import com.feige.framework.spi.api.InstanceCreationException;
 import com.feige.framework.spi.api.NoSuchInstanceException;
 import com.feige.framework.spi.api.SpiCompProvider;

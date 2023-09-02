@@ -1,8 +1,8 @@
 package com.feige.framework.spi;
 
 
-import com.feige.framework.context.api.CompNameGenerate;
-import com.feige.framework.context.SimpleCompNameGenerate;
+import com.feige.framework.comp.api.CompNameGenerate;
+import com.feige.framework.comp.SimpleCompNameGenerate;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.aware.ApplicationContextAware;

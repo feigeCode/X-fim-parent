@@ -1,11 +1,11 @@
-package com.feige.framework.context;
+package com.feige.framework.factory;
 
 import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.aware.ApplicationContextAware;
-import com.feige.framework.context.api.CompFactory;
-import com.feige.framework.context.api.CompNameGenerate;
-import com.feige.framework.context.api.CompPostProcessor;
+import com.feige.framework.factory.api.CompFactory;
+import com.feige.framework.comp.api.CompNameGenerate;
+import com.feige.framework.processor.api.CompPostProcessor;
 import com.feige.framework.registry.CompRegistry;
 import com.feige.framework.aware.EnvironmentAware;
 import com.feige.framework.context.api.InitializingComp;

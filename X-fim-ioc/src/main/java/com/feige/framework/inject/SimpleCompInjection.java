@@ -4,7 +4,7 @@ import com.feige.framework.annotation.Inject;
 import com.feige.framework.context.api.LifecycleAdapter;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.context.api.ApplicationContext;
-import com.feige.framework.inject.CompInjection;
+import com.feige.framework.inject.api.CompInjection;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.common.StringUtils;
 

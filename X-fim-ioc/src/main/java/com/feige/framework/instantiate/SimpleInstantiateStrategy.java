@@ -1,8 +1,8 @@
-package com.feige.framework.context;
+package com.feige.framework.instantiate;
 
 import com.feige.framework.context.api.LifecycleAdapter;
 import com.feige.utils.spi.annotation.SpiComp;
-import com.feige.framework.context.api.InstantiationStrategy;
+import com.feige.framework.instantiate.api.InstantiationStrategy;
 import com.feige.utils.clazz.ReflectionUtils;
 
 @SpiComp(interfaces = InstantiationStrategy.class)

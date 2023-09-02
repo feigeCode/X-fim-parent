@@ -1,8 +1,8 @@
-package com.feige.framework.context;
+package com.feige.framework.comp;
 
 import com.feige.framework.context.api.LifecycleAdapter;
 import com.feige.utils.spi.annotation.SpiComp;
-import com.feige.framework.context.api.CompNameGenerate;
+import com.feige.framework.comp.api.CompNameGenerate;
 import com.feige.utils.common.StringUtils;
 
 import java.util.Map;

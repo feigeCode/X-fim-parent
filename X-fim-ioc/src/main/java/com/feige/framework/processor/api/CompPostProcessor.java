@@ -1,5 +1,7 @@
-package com.feige.framework.context.api;
+package com.feige.framework.processor.api;
 
+
+import com.feige.framework.context.api.Lifecycle;
 
 public interface CompPostProcessor extends Lifecycle {
 

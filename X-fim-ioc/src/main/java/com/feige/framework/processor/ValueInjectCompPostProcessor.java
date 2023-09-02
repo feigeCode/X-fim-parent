@@ -1,9 +1,9 @@
 package com.feige.framework.processor;
 
 import com.feige.framework.context.api.LifecycleAdapter;
+import com.feige.framework.processor.api.CompPostProcessor;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
-import com.feige.framework.context.api.CompPostProcessor;
 import com.feige.framework.env.api.Environment;
 import com.feige.framework.aware.EnvironmentAware;
 import com.feige.utils.clazz.ReflectionUtils;

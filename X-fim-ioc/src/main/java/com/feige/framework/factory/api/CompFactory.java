@@ -1,6 +1,7 @@
-package com.feige.framework.context.api;
+package com.feige.framework.factory.api;
 
 
+import com.feige.framework.context.api.Lifecycle;
 import com.feige.framework.spi.api.NoSuchInstanceException;
 
 import java.util.List;

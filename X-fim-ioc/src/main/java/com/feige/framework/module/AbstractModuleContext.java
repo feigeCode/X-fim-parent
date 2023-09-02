@@ -2,27 +2,24 @@ package com.feige.framework.module;
 
 import com.feige.framework.env.api.ConfigFactory;
 import com.feige.framework.context.api.ApplicationContext;
-import com.feige.framework.context.api.CompFactory;
-import com.feige.framework.inject.CompInjection;
-import com.feige.framework.context.api.CompNameGenerate;
-import com.feige.framework.context.api.CompPostProcessor;
+import com.feige.framework.factory.api.CompFactory;
+import com.feige.framework.inject.api.CompInjection;
+import com.feige.framework.comp.api.CompNameGenerate;
+import com.feige.framework.processor.api.CompPostProcessor;
 import com.feige.framework.registry.CompRegistry;
 import com.feige.framework.env.api.Environment;
-import com.feige.framework.context.api.InstantiationStrategy;
+import com.feige.framework.instantiate.api.InstantiationStrategy;
 import com.feige.framework.module.api.ModuleBootstrap;
 import com.feige.framework.module.api.ModuleContext;
-import com.feige.framework.spi.api.NoSuchInstanceException;
 import com.feige.framework.spi.api.SpiCompLoader;
 import com.feige.framework.context.AbstractApplicationContext;
 import com.feige.framework.utils.Configs;
 import com.feige.utils.common.AssertUtil;
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public abstract class AbstractModuleContext extends AbstractApplicationContext implements ModuleContext {

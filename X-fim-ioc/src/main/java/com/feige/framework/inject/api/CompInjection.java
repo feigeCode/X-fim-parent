@@ -1,4 +1,4 @@
-package com.feige.framework.inject;
+package com.feige.framework.inject.api;
 
 
 import com.feige.framework.aware.ApplicationContextAware;

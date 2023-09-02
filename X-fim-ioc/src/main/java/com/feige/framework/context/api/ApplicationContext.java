@@ -1,10 +1,13 @@
 package com.feige.framework.context.api;
 
 
+import com.feige.framework.comp.api.CompNameGenerate;
 import com.feige.framework.env.api.Environment;
-import com.feige.framework.inject.CompInjection;
-import com.feige.framework.module.api.ModuleContext;
+import com.feige.framework.factory.api.CompFactory;
+import com.feige.framework.inject.api.CompInjection;
+import com.feige.framework.instantiate.api.InstantiationStrategy;
 import com.feige.framework.module.api.ModuleRepository;
+import com.feige.framework.processor.api.CompPostProcessor;
 import com.feige.framework.registry.CompRegistry;
 import com.feige.framework.spi.api.SpiCompLoader;
 
