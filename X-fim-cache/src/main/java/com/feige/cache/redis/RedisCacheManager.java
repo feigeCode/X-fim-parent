@@ -25,8 +25,8 @@ public class RedisCacheManager extends AbstractCacheManager {
     }
 
     @Override
-    public <V extends Serializable> Bucket<V> createBucket(String name, Class<V> v) {
-        RBucket<V> bucket = client.getBucket(name);
+    public Bucket<String> createBucket(String name) {
+        RBucket<String> bucket = client.getBucket(name);
         return new RedisBucket<>(name, bucket);
     }
 }

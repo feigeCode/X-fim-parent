@@ -158,7 +158,7 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
     
     private void setCache(Session session, HandshakeReq handshakeReq){
         String sessionId = (String)session.getAttr("sessionId");
-        Bucket<String> bucket = cacheManager.createBucket(sessionId, String.class);
+        Bucket<String> bucket = cacheManager.createBucket(sessionId);
        
         SessionContext sessionContext = new SessionContext()
                 .setOsName(handshakeReq.getOsName()) 

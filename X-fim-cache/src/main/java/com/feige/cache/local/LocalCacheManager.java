@@ -69,8 +69,8 @@ public class LocalCacheManager extends AbstractCacheManager {
     }
 
     @Override
-    public <V extends Serializable> Bucket<V> createBucket(String name, Class<V> v) {
-        LocalBucket<V> vLocalBucket = new LocalBucket<>(name);
+    public  Bucket<String> createBucket(String name) {
+        LocalBucket<String> vLocalBucket = new LocalBucket<>(name);
         addCacheable(name, vLocalBucket);
         return vLocalBucket;
     }
