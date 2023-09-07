@@ -23,6 +23,7 @@
         <module>X-fim-common-api</module>
         <module>X-fim-utils</module>
         <module>X-fim-ioc</module>
+        <module>X-fim-bootstrap</module>
     </modules>
 
     <properties>
@@ -38,7 +39,6 @@
         <yaml.version>1.25</yaml.version>
         <guava.version>31.0.1-jre</guava.version>
         <commons-collections4.version>4.1</commons-collections4.version>
-        <lombok.version>1.18.20</lombok.version>
         <slf4j-api.version>1.7.7</slf4j-api.version>
         <logback.version>1.2.9</logback.version>
         <log4j.version>2.17.1</log4j.version>
@@ -282,6 +282,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>X-fim-nacos</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>X-fim-bootstrap</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

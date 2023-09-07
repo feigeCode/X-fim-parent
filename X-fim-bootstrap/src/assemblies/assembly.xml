@@ -1,0 +1,56 @@
+<assembly>
+    <id>assembly</id>
+    
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+
+    <includeBaseDirectory>true</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>src/bin</directory>
+            <includes>
+                <include>*.sh</include>
+                <include>*.bat</include>
+            </includes>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>src/conf</directory>
+            <outputDirectory>conf</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/sql</directory>
+            <includes>
+                <include>*.sql</include>
+            </includes>
+            <outputDirectory>sql</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/classes/</directory>
+            <includes>
+                <include>*.properties</include>
+                <include>*.xml</include>
+                <include>*.txt</include>
+            </includes>
+            <outputDirectory>conf</outputDirectory>
+        </fileSet>
+    </fileSets>
+
+    <files>
+        <file>
+            <source>target/${project.artifactId}-${project.version}.jar</source>
+            <outputDirectory>lib</outputDirectory>
+        </file>
+    </files>
+
+    <dependencySets>
+        <dependencySet>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+            <outputDirectory>lib</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+</assembly>
