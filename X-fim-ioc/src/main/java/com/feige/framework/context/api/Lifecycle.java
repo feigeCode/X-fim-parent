@@ -12,11 +12,11 @@ public interface Lifecycle extends Disposable {
 
     /**
      * Start the component
-     *
+     * @param args
      * @return current {@link Lifecycle}
      * @throws IllegalStateException
      */
-    void start() throws IllegalStateException;
+    void start(String... args) throws IllegalStateException;
 
     /**
      * Destroy the component

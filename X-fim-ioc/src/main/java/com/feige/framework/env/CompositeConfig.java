@@ -4,6 +4,8 @@ import com.feige.framework.env.api.Config;
 import com.feige.utils.common.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +42,17 @@ public class CompositeConfig implements Config {
             }
         }
         return result;
+    }
+
+    @Override
+    public Collection<String> getCollection(String key) {
+        for (Config config : configList) {
+            Collection<String> value = config.getCollection(key);
+            if (value != null){
+                return value;
+            }
+        }
+        return Collections.emptyList();
     }
 
     @Override

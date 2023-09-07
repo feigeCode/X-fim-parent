@@ -57,8 +57,8 @@ public class AppContext {
         return applicationContext.getByType(clazz);
     }
     
-    public static ModuleRepository getModuleRepository(){
-        return applicationContext.getModuleRepository();
+    public static ApplicationContext getApplicationContext(){
+        return applicationContext;
     }
 
     public static void setApplicationContext(ApplicationContext applicationContext) {

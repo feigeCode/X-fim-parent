@@ -1,7 +1,11 @@
 package com.feige.framework.module;
 
+import com.feige.framework.aware.ApplicationContextAware;
+import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.env.api.Environment;
 import com.feige.framework.module.api.ModuleContext;
 import com.feige.framework.module.api.ModuleRepository;
+import com.feige.framework.utils.Configs;
 import com.feige.utils.spi.annotation.SpiComp;
 
 import java.util.ArrayList;
@@ -11,10 +15,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @SpiComp(interfaces = ModuleRepository.class)
-public class SimpleModuleRepository implements ModuleRepository {
+public class SimpleModuleRepository implements ModuleRepository , ApplicationContextAware {
 
-    protected final Map<String, ModuleContext> modelContextCache = new ConcurrentHashMap<>(16);
+    
+    private final Map<String, ModuleContext> modelContextCache = new ConcurrentHashMap<>(16);
+    protected ApplicationContext applicationContext;
 
+    
     @Override
     public ModuleContext findModule(String moduleName) {
         return modelContextCache.get(moduleName);
@@ -40,19 +47,31 @@ public class SimpleModuleRepository implements ModuleRepository {
 
     @Override
     public void initialize() throws IllegalStateException {
-        
+        Environment environment = applicationContext.getEnvironment();
+        Collection<String> enabledModules = environment.getCollection(Configs.ConfigKey.ENABLED_MODULE_NAMES);
+        for (String enabledModule : enabledModules) {
+            addModule(new StandardModuleContext(applicationContext, enabledModule));
+        }
     }
 
     @Override
-    public void start() throws IllegalStateException {
-
+    public void start(String... args) throws IllegalStateException {
+        Collection<ModuleContext> moduleContexts = modelContextCache.values();
+        for (ModuleContext moduleContext : moduleContexts) {
+            moduleContext.start(args);
+        }
     }
 
     @Override
     public void destroy() throws IllegalStateException {
-        Collection<ModuleContext> values = modelContextCache.values();
-        for (ModuleContext moduleContext : values) {
+        Collection<ModuleContext> moduleContexts = modelContextCache.values();
+        for (ModuleContext moduleContext : moduleContexts) {
             moduleContext.destroy();
         }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 }

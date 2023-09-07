@@ -5,7 +5,7 @@ import com.feige.framework.context.api.Lifecycle;
 import java.util.List;
 
 public interface ModuleRepository extends Lifecycle {
-
+    
     ModuleContext findModule(String moduleName);
 
     List<ModuleContext> getModules();

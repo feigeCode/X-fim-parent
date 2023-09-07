@@ -8,7 +8,7 @@ public abstract class LifecycleAdapter implements Lifecycle {
     }
 
     @Override
-    public void start() throws IllegalStateException {
+    public void start(String... args) throws IllegalStateException {
 
     }
 

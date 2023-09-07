@@ -2,7 +2,6 @@ package com.feige.framework.module;
 
 import com.feige.framework.context.api.Lifecycle;
 import com.feige.framework.module.api.ModuleContext;
-import com.feige.framework.spi.api.SpiCompProvider;
 import lombok.extern.slf4j.Slf4j;
 import sun.misc.CompoundEnumeration;
 
@@ -12,10 +11,8 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
@@ -24,20 +21,17 @@ import java.util.regex.Pattern;
 public class ModuleClassLoader extends URLClassLoader implements Lifecycle {
     private static final Pattern VALID_CLASS_PATTERN = Pattern.compile("fim|service|dao|mapper|pojo|entity|po|dto|vo|listener|controller|common|api|utils|core|util|quartz|handle");
     private final List<JarFile> jarFiles = new ArrayList<>();
-    private final Set<String> jarPaths = new HashSet<>();
     private final Map<String, Class<?>> classCache = new HashMap<>();
-    public static final String PROVIDER_CLASS_NAME = SpiCompProvider.class.getName();
     private final ModuleContext moduleContext;
 
-    public ModuleClassLoader(ModuleContext moduleContext) {
-        super(moduleContext.getURLs(), moduleContext.getParent().getClassLoader());
+    public ModuleClassLoader(ModuleContext moduleContext,URL[] urLs) {
+        super(urLs, moduleContext.getParent().getClassLoader());
         this.moduleContext = moduleContext;
         try {
-            for (URL url : moduleContext.getURLs()) {
+            for (URL url : urLs) {
                 if (url.getPath().endsWith(".jar")) {
                     String path = url.getPath();
                     jarFiles.add(new JarFile(path));
-                    jarPaths.add(path);
                 }
             }
         }catch (Exception e){
@@ -55,7 +49,7 @@ public class ModuleClassLoader extends URLClassLoader implements Lifecycle {
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
         Class<?> cls = getClassFromCache(name);
-        if (cls != null || PROVIDER_CLASS_NAME.equals(name)){
+        if (cls != null){
             return cls;
         }
         cls = findLoadedClass(name);
@@ -112,7 +106,7 @@ public class ModuleClassLoader extends URLClassLoader implements Lifecycle {
     }
 
     @Override
-    public void start() throws IllegalStateException {
+    public void start(String... args) throws IllegalStateException {
 
     }
 

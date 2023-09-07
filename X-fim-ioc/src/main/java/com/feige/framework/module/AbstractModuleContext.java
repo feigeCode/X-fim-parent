@@ -1,14 +1,7 @@
 package com.feige.framework.module;
 
-import com.feige.framework.env.api.ConfigFactory;
 import com.feige.framework.context.api.ApplicationContext;
-import com.feige.framework.factory.api.CompFactory;
-import com.feige.framework.inject.api.CompInjection;
-import com.feige.framework.comp.api.CompNameGenerate;
-import com.feige.framework.processor.api.CompPostProcessor;
-import com.feige.framework.registry.CompRegistry;
 import com.feige.framework.env.api.Environment;
-import com.feige.framework.instantiate.api.InstantiationStrategy;
 import com.feige.framework.module.api.ModuleBootstrap;
 import com.feige.framework.module.api.ModuleContext;
 import com.feige.framework.spi.api.SpiCompLoader;
@@ -19,14 +12,18 @@ import com.feige.utils.common.AssertUtil;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public abstract class AbstractModuleContext extends AbstractApplicationContext implements ModuleContext {
     
-    
+   
     private final String moduleName;
     private ModuleClassLoader moduleClassLoader;
+    
+    private List<ModuleBootstrap> moduleBootstraps;
 
     public AbstractModuleContext(String type, ApplicationContext parent, String moduleName) {
         super(type);
@@ -40,21 +37,23 @@ public abstract class AbstractModuleContext extends AbstractApplicationContext i
     }
 
     @Override
-    public void initialize() throws IllegalStateException {
-        this.moduleClassLoader = new ModuleClassLoader(this);
+    protected void doInit() {
+        URL[] urLs = getURLs();
+        this.moduleClassLoader = new ModuleClassLoader(this, urLs);
         this.moduleClassLoader.initialize();
-        this.spiCompLoader.initialize();
-        this.environment.setConfigFactory(getParent().getSpiCompLoader().loadSpiComp(ConfigFactory.class));
-        this.environment.initialize();
-        this.compNameGenerate = this.getSpiCompLoader().loadSpiComp(CompNameGenerate.class);
-        this.compRegistry = this.getSpiCompLoader().loadSpiComp(CompRegistry.class);
-        this.compFactory = this.getSpiCompLoader().loadSpiComp(CompFactory.class);
-        this.instantiationStrategy = this.getSpiCompLoader().loadSpiComp(InstantiationStrategy.class);
-        this.compInjection = this.getSpiCompLoader().loadSpiComp(CompInjection.class);
-        this.processors = this.getSpiCompLoader().loadSpiComps(CompPostProcessor.class);
-        ModuleBootstrap moduleBootstrap = this.getSpiCompLoader().loadSpiComp(ModuleBootstrap.class);
-        moduleBootstrap.initialize();
-        moduleBootstrap.run(this);
+        super.doInit();
+        this.moduleBootstraps = this.getSpiCompLoader().loadSpiComps(ModuleBootstrap.class);
+        for (ModuleBootstrap moduleBootstrap : this.moduleBootstraps) {
+            moduleBootstrap.initialize();
+        }
+    }
+
+    @Override
+    protected void doStart(String... args) throws Exception {
+        super.doStart(args);
+        for (ModuleBootstrap moduleBootstrap : this.moduleBootstraps) {
+            moduleBootstrap.run(this, args);
+        }
     }
 
     @Override
@@ -68,8 +67,8 @@ public abstract class AbstractModuleContext extends AbstractApplicationContext i
     }
 
     @Override
-    public void destroy() throws IllegalStateException {
-        super.destroy();
+    protected void doDestroy() {
+        super.doDestroy();
         parent.removeModule(this.moduleName());
     }
 
@@ -110,7 +109,8 @@ public abstract class AbstractModuleContext extends AbstractApplicationContext i
 
     @Override
     public Set<String> getAssociatedModuleNames() {
-        return new HashSet<>();
+        Collection<String> moduleNames = getEnvironment().getCollection(Configs.ConfigKey.ASSOCIATED_MODULE_NAME_KEY);
+        return new HashSet<>(moduleNames);
     }
     
 

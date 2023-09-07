@@ -17,8 +17,14 @@ import java.util.List;
 public interface ApplicationContext extends CompFactory, CompRegistry, ModuleRepository {
 
     enum AppState {CREATED, INITIALIZED, DESTROY}
+    
+    String APP_NAME = "mainApp";
 
     ModuleRepository getModuleRepository();
+
+    String moduleName();
+
+    long getStartupDate();
     
     ApplicationContext getParent();
     

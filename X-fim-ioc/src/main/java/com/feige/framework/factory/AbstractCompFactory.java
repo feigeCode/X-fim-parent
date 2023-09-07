@@ -14,7 +14,6 @@ import com.feige.framework.aware.SpiCompLoaderAware;
 import com.feige.framework.spi.api.InstanceCreationException;
 import com.feige.framework.spi.api.InstanceCurrentlyInCreationException;
 import com.feige.framework.spi.api.SpiCompLoader;
-import com.feige.framework.spi.api.SpiCompProvider;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
@@ -63,24 +62,33 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
     protected Object getCompFromCache(String instanceName) {
         return getCompRegistry().getCompFromCache(instanceName);
     }
+
+    protected <T> T createOneOrModuleInstance(String instanceName, Class<T> implClass, Object... args){
+        try {
+            return doCreateInstance(instanceName, implClass, args);
+        }catch (Throwable e){
+            LOG.error("create " + implClass.getName() + " instance failure:", e);
+            throw new InstanceCreationException(e, implClass);
+        }
+    }
     
-    protected <T> T createInstance(String instanceName, Class<T> cls, Object... args){
+    protected <T> T createInstance(String instanceName, Class<T> implClass, Object... args){
         if (isGlobalCurrentlyInCreation(instanceName) || !this.addGlobalCurrentlyInCreation(instanceName)){
-            throw new InstanceCurrentlyInCreationException(cls);
+            throw new InstanceCurrentlyInCreationException(implClass);
         }
         try {
-            return doCreateInstance(instanceName, cls, args);
+            return doCreateInstance(instanceName, implClass, args);
         }catch (Throwable e){
-            LOG.error("create " + cls.getName() + " instance failure:", e);
-            throw new InstanceCreationException(e, cls);
+            LOG.error("create " + implClass.getName() + " instance failure:", e);
+            throw new InstanceCreationException(e, implClass);
         }finally {
             this.removeGlobalCurrentlyInCreation(instanceName);
         }
     }
 
-    protected <T> T doCreateInstance(String instanceName, Class<T> type, Object... args) throws Exception {
+    protected <T> T doCreateInstance(String instanceName, Class<T> implClass, Object... args) throws Exception {
         // 创建实例
-        T instance = createInstance(type, args);
+        T instance = instantiate(implClass, args);
         // 为实例注入属性
         applicationContext.getCompInjection().inject(instance);
         // 初始化实例
@@ -103,7 +111,7 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
   
     
 
-    protected <T> T createInstance(Class<T> cls, Object... args){
+    protected <T> T instantiate(Class<T> cls, Object... args){
         try {
             return applicationContext.getInstantiationStrategy().instantiate(cls, args);
         } catch (Exception e) {
@@ -151,30 +159,6 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         SpiComp spiComp = AnnotationUtils.findAnnotation(cls, SpiComp.class);
         return Objects.equals(spiComp.scope(), scope);
     }
-    
-    protected SpiComp getSpiComp(String compName, Class<?> cls){
-        SpiComp spiComp = AnnotationUtils.findAnnotation(cls, SpiComp.class);
-        if (spiComp == null){
-            try {
-                Class<?> spiCls = getSpiCompLoader().get(compName, SpiCompProvider.class);
-                spiComp = AnnotationUtils.findAnnotation(spiCls, SpiComp.class);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return spiComp;
-    }
-
-    public boolean isGlobal(String compName, Object instance){
-        SpiComp spiComp = getSpiComp(compName, instance.getClass());
-        return Objects.equals(spiComp.scope(), SpiScope.GLOBAL);
-    }
-
-    public boolean isModule(String compName, Object instance){
-        SpiComp spiComp = getSpiComp(compName, instance.getClass());
-        return Objects.equals(spiComp.scope(), SpiScope.MODULE);
-    }
-    
     
     
 

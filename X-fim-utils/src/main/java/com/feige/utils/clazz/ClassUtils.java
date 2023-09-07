@@ -24,7 +24,9 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -1428,5 +1430,55 @@ public abstract class ClassUtils {
         }
         return candidates;
     }
+
+
+    /**
+     * 获取接口上的泛型T
+     *
+     * @param cls     class
+     * @param index 泛型索引
+     */
+    public static Class<?> getInterfaceGenericClass(Class<?> cls, int index) {
+        Type[] types = cls.getGenericInterfaces();
+        ParameterizedType parameterizedType = (ParameterizedType) types[index];
+        Type type = parameterizedType.getActualTypeArguments()[index];
+        return checkType(type, index);
+
+    }
+
+
+    /**
+     * 获取类上的泛型T
+     *
+     * @param cls     class
+     * @param index 泛型索引
+     */
+    public static Class<?> getSuperclassGenericClass(Class<?> cls, int index) {
+        Type type = cls.getGenericSuperclass();
+        if (type instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) type;
+            Type actType = parameterizedType.getActualTypeArguments()[index];
+            return checkType(actType, index);
+        } else {
+            String className = type == null ? "null" : type.getClass().getName();
+            throw new IllegalArgumentException("Expected a Class, ParameterizedType"
+                    + ", but <" + type + "> is of type " + className);
+        }
+    }
+
+    private static Class<?> checkType(Type type, int index) {
+        if (type instanceof Class<?>) {
+            return (Class<?>) type;
+        } else if (type instanceof ParameterizedType) {
+            ParameterizedType pt = (ParameterizedType) type;
+            Type t = pt.getActualTypeArguments()[index];
+            return checkType(t, index);
+        } else {
+            String className = type == null ? "null" : type.getClass().getName();
+            throw new IllegalArgumentException("Expected a Class, ParameterizedType"
+                    + ", but <" + type + "> is of type " + className);
+        }
+    }
+
 
 }
