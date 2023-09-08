@@ -24,10 +24,14 @@ fim:
       expire-time: 3600
     tcp:
       enable: true
+      provider:
+        name: tcp
       ip: 127.0.0.1
       port: 8001
     ws:
       enable: true
+      provider:
+        name: ws
       ip: 127.0.0.1
       port: 8002
     http:

@@ -42,7 +42,7 @@
     <files>
         <file>
             <source>target/${project.artifactId}-${project.version}.jar</source>
-            <outputDirectory>lib</outputDirectory>
+            <outputDirectory>.</outputDirectory>
         </file>
     </files>
 

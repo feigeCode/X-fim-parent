@@ -18,6 +18,9 @@ public class Configs  {
     public static final String DEFAULT_MODULES_DIR = "modules" + File.separator;
 
     public interface ConfigKey {
+
+        
+        
         /**
          * log config key
          */
