@@ -44,12 +44,13 @@ public class FastConnectMsgHandler extends AbstractMsgHandler {
         // sessionContext 为空 或者 clientId不相等时快速连接失败
         long expireTime;
         if (sessionContext == null || System.currentTimeMillis() > (expireTime = sessionContext.getExpireTime()) || !Objects.equals(clientId, sessionContext.getClientId())){
-            throw new RemotingException(session, "sessionContext is null or expire");
+            this.sendErrorPacket(session, packet, ProtocolConst.ErrorCode.ILLEGAL_SESSION, "sessionContext is null or expire");
+            return;
         }
         setSessionContext(session, sessionContext);
         session.setAttr("sessionId", sessionId);
         session.setAttr("expireTime", expireTime);
-        Packet respPacket = createRespPacket(packet, 1);
+        Packet respPacket = createRespPacket(packet);
         session.write(respPacket, new Listener() {
             @Override
             public void onSuccess(Object... args) {
@@ -63,7 +64,7 @@ public class FastConnectMsgHandler extends AbstractMsgHandler {
         });
     }
     
-    private Packet createRespPacket(Packet packet, int statusCode){
+    private Packet createRespPacket(Packet packet){
         byte serializerType = packet.getSerializerType();
         byte classKey = ProtocolConst.SerializedClass.FAST_CONNECT_RESP.getClassKey();
         Packet respPacket = Packet.create(Command.FAST_CONNECT);
@@ -71,7 +72,7 @@ public class FastConnectMsgHandler extends AbstractMsgHandler {
         respPacket.setClassKey(classKey);
         respPacket.setSequenceNum(packet.getSequenceNum() + 1);
         FastConnectResp fastConnectResp = serializedClassManager.newObject(serializerType, classKey);
-        fastConnectResp.setStatusCode(statusCode);
+        fastConnectResp.setStatusCode(1);
         respPacket.setData(serializedClassManager.getSerializedObject(serializerType, fastConnectResp));
         return respPacket;
     }

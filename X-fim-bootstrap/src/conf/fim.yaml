@@ -1,4 +1,6 @@
 fim:
+  running:
+    mode: single
   modules:
     dir: E:\project\my\X-fim-parent\
   log: 

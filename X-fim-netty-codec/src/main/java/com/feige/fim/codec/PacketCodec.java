@@ -15,7 +15,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.TooLongFrameException;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class PacketCodec implements Codec {
     
@@ -24,6 +27,7 @@ public class PacketCodec implements Codec {
     private final byte version;
     private final int headerLength;
     private ICheckSum checkSum;
+    private final Set<Byte> customEncryptAndDecryptClassKey = new ConcurrentSkipListSet<>();
 
     public PacketCodec(int maxPacketSize, byte heartbeat, byte version, int headerLength, String checkSumKey) {
         this.maxPacketSize = maxPacketSize;
@@ -63,7 +67,12 @@ public class PacketCodec implements Codec {
         }
     }
     
-    private void encrypt(Packet packet, Session session){
+    @Override
+    public void encrypt(Object obj, Session session){
+        Packet packet = (Packet) obj;
+        if (customEncryptAndDecryptClassKey.contains(packet.getClassKey())) {
+            return;
+        }
         Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
         if (enable){
             Cipher cipher = session.getCipher();
@@ -119,7 +128,13 @@ public class PacketCodec implements Codec {
         }
     }
     
-    private void decrypt(Packet packet, Session session){
+    
+    @Override
+    public void decrypt(Object obj, Session session){
+        Packet packet = (Packet) obj;
+        if (customEncryptAndDecryptClassKey.contains(packet.getClassKey())) {
+            return;
+        }
         Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
         if (enable && packet.hasFeature(ProtocolConst.ENCRYPT)) {
             Cipher cipher = session.getCipher();
@@ -183,7 +198,16 @@ public class PacketCodec implements Codec {
     public ICheckSum getCheckSum() {
         return checkSum;
     }
-    
+
+    @Override
+    public void addCustomEncryptAndDecryptClassKey(byte... classKeys) {
+        if (classKeys != null && classKeys.length != 0){
+            for (byte classKey : classKeys) {
+                customEncryptAndDecryptClassKey.add(classKey);
+            }
+        }
+    }
+
     protected boolean isNeedCheckSum(){
         return checkSum != null;
     }

@@ -3,9 +3,11 @@ package com.feige.fim.handler;
 import com.feige.api.cache.Bucket;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.constant.Const;
+import com.feige.api.constant.ProtocolConst;
 import com.feige.api.constant.ProtocolConst.SerializedClass;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
+import com.feige.api.msg.ErrorResp;
 import com.feige.api.msg.HandshakeResp;
 import com.feige.api.sc.Listener;
 import com.feige.api.session.SessionContext;
@@ -51,17 +53,21 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
     @Override
     public void handle(Session session, Packet packet) throws RemotingException {
         if (session.isHandshake()) {
-            // TODO repeat handshake
+            // duplicate handshake
+            sendErrorPacket(session, packet, ProtocolConst.ErrorCode.DUPLICATE_HANDSHAKE, "duplicate handshake");
             return;
         }
         handshake(session, packet);
         
     }
     
+   
+    
     private void handshake(Session session, Packet packet) throws RemotingException {
         HandshakeReq handshakeReq = this.getMsg(packet, HandshakeReq.TYPE);
         if (!validateToken(handshakeReq)) {
-            // TODO validate token fail
+            // validate token fail
+            sendErrorPacket(session, packet, ProtocolConst.ErrorCode.ILLEGAL_TOKEN, "validate token fail");
             return;
         }
         Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
@@ -81,7 +87,8 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
         byte[] sessionKey = CryptoUtils.mixKey(clientKey, serverKey, keyLength);
         String clientId = handshakeReq.getClientId();
         if (StringUtils.isBlank(clientId) || iv.length != keyLength || clientKey.length != keyLength){
-            // TODO error msg and log
+            // illegal key length
+            sendErrorPacket(session, packet, ProtocolConst.ErrorCode.ILLEGAL_KEY_LENGTH, "illegal key length");
             return;
         }
         // 根据秘钥生成cipher
@@ -148,7 +155,7 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
                 .setServerKey(serverKeyString)
                 .setSessionId(sessionId);
         Packet packetResp = Packet.create(Command.HANDSHAKE);
-        packetResp.setSequenceNum(packetResp.getSequenceNum() + 1);
+        packetResp.setSequenceNum(packet.getSequenceNum() + 1);
         packetResp.setSerializerType(serializerType);
         packetResp.setClassKey(SerializedClass.HANDSHAKE_RESP.getClassKey());
         packetResp.setData(serializedClassManager.getSerializedObject(serializerType, handshakeResp));

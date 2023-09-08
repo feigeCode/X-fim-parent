@@ -4,6 +4,7 @@ import com.feige.api.bind.ClientBindInfo;
 import com.feige.api.bind.ClientBindManager;
 import com.feige.api.constant.Command;
 import com.feige.api.constant.Const;
+import com.feige.api.constant.ProtocolConst;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.msg.BindClientReq;
@@ -12,6 +13,7 @@ import com.feige.api.session.SessionContext;
 import com.feige.api.constant.ServerConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Inject;
+import com.feige.utils.logger.Loggers;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.utils.Configs;
 
@@ -27,19 +29,22 @@ public class BindClientMsgHandler extends AbstractMsgHandler {
     @Override
     public void handle(Session session, Packet msg) throws RemotingException {
         if (!session.isHandshake()){
-            // TODO: NOT HANDSHAKE
+            // NOT HANDSHAKE
+            this.sendErrorPacket(session, msg, ProtocolConst.ErrorCode.NOT_HANDSHAKE, "NOT HANDSHAKE");
             return;
         }
         
         if (session.isBindClient()) {
-            // TODO: REPEATED BIND
+            // DUPLICATE BIND
+            this.sendErrorPacket(session, msg, ProtocolConst.ErrorCode.DUPLICATE_BIND, "DUPLICATE BIND");
             return;
         }
 
         Long expireTime = (Long)session.getAttr("expireTime");
 
         if (expireTime == null || System.currentTimeMillis() > expireTime){
-            // TODO: SESSION EXPIRE 
+            // SESSION EXPIRE 
+            this.sendErrorPacket(session, msg, ProtocolConst.ErrorCode.ILLEGAL_SESSION, "SESSION EXPIRE");
             return;
         }
         
@@ -48,7 +53,7 @@ public class BindClientMsgHandler extends AbstractMsgHandler {
         SessionContext sessionContext = (SessionContext) session.getAttr("sessionContext");
         if (sessionContext != null && Objects.equals(bindClientReq.getSessionId(), sessionId) ){
             saveBindClient(session, sessionContext, bindClientReq);
-            System.out.println("bind success");
+            Loggers.SERVER.info("session id [{}] bind success", bindClientReq.getSessionId() );
         }
     }
 

@@ -1,5 +1,6 @@
 package com.feige.fim.codec;
 
+import com.feige.api.constant.ProtocolConst;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
 import com.feige.api.codec.Codec;
@@ -23,7 +24,9 @@ public class PacketCodecSpiCompProvider implements SpiCompProvider<Codec> {
     
     @Override
     public PacketCodec getInstance() {
-        return new PacketCodec(this.maxPacketSize, this.heartbeat, this.version, this.headerLength, this.checkSumKey);
+        PacketCodec packetCodec = new PacketCodec(this.maxPacketSize, this.heartbeat, this.version, this.headerLength, this.checkSumKey);
+        packetCodec.addCustomEncryptAndDecryptClassKey(ProtocolConst.SerializedClass.ERROR_RESP.getClassKey());
+        return packetCodec;
     }
     
 }

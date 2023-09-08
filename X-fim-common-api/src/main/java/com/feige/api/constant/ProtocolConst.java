@@ -33,7 +33,7 @@ public interface ProtocolConst {
      */
     byte HB_PACKET_BYTE = -33;
     
-    int HEADER_LEN = 10;
+    int HEADER_LEN = 11;
     
     String CHECK_SUM_DEFAULT = "default";
     String CHECK_SUM_CRC32 = "crc32";
@@ -57,7 +57,19 @@ public interface ProtocolConst {
    }
    
    enum ErrorCode {
-       DUPLICATE_HANDSHAKE(100);
+       DUPLICATE_HANDSHAKE(100),
+
+       ILLEGAL_TOKEN(200),
+       
+       ILLEGAL_KEY_LENGTH(300),
+
+       ILLEGAL_SESSION(400),
+
+       NOT_HANDSHAKE(500),
+       
+       DUPLICATE_BIND(600),
+               
+       ;
        
        private final int errorCode;
 
