@@ -1,7 +1,13 @@
 package com.feige.api.constant;
 
-public interface ProtocolConst {
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
+public interface ProtocolConst {
+    
     /**
      * protocol version
      */
@@ -45,14 +51,36 @@ public interface ProtocolConst {
        FAST_CONNECT_RESP(4),
        BIND_CLIENT(5),
        ACK(6),
-       ERROR_RESP(7);
+       ERROR_RESP(7, true);
        SerializedClass(int classKey){
+           this(classKey, false);
+       }
+       SerializedClass(int classKey, boolean customCrypto){
            this.classKey = (byte) classKey;
+           this.customCrypto = customCrypto;
        }
        private final byte classKey;
-
+       private final boolean customCrypto;
+       
        public byte getClassKey() {
            return classKey;
+       }
+       
+       public boolean isCustomCrypto(){
+           return this.customCrypto;
+       }
+       private static final Map<Byte, SerializedClass> allSerializedClassesMap = new HashMap<Byte, SerializedClass>(){{
+           SerializedClass[] values = SerializedClass.values();
+           for (SerializedClass serializedClass : values) {
+               put(serializedClass.getClassKey(), serializedClass);
+           }
+       }};
+       public static boolean isCustomCrypto(byte classKey){
+           SerializedClass serializedClass = allSerializedClassesMap.get(classKey);
+           if (serializedClass == null){
+               throw new IllegalArgumentException("class key [" + classKey + "] not found");
+           }
+           return serializedClass.isCustomCrypto();
        }
    }
    
@@ -81,4 +109,7 @@ public interface ProtocolConst {
            this.errorCode = errorCode;
        }
    }
+   
+   
+   
 }

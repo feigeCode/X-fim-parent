@@ -13,6 +13,8 @@ fim:
     version: 1
     header-length: 11
     check-sum-key:
+  compress:
+    enable: false
   crypto:
     enable: true
     symmetric:

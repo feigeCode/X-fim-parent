@@ -41,6 +41,7 @@ public class Configs  {
 
         String CRYPTO_ASYMMETRIC_PUBLIC_KEY = "fim.crypto.asymmetric.public-key";
         String CRYPTO_ENABLE = "fim.crypto.enable";
+        String COMPRESS_ENABLE = "fim.compress.enable";
         String CRYPTO_SYMMETRIC_KEY_LENGTH = "fim.crypto.symmetric.key-length";
 
         String ENABLED_MODULE_NAMES = "fim.enabled.module.names";

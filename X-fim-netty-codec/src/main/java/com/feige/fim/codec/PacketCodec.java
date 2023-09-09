@@ -1,6 +1,6 @@
 package com.feige.fim.codec;
 
-import com.feige.api.crypto.Cipher;
+import com.feige.api.codec.PacketInterceptor;
 import com.feige.api.codec.Codec;
 import com.feige.api.codec.DecoderException;
 import com.feige.api.codec.EncoderException;
@@ -10,15 +10,10 @@ import com.feige.api.session.Session;
 import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
 import com.feige.api.constant.ProtocolConst;
-import com.feige.framework.utils.Configs;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.TooLongFrameException;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 public class PacketCodec implements Codec {
     
@@ -26,17 +21,16 @@ public class PacketCodec implements Codec {
     private final byte heartbeat;
     private final byte version;
     private final int headerLength;
-    private ICheckSum checkSum;
-    private final Set<Byte> customEncryptAndDecryptClassKey = new ConcurrentSkipListSet<>();
+    private final ICheckSum checkSum;
+    private final List<PacketInterceptor> packetInterceptors;
 
-    public PacketCodec(int maxPacketSize, byte heartbeat, byte version, int headerLength, String checkSumKey) {
+    public PacketCodec(int maxPacketSize, byte heartbeat, byte version, int headerLength, ICheckSum checkSum, List<PacketInterceptor> packetInterceptors) {
         this.maxPacketSize = maxPacketSize;
         this.heartbeat = heartbeat;
         this.version = version;
         this.headerLength = headerLength;
-        if (checkSumKey != null && checkSumKey.length() > 0){
-            this.checkSum = getCheckSum(checkSumKey);
-        }
+        this.checkSum = checkSum;
+        this.packetInterceptors = packetInterceptors;
     }
 
     
@@ -51,7 +45,9 @@ public class PacketCodec implements Codec {
         if (packet.getCmd() == Command.HEARTBEAT.getCmd()){
             byteBuf.writeByte(getHeartbeat());
         }else {
-            encrypt(packet, session);
+            // 包拦截器，对包做一些处理
+            getPacketInterceptors()
+                    .forEach(packetInterceptor -> packetInterceptor.writePacket(session, packet));
             int dataLength = packet.getDataLength();
             byteBuf.writeByte(getVersion());
             byteBuf.writeInt(dataLength);
@@ -64,25 +60,6 @@ public class PacketCodec implements Codec {
             if (dataLength > 0){
                 byteBuf.writeBytes(packet.getData());
             }
-        }
-    }
-    
-    @Override
-    public void encrypt(Object obj, Session session){
-        Packet packet = (Packet) obj;
-        if (customEncryptAndDecryptClassKey.contains(packet.getClassKey())) {
-            return;
-        }
-        Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
-        if (enable){
-            Cipher cipher = session.getCipher();
-            if (cipher == null){
-                throw new EncoderException("cipher is null");
-            }
-            byte[] data = packet.getData();
-            byte[] encryptData = cipher.encrypt(data);
-            packet.setData(encryptData);
-            packet.addFeature(ProtocolConst.ENCRYPT);
         }
     }
 
@@ -119,7 +96,9 @@ public class PacketCodec implements Codec {
                     packet.setSerializerType(serializerType);
                     packet.setClassKey(classKey);
                     packet.setData(data);
-                    decrypt(packet, session);
+                    // 包拦截器，对包做一些处理
+                    getPacketInterceptors()
+                            .forEach(packetInterceptor -> packetInterceptor.readPacket(session, packet));
                     out.add(packet);
                 }else {
                     byteBuf.resetReaderIndex();
@@ -129,21 +108,6 @@ public class PacketCodec implements Codec {
     }
     
     
-    @Override
-    public void decrypt(Object obj, Session session){
-        Packet packet = (Packet) obj;
-        if (customEncryptAndDecryptClassKey.contains(packet.getClassKey())) {
-            return;
-        }
-        Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
-        if (enable && packet.hasFeature(ProtocolConst.ENCRYPT)) {
-            Cipher cipher = session.getCipher();
-            if (cipher == null) {
-                throw new DecoderException("cipher is null");
-            }
-            packet.setData(cipher.decrypt(packet.getData()));
-        }
-    }
 
     private byte checkVersion(ByteBuf byteBuf) {
         byte version = byteBuf.readByte();
@@ -157,9 +121,13 @@ public class PacketCodec implements Codec {
         short cs = byteBuf.readShort();
         if (isNeedCheckSum()){
             byte[] data = byteBuf.array();
-            getCheckSum().check(data, cs);
+            checkSum.check(data, cs);
         }
         return cs;
+    }
+
+    protected boolean isNeedCheckSum(){
+        return checkSum != null;
     }
 
     private int checkLength(ByteBuf byteBuf) {
@@ -196,29 +164,11 @@ public class PacketCodec implements Codec {
 
     @Override
     public ICheckSum getCheckSum() {
-        return checkSum;
+        return this.checkSum;
     }
 
     @Override
-    public void addCustomEncryptAndDecryptClassKey(byte... classKeys) {
-        if (classKeys != null && classKeys.length != 0){
-            for (byte classKey : classKeys) {
-                customEncryptAndDecryptClassKey.add(classKey);
-            }
-        }
-    }
-
-    protected boolean isNeedCheckSum(){
-        return checkSum != null;
-    }
-    
-    protected ICheckSum getCheckSum(String checkSumKey){
-        ICheckSum checkSum = null;
-        if (ProtocolConst.CHECK_SUM_DEFAULT.equals(checkSumKey)) {
-            checkSum = new DefaultCheckSum();
-        }else if (ProtocolConst.CHECK_SUM_CRC32.equals(checkSumKey)){
-            checkSum = new CRC32CheckSum();
-        }
-        return checkSum;
+    public List<PacketInterceptor> getPacketInterceptors() {
+        return packetInterceptors;
     }
 }

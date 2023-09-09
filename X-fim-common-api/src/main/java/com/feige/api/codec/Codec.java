@@ -4,7 +4,6 @@ import com.feige.api.session.Session;
 
 
 import java.util.List;
-import java.util.Set;
 
 public interface Codec {
     /**
@@ -16,26 +15,12 @@ public interface Codec {
     void encode(Session session, Object packet, Object buffer) throws EncoderException;
 
     /**
-     * encrypt
-     * @param packet packet
-     * @param session session
-     */
-    void encrypt(Object packet, Session session);
-
-    /**
      * Decoding
      * @param byteBuf byte buffer
      * @return object
      * @throws DecoderException 
      */
     void decode(Session session, Object byteBuf, List<Object> out) throws DecoderException;
-
-    /**
-     * decrypt
-     * @param packet packet
-     * @param session session
-     */
-    void decrypt(Object packet, Session session);
     
     /**
      * version
@@ -68,8 +53,10 @@ public interface Codec {
     ICheckSum getCheckSum();
 
     /**
-     * add custom encrypt and decrypt class key
-     * 
+     * packet interceptor list
+     * @return List
      */
-    void addCustomEncryptAndDecryptClassKey(byte... classKeys);
+    List<PacketInterceptor> getPacketInterceptors();
+
+    
 }

@@ -2,7 +2,9 @@ package com.feige.fim.codec;
 
 
 import com.feige.api.codec.ICheckSum;
+import com.feige.utils.spi.annotation.SpiComp;
 
+@SpiComp(value = "default", interfaces = ICheckSum.class)
 public class DefaultCheckSum implements ICheckSum {
 
     @Override

@@ -1,15 +1,22 @@
 package com.feige.fim.codec;
 
-import com.feige.api.constant.ProtocolConst;
+import com.feige.api.codec.ICheckSum;
+import com.feige.api.codec.PacketInterceptor;
+import com.feige.framework.aware.ApplicationContextAware;
+import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.utils.Configs;
+import com.feige.utils.common.StringUtils;
 import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.framework.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.framework.spi.api.SpiCompProvider;
 import com.feige.framework.utils.Configs.ConfigKey;
 
+import java.util.List;
+
 
 @SpiComp(value="packet", interfaces = SpiCompProvider.class, provideTypes = Codec.class)
-public class PacketCodecSpiCompProvider implements SpiCompProvider<Codec> {
+public class PacketCodecSpiCompProvider implements SpiCompProvider<Codec>, ApplicationContextAware {
     
     @Value(ConfigKey.CODEC_MAX_PACKET_SIZE_KEY)
     private int maxPacketSize;
@@ -19,14 +26,22 @@ public class PacketCodecSpiCompProvider implements SpiCompProvider<Codec> {
     private byte version;
     @Value(ConfigKey.CODEC_HEADER_LENGTH_KEY)
     private int headerLength;
-    @Value(value = ConfigKey.CODEC_CHECK_SUM_KEY, nullSafe = false)
-    private String checkSumKey;
+    
+    private ApplicationContext applicationContext;
     
     @Override
     public PacketCodec getInstance() {
-        PacketCodec packetCodec = new PacketCodec(this.maxPacketSize, this.heartbeat, this.version, this.headerLength, this.checkSumKey);
-        packetCodec.addCustomEncryptAndDecryptClassKey(ProtocolConst.SerializedClass.ERROR_RESP.getClassKey());
-        return packetCodec;
+        ICheckSum checkSum = null;
+        String checkSumKey = applicationContext.getEnvironment().getString(Configs.ConfigKey.CODEC_CHECK_SUM_KEY);
+        if (StringUtils.isNotBlank(checkSumKey)){
+            checkSum = applicationContext.get(checkSumKey, ICheckSum.class);
+        }
+        List<PacketInterceptor> packetInterceptors = applicationContext.getByType(PacketInterceptor.class);
+        return new PacketCodec(this.maxPacketSize, this.heartbeat, this.version, this.headerLength, checkSum, packetInterceptors);
     }
-    
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 }
