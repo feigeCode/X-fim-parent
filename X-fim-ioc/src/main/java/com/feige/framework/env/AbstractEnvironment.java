@@ -21,12 +21,12 @@ public abstract class AbstractEnvironment extends LifecycleAdapter implements En
     public void initialize() throws IllegalStateException {
         this.compositeConfig = new CompositeConfig();
         this.systemConfig = new SystemConfig();
+        this.compositeConfig.addConfig(this.systemConfig);
         this.envConfig = new EnvConfig();
-        String path = this.systemConfig.getString(Configs.CONFIG_FILE_KEY, Configs.DEFAULT_CONFIG_PATH);
+        this.compositeConfig.addConfig(this.envConfig);
+        String path = this.compositeConfig.getString(Configs.CONFIG_FILE_KEY, Configs.DEFAULT_CONFIG_PATH);
         this.appConfig = getConfigFactory().create(Configs.getFile(path));
         this.appConfig.setOrder(2);
-        this.compositeConfig.addConfig(this.systemConfig);
-        this.compositeConfig.addConfig(this.envConfig);
         this.compositeConfig.addConfig(appConfig);
     }
 

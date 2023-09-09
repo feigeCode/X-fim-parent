@@ -1,5 +1,5 @@
 <assembly>
-    <id>assembly</id>
+    <id>release</id>
     
     <formats>
         <format>tar.gz</format>
@@ -50,6 +50,9 @@
         <dependencySet>
             <unpack>false</unpack>
             <scope>runtime</scope>
+            <excludes>
+                <exclude>${project.groupId}:${project.artifactId}</exclude>
+            </excludes>
             <outputDirectory>lib</outputDirectory>
         </dependencySet>
     </dependencySets>
