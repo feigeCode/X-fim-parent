@@ -46,8 +46,7 @@ public class CryptoPacketInterceptor implements PacketInterceptor {
         if (ProtocolConst.SerializedClass.isCustomCrypto(packet.getClassKey())) {
             return;
         }
-        Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
-        if (enable && packet.hasFeature(ProtocolConst.ENCRYPT)) {
+        if (packet.hasFeature(ProtocolConst.ENCRYPT)) {
             Cipher cipher = session.getCipher();
             if (cipher == null) {
                 throw new DecoderException("cipher is null");

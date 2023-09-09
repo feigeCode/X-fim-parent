@@ -97,13 +97,18 @@ public class PacketCodec implements Codec {
                     packet.setClassKey(classKey);
                     packet.setData(data);
                     // 包拦截器，对包做一些处理
-                    getPacketInterceptors()
-                            .forEach(packetInterceptor -> packetInterceptor.readPacket(session, packet));
+                    this.runReverseReadPacketInterceptors(session, packet);
                     out.add(packet);
                 }else {
                     byteBuf.resetReaderIndex();
                 }
             }
+        }
+    }
+    
+    private void runReverseReadPacketInterceptors(Session session, Object packet){
+        for (int i = this.packetInterceptors.size() - 1; i >= 0; i--) {
+            this.packetInterceptors.get(i).readPacket(session, packet);
         }
     }
     

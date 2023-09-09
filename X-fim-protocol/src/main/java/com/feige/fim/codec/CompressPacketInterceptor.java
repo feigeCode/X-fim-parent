@@ -24,8 +24,8 @@ public class CompressPacketInterceptor implements PacketInterceptor {
         Boolean enable = Configs.getBoolean(Configs.ConfigKey.COMPRESS_ENABLE, false);
         if (enable){
             byte[] data = packet.getData();
-            byte[] encryptData = IOUtils.compress(data);
-            packet.setData(encryptData);
+            byte[] compressData = IOUtils.compress(data);
+            packet.setData(compressData);
             packet.addFeature(ProtocolConst.COMPRESS);
         }
     }
@@ -37,8 +37,7 @@ public class CompressPacketInterceptor implements PacketInterceptor {
 
     private void decompress(Object obj, Session session){
         Packet packet = (Packet) obj;
-        Boolean enable = Configs.getBoolean(Configs.ConfigKey.COMPRESS_ENABLE, false);
-        if (enable && packet.hasFeature(ProtocolConst.COMPRESS)) {
+        if (packet.hasFeature(ProtocolConst.COMPRESS)) {
             packet.setData(IOUtils.decompress(packet.getData()));
         }
     }
