@@ -19,7 +19,7 @@ import org.bouncycastle.util.encoders.Base64;
 
 
 @SpiComp(value="single", interfaces = SessionHandler.class)
-public class SingleSessionHandler extends AbstractSessionHandler {
+public class ServerSessionHandler extends AbstractSessionHandler {
 
    
 

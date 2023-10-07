@@ -96,6 +96,8 @@ public interface ProtocolConst {
        NOT_HANDSHAKE(500),
        
        DUPLICATE_BIND(600),
+       
+       NOT_BIND(700),
                
        ;
        

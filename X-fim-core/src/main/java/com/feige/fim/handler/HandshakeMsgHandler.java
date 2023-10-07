@@ -7,7 +7,6 @@ import com.feige.api.constant.ProtocolConst;
 import com.feige.api.constant.ProtocolConst.SerializedClass;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
-import com.feige.api.msg.ErrorResp;
 import com.feige.api.msg.HandshakeResp;
 import com.feige.api.sc.Listener;
 import com.feige.api.session.SessionContext;
@@ -143,23 +142,17 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
     }
     
     private Packet createHandshakeRespPacket(Session session, HandshakeReq handshakeReq, byte[] serverKey, Packet packet){
-        byte serializerType = packet.getSerializerType();
-        HandshakeResp handshakeResp = serializedClassManager.newObject(serializerType, SerializedClass.HANDSHAKE_RESP.getClassKey());
         long now = System.currentTimeMillis();
         long expireTime = now + getSessionExpireTime() * 1000;
         String sessionId = Md5Utils.digest(handshakeReq.getClientId() + now);
         session.setAttr("sessionId", sessionId);
         session.setAttr("expireTime", expireTime);
         String serverKeyString = Base64.toBase64String(serverKey);
-        handshakeResp.setExpireTime(expireTime)
-                .setServerKey(serverKeyString)
-                .setSessionId(sessionId);
-        Packet packetResp = Packet.create(Command.HANDSHAKE);
-        packetResp.setSequenceNum(packet.getSequenceNum() + 1);
-        packetResp.setSerializerType(serializerType);
-        packetResp.setClassKey(SerializedClass.HANDSHAKE_RESP.getClassKey());
-        packetResp.setData(serializedClassManager.getSerializedObject(serializerType, handshakeResp));
-        return packetResp;
+        return this.buildPacket(Command.HANDSHAKE, SerializedClass.HANDSHAKE_RESP, packet, (HandshakeResp handshakeResp) -> {
+            handshakeResp.setExpireTime(expireTime)
+                    .setServerKey(serverKeyString)
+                    .setSessionId(sessionId);
+        });
     }
     
     

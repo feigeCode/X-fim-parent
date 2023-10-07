@@ -13,6 +13,8 @@ import com.feige.framework.annotation.Inject;
 
 import com.feige.api.serialize.SerializedClassManager;
 
+import java.util.function.Consumer;
+
 /**
  * @author feige<br />
  * @ClassName: AbstractMsgHandler <br/>
@@ -46,6 +48,19 @@ public abstract class AbstractMsgHandler implements MsgHandler<Packet> {
         packetResp.setClassKey(ProtocolConst.SerializedClass.ERROR_RESP.getClassKey());
         packetResp.setData(serializedClassManager.getSerializedObject(serializerType, errorResp));
         session.write(errorResp);
+    }
+    
+    protected <T extends Msg> Packet buildPacket(Command command, ProtocolConst.SerializedClass serializedClass, Packet packet, Consumer<T> consumer){
+        byte serializerType = packet.getSerializerType();
+        byte classKey = serializedClass.getClassKey();
+        Packet respPacket = Packet.create(command);
+        respPacket.setSerializerType(serializerType);
+        respPacket.setClassKey(classKey);
+        respPacket.setSequenceNum(packet.getSequenceNum() + 1);
+        T msg = serializedClassManager.newObject(serializerType, classKey);
+        consumer.accept(msg);
+        packet.setData(serializedClassManager.getSerializedObject(serializerType, msg));
+        return respPacket;
     }
   
 }

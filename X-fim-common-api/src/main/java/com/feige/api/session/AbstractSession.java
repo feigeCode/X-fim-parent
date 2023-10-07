@@ -59,6 +59,8 @@ public abstract class AbstractSession implements Session {
     public void close() {
         this.markActive(false);
         this.attributes.clear();
+        this.cipher = null;
+        this.sessionState.set(0);
     }
 
     @Override

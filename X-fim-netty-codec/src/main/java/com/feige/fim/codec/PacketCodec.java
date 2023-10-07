@@ -9,10 +9,11 @@ import com.feige.api.codec.VersionException;
 import com.feige.api.session.Session;
 import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
-import com.feige.api.constant.ProtocolConst;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.TooLongFrameException;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class PacketCodec implements Codec {
@@ -23,6 +24,7 @@ public class PacketCodec implements Codec {
     private final int headerLength;
     private final ICheckSum checkSum;
     private final List<PacketInterceptor> packetInterceptors;
+    private final List<PacketInterceptor> reversePacketInterceptors;
 
     public PacketCodec(int maxPacketSize, byte heartbeat, byte version, int headerLength, ICheckSum checkSum, List<PacketInterceptor> packetInterceptors) {
         this.maxPacketSize = maxPacketSize;
@@ -31,6 +33,8 @@ public class PacketCodec implements Codec {
         this.headerLength = headerLength;
         this.checkSum = checkSum;
         this.packetInterceptors = packetInterceptors;
+        this.reversePacketInterceptors = new ArrayList<>(packetInterceptors);
+        this.reversePacketInterceptors.sort(Comparator.comparingInt(PacketInterceptor::order).reversed());
     }
 
     
@@ -71,7 +75,7 @@ public class PacketCodec implements Codec {
         ByteBuf byteBuf = (ByteBuf) b;
         byteBuf.markReaderIndex();
         if (byteBuf.isReadable()) {
-            if (byteBuf.readByte() == ProtocolConst.HB_PACKET_BYTE) {
+            if (byteBuf.readByte() == getHeartbeat()) {
                 Packet packet = Packet.create(Command.HEARTBEAT);
                 packet.setVersion(getVersion());
                 out.add(packet);
@@ -97,18 +101,13 @@ public class PacketCodec implements Codec {
                     packet.setClassKey(classKey);
                     packet.setData(data);
                     // 包拦截器，对包做一些处理
-                    this.runReverseReadPacketInterceptors(session, packet);
+                    reversePacketInterceptors
+                            .forEach(packetInterceptor -> packetInterceptor.readPacket(session, packet));
                     out.add(packet);
                 }else {
                     byteBuf.resetReaderIndex();
                 }
             }
-        }
-    }
-    
-    private void runReverseReadPacketInterceptors(Session session, Object packet){
-        for (int i = this.packetInterceptors.size() - 1; i >= 0; i--) {
-            this.packetInterceptors.get(i).readPacket(session, packet);
         }
     }
     

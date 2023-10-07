@@ -65,16 +65,9 @@ public class FastConnectMsgHandler extends AbstractMsgHandler {
     }
     
     private Packet createRespPacket(Packet packet){
-        byte serializerType = packet.getSerializerType();
-        byte classKey = ProtocolConst.SerializedClass.FAST_CONNECT_RESP.getClassKey();
-        Packet respPacket = Packet.create(Command.FAST_CONNECT);
-        respPacket.setSerializerType(serializerType);
-        respPacket.setClassKey(classKey);
-        respPacket.setSequenceNum(packet.getSequenceNum() + 1);
-        FastConnectResp fastConnectResp = serializedClassManager.newObject(serializerType, classKey);
-        fastConnectResp.setStatusCode(1);
-        respPacket.setData(serializedClassManager.getSerializedObject(serializerType, fastConnectResp));
-        return respPacket;
+        return this.buildPacket(Command.FAST_CONNECT, ProtocolConst.SerializedClass.FAST_CONNECT_RESP, packet, (FastConnectResp fastConnectResp) -> {
+            fastConnectResp.setStatusCode(1);
+        });
     }
 
     private SessionContext getCache(String sessionId ){
