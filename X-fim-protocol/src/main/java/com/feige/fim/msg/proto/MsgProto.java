@@ -44,6 +44,21 @@ public final class MsgProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_feige_fim_msg_ErrorRespProto_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_feige_fim_msg_AckProto_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_feige_fim_msg_AckProto_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_feige_fim_msg_ChatMsgReqProto_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_feige_fim_msg_ChatMsgReqProto_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_feige_fim_msg_ChatMsgRespProto_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_feige_fim_msg_ChatMsgRespProto_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -66,8 +81,17 @@ public final class MsgProto {
       "\t\"6\n\022BindClientReqProto\022\022\n\nsession_id\030\001 " +
       "\001(\t\022\014\n\004tags\030\002 \001(\t\"C\n\016ErrorRespProto\022\022\n\ne" +
       "rror_code\030\001 \001(\005\022\016\n\006reason\030\002 \001(\t\022\r\n\005extra" +
-      "\030\003 \001(\tB%\n\027com.feige.fim.msg.protoB\010MsgPr" +
-      "otoP\001b\006proto3"
+      "\030\003 \001(\t\"K\n\010AckProto\022\025\n\rserver_msg_id\030\001 \001(" +
+      "\t\022\025\n\rclient_msg_id\030\002 \001(\t\022\021\n\tsend_time\030\003 " +
+      "\001(\003\"\275\001\n\017ChatMsgReqProto\022\025\n\rserver_msg_id" +
+      "\030\001 \001(\t\022\025\n\rclient_msg_id\030\002 \001(\t\022\021\n\tsend_ti" +
+      "me\030\003 \001(\003\022\021\n\tsender_id\030\004 \001(\t\022\023\n\013receiver_" +
+      "id\030\005 \001(\t\022\017\n\007content\030\006 \001(\t\022\016\n\006format\030\007 \001(" +
+      "\005\022\020\n\010msg_type\030\010 \001(\005\022\016\n\006status\030\t \001(\005\"S\n\020C" +
+      "hatMsgRespProto\022\025\n\rserver_msg_id\030\001 \001(\t\022\025" +
+      "\n\rclient_msg_id\030\002 \001(\t\022\021\n\tsend_time\030\003 \001(\003" +
+      "B%\n\027com.feige.fim.msg.protoB\010MsgProtoP\001b" +
+      "\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -109,6 +133,24 @@ public final class MsgProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_fim_msg_ErrorRespProto_descriptor,
         new java.lang.String[] { "ErrorCode", "Reason", "Extra", });
+    internal_static_com_feige_fim_msg_AckProto_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_com_feige_fim_msg_AckProto_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_feige_fim_msg_AckProto_descriptor,
+        new java.lang.String[] { "ServerMsgId", "ClientMsgId", "SendTime", });
+    internal_static_com_feige_fim_msg_ChatMsgReqProto_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_com_feige_fim_msg_ChatMsgReqProto_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_feige_fim_msg_ChatMsgReqProto_descriptor,
+        new java.lang.String[] { "ServerMsgId", "ClientMsgId", "SendTime", "SenderId", "ReceiverId", "Content", "Format", "MsgType", "Status", });
+    internal_static_com_feige_fim_msg_ChatMsgRespProto_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_com_feige_fim_msg_ChatMsgRespProto_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_feige_fim_msg_ChatMsgRespProto_descriptor,
+        new java.lang.String[] { "ServerMsgId", "ClientMsgId", "SendTime", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

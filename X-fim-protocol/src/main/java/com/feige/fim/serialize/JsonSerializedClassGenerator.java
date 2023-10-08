@@ -1,7 +1,10 @@
 package com.feige.fim.serialize;
 
 import com.feige.api.constant.ProtocolConst;
+import com.feige.api.msg.Ack;
 import com.feige.api.msg.BindClientReq;
+import com.feige.api.msg.ChatMsgReq;
+import com.feige.api.msg.ChatMsgResp;
 import com.feige.api.msg.ErrorResp;
 import com.feige.api.msg.FastConnectReq;
 import com.feige.api.msg.SuccessResp;
@@ -76,6 +79,9 @@ public class JsonSerializedClassGenerator extends AbstractSerializedClassGenerat
         classGens.add(new ClassGen(SuccessResp.TYPE));
         classGens.add(new ClassGen(BindClientReq.TYPE));
         classGens.add(new ClassGen(ErrorResp.TYPE));
+        classGens.add(new ClassGen(Ack.TYPE));
+        classGens.add(new ClassGen(ChatMsgReq.TYPE));
+        classGens.add(new ClassGen(ChatMsgResp.TYPE));
         return classGens;
     }
     

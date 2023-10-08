@@ -56,3 +56,39 @@ message ErrorRespProto {
 }
 
 
+message AckProto {
+    string server_msg_id = 1;
+    
+    string client_msg_id = 2;
+    
+    int64 send_time = 3;
+}
+
+
+message ChatMsgReqProto {
+    string server_msg_id = 1;
+
+    string client_msg_id = 2;
+
+    int64 send_time = 3;
+    
+    string sender_id = 4;
+    
+    string receiver_id = 5;
+    
+    string content = 6;
+    
+    int32 format = 7;
+    
+    int32 msg_type = 8;
+    
+    int32 status = 9;
+}
+
+message ChatMsgRespProto {
+    string server_msg_id = 1;
+
+    string client_msg_id = 2;
+
+    int64 send_time = 3;
+}

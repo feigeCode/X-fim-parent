@@ -1,7 +1,10 @@
 package com.feige.fim.serialize;
 
 import com.feige.api.constant.ProtocolConst;
+import com.feige.api.msg.Ack;
 import com.feige.api.msg.BindClientReq;
+import com.feige.api.msg.ChatMsgReq;
+import com.feige.api.msg.ChatMsgResp;
 import com.feige.api.msg.ErrorResp;
 import com.feige.api.msg.FastConnectReq;
 import com.feige.api.msg.SuccessResp;
@@ -11,7 +14,10 @@ import com.feige.api.msg.MsgFactory;
 import com.feige.api.serialize.ClassGen;
 import com.feige.api.serialize.MsgGen;
 import com.feige.api.serialize.SerializedClassGenerator;
+import com.feige.fim.msg.proto.AckProto;
 import com.feige.fim.msg.proto.BindClientReqProto;
+import com.feige.fim.msg.proto.ChatMsgReqProto;
+import com.feige.fim.msg.proto.ChatMsgRespProto;
 import com.feige.fim.msg.proto.ErrorRespProto;
 import com.feige.fim.msg.proto.FastConnectReqProto;
 import com.feige.fim.msg.proto.HandshakeReqProto;
@@ -110,6 +116,9 @@ public class ProtoBufSerializedClassGenerator extends AbstractSerializedClassGen
         classGens.add(new ClassGen(SuccessResp.TYPE, SuccessRespProto.class, SuccessRespProto.Builder.class));
         classGens.add(new ClassGen(BindClientReq.TYPE, BindClientReqProto.class, BindClientReqProto.Builder.class));
         classGens.add(new ClassGen(ErrorResp.TYPE, ErrorRespProto.class, ErrorRespProto.Builder.class));
+        classGens.add(new ClassGen(Ack.TYPE, AckProto.class, AckProto.Builder.class));
+        classGens.add(new ClassGen(ChatMsgReq.TYPE, ChatMsgReqProto.class, ChatMsgReqProto.Builder.class));
+        classGens.add(new ClassGen(ChatMsgResp.TYPE, ChatMsgRespProto.class, ChatMsgRespProto.Builder.class));
         return classGens;
     }
 }

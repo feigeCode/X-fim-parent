@@ -48,7 +48,10 @@ public interface ProtocolConst {
        SUCCESS_RESP(4),
        BIND_CLIENT(5),
        ACK(6),
-       ERROR_RESP(7, true);
+       ERROR_RESP(7, true),
+       CHAT_MSG_REQ(8),
+       CHAT_MSG_RESP(9),
+       ;
        SerializedClass(int classKey){
            this(classKey, false);
        }
