@@ -30,10 +30,10 @@ public final class MsgProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_feige_fim_msg_FastConnectReqProto_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_feige_fim_msg_FastConnectRespProto_descriptor;
+    internal_static_com_feige_fim_msg_SuccessRespProto_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_feige_fim_msg_FastConnectRespProto_fieldAccessorTable;
+      internal_static_com_feige_fim_msg_SuccessRespProto_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_feige_fim_msg_BindClientReqProto_descriptor;
   static final 
@@ -61,13 +61,13 @@ public final class MsgProto {
       "\"Q\n\022HandshakeRespProto\022\022\n\nserver_key\030\001 \001" +
       "(\t\022\022\n\nsession_id\030\002 \001(\t\022\023\n\013expire_time\030\003 " +
       "\001(\022\"<\n\023FastConnectReqProto\022\021\n\tclient_id\030" +
-      "\001 \001(\t\022\022\n\nsession_id\030\002 \001(\t\"+\n\024FastConnect" +
-      "RespProto\022\023\n\013status_code\030\001 \001(\005\"6\n\022BindCl" +
-      "ientReqProto\022\022\n\nsession_id\030\001 \001(\t\022\014\n\004tags" +
-      "\030\002 \001(\t\"C\n\016ErrorRespProto\022\022\n\nerror_code\030\001" +
-      " \001(\005\022\016\n\006reason\030\002 \001(\t\022\r\n\005extra\030\003 \001(\tB%\n\027c" +
-      "om.feige.fim.msg.protoB\010MsgProtoP\001b\006prot" +
-      "o3"
+      "\001 \001(\t\022\022\n\nsession_id\030\002 \001(\t\"6\n\020SuccessResp" +
+      "Proto\022\023\n\013status_code\030\001 \001(\005\022\r\n\005extra\030\002 \001(" +
+      "\t\"6\n\022BindClientReqProto\022\022\n\nsession_id\030\001 " +
+      "\001(\t\022\014\n\004tags\030\002 \001(\t\"C\n\016ErrorRespProto\022\022\n\ne" +
+      "rror_code\030\001 \001(\005\022\016\n\006reason\030\002 \001(\t\022\r\n\005extra" +
+      "\030\003 \001(\tB%\n\027com.feige.fim.msg.protoB\010MsgPr" +
+      "otoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -91,12 +91,12 @@ public final class MsgProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_feige_fim_msg_FastConnectReqProto_descriptor,
         new java.lang.String[] { "ClientId", "SessionId", });
-    internal_static_com_feige_fim_msg_FastConnectRespProto_descriptor =
+    internal_static_com_feige_fim_msg_SuccessRespProto_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_com_feige_fim_msg_FastConnectRespProto_fieldAccessorTable = new
+    internal_static_com_feige_fim_msg_SuccessRespProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_feige_fim_msg_FastConnectRespProto_descriptor,
-        new java.lang.String[] { "StatusCode", });
+        internal_static_com_feige_fim_msg_SuccessRespProto_descriptor,
+        new java.lang.String[] { "StatusCode", "Extra", });
     internal_static_com_feige_fim_msg_BindClientReqProto_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_com_feige_fim_msg_BindClientReqProto_fieldAccessorTable = new

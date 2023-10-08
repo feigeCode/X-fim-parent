@@ -4,7 +4,7 @@ import com.feige.api.constant.ProtocolConst;
 import com.feige.api.msg.BindClientReq;
 import com.feige.api.msg.ErrorResp;
 import com.feige.api.msg.FastConnectReq;
-import com.feige.api.msg.FastConnectResp;
+import com.feige.api.msg.SuccessResp;
 import com.feige.api.msg.HandshakeReq;
 import com.feige.api.msg.HandshakeResp;
 import com.feige.api.msg.MsgFactory;
@@ -73,7 +73,7 @@ public class JsonSerializedClassGenerator extends AbstractSerializedClassGenerat
         classGens.add(new ClassGen(HandshakeReq.TYPE));
         classGens.add(new ClassGen(HandshakeResp.TYPE));
         classGens.add(new ClassGen(FastConnectReq.TYPE));
-        classGens.add(new ClassGen(FastConnectResp.TYPE));
+        classGens.add(new ClassGen(SuccessResp.TYPE));
         classGens.add(new ClassGen(BindClientReq.TYPE));
         classGens.add(new ClassGen(ErrorResp.TYPE));
         return classGens;

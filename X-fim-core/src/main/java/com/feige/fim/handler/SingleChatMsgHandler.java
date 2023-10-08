@@ -33,10 +33,10 @@ public class SingleChatMsgHandler extends AbstractMsgHandler{
     
     private Packet buildAckPacket(Packet msg, ChatMsgResp chatMsgResp){
         return this.buildPacket(Command.ACK, SerializedClass.ACK, msg, (Ack ack) -> {
-            ack.setServerMsgId(chatMsgResp.getServerMsgId());
-            ack.setClientMsgId(chatMsgResp.getClientMsgId());
-            ack.setSendTime(chatMsgResp.getSendTime());
-            ack.setExtra(chatMsgResp.getExtra());
+            ack.setServerMsgId(chatMsgResp.getServerMsgId())
+                .setClientMsgId(chatMsgResp.getClientMsgId())
+                .setSendTime(chatMsgResp.getSendTime())
+                .setExtra(chatMsgResp.getExtra());
         });
     }
 

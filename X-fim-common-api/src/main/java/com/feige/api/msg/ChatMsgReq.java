@@ -1,6 +1,8 @@
 package com.feige.api.msg;
 
 public interface ChatMsgReq extends Ack {
+    Class<ChatMsgReq> TYPE = ChatMsgReq.class;
+    
     String getSenderId();
     
     ChatMsgReq setSenderId(String senderId);

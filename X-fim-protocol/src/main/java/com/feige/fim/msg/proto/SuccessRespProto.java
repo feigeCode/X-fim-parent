@@ -4,25 +4,26 @@
 package com.feige.fim.msg.proto;
 
 /**
- * Protobuf type {@code com.feige.fim.msg.FastConnectRespProto}
+ * Protobuf type {@code com.feige.fim.msg.SuccessRespProto}
  */
-public final class FastConnectRespProto extends
+public final class SuccessRespProto extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.feige.fim.msg.FastConnectRespProto)
-    FastConnectRespProtoOrBuilder {
+    // @@protoc_insertion_point(message_implements:com.feige.fim.msg.SuccessRespProto)
+    SuccessRespProtoOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use FastConnectRespProto.newBuilder() to construct.
-  private FastConnectRespProto(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use SuccessRespProto.newBuilder() to construct.
+  private SuccessRespProto(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private FastConnectRespProto() {
+  private SuccessRespProto() {
+    extra_ = "";
   }
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new FastConnectRespProto();
+    return new SuccessRespProto();
   }
 
   @java.lang.Override
@@ -30,7 +31,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private FastConnectRespProto(
+  private SuccessRespProto(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -51,6 +52,12 @@ private static final long serialVersionUID = 0L;
           case 8: {
 
             statusCode_ = input.readInt32();
+            break;
+          }
+          case 18: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            extra_ = s;
             break;
           }
           default: {
@@ -74,15 +81,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectRespProto_descriptor;
+    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_SuccessRespProto_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectRespProto_fieldAccessorTable
+    return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_SuccessRespProto_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.feige.fim.msg.proto.FastConnectRespProto.class, com.feige.fim.msg.proto.FastConnectRespProto.Builder.class);
+            com.feige.fim.msg.proto.SuccessRespProto.class, com.feige.fim.msg.proto.SuccessRespProto.Builder.class);
   }
 
   public static final int STATUS_CODE_FIELD_NUMBER = 1;
@@ -94,6 +101,44 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public int getStatusCode() {
     return statusCode_;
+  }
+
+  public static final int EXTRA_FIELD_NUMBER = 2;
+  private volatile java.lang.Object extra_;
+  /**
+   * <code>string extra = 2;</code>
+   * @return The extra.
+   */
+  @java.lang.Override
+  public java.lang.String getExtra() {
+    java.lang.Object ref = extra_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      extra_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string extra = 2;</code>
+   * @return The bytes for extra.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getExtraBytes() {
+    java.lang.Object ref = extra_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      extra_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -113,6 +158,9 @@ private static final long serialVersionUID = 0L;
     if (statusCode_ != 0) {
       output.writeInt32(1, statusCode_);
     }
+    if (!getExtraBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, extra_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -126,6 +174,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(1, statusCode_);
     }
+    if (!getExtraBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, extra_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -136,13 +187,15 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.feige.fim.msg.proto.FastConnectRespProto)) {
+    if (!(obj instanceof com.feige.fim.msg.proto.SuccessRespProto)) {
       return super.equals(obj);
     }
-    com.feige.fim.msg.proto.FastConnectRespProto other = (com.feige.fim.msg.proto.FastConnectRespProto) obj;
+    com.feige.fim.msg.proto.SuccessRespProto other = (com.feige.fim.msg.proto.SuccessRespProto) obj;
 
     if (getStatusCode()
         != other.getStatusCode()) return false;
+    if (!getExtra()
+        .equals(other.getExtra())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -156,74 +209,76 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + STATUS_CODE_FIELD_NUMBER;
     hash = (53 * hash) + getStatusCode();
+    hash = (37 * hash) + EXTRA_FIELD_NUMBER;
+    hash = (53 * hash) + getExtra().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseFrom(
+  public static com.feige.fim.msg.proto.SuccessRespProto parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseFrom(
+  public static com.feige.fim.msg.proto.SuccessRespProto parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseFrom(
+  public static com.feige.fim.msg.proto.SuccessRespProto parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseFrom(
+  public static com.feige.fim.msg.proto.SuccessRespProto parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseFrom(byte[] data)
+  public static com.feige.fim.msg.proto.SuccessRespProto parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseFrom(
+  public static com.feige.fim.msg.proto.SuccessRespProto parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseFrom(java.io.InputStream input)
+  public static com.feige.fim.msg.proto.SuccessRespProto parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseFrom(
+  public static com.feige.fim.msg.proto.SuccessRespProto parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseDelimitedFrom(java.io.InputStream input)
+  public static com.feige.fim.msg.proto.SuccessRespProto parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseDelimitedFrom(
+  public static com.feige.fim.msg.proto.SuccessRespProto parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseFrom(
+  public static com.feige.fim.msg.proto.SuccessRespProto parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.feige.fim.msg.proto.FastConnectRespProto parseFrom(
+  public static com.feige.fim.msg.proto.SuccessRespProto parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -236,7 +291,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.feige.fim.msg.proto.FastConnectRespProto prototype) {
+  public static Builder newBuilder(com.feige.fim.msg.proto.SuccessRespProto prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -252,26 +307,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code com.feige.fim.msg.FastConnectRespProto}
+   * Protobuf type {@code com.feige.fim.msg.SuccessRespProto}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.feige.fim.msg.FastConnectRespProto)
-      com.feige.fim.msg.proto.FastConnectRespProtoOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.feige.fim.msg.SuccessRespProto)
+      com.feige.fim.msg.proto.SuccessRespProtoOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectRespProto_descriptor;
+      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_SuccessRespProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectRespProto_fieldAccessorTable
+      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_SuccessRespProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.feige.fim.msg.proto.FastConnectRespProto.class, com.feige.fim.msg.proto.FastConnectRespProto.Builder.class);
+              com.feige.fim.msg.proto.SuccessRespProto.class, com.feige.fim.msg.proto.SuccessRespProto.Builder.class);
     }
 
-    // Construct using com.feige.fim.msg.proto.FastConnectRespProto.newBuilder()
+    // Construct using com.feige.fim.msg.proto.SuccessRespProto.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -291,23 +346,25 @@ private static final long serialVersionUID = 0L;
       super.clear();
       statusCode_ = 0;
 
+      extra_ = "";
+
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_FastConnectRespProto_descriptor;
+      return com.feige.fim.msg.proto.MsgProto.internal_static_com_feige_fim_msg_SuccessRespProto_descriptor;
     }
 
     @java.lang.Override
-    public com.feige.fim.msg.proto.FastConnectRespProto getDefaultInstanceForType() {
-      return com.feige.fim.msg.proto.FastConnectRespProto.getDefaultInstance();
+    public com.feige.fim.msg.proto.SuccessRespProto getDefaultInstanceForType() {
+      return com.feige.fim.msg.proto.SuccessRespProto.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.feige.fim.msg.proto.FastConnectRespProto build() {
-      com.feige.fim.msg.proto.FastConnectRespProto result = buildPartial();
+    public com.feige.fim.msg.proto.SuccessRespProto build() {
+      com.feige.fim.msg.proto.SuccessRespProto result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -315,9 +372,10 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.feige.fim.msg.proto.FastConnectRespProto buildPartial() {
-      com.feige.fim.msg.proto.FastConnectRespProto result = new com.feige.fim.msg.proto.FastConnectRespProto(this);
+    public com.feige.fim.msg.proto.SuccessRespProto buildPartial() {
+      com.feige.fim.msg.proto.SuccessRespProto result = new com.feige.fim.msg.proto.SuccessRespProto(this);
       result.statusCode_ = statusCode_;
+      result.extra_ = extra_;
       onBuilt();
       return result;
     }
@@ -356,18 +414,22 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.feige.fim.msg.proto.FastConnectRespProto) {
-        return mergeFrom((com.feige.fim.msg.proto.FastConnectRespProto)other);
+      if (other instanceof com.feige.fim.msg.proto.SuccessRespProto) {
+        return mergeFrom((com.feige.fim.msg.proto.SuccessRespProto)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.feige.fim.msg.proto.FastConnectRespProto other) {
-      if (other == com.feige.fim.msg.proto.FastConnectRespProto.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.feige.fim.msg.proto.SuccessRespProto other) {
+      if (other == com.feige.fim.msg.proto.SuccessRespProto.getDefaultInstance()) return this;
       if (other.getStatusCode() != 0) {
         setStatusCode(other.getStatusCode());
+      }
+      if (!other.getExtra().isEmpty()) {
+        extra_ = other.extra_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -384,11 +446,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.feige.fim.msg.proto.FastConnectRespProto parsedMessage = null;
+      com.feige.fim.msg.proto.SuccessRespProto parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.feige.fim.msg.proto.FastConnectRespProto) e.getUnfinishedMessage();
+        parsedMessage = (com.feige.fim.msg.proto.SuccessRespProto) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -428,6 +490,82 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
+
+    private java.lang.Object extra_ = "";
+    /**
+     * <code>string extra = 2;</code>
+     * @return The extra.
+     */
+    public java.lang.String getExtra() {
+      java.lang.Object ref = extra_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        extra_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string extra = 2;</code>
+     * @return The bytes for extra.
+     */
+    public com.google.protobuf.ByteString
+        getExtraBytes() {
+      java.lang.Object ref = extra_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        extra_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string extra = 2;</code>
+     * @param value The extra to set.
+     * @return This builder for chaining.
+     */
+    public Builder setExtra(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      extra_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string extra = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearExtra() {
+      
+      extra_ = getDefaultInstance().getExtra();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string extra = 2;</code>
+     * @param value The bytes for extra to set.
+     * @return This builder for chaining.
+     */
+    public Builder setExtraBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      extra_ = value;
+      onChanged();
+      return this;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -441,41 +579,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.feige.fim.msg.FastConnectRespProto)
+    // @@protoc_insertion_point(builder_scope:com.feige.fim.msg.SuccessRespProto)
   }
 
-  // @@protoc_insertion_point(class_scope:com.feige.fim.msg.FastConnectRespProto)
-  private static final com.feige.fim.msg.proto.FastConnectRespProto DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.feige.fim.msg.SuccessRespProto)
+  private static final com.feige.fim.msg.proto.SuccessRespProto DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.feige.fim.msg.proto.FastConnectRespProto();
+    DEFAULT_INSTANCE = new com.feige.fim.msg.proto.SuccessRespProto();
   }
 
-  public static com.feige.fim.msg.proto.FastConnectRespProto getDefaultInstance() {
+  public static com.feige.fim.msg.proto.SuccessRespProto getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<FastConnectRespProto>
-      PARSER = new com.google.protobuf.AbstractParser<FastConnectRespProto>() {
+  private static final com.google.protobuf.Parser<SuccessRespProto>
+      PARSER = new com.google.protobuf.AbstractParser<SuccessRespProto>() {
     @java.lang.Override
-    public FastConnectRespProto parsePartialFrom(
+    public SuccessRespProto parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new FastConnectRespProto(input, extensionRegistry);
+      return new SuccessRespProto(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<FastConnectRespProto> parser() {
+  public static com.google.protobuf.Parser<SuccessRespProto> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<FastConnectRespProto> getParserForType() {
+  public com.google.protobuf.Parser<SuccessRespProto> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.feige.fim.msg.proto.FastConnectRespProto getDefaultInstanceForType() {
+  public com.feige.fim.msg.proto.SuccessRespProto getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

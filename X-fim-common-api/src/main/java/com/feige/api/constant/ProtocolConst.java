@@ -1,10 +1,7 @@
 package com.feige.api.constant;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public interface ProtocolConst {
     
@@ -48,7 +45,7 @@ public interface ProtocolConst {
        HANDSHAKE_REQ(1),
        FAST_CONNECT_REQ(2),
        HANDSHAKE_RESP(3),
-       FAST_CONNECT_RESP(4),
+       SUCCESS_RESP(4),
        BIND_CLIENT(5),
        ACK(6),
        ERROR_RESP(7, true);
@@ -85,19 +82,19 @@ public interface ProtocolConst {
    }
    
    enum ErrorCode {
-       DUPLICATE_HANDSHAKE(100),
+       DUPLICATE_HANDSHAKE(500),
 
-       ILLEGAL_TOKEN(200),
+       ILLEGAL_TOKEN(501),
        
-       ILLEGAL_KEY_LENGTH(300),
+       ILLEGAL_KEY_LENGTH(502),
 
-       ILLEGAL_SESSION(400),
+       ILLEGAL_SESSION(503),
 
-       NOT_HANDSHAKE(500),
+       NOT_HANDSHAKE(504),
        
-       DUPLICATE_BIND(600),
+       DUPLICATE_BIND(505),
        
-       NOT_BIND(700),
+       NOT_BIND(506),
                
        ;
        
@@ -111,6 +108,23 @@ public interface ProtocolConst {
            this.errorCode = errorCode;
        }
    }
+
+    enum SuccessCode {
+        FAST_CONNECT_SUCCESS(200),
+
+        BIND_SUCCESS(201),
+        ;
+
+        private final int statusCode;
+
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        SuccessCode(int statusCode) {
+            this.statusCode = statusCode;
+        }
+    }
    
    
    

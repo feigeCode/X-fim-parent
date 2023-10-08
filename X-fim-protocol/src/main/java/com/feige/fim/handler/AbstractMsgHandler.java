@@ -38,16 +38,11 @@ public abstract class AbstractMsgHandler implements MsgHandler<Packet> {
 
 
     protected void sendErrorPacket(Session session, Packet packet, ProtocolConst.ErrorCode errorCode, String reason) throws RemotingException {
-        byte serializerType = packet.getSerializerType();
-        ErrorResp errorResp = this.serializedClassManager.newObject(serializerType, ErrorResp.TYPE);
-        errorResp.setErrorCode(errorCode.getErrorCode());
-        errorResp.setReason(reason);
-        Packet packetResp = Packet.create(Command.ERROR);
-        packetResp.setSequenceNum(packet.getSequenceNum() + 1);
-        packetResp.setSerializerType(serializerType);
-        packetResp.setClassKey(ProtocolConst.SerializedClass.ERROR_RESP.getClassKey());
-        packetResp.setData(serializedClassManager.getSerializedObject(serializerType, errorResp));
-        session.write(errorResp);
+        Packet errorRespPacket = this.buildPacket(Command.ERROR, ProtocolConst.SerializedClass.ERROR_RESP, packet, (ErrorResp errorResp) -> {
+            errorResp.setErrorCode(errorCode.getErrorCode())
+                .setReason(reason);
+        });
+        session.write(errorRespPacket);
     }
     
     protected <T extends Msg> Packet buildPacket(Command command, ProtocolConst.SerializedClass serializedClass, Packet packet, Consumer<T> consumer){

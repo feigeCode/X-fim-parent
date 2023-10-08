@@ -3,7 +3,7 @@ package com.feige.fim.handler;
 import com.feige.api.constant.Command;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
-import com.feige.api.msg.FastConnectResp;
+import com.feige.api.msg.SuccessResp;
 import com.feige.api.session.Session;
 import com.feige.fim.api.SessionStorage;
 import com.feige.fim.config.ClientConfigKey;
@@ -26,8 +26,8 @@ public class FastConnectRespMsgHandler extends AbstractMsgHandler {
 
     @Override
     public void handle(Session session, Packet packet) throws RemotingException {
-        FastConnectResp fastConnectResp = this.getMsg(packet, FastConnectResp.class);
-        int statusCode = fastConnectResp.getStatusCode();
+        SuccessResp successResp = this.getMsg(packet, SuccessResp.class);
+        int statusCode = successResp.getStatusCode();
         if (statusCode == 0){
             sessionStorage.removeItem(ClientConfigKey.SESSION_PERSISTENT_KEY);
             return;

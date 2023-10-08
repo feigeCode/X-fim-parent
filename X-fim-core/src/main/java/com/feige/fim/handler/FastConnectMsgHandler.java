@@ -8,7 +8,7 @@ import com.feige.api.crypto.CipherFactory;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.msg.FastConnectReq;
-import com.feige.api.msg.FastConnectResp;
+import com.feige.api.msg.SuccessResp;
 import com.feige.api.sc.Listener;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionContext;
@@ -65,8 +65,8 @@ public class FastConnectMsgHandler extends AbstractMsgHandler {
     }
     
     private Packet createRespPacket(Packet packet){
-        return this.buildPacket(Command.FAST_CONNECT, ProtocolConst.SerializedClass.FAST_CONNECT_RESP, packet, (FastConnectResp fastConnectResp) -> {
-            fastConnectResp.setStatusCode(1);
+        return this.buildPacket(Command.FAST_CONNECT, ProtocolConst.SerializedClass.SUCCESS_RESP, packet, (SuccessResp successResp) -> {
+            successResp.setStatusCode(ProtocolConst.SuccessCode.FAST_CONNECT_SUCCESS.getStatusCode());
         });
     }
 

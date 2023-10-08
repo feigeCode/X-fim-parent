@@ -8,6 +8,7 @@ import com.feige.api.constant.ProtocolConst;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.msg.BindClientReq;
+import com.feige.api.msg.SuccessResp;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionContext;
 import com.feige.api.constant.ServerConfigKey;
@@ -54,9 +55,16 @@ public class BindClientMsgHandler extends AbstractMsgHandler {
         if (sessionContext != null && Objects.equals(bindClientReq.getSessionId(), sessionId) ){
             saveBindClient(session, sessionContext, bindClientReq);
             Loggers.SERVER.info("session id [{}] bind success", bindClientReq.getSessionId() );
+            Packet respPacket = createRespPacket(msg);
+            session.write(respPacket);
         }
     }
 
+    private Packet createRespPacket(Packet packet){
+        return this.buildPacket(Command.BIND, ProtocolConst.SerializedClass.SUCCESS_RESP, packet, (SuccessResp successResp) -> {
+            successResp.setStatusCode(ProtocolConst.SuccessCode.BIND_SUCCESS.getStatusCode());
+        });
+    }
     
     private void saveBindClient(Session session, SessionContext sessionContext, BindClientReq bindClientReq){
         // 注册绑定信息

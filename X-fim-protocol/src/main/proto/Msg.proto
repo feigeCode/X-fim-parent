@@ -36,8 +36,9 @@ message FastConnectReqProto {
     string session_id = 2;
 }
 
-message FastConnectRespProto {
+message SuccessRespProto {
     int32 status_code = 1;
+    string extra = 2;
 }
 
 message BindClientReqProto {
