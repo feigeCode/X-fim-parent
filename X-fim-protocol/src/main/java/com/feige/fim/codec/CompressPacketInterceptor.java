@@ -18,9 +18,6 @@ public class CompressPacketInterceptor implements PacketInterceptor {
 
     private void compress(Object obj, Session session){
         Packet packet = (Packet) obj;
-        if (ProtocolConst.SerializedClass.isCustomCrypto(packet.getClassKey())) {
-            return;
-        }
         Boolean enable = Configs.getBoolean(Configs.ConfigKey.COMPRESS_ENABLE, false);
         if (enable){
             byte[] data = packet.getData();
