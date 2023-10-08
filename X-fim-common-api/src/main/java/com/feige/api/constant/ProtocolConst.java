@@ -82,19 +82,19 @@ public interface ProtocolConst {
    }
    
    enum ErrorCode {
-       DUPLICATE_HANDSHAKE(500),
+       DUPLICATE_HANDSHAKE(5000),
 
-       ILLEGAL_TOKEN(501),
+       ILLEGAL_TOKEN(5001),
        
-       ILLEGAL_KEY_LENGTH(502),
+       ILLEGAL_KEY_LENGTH(5002),
 
-       ILLEGAL_SESSION(503),
+       ILLEGAL_SESSION(5003),
 
-       NOT_HANDSHAKE(504),
+       NOT_HANDSHAKE(5004),
        
-       DUPLICATE_BIND(505),
+       DUPLICATE_BIND(5005),
        
-       NOT_BIND(506),
+       NOT_BIND(5006),
                
        ;
        
@@ -110,9 +110,9 @@ public interface ProtocolConst {
    }
 
     enum SuccessCode {
-        FAST_CONNECT_SUCCESS(200),
+        FAST_CONNECT_SUCCESS(2000),
 
-        BIND_SUCCESS(201),
+        BIND_SUCCESS(2001),
         ;
 
         private final int statusCode;
