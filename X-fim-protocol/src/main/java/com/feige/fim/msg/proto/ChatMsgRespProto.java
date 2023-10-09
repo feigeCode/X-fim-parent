@@ -17,7 +17,6 @@ private static final long serialVersionUID = 0L;
   }
   private ChatMsgRespProto() {
     msgId_ = "";
-    sequenceNum_ = "";
     extra_ = "";
   }
 
@@ -57,10 +56,9 @@ private static final long serialVersionUID = 0L;
             msgId_ = s;
             break;
           }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
+          case 16: {
 
-            sequenceNum_ = s;
+            sequenceNum_ = input.readInt32();
             break;
           }
           case 24: {
@@ -145,41 +143,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SEQUENCE_NUM_FIELD_NUMBER = 2;
-  private volatile java.lang.Object sequenceNum_;
+  private int sequenceNum_;
   /**
-   * <code>string sequence_num = 2;</code>
+   * <code>int32 sequence_num = 2;</code>
    * @return The sequenceNum.
    */
   @java.lang.Override
-  public java.lang.String getSequenceNum() {
-    java.lang.Object ref = sequenceNum_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      sequenceNum_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string sequence_num = 2;</code>
-   * @return The bytes for sequenceNum.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getSequenceNumBytes() {
-    java.lang.Object ref = sequenceNum_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      sequenceNum_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public int getSequenceNum() {
+    return sequenceNum_;
   }
 
   public static final int SEND_TIME_FIELD_NUMBER = 3;
@@ -248,8 +219,8 @@ private static final long serialVersionUID = 0L;
     if (!getMsgIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, msgId_);
     }
-    if (!getSequenceNumBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sequenceNum_);
+    if (sequenceNum_ != 0) {
+      output.writeInt32(2, sequenceNum_);
     }
     if (sendTime_ != 0L) {
       output.writeInt64(3, sendTime_);
@@ -269,8 +240,9 @@ private static final long serialVersionUID = 0L;
     if (!getMsgIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, msgId_);
     }
-    if (!getSequenceNumBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sequenceNum_);
+    if (sequenceNum_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(2, sequenceNum_);
     }
     if (sendTime_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
@@ -296,8 +268,8 @@ private static final long serialVersionUID = 0L;
 
     if (!getMsgId()
         .equals(other.getMsgId())) return false;
-    if (!getSequenceNum()
-        .equals(other.getSequenceNum())) return false;
+    if (getSequenceNum()
+        != other.getSequenceNum()) return false;
     if (getSendTime()
         != other.getSendTime()) return false;
     if (!getExtra()
@@ -316,7 +288,7 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + MSG_ID_FIELD_NUMBER;
     hash = (53 * hash) + getMsgId().hashCode();
     hash = (37 * hash) + SEQUENCE_NUM_FIELD_NUMBER;
-    hash = (53 * hash) + getSequenceNum().hashCode();
+    hash = (53 * hash) + getSequenceNum();
     hash = (37 * hash) + SEND_TIME_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getSendTime());
@@ -457,7 +429,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       msgId_ = "";
 
-      sequenceNum_ = "";
+      sequenceNum_ = 0;
 
       sendTime_ = 0L;
 
@@ -545,9 +517,8 @@ private static final long serialVersionUID = 0L;
         msgId_ = other.msgId_;
         onChanged();
       }
-      if (!other.getSequenceNum().isEmpty()) {
-        sequenceNum_ = other.sequenceNum_;
-        onChanged();
+      if (other.getSequenceNum() != 0) {
+        setSequenceNum(other.getSequenceNum());
       }
       if (other.getSendTime() != 0L) {
         setSendTime(other.getSendTime());
@@ -661,78 +632,33 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object sequenceNum_ = "";
+    private int sequenceNum_ ;
     /**
-     * <code>string sequence_num = 2;</code>
+     * <code>int32 sequence_num = 2;</code>
      * @return The sequenceNum.
      */
-    public java.lang.String getSequenceNum() {
-      java.lang.Object ref = sequenceNum_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        sequenceNum_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    @java.lang.Override
+    public int getSequenceNum() {
+      return sequenceNum_;
     }
     /**
-     * <code>string sequence_num = 2;</code>
-     * @return The bytes for sequenceNum.
-     */
-    public com.google.protobuf.ByteString
-        getSequenceNumBytes() {
-      java.lang.Object ref = sequenceNum_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sequenceNum_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string sequence_num = 2;</code>
+     * <code>int32 sequence_num = 2;</code>
      * @param value The sequenceNum to set.
      * @return This builder for chaining.
      */
-    public Builder setSequenceNum(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+    public Builder setSequenceNum(int value) {
+      
       sequenceNum_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string sequence_num = 2;</code>
+     * <code>int32 sequence_num = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearSequenceNum() {
       
-      sequenceNum_ = getDefaultInstance().getSequenceNum();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string sequence_num = 2;</code>
-     * @param value The bytes for sequenceNum to set.
-     * @return This builder for chaining.
-     */
-    public Builder setSequenceNumBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      sequenceNum_ = value;
+      sequenceNum_ = 0;
       onChanged();
       return this;
     }

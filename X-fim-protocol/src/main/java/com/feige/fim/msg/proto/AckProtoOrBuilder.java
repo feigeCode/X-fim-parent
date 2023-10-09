@@ -20,16 +20,10 @@ public interface AckProtoOrBuilder extends
       getMsgIdBytes();
 
   /**
-   * <code>string sequence_num = 2;</code>
+   * <code>int32 sequence_num = 2;</code>
    * @return The sequenceNum.
    */
-  java.lang.String getSequenceNum();
-  /**
-   * <code>string sequence_num = 2;</code>
-   * @return The bytes for sequenceNum.
-   */
-  com.google.protobuf.ByteString
-      getSequenceNumBytes();
+  int getSequenceNum();
 
   /**
    * <code>int64 send_time = 3;</code>

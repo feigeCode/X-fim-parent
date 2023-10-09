@@ -82,14 +82,14 @@ public final class MsgProto {
       "\001(\t\022\014\n\004tags\030\002 \001(\t\"C\n\016ErrorRespProto\022\022\n\ne" +
       "rror_code\030\001 \001(\005\022\016\n\006reason\030\002 \001(\t\022\r\n\005extra" +
       "\030\003 \001(\t\"R\n\010AckProto\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014se" +
-      "quence_num\030\002 \001(\t\022\021\n\tsend_time\030\003 \001(\003\022\r\n\005e" +
+      "quence_num\030\002 \001(\005\022\021\n\tsend_time\030\003 \001(\003\022\r\n\005e" +
       "xtra\030\004 \001(\t\"\304\001\n\017ChatMsgReqProto\022\016\n\006msg_id" +
-      "\030\001 \001(\t\022\024\n\014sequence_num\030\002 \001(\t\022\021\n\tsend_tim" +
+      "\030\001 \001(\t\022\024\n\014sequence_num\030\002 \001(\005\022\021\n\tsend_tim" +
       "e\030\003 \001(\003\022\021\n\tsender_id\030\004 \001(\t\022\023\n\013receiver_i" +
       "d\030\005 \001(\t\022\017\n\007content\030\006 \001(\t\022\016\n\006format\030\007 \001(\005" +
       "\022\020\n\010msg_type\030\010 \001(\005\022\016\n\006status\030\t \001(\005\022\r\n\005ex" +
       "tra\030\n \001(\t\"Z\n\020ChatMsgRespProto\022\016\n\006msg_id\030" +
-      "\001 \001(\t\022\024\n\014sequence_num\030\002 \001(\t\022\021\n\tsend_time" +
+      "\001 \001(\t\022\024\n\014sequence_num\030\002 \001(\005\022\021\n\tsend_time" +
       "\030\003 \001(\003\022\r\n\005extra\030\004 \001(\tB%\n\027com.feige.fim.m" +
       "sg.protoB\010MsgProtoP\001b\006proto3"
     };
