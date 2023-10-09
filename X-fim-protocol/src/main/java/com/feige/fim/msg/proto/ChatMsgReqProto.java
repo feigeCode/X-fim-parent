@@ -16,8 +16,8 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ChatMsgReqProto() {
-    serverMsgId_ = "";
-    clientMsgId_ = "";
+    msgId_ = "";
+    sequenceNum_ = "";
     senderId_ = "";
     receiverId_ = "";
     content_ = "";
@@ -56,13 +56,13 @@ private static final long serialVersionUID = 0L;
           case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            serverMsgId_ = s;
+            msgId_ = s;
             break;
           }
           case 18: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            clientMsgId_ = s;
+            sequenceNum_ = s;
             break;
           }
           case 24: {
@@ -135,76 +135,76 @@ private static final long serialVersionUID = 0L;
             com.feige.fim.msg.proto.ChatMsgReqProto.class, com.feige.fim.msg.proto.ChatMsgReqProto.Builder.class);
   }
 
-  public static final int SERVER_MSG_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object serverMsgId_;
+  public static final int MSG_ID_FIELD_NUMBER = 1;
+  private volatile java.lang.Object msgId_;
   /**
-   * <code>string server_msg_id = 1;</code>
-   * @return The serverMsgId.
+   * <code>string msg_id = 1;</code>
+   * @return The msgId.
    */
   @java.lang.Override
-  public java.lang.String getServerMsgId() {
-    java.lang.Object ref = serverMsgId_;
+  public java.lang.String getMsgId() {
+    java.lang.Object ref = msgId_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      serverMsgId_ = s;
+      msgId_ = s;
       return s;
     }
   }
   /**
-   * <code>string server_msg_id = 1;</code>
-   * @return The bytes for serverMsgId.
+   * <code>string msg_id = 1;</code>
+   * @return The bytes for msgId.
    */
   @java.lang.Override
   public com.google.protobuf.ByteString
-      getServerMsgIdBytes() {
-    java.lang.Object ref = serverMsgId_;
+      getMsgIdBytes() {
+    java.lang.Object ref = msgId_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      serverMsgId_ = b;
+      msgId_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
     }
   }
 
-  public static final int CLIENT_MSG_ID_FIELD_NUMBER = 2;
-  private volatile java.lang.Object clientMsgId_;
+  public static final int SEQUENCE_NUM_FIELD_NUMBER = 2;
+  private volatile java.lang.Object sequenceNum_;
   /**
-   * <code>string client_msg_id = 2;</code>
-   * @return The clientMsgId.
+   * <code>string sequence_num = 2;</code>
+   * @return The sequenceNum.
    */
   @java.lang.Override
-  public java.lang.String getClientMsgId() {
-    java.lang.Object ref = clientMsgId_;
+  public java.lang.String getSequenceNum() {
+    java.lang.Object ref = sequenceNum_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      clientMsgId_ = s;
+      sequenceNum_ = s;
       return s;
     }
   }
   /**
-   * <code>string client_msg_id = 2;</code>
-   * @return The bytes for clientMsgId.
+   * <code>string sequence_num = 2;</code>
+   * @return The bytes for sequenceNum.
    */
   @java.lang.Override
   public com.google.protobuf.ByteString
-      getClientMsgIdBytes() {
-    java.lang.Object ref = clientMsgId_;
+      getSequenceNumBytes() {
+    java.lang.Object ref = sequenceNum_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      clientMsgId_ = b;
+      sequenceNum_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -383,11 +383,11 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getServerMsgIdBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serverMsgId_);
+    if (!getMsgIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, msgId_);
     }
-    if (!getClientMsgIdBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, clientMsgId_);
+    if (!getSequenceNumBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sequenceNum_);
     }
     if (sendTime_ != 0L) {
       output.writeInt64(3, sendTime_);
@@ -419,11 +419,11 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getServerMsgIdBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, serverMsgId_);
+    if (!getMsgIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, msgId_);
     }
-    if (!getClientMsgIdBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, clientMsgId_);
+    if (!getSequenceNumBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sequenceNum_);
     }
     if (sendTime_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
@@ -465,10 +465,10 @@ private static final long serialVersionUID = 0L;
     }
     com.feige.fim.msg.proto.ChatMsgReqProto other = (com.feige.fim.msg.proto.ChatMsgReqProto) obj;
 
-    if (!getServerMsgId()
-        .equals(other.getServerMsgId())) return false;
-    if (!getClientMsgId()
-        .equals(other.getClientMsgId())) return false;
+    if (!getMsgId()
+        .equals(other.getMsgId())) return false;
+    if (!getSequenceNum()
+        .equals(other.getSequenceNum())) return false;
     if (getSendTime()
         != other.getSendTime()) return false;
     if (!getSenderId()
@@ -494,10 +494,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + SERVER_MSG_ID_FIELD_NUMBER;
-    hash = (53 * hash) + getServerMsgId().hashCode();
-    hash = (37 * hash) + CLIENT_MSG_ID_FIELD_NUMBER;
-    hash = (53 * hash) + getClientMsgId().hashCode();
+    hash = (37 * hash) + MSG_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getMsgId().hashCode();
+    hash = (37 * hash) + SEQUENCE_NUM_FIELD_NUMBER;
+    hash = (53 * hash) + getSequenceNum().hashCode();
     hash = (37 * hash) + SEND_TIME_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getSendTime());
@@ -646,9 +646,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      serverMsgId_ = "";
+      msgId_ = "";
 
-      clientMsgId_ = "";
+      sequenceNum_ = "";
 
       sendTime_ = 0L;
 
@@ -690,8 +690,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.feige.fim.msg.proto.ChatMsgReqProto buildPartial() {
       com.feige.fim.msg.proto.ChatMsgReqProto result = new com.feige.fim.msg.proto.ChatMsgReqProto(this);
-      result.serverMsgId_ = serverMsgId_;
-      result.clientMsgId_ = clientMsgId_;
+      result.msgId_ = msgId_;
+      result.sequenceNum_ = sequenceNum_;
       result.sendTime_ = sendTime_;
       result.senderId_ = senderId_;
       result.receiverId_ = receiverId_;
@@ -747,12 +747,12 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.feige.fim.msg.proto.ChatMsgReqProto other) {
       if (other == com.feige.fim.msg.proto.ChatMsgReqProto.getDefaultInstance()) return this;
-      if (!other.getServerMsgId().isEmpty()) {
-        serverMsgId_ = other.serverMsgId_;
+      if (!other.getMsgId().isEmpty()) {
+        msgId_ = other.msgId_;
         onChanged();
       }
-      if (!other.getClientMsgId().isEmpty()) {
-        clientMsgId_ = other.clientMsgId_;
+      if (!other.getSequenceNum().isEmpty()) {
+        sequenceNum_ = other.sequenceNum_;
         onChanged();
       }
       if (other.getSendTime() != 0L) {
@@ -808,154 +808,154 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object serverMsgId_ = "";
+    private java.lang.Object msgId_ = "";
     /**
-     * <code>string server_msg_id = 1;</code>
-     * @return The serverMsgId.
+     * <code>string msg_id = 1;</code>
+     * @return The msgId.
      */
-    public java.lang.String getServerMsgId() {
-      java.lang.Object ref = serverMsgId_;
+    public java.lang.String getMsgId() {
+      java.lang.Object ref = msgId_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        serverMsgId_ = s;
+        msgId_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string server_msg_id = 1;</code>
-     * @return The bytes for serverMsgId.
+     * <code>string msg_id = 1;</code>
+     * @return The bytes for msgId.
      */
     public com.google.protobuf.ByteString
-        getServerMsgIdBytes() {
-      java.lang.Object ref = serverMsgId_;
+        getMsgIdBytes() {
+      java.lang.Object ref = msgId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        serverMsgId_ = b;
+        msgId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string server_msg_id = 1;</code>
-     * @param value The serverMsgId to set.
+     * <code>string msg_id = 1;</code>
+     * @param value The msgId to set.
      * @return This builder for chaining.
      */
-    public Builder setServerMsgId(
+    public Builder setMsgId(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      serverMsgId_ = value;
+      msgId_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string server_msg_id = 1;</code>
+     * <code>string msg_id = 1;</code>
      * @return This builder for chaining.
      */
-    public Builder clearServerMsgId() {
+    public Builder clearMsgId() {
       
-      serverMsgId_ = getDefaultInstance().getServerMsgId();
+      msgId_ = getDefaultInstance().getMsgId();
       onChanged();
       return this;
     }
     /**
-     * <code>string server_msg_id = 1;</code>
-     * @param value The bytes for serverMsgId to set.
+     * <code>string msg_id = 1;</code>
+     * @param value The bytes for msgId to set.
      * @return This builder for chaining.
      */
-    public Builder setServerMsgIdBytes(
+    public Builder setMsgIdBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      serverMsgId_ = value;
+      msgId_ = value;
       onChanged();
       return this;
     }
 
-    private java.lang.Object clientMsgId_ = "";
+    private java.lang.Object sequenceNum_ = "";
     /**
-     * <code>string client_msg_id = 2;</code>
-     * @return The clientMsgId.
+     * <code>string sequence_num = 2;</code>
+     * @return The sequenceNum.
      */
-    public java.lang.String getClientMsgId() {
-      java.lang.Object ref = clientMsgId_;
+    public java.lang.String getSequenceNum() {
+      java.lang.Object ref = sequenceNum_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        clientMsgId_ = s;
+        sequenceNum_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string client_msg_id = 2;</code>
-     * @return The bytes for clientMsgId.
+     * <code>string sequence_num = 2;</code>
+     * @return The bytes for sequenceNum.
      */
     public com.google.protobuf.ByteString
-        getClientMsgIdBytes() {
-      java.lang.Object ref = clientMsgId_;
+        getSequenceNumBytes() {
+      java.lang.Object ref = sequenceNum_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        clientMsgId_ = b;
+        sequenceNum_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string client_msg_id = 2;</code>
-     * @param value The clientMsgId to set.
+     * <code>string sequence_num = 2;</code>
+     * @param value The sequenceNum to set.
      * @return This builder for chaining.
      */
-    public Builder setClientMsgId(
+    public Builder setSequenceNum(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      clientMsgId_ = value;
+      sequenceNum_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string client_msg_id = 2;</code>
+     * <code>string sequence_num = 2;</code>
      * @return This builder for chaining.
      */
-    public Builder clearClientMsgId() {
+    public Builder clearSequenceNum() {
       
-      clientMsgId_ = getDefaultInstance().getClientMsgId();
+      sequenceNum_ = getDefaultInstance().getSequenceNum();
       onChanged();
       return this;
     }
     /**
-     * <code>string client_msg_id = 2;</code>
-     * @param value The bytes for clientMsgId to set.
+     * <code>string sequence_num = 2;</code>
+     * @param value The bytes for sequenceNum to set.
      * @return This builder for chaining.
      */
-    public Builder setClientMsgIdBytes(
+    public Builder setSequenceNumBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      clientMsgId_ = value;
+      sequenceNum_ = value;
       onChanged();
       return this;
     }

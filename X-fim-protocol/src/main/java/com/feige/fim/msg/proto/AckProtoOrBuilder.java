@@ -8,28 +8,28 @@ public interface AckProtoOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string server_msg_id = 1;</code>
-   * @return The serverMsgId.
+   * <code>string msg_id = 1;</code>
+   * @return The msgId.
    */
-  java.lang.String getServerMsgId();
+  java.lang.String getMsgId();
   /**
-   * <code>string server_msg_id = 1;</code>
-   * @return The bytes for serverMsgId.
+   * <code>string msg_id = 1;</code>
+   * @return The bytes for msgId.
    */
   com.google.protobuf.ByteString
-      getServerMsgIdBytes();
+      getMsgIdBytes();
 
   /**
-   * <code>string client_msg_id = 2;</code>
-   * @return The clientMsgId.
+   * <code>string sequence_num = 2;</code>
+   * @return The sequenceNum.
    */
-  java.lang.String getClientMsgId();
+  java.lang.String getSequenceNum();
   /**
-   * <code>string client_msg_id = 2;</code>
-   * @return The bytes for clientMsgId.
+   * <code>string sequence_num = 2;</code>
+   * @return The bytes for sequenceNum.
    */
   com.google.protobuf.ByteString
-      getClientMsgIdBytes();
+      getSequenceNumBytes();
 
   /**
    * <code>int64 send_time = 3;</code>
