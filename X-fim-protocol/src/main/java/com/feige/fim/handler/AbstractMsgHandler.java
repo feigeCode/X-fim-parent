@@ -54,7 +54,7 @@ public abstract class AbstractMsgHandler implements MsgHandler<Packet> {
         respPacket.setSequenceNum(packet.getSequenceNum() + 1);
         T msg = serializedClassManager.newObject(serializerType, classKey);
         consumer.accept(msg);
-        packet.setData(serializedClassManager.getSerializedObject(serializerType, msg));
+        respPacket.setData(serializedClassManager.getSerializedObject(serializerType, msg));
         return respPacket;
     }
   
