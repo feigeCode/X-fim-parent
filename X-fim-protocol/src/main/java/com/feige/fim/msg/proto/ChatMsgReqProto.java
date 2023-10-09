@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     senderId_ = "";
     receiverId_ = "";
     content_ = "";
+    extra_ = "";
   }
 
   @java.lang.Override
@@ -101,6 +102,12 @@ private static final long serialVersionUID = 0L;
           case 72: {
 
             status_ = input.readInt32();
+            break;
+          }
+          case 82: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            extra_ = s;
             break;
           }
           default: {
@@ -369,6 +376,44 @@ private static final long serialVersionUID = 0L;
     return status_;
   }
 
+  public static final int EXTRA_FIELD_NUMBER = 10;
+  private volatile java.lang.Object extra_;
+  /**
+   * <code>string extra = 10;</code>
+   * @return The extra.
+   */
+  @java.lang.Override
+  public java.lang.String getExtra() {
+    java.lang.Object ref = extra_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      extra_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string extra = 10;</code>
+   * @return The bytes for extra.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getExtraBytes() {
+    java.lang.Object ref = extra_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      extra_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -410,6 +455,9 @@ private static final long serialVersionUID = 0L;
     if (status_ != 0) {
       output.writeInt32(9, status_);
     }
+    if (!getExtraBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 10, extra_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -450,6 +498,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(9, status_);
     }
+    if (!getExtraBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, extra_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -483,6 +534,8 @@ private static final long serialVersionUID = 0L;
         != other.getMsgType()) return false;
     if (getStatus()
         != other.getStatus()) return false;
+    if (!getExtra()
+        .equals(other.getExtra())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -513,6 +566,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getMsgType();
     hash = (37 * hash) + STATUS_FIELD_NUMBER;
     hash = (53 * hash) + getStatus();
+    hash = (37 * hash) + EXTRA_FIELD_NUMBER;
+    hash = (53 * hash) + getExtra().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -664,6 +719,8 @@ private static final long serialVersionUID = 0L;
 
       status_ = 0;
 
+      extra_ = "";
+
       return this;
     }
 
@@ -699,6 +756,7 @@ private static final long serialVersionUID = 0L;
       result.format_ = format_;
       result.msgType_ = msgType_;
       result.status_ = status_;
+      result.extra_ = extra_;
       onBuilt();
       return result;
     }
@@ -778,6 +836,10 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getStatus() != 0) {
         setStatus(other.getStatus());
+      }
+      if (!other.getExtra().isEmpty()) {
+        extra_ = other.extra_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1308,6 +1370,82 @@ private static final long serialVersionUID = 0L;
     public Builder clearStatus() {
       
       status_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object extra_ = "";
+    /**
+     * <code>string extra = 10;</code>
+     * @return The extra.
+     */
+    public java.lang.String getExtra() {
+      java.lang.Object ref = extra_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        extra_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string extra = 10;</code>
+     * @return The bytes for extra.
+     */
+    public com.google.protobuf.ByteString
+        getExtraBytes() {
+      java.lang.Object ref = extra_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        extra_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string extra = 10;</code>
+     * @param value The extra to set.
+     * @return This builder for chaining.
+     */
+    public Builder setExtra(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      extra_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string extra = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearExtra() {
+      
+      extra_ = getDefaultInstance().getExtra();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string extra = 10;</code>
+     * @param value The bytes for extra to set.
+     * @return This builder for chaining.
+     */
+    public Builder setExtraBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      extra_ = value;
       onChanged();
       return this;
     }

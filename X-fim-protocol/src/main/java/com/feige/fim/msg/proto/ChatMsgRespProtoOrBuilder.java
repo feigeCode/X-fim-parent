@@ -36,4 +36,16 @@ public interface ChatMsgRespProtoOrBuilder extends
    * @return The sendTime.
    */
   long getSendTime();
+
+  /**
+   * <code>string extra = 4;</code>
+   * @return The extra.
+   */
+  java.lang.String getExtra();
+  /**
+   * <code>string extra = 4;</code>
+   * @return The bytes for extra.
+   */
+  com.google.protobuf.ByteString
+      getExtraBytes();
 }

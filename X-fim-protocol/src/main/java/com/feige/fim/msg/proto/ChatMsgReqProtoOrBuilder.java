@@ -90,4 +90,16 @@ public interface ChatMsgReqProtoOrBuilder extends
    * @return The status.
    */
   int getStatus();
+
+  /**
+   * <code>string extra = 10;</code>
+   * @return The extra.
+   */
+  java.lang.String getExtra();
+  /**
+   * <code>string extra = 10;</code>
+   * @return The bytes for extra.
+   */
+  com.google.protobuf.ByteString
+      getExtraBytes();
 }

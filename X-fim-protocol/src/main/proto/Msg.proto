@@ -62,6 +62,8 @@ message AckProto {
     string sequence_num = 2;
     
     int64 send_time = 3;
+
+    string extra = 4;
 }
 
 
@@ -83,6 +85,8 @@ message ChatMsgReqProto {
     int32 msg_type = 8;
     
     int32 status = 9;
+
+    string extra = 10;
 }
 
 message ChatMsgRespProto {
@@ -91,4 +95,6 @@ message ChatMsgRespProto {
     string sequence_num = 2;
 
     int64 send_time = 3;
+
+    string extra = 4;
 }
