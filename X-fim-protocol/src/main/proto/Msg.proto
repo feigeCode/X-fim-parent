@@ -57,18 +57,18 @@ message ErrorRespProto {
 
 
 message AckProto {
-    string server_msg_id = 1;
+    string msg_id = 1;
     
-    string client_msg_id = 2;
+    string sequence_num = 2;
     
     int64 send_time = 3;
 }
 
 
 message ChatMsgReqProto {
-    string server_msg_id = 1;
+    string msg_id = 1;
 
-    string client_msg_id = 2;
+    string sequence_num = 2;
 
     int64 send_time = 3;
     
@@ -86,9 +86,9 @@ message ChatMsgReqProto {
 }
 
 message ChatMsgRespProto {
-    string server_msg_id = 1;
+    string msg_id = 1;
 
-    string client_msg_id = 2;
+    string sequence_num = 2;
 
     int64 send_time = 3;
 }

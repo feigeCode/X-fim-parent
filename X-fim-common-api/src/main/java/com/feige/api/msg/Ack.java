@@ -8,13 +8,13 @@ public interface Ack extends Msg {
     
     Class<Ack> TYPE = Ack.class;
     
-    String getServerMsgId();
+    String getMsgId();
     
-    Ack setServerMsgId(String serverMsgId);
+    Ack setMsgId(String msgId);
 
-    String getClientMsgId();
+    int getSequenceNum();
 
-    Ack setClientMsgId(String clientMsgIds);
+    Ack setSequenceNum(int sequenceNum);
     
     long getSendTime();
     
