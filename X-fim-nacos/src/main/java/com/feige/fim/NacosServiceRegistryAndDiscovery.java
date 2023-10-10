@@ -10,7 +10,6 @@ import com.feige.utils.spi.annotation.SpiComp;
 import com.feige.srd.InstanceConvert;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @SpiComp(value = "nacos", interfaces = ServiceRegistryAndDiscovery.class)
@@ -65,7 +64,7 @@ public class NacosServiceRegistryAndDiscovery implements ServiceRegistryAndDisco
                         serverInstances.add(serverInstance);
                     }
                     Loggers.SRD.info("Nacos NamingEvent: instances = {}",  instances);
-                    callback.call(serverInstances, Collections.emptyMap());
+                    callback.call(serverInstances);
                 }
             });
         }catch (Exception e){

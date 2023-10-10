@@ -59,17 +59,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
                 .setSessionId(ClientConfig.getSessionId());
         byte[] serializedObject = PacketUtils.getSerializedObject(fastConnectReq);
         packet.setData(serializedObject);
-        session.write(packet, new Listener() {
-            @Override
-            public void onSuccess(Object... args) {
-                session.setCipher(symmetricCipherFactory.create(ClientConfig.getClientKey(), ClientConfig.getIv()));
-            }
-
-            @Override
-            public void onFailure(Throwable cause) {
-                cause.printStackTrace();
-            }
-        });
+        session.write(packet, new Listener.CallbackListener((args) -> session.setCipher(symmetricCipherFactory.create(ClientConfig.getClientKey(), ClientConfig.getIv())), Throwable::printStackTrace));
     }
     
     private void handshake(Session session) throws RemotingException {
@@ -84,16 +74,6 @@ public class ClientSessionHandler extends AbstractSessionHandler {
                 .setClientId(ClientConfig.getClientId())
                 .setToken(ClientConfig.getToken());
         packet.setData(PacketUtils.getSerializedObject(handshakeReq));
-        session.write(packet, new Listener() {
-            @Override
-            public void onSuccess(Object... args) {
-                session.setCipher(symmetricCipherFactory.create(ClientConfig.getClientKey(), ClientConfig.getIv()));
-            }
-
-            @Override
-            public void onFailure(Throwable cause) {
-
-            }
-        });
+        session.write(packet, new Listener.CallbackListener((args) -> session.setCipher(symmetricCipherFactory.create(ClientConfig.getClientKey(), ClientConfig.getIv())), Throwable::printStackTrace));
     }
 }

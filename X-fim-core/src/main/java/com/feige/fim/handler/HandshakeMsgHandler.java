@@ -97,22 +97,14 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
         Packet handshakeRespPacket = createHandshakeRespPacket(session, handshakeReq, sessionKey, packet);
         
         // 发送响应包
-        session.write(handshakeRespPacket, new Listener() {
-            @Override
-            public void onSuccess(Object... args) {
-                // 根据秘钥生成cipher
-                session.setCipher(symmetricCipherFactory.create(sessionKey, iv));
+        session.write(handshakeRespPacket, new Listener.CallbackListener(args -> {
+            // 根据秘钥生成cipher
+            session.setCipher(symmetricCipherFactory.create(sessionKey, iv));
 
-               // 完成握手
-               finishHandshake(session, handshakeReq);
-                
-            }
+            // 完成握手
+            finishHandshake(session, handshakeReq);
 
-            @Override
-            public void onFailure(Throwable cause) {
-
-            }
-        });
+        }, Throwable::printStackTrace));
         
     }
 
@@ -122,18 +114,11 @@ public class HandshakeMsgHandler extends AbstractMsgHandler {
         Packet handshakeRespPacket = createHandshakeRespPacket(session, handshakeReq, new byte[0], packet);
 
         // 发送响应包
-        session.write(handshakeRespPacket, new Listener() {
-            @Override
-            public void onSuccess(Object... args) {
-                // 完成握手
-                finishHandshake(session, handshakeReq);
-            }
+        session.write(handshakeRespPacket, new Listener.CallbackListener(args -> {
+            // 完成握手
+            finishHandshake(session, handshakeReq);
 
-            @Override
-            public void onFailure(Throwable cause) {
-
-            }
-        });
+        }, Throwable::printStackTrace));
         
     }
     
