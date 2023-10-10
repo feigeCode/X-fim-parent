@@ -22,12 +22,16 @@ public interface Listener {
 
         @Override
         public void onSuccess(Object... args) {
-            successCallback.call(args);
+            if (successCallback != null){
+                successCallback.call(args);
+            }
         }
 
         @Override
         public void onFailure(Throwable cause) {
-            failureCallback.call(cause);
+            if (failureCallback != null){
+                failureCallback.call(cause);
+            }
         }
     }
 }
