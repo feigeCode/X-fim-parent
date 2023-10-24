@@ -26,8 +26,10 @@ public class SingleChatMsgHandler extends AbstractMsgHandler{
             return;
         }
         ChatMsgResp chatMsgResp = rpcClient.sendMsg(msg);
-        Packet ackPacket = buildAckPacket(msg, chatMsgResp);
-        session.write(ackPacket);
+        if (chatMsgResp != null){
+            Packet ackPacket = buildAckPacket(msg, chatMsgResp);
+            session.write(ackPacket);
+        }
     }
     
     

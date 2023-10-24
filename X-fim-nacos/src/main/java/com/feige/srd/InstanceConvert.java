@@ -1,10 +1,10 @@
 package com.feige.srd;
 
 import com.alibaba.nacos.api.naming.pojo.Instance;
-import com.feige.api.srd.IServerInstance;
+import com.feige.api.srd.ServerInstance;
 import com.feige.utils.convert.ObjectConvert;
 
-public class InstanceConvert implements ObjectConvert<Instance, IServerInstance> {
+public class InstanceConvert implements ObjectConvert<Instance, ServerInstance> {
     private static final InstanceConvert INSTANCE = new InstanceConvert();
     
     public static InstanceConvert getInstance(){
@@ -12,7 +12,7 @@ public class InstanceConvert implements ObjectConvert<Instance, IServerInstance>
     }
 
     @Override
-    public IServerInstance convertT(Instance instance) {
+    public ServerInstance convertT(Instance instance) {
         ServerInstance serverInstance = new ServerInstance();
         serverInstance.setInstanceId(instance.getClusterName());
         serverInstance.setClusterName(instance.getInstanceId());
@@ -27,7 +27,7 @@ public class InstanceConvert implements ObjectConvert<Instance, IServerInstance>
     }
 
     @Override
-    public Instance convertR(IServerInstance serverInstance) {
+    public Instance convertR(ServerInstance serverInstance) {
         Instance instance = new Instance();
         instance.setInstanceId(serverInstance.getClusterName());
         instance.setClusterName(serverInstance.getInstanceId());
