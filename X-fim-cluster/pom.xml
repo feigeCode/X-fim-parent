@@ -18,6 +18,15 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
     
-
+    <dependencies>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>X-fim-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>X-fim-nacos</artifactId>
+        </dependency>
+     </dependencies>
 
 </project>
