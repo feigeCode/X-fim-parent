@@ -43,7 +43,9 @@ public class NacosServiceDiscovery implements ServiceDiscovery {
                         serverInstances.add(serverInstance);
                     }
                     Loggers.SRD.info("Nacos subscribe NamingEvent: instances = {}",  instances);
-                    callback.call(serverInstances);
+                    if (callback != null){
+                        callback.call(serverInstances);
+                    }
                 }
             });
         }catch (Exception e){
@@ -52,10 +54,22 @@ public class NacosServiceDiscovery implements ServiceDiscovery {
     }
 
     @Override
-    public void unsubscribe(String serverName) {
+    public void unsubscribe(String serverName, Callback<List<ServerInstance>> callback) {
         try {
             NacosClient.getNamingService().unsubscribe(serverName, (event) -> {
-                    Loggers.SRD.info("Nacos unsubscribe Event: event = {}",  event);
+                if (event instanceof NamingEvent){
+                    List<ServerInstance> serverInstances = new ArrayList<>();
+                    NamingEvent namingEvent = (NamingEvent) event;
+                    List<Instance> instances = namingEvent.getInstances();
+                    for (Instance instance : instances) {
+                        ServerInstance serverInstance = InstanceConvert.getInstance().convertT(instance);
+                        serverInstances.add(serverInstance);
+                    }
+                    Loggers.SRD.info("Nacos unsubscribe NamingEvent: instances = {}",  instances);
+                    if (callback != null){
+                        callback.call(serverInstances);
+                    }
+                }
             });
         }catch (Exception e){
             throw new RuntimeException(e);

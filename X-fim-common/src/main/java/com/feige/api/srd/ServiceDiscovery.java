@@ -24,7 +24,8 @@ public interface ServiceDiscovery {
     /**
      * 取消订阅
      * @param serverName 服务名
+     * @param callback 回调
      */
-    void unsubscribe(String serverName);
+    void unsubscribe(String serverName, Callback<List<ServerInstance>> callback);
     
 }
