@@ -2,12 +2,9 @@ package com.feige.fim.handler;
 
 import com.feige.api.constant.Command;
 import com.feige.api.constant.ProtocolConst;
-import com.feige.api.constant.ProtocolConst.SerializedClass;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
-import com.feige.api.msg.Ack;
-import com.feige.api.msg.ChatMsgResp;
-import com.feige.api.rpc.RpcClient;
+import com.feige.api.rpc.RpcTransporter;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Inject;
@@ -17,7 +14,7 @@ import com.feige.utils.spi.annotation.SpiComp;
 public class SingleChatMsgHandler extends AbstractMsgHandler{
     
     @Inject
-    private RpcClient rpcClient;
+    private RpcTransporter<Packet> rpcTransporter;
     
     @Override
     public void handle(Session session, Packet msg) throws RemotingException {
@@ -25,21 +22,8 @@ public class SingleChatMsgHandler extends AbstractMsgHandler{
             this.sendErrorPacket(session, msg, ProtocolConst.ErrorCode.NOT_BIND, "NOT BIND");
             return;
         }
-        ChatMsgResp chatMsgResp = rpcClient.sendMsg(msg);
-        if (chatMsgResp != null){
-            Packet ackPacket = buildAckPacket(msg, chatMsgResp);
-            session.write(ackPacket);
-        }
-    }
-    
-    
-    private Packet buildAckPacket(Packet msg, ChatMsgResp chatMsgResp){
-        return this.buildPacket(Command.ACK, SerializedClass.ACK, msg, (Ack ack) -> {
-            ack.setMsgId(chatMsgResp.getMsgId())
-                .setSequenceNum(chatMsgResp.getSequenceNum())
-                .setSendTime(chatMsgResp.getSendTime())
-                .setExtra(chatMsgResp.getExtra());
-        });
+        Packet respPacket = rpcTransporter.rpcClient().exchange(msg);
+        session.write(respPacket);
     }
 
     @Override

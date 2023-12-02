@@ -57,4 +57,21 @@ public interface ServerConfigKey {
     String REDIS_TYPE = "redis.type";
     String REDIS_CONFIG = "redis.config";
 
+
+    /**
+     * grpc client config
+     */
+    String GRPC_CLIENT_ADDRESS = "grpc.client.address";
+    String GRPC_CLIENT_SCHEME = "grpc.client.scheme";
+    String GRPC_CLIENT_LOAD_BALANCING_POLICY = "grpc.client.load-balancing-policy";
+    String GRPC_CLIENT_EXTRA_PREFIX = "grpc.client.extra.";
+
+
+    /**
+     * grpc server config
+     */
+    String GRPC_SERVER_ADDRESS = "grpc.server.address";
+    String GRPC_SERVER_PORT = "grpc.server.port";
+    String GRPC_SERVER_EXTRA_PREFIX = "grpc.server.extra.";
+
 }

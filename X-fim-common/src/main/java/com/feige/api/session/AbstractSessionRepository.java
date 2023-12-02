@@ -34,6 +34,9 @@ public abstract class AbstractSessionRepository implements SessionRepository {
     @Override
     public void write(String id, Object msg, Listener listener) throws RemotingException {
         Session session = get(id);
+        if (session == null){
+            return;
+        }
         session.write(msg, listener);
     }
 
