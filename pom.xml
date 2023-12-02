@@ -51,6 +51,9 @@
         <jackson.version>2.12.0</jackson.version>
         <lombok.version>1.18.24</lombok.version>
         <grpc.version>1.58.0</grpc.version>
+        <os.plugin.version>1.5.0.Final</os.plugin.version>
+        <protobuf.plugin.version>0.6.1</protobuf.plugin.version>
+        <protoc.version>3.24.3</protoc.version>
     </properties>
 
     <dependencyManagement>
@@ -192,7 +195,6 @@
                 <artifactId>netty-transport-sctp</artifactId>
                 <version>${netty.version}</version>
             </dependency>
-         
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>
