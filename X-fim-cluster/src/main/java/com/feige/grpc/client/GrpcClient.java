@@ -10,11 +10,14 @@ import com.feige.grpc.PacketAndMessageConverter;
 import com.feige.grpc.utils.GrpcUtils;
 import com.feige.api.rpc.RpcClient;
 import io.grpc.ManagedChannel;
+import io.grpc.NameResolverProvider;
+import io.grpc.NameResolverRegistry;
 import io.grpc.netty.NettyChannelBuilder;
 import io.netty.channel.epoll.EpollDomainSocketChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.unix.DomainSocketAddress;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class GrpcClient extends ServiceAdapter implements RpcClient<Packet> {
@@ -29,6 +32,10 @@ public class GrpcClient extends ServiceAdapter implements RpcClient<Packet> {
 
     @Override
     public void initialize(){
+        List<NameResolverProvider> providers = conf.getProviders();
+        for (NameResolverProvider provider : providers) {
+            NameResolverRegistry.getDefaultRegistry().register(provider);
+        }
         String address = conf.getAddress();
         NettyChannelBuilder nettyChannelBuilder;
         if (GrpcUtils.DOMAIN_SOCKET_ADDRESS_SCHEME.equals(conf.getScheme())) {
@@ -60,6 +67,10 @@ public class GrpcClient extends ServiceAdapter implements RpcClient<Packet> {
     protected void doStop(Listener listener) {
         try {
             grpcChannel.shutdown().awaitTermination(5L, TimeUnit.SECONDS);
+            List<NameResolverProvider> providers = conf.getProviders();
+            for (NameResolverProvider provider : providers) {
+                NameResolverRegistry.getDefaultRegistry().deregister(provider);
+            }
             super.doStop(listener);
         } catch (InterruptedException e) {
             listener.onFailure(e);

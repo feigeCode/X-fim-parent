@@ -46,6 +46,7 @@ public class NettyGrpcTransporter implements RpcTransporter<Packet>, Environment
         grpcClientConf.setScheme(scheme);
         grpcClientConf.setLoadBalancingPolicy(loadBalancePolicy);
         grpcClientConf.setExtra(extra);
+        grpcClientConf.getProviders().add(new ServiceDiscoveryNameResolverProvider(serviceDiscovery));
         return grpcClientConf;
     }
     
@@ -65,13 +66,12 @@ public class NettyGrpcTransporter implements RpcTransporter<Packet>, Environment
     @Override
     @InitMethod
     public void initialize() throws IllegalStateException {
-        NameResolverRegistry.getDefaultRegistry().register(new ServiceDiscoveryNameResolverProvider(serviceDiscovery));
         this.rpcClient = new GrpcClient(buildClientConf());
         this.rpcServer = new GrpcServer(buildServerConf());
+        this.start();
     }
 
     @Override
-    @InitMethod
     public void start(String... args) throws IllegalStateException {
         this.rpcClient.syncStart();
         this.rpcServer.syncStart();

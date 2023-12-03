@@ -1,5 +1,9 @@
 package com.feige.grpc.client;
 
+import io.grpc.NameResolverProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -10,6 +14,7 @@ public class GrpcClientConf {
     private String scheme;
     private String loadBalancingPolicy;
     private Map<String, Object> extra;
+    private List<NameResolverProvider> providers = new ArrayList<>();
 
     public String getAddress() {
         return address;
@@ -41,5 +46,13 @@ public class GrpcClientConf {
 
     public void setExtra(Map<String, Object> extra) {
         this.extra = extra;
+    }
+
+    public List<NameResolverProvider> getProviders() {
+        return providers;
+    }
+
+    public void setProviders(List<NameResolverProvider> providers) {
+        this.providers = providers;
     }
 }
