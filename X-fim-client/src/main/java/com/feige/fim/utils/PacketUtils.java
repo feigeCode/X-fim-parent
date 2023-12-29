@@ -1,17 +1,13 @@
 package com.feige.fim.utils;
 
 import com.feige.api.constant.Command;
-import com.feige.api.constant.ProtocolConst;
 import com.feige.api.msg.BindClientReq;
 import com.feige.api.msg.Msg;
 import com.feige.api.serialize.SerializedClassManager;
 import com.feige.fim.config.ClientConfig;
 import com.feige.fim.protocol.Packet;
-import com.feige.api.annotation.MsgComp;
 import com.feige.framework.utils.AppContext;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class PacketUtils {
@@ -22,9 +18,9 @@ public final class PacketUtils {
     public static Packet createPacket(Command cmd, Class<?> msgInterface){
         byte classKey = getSerializedClassManager().getClassKey(msgInterface);
         Packet packet = Packet.create(cmd);
-        packet.setSerializerType(ClientConfig.getSerializerType());
-        packet.setClassKey(classKey);
-        packet.setSequenceNum(cnt.incrementAndGet());
+        packet.setSerializer(ClientConfig.getSerializerType());
+        packet.setRealType(classKey);
+        packet.setSeqId(cnt.incrementAndGet());
         return packet;
     }
 

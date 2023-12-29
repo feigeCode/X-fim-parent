@@ -32,7 +32,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <netty.version>4.1.93.Final</netty.version>
         <os.detected.classifier.epoll>linux-x86_64</os.detected.classifier.epoll>
-        <protobuf.java.version>3.15.3</protobuf.java.version>
+        <protobuf.java.version>3.24.3</protobuf.java.version>
         <protobuf.util.version>3.11.0</protobuf.util.version>
         <curator.version>4.0.1</curator.version>
         <nacos-client.version>2.0.3</nacos-client.version>

@@ -2,18 +2,20 @@ syntax = "proto3";
 
 package com.feige.grpc;
 
+import "google/protobuf/any.proto";
+
 option java_multiple_files = true;
 
 message Message {
   int32 version = 1;
   int32 cmd = 2;
-  int32 sequence_num = 3;
-  int32 features = 4;
+  int32 seq_id = 3;
+  int32 feats = 4;
   int32 cs = 5;
-  int32 serializer_type = 6;
-  int32 class_key = 7;
+  int32 serializer = 6;
+  int32 real_type = 7;
   bytes data = 8;
-  string extra_data = 9;
+  map<string, google.protobuf.Any> extra = 9;
 }
 
 service MessageService {

@@ -30,8 +30,8 @@ public abstract class AbstractMsgHandler implements MsgHandler<Packet> {
     
     
     protected <R extends Msg> R getMsg(Packet packet, Class<R> msgInterface){
-        byte serializerType = packet.getSerializerType();
-        byte classKey = packet.getClassKey();
+        byte serializerType = packet.getSerializer();
+        byte classKey = packet.getRealType();
         byte[] data = packet.getData();
         return serializedClassManager.getDeserializedObject(serializerType, classKey, data, msgInterface);
     }
@@ -46,12 +46,12 @@ public abstract class AbstractMsgHandler implements MsgHandler<Packet> {
     }
     
     protected <T extends Msg> Packet buildPacket(Command command, ProtocolConst.SerializedClass serializedClass, Packet packet, Consumer<T> consumer){
-        byte serializerType = packet.getSerializerType();
+        byte serializerType = packet.getSerializer();
         byte classKey = serializedClass.getClassKey();
         Packet respPacket = Packet.create(command);
-        respPacket.setSerializerType(serializerType);
-        respPacket.setClassKey(classKey);
-        respPacket.setSequenceNum(packet.getSequenceNum() + 1);
+        respPacket.setSerializer(serializerType);
+        respPacket.setRealType(classKey);
+        respPacket.setSeqId(packet.getSeqId() + 1);
         T msg = serializedClassManager.newObject(serializerType, classKey);
         consumer.accept(msg);
         respPacket.setData(serializedClassManager.getSerializedObject(serializerType, msg));

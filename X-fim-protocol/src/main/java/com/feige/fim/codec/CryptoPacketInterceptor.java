@@ -20,7 +20,7 @@ public class CryptoPacketInterceptor implements PacketInterceptor {
 
     private void encrypt(Object obj, Session session){
         Packet packet = (Packet) obj;
-        if (ProtocolConst.SerializedClass.isCustomCrypto(packet.getClassKey())) {
+        if (ProtocolConst.SerializedClass.isCustomCrypto(packet.getRealType())) {
             return;
         }
         Boolean enable = Configs.getBoolean(Configs.ConfigKey.CRYPTO_ENABLE, false);
@@ -43,7 +43,7 @@ public class CryptoPacketInterceptor implements PacketInterceptor {
 
     private void decrypt(Object obj, Session session){
         Packet packet = (Packet) obj;
-        if (ProtocolConst.SerializedClass.isCustomCrypto(packet.getClassKey())) {
+        if (ProtocolConst.SerializedClass.isCustomCrypto(packet.getRealType())) {
             return;
         }
         if (packet.hasFeature(ProtocolConst.ENCRYPT)) {

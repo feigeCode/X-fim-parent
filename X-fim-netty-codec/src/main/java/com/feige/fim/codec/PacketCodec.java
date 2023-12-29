@@ -56,11 +56,11 @@ public class PacketCodec implements Codec {
             byteBuf.writeByte(getVersion());
             byteBuf.writeInt(dataLength);
             byteBuf.writeByte(packet.getCmd());
-            byteBuf.writeInt(packet.getSequenceNum());
-            byteBuf.writeByte(packet.getFeatures());
+            byteBuf.writeInt(packet.getSeqId());
+            byteBuf.writeByte(packet.getFeats());
             byteBuf.writeShort(packet.getCs());
-            byteBuf.writeByte(packet.getSerializerType());
-            byteBuf.writeByte(packet.getClassKey());
+            byteBuf.writeByte(packet.getSerializer());
+            byteBuf.writeByte(packet.getRealType());
             if (dataLength > 0){
                 byteBuf.writeBytes(packet.getData());
             }
@@ -85,20 +85,20 @@ public class PacketCodec implements Codec {
                 int bodyLength = checkLength(byteBuf);
                 if (bodyLength != -1) {
                     byte cmd = byteBuf.readByte();
-                    int sequenceNum = byteBuf.readInt();
-                    byte features = byteBuf.readByte();
+                    int seqId = byteBuf.readInt();
+                    byte feats = byteBuf.readByte();
                     short checksum = checkChecksum(byteBuf);
-                    byte serializerType = byteBuf.readByte();
-                    byte classKey = byteBuf.readByte();
+                    byte serializer = byteBuf.readByte();
+                    byte realType = byteBuf.readByte();
                     byte[] data = new byte[bodyLength];
                     byteBuf.readBytes(data);
                     Packet packet = Packet.create(Command.valueOf(cmd));
-                    packet.setSequenceNum(sequenceNum);
+                    packet.setSeqId(seqId);
                     packet.setVersion(version);
-                    packet.setFeatures(features);
+                    packet.setFeats(feats);
                     packet.setCs(checksum);
-                    packet.setSerializerType(serializerType);
-                    packet.setClassKey(classKey);
+                    packet.setSerializer(serializer);
+                    packet.setRealType(realType);
                     packet.setData(data);
                     // 包拦截器，对包做一些处理
                     reversePacketInterceptors

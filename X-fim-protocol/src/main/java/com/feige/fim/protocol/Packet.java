@@ -15,13 +15,13 @@ public class Packet {
      */
     private byte cmd;
     /**
-     * sequence number
+     * sequence id
      */
-    private int sequenceNum;
+    private int seqId;
     /**
      * enabled features
      */
-    private byte features;
+    private byte feats;
     /**
      * checksum
      */
@@ -29,11 +29,11 @@ public class Packet {
     /**
      * serializer type 
      */
-    private byte serializerType;
+    private byte serializer;
     /**
      * data origin key
      */
-    private byte classKey;
+    private byte realType;
     /**
      * data
      */
@@ -46,11 +46,11 @@ public class Packet {
     }
 
     public void addFeature(byte feature){
-        this.features |= feature;
+        this.feats |= feature;
     }
 
     public boolean hasFeature(byte feature){
-        return (this.features & feature) != 0;
+        return (this.feats & feature) != 0;
     }
 
 
@@ -71,22 +71,22 @@ public class Packet {
         this.cmd = cmd;
     }
 
-    public int getSequenceNum() {
-        return sequenceNum;
+    public int getSeqId() {
+        return seqId;
     }
 
-    public void setSequenceNum(int sequenceNum) {
-        this.sequenceNum = sequenceNum;
+    public void setSeqId(int seqId) {
+        this.seqId = seqId;
     }
 
     
 
-    public byte getFeatures() {
-        return features;
+    public byte getFeats() {
+        return feats;
     }
 
-    public void setFeatures(byte features) {
-        this.features = features;
+    public void setFeats(byte feats) {
+        this.feats = feats;
     }
 
     public short getCs() {
@@ -97,20 +97,20 @@ public class Packet {
         this.cs = cs;
     }
 
-    public byte getSerializerType() {
-        return serializerType;
+    public byte getSerializer() {
+        return serializer;
     }
 
-    public void setSerializerType(byte serializerType) {
-        this.serializerType = serializerType;
+    public void setSerializer(byte serializer) {
+        this.serializer = serializer;
     }
 
-    public byte getClassKey() {
-        return classKey;
+    public byte getRealType() {
+        return realType;
     }
 
-    public void setClassKey(byte classKey) {
-        this.classKey = classKey;
+    public void setRealType(byte realType) {
+        this.realType = realType;
     }
 
    
@@ -132,10 +132,10 @@ public class Packet {
         return "Packet{" +
                 "version=" + version +
                 ", cmd=" + cmd +
-                ", sequenceNum=" + sequenceNum +
-                ", features=" + features +
+                ", seqId=" + seqId +
+                ", feats=" + feats +
                 ", cs=" + cs +
-                ", classKey=" + classKey +
+                ", realType=" + realType +
                 ", data=" + Arrays.toString(data) +
                 '}';
     }

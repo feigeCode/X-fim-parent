@@ -18,11 +18,11 @@ public class PacketAndMessageConverter implements ObjectConvert<Packet, Message>
         return Message.newBuilder()
                 .setCmd(packet.getCmd())
                 .setVersion(packet.getVersion())
-                .setFeatures(packet.getFeatures())
+                .setFeats(packet.getFeats())
                 .setCs(packet.getCs())
-                .setSequenceNum(packet.getSequenceNum())
-                .setClassKey(packet.getClassKey())
-                .setSerializerType(packet.getSerializerType())
+                .setSeqId(packet.getSeqId())
+                .setRealType(packet.getRealType())
+                .setSerializer(packet.getSerializer())
                 .setData(ByteString.copyFrom(packet.getData()))
                 .build();
     }
@@ -31,18 +31,18 @@ public class PacketAndMessageConverter implements ObjectConvert<Packet, Message>
     public Packet convertR(Message message) {
         int version = message.getVersion();
         int cmd = message.getCmd();
-        int features = message.getFeatures();
-        int sequenceNum = message.getSequenceNum();
+        int feats = message.getFeats();
+        int seqId = message.getSeqId();
         int cs = message.getCs();
-        int classKey = message.getClassKey();
-        int serializerType = message.getSerializerType();
+        int realType = message.getRealType();
+        int serializer = message.getSerializer();
         Packet packet = Packet.create(Command.valueOf((byte) cmd));
         packet.setVersion((byte)version);
-        packet.setFeatures((byte)features);
-        packet.setSequenceNum((byte)sequenceNum);
+        packet.setFeats((byte)feats);
+        packet.setSeqId((byte)seqId);
         packet.setCs((short) cs);
-        packet.setClassKey((byte)classKey);
-        packet.setSerializerType((byte)serializerType);
+        packet.setRealType((byte)realType);
+        packet.setSerializer((byte)serializer);
         return packet;
     }
     

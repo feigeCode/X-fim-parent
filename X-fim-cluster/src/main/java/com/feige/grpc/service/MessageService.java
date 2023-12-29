@@ -6,8 +6,12 @@ import com.feige.fim.protocol.Packet;
 import com.feige.grpc.Message;
 import com.feige.grpc.MessageServiceGrpc;
 import com.feige.grpc.PacketAndMessageConverter;
+import com.google.protobuf.Any;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.MapUtils;
+
+import java.util.Map;
 
 @Slf4j
 public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
@@ -31,6 +35,7 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
     
     
     private String getReceiverId(Message request){
-        return request.getExtraData();
+        Map<String, Any> extraMap = request.getExtraMap();
+        return MapUtils.getString(extraMap, "receiverId");
     }
 }
