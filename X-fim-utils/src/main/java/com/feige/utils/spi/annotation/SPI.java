@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Inherited
 @Documented
 @Target({ElementType.TYPE})
-public @interface SpiComp {
+public @interface SPI {
     
     String value() default "";
     

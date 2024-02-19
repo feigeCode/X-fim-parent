@@ -26,7 +26,7 @@ import com.feige.fim.msg.proto.SuccessRespProto;
 import com.feige.utils.javassist.ClassGenerator;
 import com.feige.utils.common.Pair;
 import com.feige.utils.common.StringUtils;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
 
 import java.lang.reflect.Method;
@@ -34,7 +34,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpiComp(interfaces = SerializedClassGenerator.class)
+@SPI(interfaces = SerializedClassGenerator.class)
 public class ProtoBufSerializedClassGenerator extends AbstractSerializedClassGenerator {
 
     @Override

@@ -3,7 +3,7 @@ package com.feige.utils.spi.apt;
 import com.feige.utils.common.StringUtils;
 import com.feige.utils.spi.ServicesLoader;
 import com.feige.utils.spi.SpiConfigsLoader;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.google.auto.common.MoreElements;
 import com.google.auto.common.MoreTypes;
 import com.google.auto.service.AutoService;
@@ -58,7 +58,7 @@ public class SpiCompProcessor extends AbstractProcessor {
     @VisibleForTesting
     static final String MISSING_SERVICES_ERROR = "No service interfaces provided for element!";
     
-    public static final String ANNOTATION_NAME = SpiComp.class.getName();
+    public static final String ANNOTATION_NAME = SPI.class.getName();
 
     private final List<String> exceptionStacks = Collections.synchronizedList(new ArrayList<>());
     
@@ -90,7 +90,7 @@ public class SpiCompProcessor extends AbstractProcessor {
         if (roundEnv.processingOver()){
             generateSource();
         }else {
-            Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SpiComp.class);
+            Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SPI.class);
             log(annotations.toString());
             log(elements.toString());
             for (Element element : elements) {

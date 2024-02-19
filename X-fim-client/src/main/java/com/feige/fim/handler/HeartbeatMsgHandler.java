@@ -5,10 +5,10 @@ import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
 
-@SpiComp(value="heartbeat", interfaces = MsgHandler.class)
+@SPI(value="heartbeat", interfaces = MsgHandler.class)
 public class HeartbeatMsgHandler extends AbstractMsgHandler {
     @Override
     public byte getCmd() {

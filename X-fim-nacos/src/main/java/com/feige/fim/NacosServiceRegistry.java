@@ -4,10 +4,10 @@ import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.feige.api.srd.ServerInstance;
 import com.feige.api.srd.ServiceRegistry;
 import com.feige.utils.logger.Loggers;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.srd.InstanceConvert;
 
-@SpiComp(value = "nacosServiceRegistry", interfaces = ServiceRegistry.class)
+@SPI(value = "nacosServiceRegistry", interfaces = ServiceRegistry.class)
 public class NacosServiceRegistry implements ServiceRegistry {
     @Override
     public void registerIServerInstance(ServerInstance serverInstance) {

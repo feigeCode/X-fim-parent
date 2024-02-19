@@ -5,7 +5,7 @@ import com.feige.fim.api.SessionStorage;
 import com.feige.fim.config.ClientConfigKey;
 import com.feige.utils.common.AssertUtil;
 import com.feige.framework.annotation.InitMethod;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.annotation.Value;
 
 
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-@SpiComp(interfaces = SessionStorage.class)
+@SPI(interfaces = SessionStorage.class)
 public class FileSessionStorage implements SessionStorage {
     public static final String FILE_NAME = "client.dat";
     private final Map<String, String> sessionMap = new ConcurrentHashMap<>();

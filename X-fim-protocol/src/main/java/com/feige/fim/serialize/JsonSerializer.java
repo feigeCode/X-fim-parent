@@ -3,9 +3,9 @@ package com.feige.fim.serialize;
 import com.feige.api.constant.ProtocolConst;
 import com.feige.api.serialize.Serializer;
 import com.feige.utils.json.JsonUtils;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
-@SpiComp(interfaces = Serializer.class)
+@SPI(interfaces = Serializer.class)
 public class JsonSerializer implements Serializer {
     
     @Override

@@ -1,7 +1,7 @@
 package com.feige.fim.server;
 
 import com.feige.api.sc.AbstractServerProvider;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
@@ -15,7 +15,7 @@ import com.feige.fim.server.tcp.NettyTcpServer;
 
 import java.net.InetSocketAddress;
 
-@SpiComp(value="tcp", interfaces = ServerProvider.class)
+@SPI(value="tcp", interfaces = ServerProvider.class)
 public class NettyTcpServerProvider extends AbstractServerProvider {
     
     @Value(ServerConfigKey.SERVER_TCP_IP_KEY)

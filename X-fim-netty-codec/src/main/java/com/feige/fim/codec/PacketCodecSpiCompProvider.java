@@ -6,7 +6,7 @@ import com.feige.framework.aware.ApplicationContextAware;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.utils.Configs;
 import com.feige.utils.common.StringUtils;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.framework.spi.api.SpiCompProvider;
@@ -15,7 +15,7 @@ import com.feige.framework.utils.Configs.ConfigKey;
 import java.util.List;
 
 
-@SpiComp(value="packet", interfaces = SpiCompProvider.class, provideTypes = Codec.class)
+@SPI(value="packet", interfaces = SpiCompProvider.class, provideTypes = Codec.class)
 public class PacketCodecSpiCompProvider implements SpiCompProvider<Codec>, ApplicationContextAware {
     
     @Value(ConfigKey.CODEC_MAX_PACKET_SIZE_KEY)

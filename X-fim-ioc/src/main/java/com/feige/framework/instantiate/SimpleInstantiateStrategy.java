@@ -1,11 +1,11 @@
 package com.feige.framework.instantiate;
 
 import com.feige.framework.context.api.LifecycleAdapter;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.instantiate.api.InstantiationStrategy;
 import com.feige.utils.clazz.ReflectionUtils;
 
-@SpiComp(interfaces = InstantiationStrategy.class)
+@SPI(interfaces = InstantiationStrategy.class)
 public class SimpleInstantiateStrategy  extends LifecycleAdapter implements InstantiationStrategy {
     @Override
     public <T> T instantiate(Class<T> cl, Object... args) {

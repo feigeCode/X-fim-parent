@@ -2,12 +2,12 @@ package com.feige.framework.registry;
 
 import com.feige.framework.context.api.LifecycleAdapter;
 import com.feige.utils.common.AssertUtil;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@SpiComp(interfaces = CompRegistry.class)
+@SPI(interfaces = CompRegistry.class)
 public class SimpleCompRegistry extends LifecycleAdapter implements CompRegistry {
 
     protected final Map<String, Object> globalObjectCache = new ConcurrentHashMap<>(64);

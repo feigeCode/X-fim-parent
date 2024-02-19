@@ -2,13 +2,13 @@ package com.feige.framework.processor;
 
 import com.feige.framework.context.api.LifecycleAdapter;
 import com.feige.framework.processor.api.CompPostProcessor;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.annotation.Value;
 import com.feige.framework.env.api.Environment;
 import com.feige.framework.aware.EnvironmentAware;
 import com.feige.utils.clazz.ReflectionUtils;
 
-@SpiComp(interfaces = CompPostProcessor.class)
+@SPI(interfaces = CompPostProcessor.class)
 public class ValueInjectCompPostProcessor extends LifecycleAdapter implements CompPostProcessor, EnvironmentAware {
 
     private Environment environment;

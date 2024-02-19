@@ -16,7 +16,7 @@ import com.feige.api.serialize.MsgGen;
 import com.feige.api.serialize.SerializedClassGenerator;
 import com.feige.utils.javassist.ClassGenerator;
 import com.feige.utils.common.StringUtils;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
 
 import java.lang.reflect.Method;
@@ -24,7 +24,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpiComp(interfaces = SerializedClassGenerator.class)
+@SPI(interfaces = SerializedClassGenerator.class)
 public class JsonSerializedClassGenerator extends AbstractSerializedClassGenerator {
 
     

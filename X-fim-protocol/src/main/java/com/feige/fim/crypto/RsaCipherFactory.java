@@ -1,11 +1,11 @@
 package com.feige.fim.crypto;
 
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
 
 
-@SpiComp(value="asymmetricEncryption", interfaces = CipherFactory.class)
+@SPI(value="asymmetricEncryption", interfaces = CipherFactory.class)
 public class RsaCipherFactory implements CipherFactory {
     @Override
     public Cipher create(byte[] key1, byte[] key2, Object... args) {

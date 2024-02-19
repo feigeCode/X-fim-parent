@@ -1,6 +1,5 @@
 package com.feige.fim;
 
-import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.feige.api.sc.Callback;
@@ -8,12 +7,12 @@ import com.feige.api.srd.ServerInstance;
 import com.feige.api.srd.ServiceDiscovery;
 import com.feige.srd.InstanceConvert;
 import com.feige.utils.logger.Loggers;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpiComp(value = "nacosServiceDiscovery", interfaces = ServiceDiscovery.class)
+@SPI(value = "nacosServiceDiscovery", interfaces = ServiceDiscovery.class)
 public class NacosServiceDiscovery implements ServiceDiscovery {
     @Override
     public List<ServerInstance> getAllServerInstances(String serverName) {

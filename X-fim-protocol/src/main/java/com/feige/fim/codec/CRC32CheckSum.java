@@ -2,11 +2,11 @@ package com.feige.fim.codec;
 
 
 import com.feige.api.codec.ICheckSum;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
 import java.util.zip.CRC32;
 
-@SpiComp(value = "crc32", interfaces = ICheckSum.class)
+@SPI(value = "crc32", interfaces = ICheckSum.class)
 public class CRC32CheckSum implements ICheckSum {
 
     @Override

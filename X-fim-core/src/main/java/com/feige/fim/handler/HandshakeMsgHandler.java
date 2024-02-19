@@ -15,7 +15,7 @@ import com.feige.utils.common.StringUtils;
 import com.feige.utils.crypto.CryptoUtils;
 import com.feige.utils.crypto.Md5Utils;
 import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.msg.HandshakeReq;
@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * @Description: <br/>
  * @date: 2023/5/25 21:52<br/>
  */
-@SpiComp(value="handshake", interfaces = MsgHandler.class)
+@SPI(value="handshake", interfaces = MsgHandler.class)
 public class HandshakeMsgHandler extends AbstractMsgHandler {
     public static final String CACHE_NAME = "SESSION_CONTEXT";
     

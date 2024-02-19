@@ -15,14 +15,14 @@ import com.feige.api.session.SessionContext;
 import com.feige.fim.protocol.Packet;
 import com.feige.utils.common.StringUtils;
 import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.utils.Configs;
 import org.bouncycastle.util.encoders.Base64;
 
 import java.util.Objects;
 
 
-@SpiComp(value="fastConnect", interfaces = MsgHandler.class)
+@SPI(value="fastConnect", interfaces = MsgHandler.class)
 public class FastConnectMsgHandler extends AbstractMsgHandler {
     @Inject
     private CacheManager cacheManager;

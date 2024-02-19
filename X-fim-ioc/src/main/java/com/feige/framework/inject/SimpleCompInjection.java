@@ -2,13 +2,13 @@ package com.feige.framework.inject;
 
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.context.api.LifecycleAdapter;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.inject.api.CompInjection;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.common.StringUtils;
 
-@SpiComp(interfaces = CompInjection.class)
+@SPI(interfaces = CompInjection.class)
 public class SimpleCompInjection extends LifecycleAdapter implements CompInjection {
     
     private ApplicationContext applicationContext;

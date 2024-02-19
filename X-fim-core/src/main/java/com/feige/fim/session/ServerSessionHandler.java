@@ -7,7 +7,7 @@ import com.feige.api.crypto.CipherFactory;
 import com.feige.api.session.SessionContext;
 import com.feige.api.constant.ServerConfigKey;
 import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.handler.SessionHandler;
 import com.feige.fim.handler.AbstractSessionHandler;
 import com.feige.api.handler.RemotingException;
@@ -18,7 +18,7 @@ import com.feige.framework.utils.Configs;
 import org.bouncycastle.util.encoders.Base64;
 
 
-@SpiComp(value="single", interfaces = SessionHandler.class)
+@SPI(value="single", interfaces = SessionHandler.class)
 public class ServerSessionHandler extends AbstractSessionHandler {
 
    

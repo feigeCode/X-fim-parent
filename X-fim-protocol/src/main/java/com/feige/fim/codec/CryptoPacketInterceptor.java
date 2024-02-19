@@ -8,9 +8,9 @@ import com.feige.api.crypto.Cipher;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.utils.Configs;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
-@SpiComp(interfaces = PacketInterceptor.class)
+@SPI(interfaces = PacketInterceptor.class)
 public class CryptoPacketInterceptor implements PacketInterceptor {
 
     @Override

@@ -12,12 +12,12 @@ import com.feige.fim.config.ClientConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.fim.utils.PacketUtils;
 import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
 import org.bouncycastle.util.encoders.Base64;
 
 
-@SpiComp(value="handshake", interfaces = MsgHandler.class)
+@SPI(value="handshake", interfaces = MsgHandler.class)
 public class HandshakeRespMsgHandler extends AbstractMsgHandler {
     
     @Inject

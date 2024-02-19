@@ -1,6 +1,6 @@
 package com.feige.fim.handler;
 
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.handler.AbstractMsgDispatcher;
 import com.feige.api.handler.MsgDispatcher;
 import com.feige.api.handler.MsgHandler;
@@ -9,7 +9,7 @@ import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
 
 
-@SpiComp(interfaces = MsgDispatcher.class)
+@SPI(interfaces = MsgDispatcher.class)
 public class PacketDispatcher extends AbstractMsgDispatcher<Packet> {
     
     @Override

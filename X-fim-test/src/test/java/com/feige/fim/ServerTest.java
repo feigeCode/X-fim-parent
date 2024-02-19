@@ -2,7 +2,7 @@ package com.feige.fim;
 
 import com.feige.api.crypto.CipherFactory;
 import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.annotation.Value;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.sc.Server;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@SpiComp(interfaces = ApplicationContext.class)
+@SPI(interfaces = ApplicationContext.class)
 public class ServerTest {
     public static final String CONFIG_PATH = "E:\\project\\my\\X-fim-parent\\conf\\fim.yaml";
     private static ApplicationContext applicationContext;
@@ -119,6 +119,6 @@ public class ServerTest {
     
     @Test
     public void t(){
-        System.out.println(Arrays.toString(AnnotationUtils.findAnnotation(this.getClass(), SpiComp.class).provideTypes()));
+        System.out.println(Arrays.toString(AnnotationUtils.findAnnotation(this.getClass(), SPI.class).provideTypes()));
     }
 }

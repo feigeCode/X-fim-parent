@@ -10,10 +10,10 @@ import com.feige.fim.config.ClientConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.fim.utils.PacketUtils;
 import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
 
-@SpiComp(value="fastConnect", interfaces = MsgHandler.class)
+@SPI(value="fastConnect", interfaces = MsgHandler.class)
 public class FastConnectRespMsgHandler extends AbstractMsgHandler {
     
     @Inject

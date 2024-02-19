@@ -1,14 +1,14 @@
 package com.feige.fim.serialize;
 
 
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.msg.Msg;
 import com.feige.api.serialize.Serializer;
 import com.feige.api.constant.ProtocolConst;
 
 
 
-@SpiComp(interfaces = Serializer.class)
+@SPI(interfaces = Serializer.class)
 public class ProtoBufSerializer implements Serializer {
     
     

@@ -16,12 +16,11 @@ import com.feige.grpc.client.GrpcClientConf;
 import com.feige.grpc.server.GrpcServer;
 import com.feige.grpc.server.GrpcServerConf;
 import com.feige.grpc.service.MessageService;
-import com.feige.utils.spi.annotation.SpiComp;
-import io.grpc.NameResolverRegistry;
+import com.feige.utils.spi.annotation.SPI;
 
 import java.util.Map;
 
-@SpiComp(value = "nettyGrpc", interfaces = RpcTransporter.class)
+@SPI(value = "nettyGrpc", interfaces = RpcTransporter.class)
 public class NettyGrpcTransporter implements RpcTransporter<Packet>, EnvironmentAware {
     
     private RpcClient<Packet> rpcClient;

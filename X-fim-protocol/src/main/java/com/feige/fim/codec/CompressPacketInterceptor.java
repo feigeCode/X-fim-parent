@@ -6,10 +6,10 @@ import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.utils.Configs;
 import com.feige.utils.common.IOUtils;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
 
-@SpiComp(interfaces = PacketInterceptor.class)
+@SPI(interfaces = PacketInterceptor.class)
 public class CompressPacketInterceptor implements PacketInterceptor {
     @Override
     public void writePacket(Session session, Object packet) {

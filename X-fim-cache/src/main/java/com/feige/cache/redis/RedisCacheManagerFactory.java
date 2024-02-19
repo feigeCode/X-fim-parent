@@ -1,6 +1,6 @@
 package com.feige.cache.redis;
 
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.CacheManagerFactory;
 import com.feige.api.constant.ServerConfigKey;
@@ -19,7 +19,7 @@ import org.redisson.config.SingleServerConfig;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-@SpiComp(value="redis", interfaces = SpiCompProvider.class, provideTypes = CacheManager.class)
+@SPI(value="redis", interfaces = SpiCompProvider.class, provideTypes = CacheManager.class)
 public class RedisCacheManagerFactory implements CacheManagerFactory, SpiCompProvider<CacheManager>, EnvironmentAware {
     
 

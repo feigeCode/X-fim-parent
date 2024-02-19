@@ -6,9 +6,9 @@ import com.feige.api.sc.ServerProvider;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.context.api.ApplicationRunner;
 import com.feige.framework.env.api.Environment;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
-@SpiComp(value = "tcpServer", interfaces = ApplicationRunner.class)
+@SPI(value = "tcpServer", interfaces = ApplicationRunner.class)
 public class TcpApplicationRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationContext applicationContext, String... args) throws Exception {

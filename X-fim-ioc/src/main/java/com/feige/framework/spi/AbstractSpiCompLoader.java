@@ -3,7 +3,7 @@ package com.feige.framework.spi;
 
 import com.feige.framework.comp.api.CompNameGenerate;
 import com.feige.framework.comp.SimpleCompNameGenerate;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.aware.ApplicationContextAware;
 import com.feige.framework.aware.EnvironmentAware;
@@ -186,7 +186,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
         if (Modifier.isAbstract(cls.getModifiers())) {
             return false;
         }
-        return AnnotationUtils.findAnnotation(cls, SpiComp.class) != null;
+        return AnnotationUtils.findAnnotation(cls, SPI.class) != null;
     }
 
     private String addImplClass(Class<?> requireType, Class<?> compClass){
@@ -199,11 +199,11 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
         List<String> list = this.spiTypeAndCompNamesCache.computeIfAbsent(requireType, k -> new ArrayList<>());
         list.add(compName);
         if (SpiCompProvider.class.isAssignableFrom(compClass)){
-            SpiComp spiComp = AnnotationUtils.findAnnotation(compClass, SpiComp.class);
-            if (spiComp == null){
-                throw new RuntimeException(compClass.getName() + " lack " + SpiComp.class.getName());
+            SPI SPI = AnnotationUtils.findAnnotation(compClass, SPI.class);
+            if (SPI == null){
+                throw new RuntimeException(compClass.getName() + " lack " + SPI.class.getName());
             }
-            Class<?>[] classes = spiComp.provideTypes();
+            Class<?>[] classes = SPI.provideTypes();
             if (classes.length == 1 && Object.class.getName().equals(classes[0].getName())){
                 throw new RuntimeException(compClass.getName() + " lack provideTypes");
             }

@@ -2,7 +2,7 @@ package com.feige.fim.bind;
 
 import com.feige.api.bind.AbstractClientBindManager;
 import com.feige.api.bind.ClientBindManager;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.bind.ClientBindInfo;
 import com.feige.api.constant.ClientType;
 import com.feige.api.cache.MapCache;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @Description: <br/>
  * @date: 2023/5/27 10:47<br/>
  */
-@SpiComp(value="default", interfaces = ClientBindManager.class)
+@SPI(value="default", interfaces = ClientBindManager.class)
 public class DefaultClientBindManager extends AbstractClientBindManager {
     
     public static final String CACHE_NAME = "BIND_CLIENT";

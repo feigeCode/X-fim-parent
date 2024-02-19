@@ -8,9 +8,9 @@ import com.feige.api.rpc.RpcTransporter;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
-@SpiComp(value = "singleChat", interfaces = MsgHandler.class)
+@SPI(value = "singleChat", interfaces = MsgHandler.class)
 public class SingleChatMsgHandler extends AbstractMsgHandler{
     
     @Inject

@@ -8,7 +8,7 @@ import com.feige.framework.spi.api.SpiCompLoader;
 import com.feige.framework.spi.api.SpiCompProvider;
 import com.feige.utils.common.AssertUtil;
 import com.feige.utils.spi.SpiScope;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-@SpiComp(interfaces = CompFactory.class)
+@SPI(interfaces = CompFactory.class)
 public class SpiCompFactory extends AbstractCompFactory {
     private final Map<String, Set<String>> moduleCurrentlyInCreation = new ConcurrentHashMap<>(16);
     protected final Map<String, Object> providerObjectCache = new ConcurrentHashMap<>(16);

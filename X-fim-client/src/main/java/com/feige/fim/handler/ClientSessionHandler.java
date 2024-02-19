@@ -11,7 +11,7 @@ import com.feige.fim.lg.Logs;
 import com.feige.fim.utils.PacketUtils;
 import com.feige.utils.common.StringUtils;
 import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
@@ -19,7 +19,7 @@ import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
 
 
-@SpiComp(interfaces = SessionHandler.class)
+@SPI(interfaces = SessionHandler.class)
 public class ClientSessionHandler extends AbstractSessionHandler {
 
     @Inject

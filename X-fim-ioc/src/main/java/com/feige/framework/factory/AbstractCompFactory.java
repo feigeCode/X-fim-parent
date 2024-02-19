@@ -18,7 +18,7 @@ import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.spi.SpiScope;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 import org.slf4j.Logger;
 
 
@@ -156,8 +156,8 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         if (cls == null){
             throw new RuntimeException(type.getName() + " not found " + compName);
         }
-        SpiComp spiComp = AnnotationUtils.findAnnotation(cls, SpiComp.class);
-        return Objects.equals(spiComp.scope(), scope);
+        SPI SPI = AnnotationUtils.findAnnotation(cls, SPI.class);
+        return Objects.equals(SPI.scope(), scope);
     }
     
     

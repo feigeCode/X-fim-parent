@@ -6,7 +6,7 @@ import com.feige.framework.env.api.Environment;
 import com.feige.framework.module.api.ModuleContext;
 import com.feige.framework.module.api.ModuleRepository;
 import com.feige.framework.utils.Configs;
-import com.feige.utils.spi.annotation.SpiComp;
+import com.feige.utils.spi.annotation.SPI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@SpiComp(interfaces = ModuleRepository.class)
+@SPI(interfaces = ModuleRepository.class)
 public class SimpleModuleRepository implements ModuleRepository , ApplicationContextAware {
 
     
