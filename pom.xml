@@ -10,20 +10,20 @@
     <version>1.0</version>
 
     <modules>
-        <module>X-fim-common</module>
-        <module>X-fim-core</module>
-        <module>X-fim-netty</module>
-        <module>X-fim-cache</module>
-        <module>X-fim-test</module>
-        <module>X-fim-client</module>
-        <module>X-fim-cluster</module>
-        <module>X-fim-nacos</module>
-        <module>X-fim-protocol</module>
-        <module>X-fim-netty-codec</module>
-        <module>X-fim-common-api</module>
-        <module>X-fim-utils</module>
-        <module>X-fim-ioc</module>
-        <module>X-fim-bootstrap</module>
+        <module>fim-common</module>
+        <module>fim-core</module>
+        <module>fim-netty</module>
+        <module>fim-cache</module>
+        <module>fim-test</module>
+        <module>fim-client</module>
+        <module>fim-cluster</module>
+        <module>fim-nacos</module>
+        <module>fim-protocol</module>
+        <module>fim-netty-codec</module>
+        <module>fim-common-api</module>
+        <module>fim-utils</module>
+        <module>fim-spi-inject</module>
+        <module>fim-bootstrap</module>
     </modules>
 
     <properties>
@@ -40,7 +40,7 @@
         <guava.version>32.0.1-android</guava.version>
         <commons-collections4.version>4.1</commons-collections4.version>
         <slf4j-api.version>1.7.7</slf4j-api.version>
-        <logback.version>1.2.9</logback.version>
+        <logback.version>1.4.14</logback.version>
         <log4j.version>2.17.1</log4j.version>
         <ehcache.version>3.9.0</ehcache.version>
         <redisson.version>3.21.0</redisson.version>
@@ -254,67 +254,67 @@
             <!-- 子模块-->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-utils</artifactId>
+                <artifactId>fim-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-ioc</artifactId>
+                <artifactId>fim-spi-inject</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-common-api</artifactId>
+                <artifactId>fim-common-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-common</artifactId>
+                <artifactId>fim-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-core</artifactId>
+                <artifactId>fim-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-netty-codec</artifactId>
+                <artifactId>fim-netty-codec</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-netty</artifactId>
+                <artifactId>fim-netty</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-cache</artifactId>
+                <artifactId>fim-cache</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-protocol</artifactId>
+                <artifactId>fim-protocol</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-client</artifactId>
+                <artifactId>fim-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-cluster</artifactId>
+                <artifactId>fim-cluster</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-nacos</artifactId>
+                <artifactId>fim-nacos</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>X-fim-bootstrap</artifactId>
+                <artifactId>fim-bootstrap</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
