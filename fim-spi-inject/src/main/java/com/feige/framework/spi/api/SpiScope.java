@@ -1,4 +1,4 @@
-package com.feige.utils.spi;
+package com.feige.framework.spi.api;
 
 public enum SpiScope {
     /**

@@ -25,12 +25,6 @@ public abstract class AbstractModuleContext extends AbstractApplicationContext i
     
     private List<ModuleBootstrap> moduleBootstraps;
 
-    public AbstractModuleContext(String type, ApplicationContext parent, String moduleName) {
-        super(type);
-        this.parent = parent;
-        this.moduleName = moduleName;
-    }
-
     public AbstractModuleContext(ApplicationContext parent, String moduleName) {
         this.parent = parent;
         this.moduleName = moduleName;
@@ -62,8 +56,8 @@ public abstract class AbstractModuleContext extends AbstractApplicationContext i
     }
 
     @Override
-    protected SpiCompLoader createSpiLoader(String type) {
-        return super.createSpiLoader(type);
+    protected SpiCompLoader createSpiLoader() {
+        return super.createSpiLoader();
     }
 
     @Override

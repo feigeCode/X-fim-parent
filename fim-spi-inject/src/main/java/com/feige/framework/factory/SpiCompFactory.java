@@ -5,16 +5,13 @@ import com.feige.framework.spi.api.InstanceCreationException;
 import com.feige.framework.spi.api.InstanceCurrentlyInCreationException;
 import com.feige.framework.spi.api.NoSuchInstanceException;
 import com.feige.framework.spi.api.SpiCompLoader;
-import com.feige.framework.spi.api.SpiCompProvider;
 import com.feige.utils.common.AssertUtil;
-import com.feige.utils.spi.SpiScope;
 import com.feige.utils.spi.annotation.SPI;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -45,20 +42,6 @@ public class SpiCompFactory extends AbstractCompFactory {
         return doGetInstances(type);
     }
 
-    @Override
-    public <T> List<SpiCompProvider<T>> getSpiCompProviders(Class<T> requireType) throws NoSuchInstanceException {
-        try {
-            List<SpiCompProvider<T>> spiCompProviders = new ArrayList<>();
-            List<String> compNames = getSpiCompLoader().getByType(requireType);
-            for (String compName : compNames) {
-                SpiCompProvider<T> spiCompProvider = get(compName, SpiCompProvider.class);
-                spiCompProviders.add(spiCompProvider);
-            }
-            return spiCompProviders;
-        } catch (ClassNotFoundException e) {
-            throw new NoSuchInstanceException(requireType);
-        }
-    }
 
     @Override
     protected Object getCompFromCache(String compName) {
@@ -68,32 +51,21 @@ public class SpiCompFactory extends AbstractCompFactory {
         }
         return instance;
     }
-    
-    protected Object getCompFromCache(Class<?> requireType, String compName){
-        if (SpiCompProvider.class.equals(requireType)){
-            return super.getCompFromCache(compName);
-        }
-        return this.getCompFromCache(compName);
-    }
 
     protected  <T> T doGetInstance(String compName, Class<T> requireType, Object... args) {
         try {
-            Object instance = getCompFromCache(requireType, compName);
+            Object instance = getCompFromCache(compName);
             if (instance == null){
                 Class<?> cls = getImplClass(compName, requireType);
                 if (this.isGlobal(requireType, compName)){
-                    instance = createInstance(compName, cls, args);
+                    instance = createInstance(requireType, compName, args);
                 }else {
                     checkModuleCurrentlyInCreation(compName, requireType, cls);
-                    instance = createOneOrModuleInstance(compName, cls, args);
+                    instance = createOneOrModuleInstance(requireType, compName, args);
                 }
                 if (this.isGlobal(requireType, compName) || this.isModule(requireType, compName)){
                     getCompRegistry().register(compName, instance);
                 }
-            }
-            
-            if (instance != null){
-                instance = getInstanceIfNecessary(compName, instance, requireType);
             }
             return (T) instance;
         } catch (Throwable e) {
@@ -108,7 +80,7 @@ public class SpiCompFactory extends AbstractCompFactory {
     
     private Class<?> getImplClass(String compName, Class<?> requireType) throws ClassNotFoundException {
         SpiCompLoader spiCompLoader = this.getSpiCompLoader();
-        Class<?> cls = spiCompLoader.get(compName, requireType);
+        Class<?> cls = spiCompLoader.get(requireType, compName);
         // 如果非Module类型，当前loader中没有，交给父模块去创建
         if (spiCompLoader.getImplClassFormCache(compName) == null && !this.isModule(requireType, compName)) {
             return null;
@@ -155,27 +127,4 @@ public class SpiCompFactory extends AbstractCompFactory {
             throw new InstanceCreationException(e, type);
         }
     }
-
-
-    protected <T> T getInstanceIfNecessary(String compName, Object instance, Class<T> requireType) {
-        if (!(instance instanceof SpiCompProvider) || SpiCompProvider.class.isAssignableFrom(requireType)){
-            return (T) instance;
-        }
-        SpiCompProvider<T> spiCompProvider = (SpiCompProvider<T>) instance;
-        T providerInstance = spiCompProvider.getInstance();
-        if (!providerObjectCache.containsKey(compName) && (isGlobal(spiCompProvider) || isModule(spiCompProvider))){
-            providerObjectCache.put(compName, providerInstance);
-        }
-        return providerInstance;
-    }
-    
-    public boolean isGlobal(SpiCompProvider<?> spiCompProvider){
-        return Objects.equals(spiCompProvider.getScope(), SpiScope.GLOBAL);
-    }
-    
-    public boolean isModule(SpiCompProvider<?> spiCompProvider){
-        return Objects.equals(spiCompProvider.getScope(), SpiScope.MODULE);
-    }
-    
-    
 }

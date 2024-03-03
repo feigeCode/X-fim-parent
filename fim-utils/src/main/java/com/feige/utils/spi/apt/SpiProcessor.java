@@ -1,8 +1,8 @@
 package com.feige.utils.spi.apt;
 
+import com.feige.utils.common.Pair;
 import com.feige.utils.common.StringUtils;
-import com.feige.utils.spi.ServicesLoader;
-import com.feige.utils.spi.SpiConfigsLoader;
+import com.feige.utils.spi.ComponentsLoader;
 import com.feige.utils.spi.annotation.SPI;
 import com.google.auto.common.MoreElements;
 import com.google.auto.common.MoreTypes;
@@ -36,10 +36,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -53,17 +53,17 @@ import static javax.lang.model.SourceVersion.RELEASE_8;
 @SupportedOptions({"debug", "verify"})
 @SupportedSourceVersion(RELEASE_8)
 @AutoService(Processor.class)
-public class SpiCompProcessor extends AbstractProcessor {
+public class SpiProcessor extends AbstractProcessor {
 
     @VisibleForTesting
     static final String MISSING_SERVICES_ERROR = "No service interfaces provided for element!";
-    
+
     public static final String ANNOTATION_NAME = SPI.class.getName();
 
     private final List<String> exceptionStacks = Collections.synchronizedList(new ArrayList<>());
-    
-    private final Multimap<String, String> providers = HashMultimap.create();
-    
+
+    private final Multimap<String, Pair<String, String>> providers = HashMultimap.create();
+
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         return Collections.singleton(ANNOTATION_NAME);
@@ -76,7 +76,7 @@ public class SpiCompProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         try {
-            processSpiComps(annotations, roundEnv);
+            processSPI(annotations, roundEnv);
         }catch (RuntimeException e){
             String trace = getStackTraceAsString(e);
             exceptionStacks.add(trace);
@@ -84,9 +84,9 @@ public class SpiCompProcessor extends AbstractProcessor {
         }
         return false;
     }
-    
-    
-    private void processSpiComps(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv){
+
+
+    private void processSPI(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv){
         if (roundEnv.processingOver()){
             generateSource();
         }else {
@@ -98,6 +98,7 @@ public class SpiCompProcessor extends AbstractProcessor {
                 AnnotationMirror annotationMirror = MoreElements.getAnnotationMirror(element, ANNOTATION_NAME).get();
                 // DeclaredType表示已声明的类型，即类、接口或枚举类型
                 ImmutableSet<DeclaredType> providerInterfaces = getValueFieldOfClasses(annotationMirror);
+                String value = getStringValueFieldOfClasses(annotationMirror);
                 if (providerInterfaces.isEmpty()) {
                     error(MISSING_SERVICES_ERROR, element, annotationMirror);
                     continue;
@@ -111,7 +112,11 @@ public class SpiCompProcessor extends AbstractProcessor {
                     log("provider interface: " + providerType.getQualifiedName());
                     log("provider implementer: " + providerImplementer.getQualifiedName());
                     if (checkImplementer(providerImplementer, providerType, annotationMirror)) {
-                        providers.put(binaryName, getBinaryName(providerImplementer));
+                        if (StringUtils.isBlank(value)){
+                            value = StringUtils.uncapitalize(providerImplementer.getSimpleName().toString());
+                        }
+                        String providerImplName = getBinaryName(providerImplementer);
+                        providers.put(binaryName, Pair.of(value, providerImplName));
                     } else {
                         String message =
                                 "ServiceProviders must implement their service provider interface. "
@@ -123,9 +128,9 @@ public class SpiCompProcessor extends AbstractProcessor {
                 }
             }
         }
-        
-        
-        
+
+
+
     }
 
     private String getBinaryName(TypeElement element) {
@@ -145,6 +150,18 @@ public class SpiCompProcessor extends AbstractProcessor {
 
         TypeElement typeElement = MoreElements.asType(enclosingElement);
         return getBinaryNameImpl(typeElement, typeElement.getSimpleName() + "$" + className);
+    }
+
+    private String getStringValueFieldOfClasses(AnnotationMirror annotationMirror) {
+        return getAnnotationValue(annotationMirror, "value")
+                .accept(
+                        new SimpleAnnotationValueVisitor8<String, Void>() {
+                            @Override
+                            public String visitString(String s, Void unused) {
+                                return s;
+                            }
+                        },
+                        null);
     }
 
     private ImmutableSet<DeclaredType> getValueFieldOfClasses(AnnotationMirror annotationMirror) {
@@ -167,7 +184,7 @@ public class SpiCompProcessor extends AbstractProcessor {
                         null);
     }
 
-   
+
 
 
     private boolean checkImplementer(
@@ -217,17 +234,16 @@ public class SpiCompProcessor extends AbstractProcessor {
         }
         return false;
     }
-    
+
     private void generateSource(){
         generateServices();
-        generateSpiConfigs();
     }
-    
-    
+
+
     private void generateServices(){
         Filer filer = processingEnv.getFiler();
         for (String providerInterface : providers.keySet()) {
-            String resourceFile = ServicesLoader.getPath(providerInterface);
+            String resourceFile = ComponentsLoader.getPath(providerInterface);
             log("Working on resource file: " + resourceFile);
             try {
                 SortedSet<String> allServices = Sets.newTreeSet();
@@ -239,7 +255,7 @@ public class SpiCompProcessor extends AbstractProcessor {
                     FileObject existingFile =
                             filer.getResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
                     log("Looking for existing resource file at " + existingFile.toUri());
-                    Set<String> oldServices = ServicesLoader.readServiceFile(existingFile.openInputStream());
+                    Set<String> oldServices = ComponentsLoader.readServiceFile(existingFile.openInputStream());
                     log("Existing service entries: " + oldServices);
                     allServices.addAll(oldServices);
                 } catch (IOException e) {
@@ -250,8 +266,11 @@ public class SpiCompProcessor extends AbstractProcessor {
                     // IOException if you try to open an input stream for it.
                     log("Resource file did not already exist.");
                 }
-
-                Set<String> newServices = new HashSet<>(providers.get(providerInterface));
+                Collection<Pair<String, String>> pairs = providers.get(providerInterface);
+                Set<String> newServices = new HashSet<>();
+                for (Pair<String, String> pair : pairs) {
+                    newServices.add(pair.getK() + "=" + pair.getV());
+                }
                 if (!allServices.addAll(newServices)) {
                     log("No new service entries being added.");
                     continue;
@@ -261,48 +280,13 @@ public class SpiCompProcessor extends AbstractProcessor {
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
                 try (OutputStream out = fileObject.openOutputStream()) {
-                    ServicesLoader.writeServiceFile(allServices, out);
+                    ComponentsLoader.writeServiceFile(allServices, out);
                 }
                 log("Wrote to: " + fileObject.toUri());
             } catch (IOException e) {
                 fatalError("Unable to create " + resourceFile + ", " + e);
                 return;
             }
-        }
-    }
-    
-    
-    private void generateSpiConfigs(){
-        Set<String> providerInterfaces = new HashSet<>(providers.keySet());
-        Filer filer = processingEnv.getFiler();
-        try {
-            Properties prop = new Properties();
-            try {
-                FileObject existingFile =
-                        filer.getResource(StandardLocation.CLASS_OUTPUT, "", SpiConfigsLoader.SPI_CONFIGS);
-                log("Looking for existing resource file at " + existingFile.toUri());
-                prop.load(existingFile.openInputStream());
-                log("Existing service entries: " + prop);
-            } catch (IOException e) {
-                log("Resource file did not already exist.");
-            }
-            
-            for (String providerInterface : providerInterfaces) {
-                Set<String> impls = new HashSet<>(this.providers.get(providerInterface));
-                String oldImpls = prop.getProperty(providerInterface);
-                if (StringUtils.isNotBlank(oldImpls)){
-                    impls.addAll(StringUtils.commaSplitter.splitToList(oldImpls));
-                }
-                prop.setProperty(providerInterface, StringUtils.commaJoiner.join(impls));
-            }
-            FileObject fileObject =
-                    filer.createResource(StandardLocation.CLASS_OUTPUT, "", SpiConfigsLoader.SPI_CONFIGS);
-            try (OutputStream out = fileObject.openOutputStream()) {
-                prop.store(out, "Automatic generation");
-            }
-            log("Wrote to: " + fileObject.toUri());
-        } catch (IOException e) {
-            fatalError("Unable to create " + SpiConfigsLoader.SPI_CONFIGS + ", " + e);
         }
     }
 

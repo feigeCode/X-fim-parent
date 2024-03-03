@@ -9,4 +9,5 @@ public abstract class AnnotationUtils {
     public static <T extends Annotation> T findAnnotation(Class<?> cls, Class<T> annotation) {
         return cls.getAnnotation(annotation);
     }
+
 }

@@ -1,26 +1,22 @@
 package com.feige.framework.spi;
 
 
-import com.feige.framework.comp.api.CompNameGenerate;
-import com.feige.framework.comp.SimpleCompNameGenerate;
-import com.feige.utils.spi.annotation.SPI;
-import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.aware.ApplicationContextAware;
 import com.feige.framework.aware.EnvironmentAware;
-import com.feige.framework.context.api.LifecycleAdapter;
 import com.feige.framework.aware.SpiCompLoaderAware;
+import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.context.api.LifecycleAdapter;
+import com.feige.framework.instantiate.api.InstantiationStrategy;
 import com.feige.framework.spi.api.SpiCompLoader;
-import com.feige.framework.spi.api.SpiCompProvider;
 import com.feige.utils.clazz.ClassUtils;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.common.AssertUtil;
-import com.feige.utils.javassist.AnnotationUtils;
+import com.feige.utils.common.Pair;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.order.OrderClassComparator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements SpiCompLoader {
 
@@ -38,32 +32,22 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     
     protected final Map<String, Class<?>> compNameAndImplClassCache = new ConcurrentHashMap<>(32);
     protected final Map<Class<?>, List<String>> spiTypeAndCompNamesCache = new ConcurrentHashMap<>(32);
-    protected final Map<Class<?>, List<String>> providerTypeAndCompNamesCache = new ConcurrentHashMap<>(16);
     protected final Set<String> ignoredClasses = new HashSet<>();
-    private final AtomicBoolean isInitialized = new AtomicBoolean(false);
-    
+
     protected final ApplicationContext applicationContext;
 
-    public AbstractSpiCompLoader(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-    
+    protected InstantiationStrategy instantiationStrategy;
 
-    @Override
-    public void initialize() throws IllegalStateException {
-        if (isInitialized.compareAndSet(false, true)){
-            try {
-                this.doLoadImplClasses(SpiCompProvider.class);
-            } catch (ClassNotFoundException e) {
-                throw new IllegalStateException(e);
-            }
-        }
+    public AbstractSpiCompLoader(ApplicationContext applicationContext, InstantiationStrategy instantiationStrategy) {
+        this.applicationContext = applicationContext;
+        this.instantiationStrategy = instantiationStrategy;
     }
+
     
     @Override
-    public Class<?> get(String compName, Class<?> requireType) throws ClassNotFoundException {
-        AssertUtil.notBlank(compName, "compName");
+    public Class<?> get(Class<?> requireType, String compName) throws ClassNotFoundException {
         AssertUtil.notNull(requireType, "requireType");
+        AssertUtil.notBlank(compName, "compName");
         Class<?> implClass = doGetImplClass(compName, requireType);
         if (implClass == null){
             implClass = this.getImplClassFromParent(compName, requireType);
@@ -95,7 +79,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     protected Class<?> getImplClassFromParent(String compName, Class<?> requireType) throws ClassNotFoundException {
         ApplicationContext parent = applicationContext.getParent();
         if (parent != null){
-            return parent.getSpiCompLoader().get(compName, requireType);
+            return parent.getSpiCompLoader().get(requireType, compName);
         }
         return null;
     }
@@ -125,30 +109,27 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     }
     
     protected List<String> getImplClassesFormCache(Class<?> requireType) {
-        return this.spiTypeAndCompNamesCache.get(requireType);
+        return Collections.unmodifiableList(this.spiTypeAndCompNamesCache.get(requireType));
     }
     
     protected List<String> doLoadImplClasses(Class<?> requireType) throws ClassNotFoundException {
-        List<String> compNames = new ArrayList<>();
-        List<Class<?>> classes = new ArrayList<>();
-        List<String> list = this.doLoadSpiImplClasses(requireType);
-        for (String className : list) {
+        List<Pair<String, String>> list = this.doLoadSpiImplClasses(requireType);
+        for (Pair<String, String> compPair : list) {
+            String compName = compPair.getK();
+            String className = compPair.getV();
             if (this.ignoredClasses.contains(className)) {
                 continue;
             }
             Class<?> cls = ClassUtils.forName(className, this.applicationContext.getClassLoader());
-            if (!isSpiComp(cls)){
-                LOG.warn(cls.getName() + " is not spiComp!");
-                continue;
-            }
-            classes.add(cls);
+            addImplClass(requireType, cls, compName);
         }
-        classes.sort(OrderClassComparator.getInstance());
-        for (Class<?> cls : classes) {
-            String compName = addImplClass(requireType, cls);
-            compNames.add(compName);
-        }
-        return compNames;
+        List<String> compNames = spiTypeAndCompNamesCache.get(requireType);
+        compNames.sort((c1, c2) -> {
+                    Class<?> cls1 = this.compNameAndImplClassCache.get(c1);
+                    Class<?> cls2 = this.compNameAndImplClassCache.get(c2);
+                    return OrderClassComparator.getInstance().compare(cls1, cls2);
+                });
+        return Collections.unmodifiableList(compNames);
     }
 
     protected <T> List<String> doGetImplClasses(Class<T> requireType) throws ClassNotFoundException {
@@ -156,18 +137,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
         if (compNames == null){
             compNames = doLoadImplClasses(requireType);
         }
-        List<String> providerNames = this.providerTypeAndCompNamesCache.getOrDefault(requireType, Collections.emptyList());
-        if (CollectionUtils.isEmpty(providerNames)){
-            return compNames;
-        }
-        compNames.addAll(providerNames);
-        return compNames.stream()
-                .sorted((c1, c2) -> {
-                    Class<?> cls1 = this.compNameAndImplClassCache.get(c1);
-                    Class<?> cls2 = this.compNameAndImplClassCache.get(c2);
-                    return OrderClassComparator.getInstance().compare(cls1, cls2);
-                })
-                .collect(Collectors.toList());
+        return compNames;
     }
     
     
@@ -175,47 +145,13 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
         return (Class<T>) cls;
     }
 
-    @Override
-    public boolean isSpiComp(Class<?> cls) {
-        if (cls == null) {
-            return false;
-        }
-        if (cls.isInterface()) {
-            return false;
-        }
-        if (Modifier.isAbstract(cls.getModifiers())) {
-            return false;
-        }
-        return AnnotationUtils.findAnnotation(cls, SPI.class) != null;
-    }
-
-    private String addImplClass(Class<?> requireType, Class<?> compClass){
-        CompNameGenerate compNameGenerate = applicationContext.getCompNameGenerate();
-        if (compNameGenerate == null){
-            compNameGenerate = new SimpleCompNameGenerate();
-        }
-        String compName = compNameGenerate.generateName(compClass);
+    private void addImplClass(Class<?> requireType, Class<?> compClass, String compName){
         this.compNameAndImplClassCache.put(compName, compClass);
         List<String> list = this.spiTypeAndCompNamesCache.computeIfAbsent(requireType, k -> new ArrayList<>());
         list.add(compName);
-        if (SpiCompProvider.class.isAssignableFrom(compClass)){
-            SPI SPI = AnnotationUtils.findAnnotation(compClass, SPI.class);
-            if (SPI == null){
-                throw new RuntimeException(compClass.getName() + " lack " + SPI.class.getName());
-            }
-            Class<?>[] classes = SPI.provideTypes();
-            if (classes.length == 1 && Object.class.getName().equals(classes[0].getName())){
-                throw new RuntimeException(compClass.getName() + " lack provideTypes");
-            }
-            for (Class<?> providerType : classes) {
-                List<String> compNames = this.providerTypeAndCompNamesCache.computeIfAbsent(providerType, k -> new ArrayList<>());
-                compNames.add(compName);
-            }
-        }
-        return compName;
     }
     
-    protected abstract List<String> doLoadSpiImplClasses(Class<?> requireType);
+    protected abstract List<Pair<String, String>> doLoadSpiImplClasses(Class<?> requireType);
     
     @Override
     public void addIgnoreImpl(String... implNames) {
@@ -229,7 +165,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
             List<String> compNames = this.getByType(requireType);
             List<T> ts = new ArrayList<>();
             for (String compName : compNames) {
-                Class<T> cls = this.convert(this.get(compName, requireType));
+                Class<T> cls = this.convert(this.get(requireType, compName));
                 T t = ReflectionUtils.accessibleConstructor(cls).newInstance();
                 invokeAwareMethods(t);
                 ts.add(t);
@@ -241,10 +177,19 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     }
 
     @Override
-    public <T> T loadSpiComp(Class<T> requireType) {
+    public <T> T loadSpiComp(Class<T> requireType, Object... args) {
         try {
             String compName = this.get(requireType);
-            Class<T> cls = this.convert(this.get(compName, requireType));
+            return loadSpiComp(requireType, compName, args);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public <T> T loadSpiComp(Class<T> requireType, String compName, Object... args) {
+        try {
+            Class<T> cls = this.convert(this.get(requireType, compName));
             AssertUtil.notNull(cls, "cls");
             T t = ReflectionUtils.accessibleConstructor(cls).newInstance();
             invokeAwareMethods(t);
@@ -264,5 +209,10 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
         if (instance instanceof EnvironmentAware){
             ((EnvironmentAware) instance).setEnvironment(applicationContext.getEnvironment());
         }
+    }
+
+    @Override
+    public InstantiationStrategy getInstantiationStrategy() {
+        return instantiationStrategy;
     }
 }

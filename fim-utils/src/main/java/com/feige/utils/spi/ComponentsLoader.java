@@ -3,6 +3,7 @@ package com.feige.utils.spi;
 import com.feige.utils.clazz.ClassUtils;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.common.AssertUtil;
+import com.feige.utils.common.Pair;
 import com.feige.utils.order.OrderComparator;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +17,6 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -29,41 +29,53 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class ServicesLoader {
-  public static final String SERVICES_PATH = "META-INF/services";
+public class ComponentsLoader {
+  public static final String SERVICES_PATH = "META-INF/components";
 
   static final Map<ClassLoader, Map<String, List<String>>> cache = new ConcurrentHashMap<>();
 
-  private ServicesLoader() {}
+  private ComponentsLoader() {}
 
 
-  public static  <T> List<T> loadServices(Class<T> spiType, ClassLoader classLoader) {
+  public static  <T> List<Pair<String, T>> loadServices(Class<T> spiType, ClassLoader classLoader) {
     AssertUtil.notNull(spiType, "'spiType' must not be null");
     ClassLoader classLoaderToUse = classLoader;
     if (classLoaderToUse == null) {
-      classLoaderToUse = SpiConfigsLoader.class.getClassLoader();
+      classLoaderToUse = ComponentsLoader.class.getClassLoader();
     }
-    List<String> factoryImplementationNames = loadServiceNames(spiType, classLoaderToUse);
+    List<Pair<String, String>> factoryImplementationNames = loadServiceNames(spiType, classLoaderToUse);
     if (log.isTraceEnabled()) {
       log.trace("Loaded [" + spiType.getName() + "] names: " + factoryImplementationNames);
     }
-    List<T> result = new ArrayList<>(factoryImplementationNames.size());
-    for (String factoryImplementationName : factoryImplementationNames) {
-      result.add(createInstance(factoryImplementationName, spiType, classLoaderToUse));
+    List<Pair<String, T>> result = new ArrayList<>(factoryImplementationNames.size());
+    for (Pair<String, String> pair : factoryImplementationNames) {
+      String factoryImplementationName = pair.getV();
+      String name = pair.getK();
+      T instance = createInstance(factoryImplementationName, spiType, classLoaderToUse);
+      result.add(Pair.of(name, instance));
     }
     if (result.size() > 1){
       result.sort(OrderComparator.getInstance());
     }
     return result;
   }
-  
-  public static List<String> loadServiceNames(Class<?> serviceType, ClassLoader classLoader){
+
+  public static List<Pair<String, String>> loadServiceNames(Class<?> serviceType, ClassLoader classLoader){
     ClassLoader classLoaderToUse = classLoader;
     if (classLoaderToUse == null) {
-      classLoaderToUse = SpiConfigsLoader.class.getClassLoader();
+      classLoaderToUse = ComponentsLoader.class.getClassLoader();
     }
     String serviceTypeName = serviceType.getName();
-    return loadServices(serviceTypeName, classLoaderToUse).getOrDefault(serviceTypeName, Collections.emptyList());
+    List<String> names = loadServices(serviceTypeName, classLoaderToUse).getOrDefault(serviceTypeName, Collections.emptyList());
+    ArrayList<Pair<String, String>> result = new ArrayList<>();
+    for (String name : names) {
+      String[] comps = name.split("=");
+      if (comps.length != 2){
+        throw new IllegalArgumentException(name + " component  illegal");
+      }
+      result.add(Pair.of(comps[0], comps[1]));
+    }
+    return result;
   }
 
 
@@ -96,7 +108,7 @@ public class ServicesLoader {
     }
     return result;
   }
-  
+
 
   /**
    * Returns an absolute path to a service file given the class
@@ -116,7 +128,7 @@ public class ServicesLoader {
    * @return a not {@code null Set} of service class names.
    * @throws IOException
    */
-  
+
   public static Set<String> readServiceFile(InputStream input) throws IOException {
     HashSet<String> serviceClasses = new HashSet<>();
     try (BufferedReader br = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
@@ -143,7 +155,7 @@ public class ServicesLoader {
    * @throws IOException
    */
   public static void writeServiceFile(Collection<String> services, OutputStream output)
-      throws IOException {
+          throws IOException {
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
     for (String service : services) {
       writer.write(service);
@@ -151,7 +163,7 @@ public class ServicesLoader {
     }
     writer.flush();
   }
-  
+
   @SuppressWarnings("unchecked")
   private static  <T> T createInstance(String serviceImplName, Class<T> factoryType, ClassLoader classLoader) {
     try {

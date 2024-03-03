@@ -3,7 +3,6 @@ package com.feige.framework.factory.api;
 
 import com.feige.framework.context.api.Lifecycle;
 import com.feige.framework.spi.api.NoSuchInstanceException;
-import com.feige.framework.spi.api.SpiCompProvider;
 
 import java.util.List;
 
@@ -41,16 +40,6 @@ public interface CompFactory extends Lifecycle {
      * @throws NoSuchInstanceException
      */
     <T> List<T> getByType(Class<T> requireType) throws NoSuchInstanceException;
-
-    /**
-     * get spi component providers
-     * @param requireType spi provider type
-     * @param <T> spi provider type
-     * @return List<SpiCompProvider<T>>
-     */
-    <T> List<SpiCompProvider<T>> getSpiCompProviders(Class<T> requireType) throws NoSuchInstanceException;
-    
-    
     
     boolean isGlobal(Class<?> type, String compName);
     

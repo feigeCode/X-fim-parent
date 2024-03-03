@@ -3,6 +3,7 @@ package com.feige.framework.spi.api;
 
 
 import com.feige.framework.context.api.Lifecycle;
+import com.feige.framework.instantiate.api.InstantiationStrategy;
 
 import java.util.List;
 
@@ -15,10 +16,8 @@ import java.util.List;
 public interface SpiCompLoader extends Lifecycle {
 
     void addIgnoreImpl(String... implNames);
-    
-    boolean isSpiComp(Class<?> cls);
 
-    Class<?> get(String compName, Class<?> requireType) throws ClassNotFoundException;
+    Class<?> get(Class<?> requireType, String compName) throws ClassNotFoundException;
 
     Class<?> getImplClassFormCache(String compName);
     
@@ -28,6 +27,10 @@ public interface SpiCompLoader extends Lifecycle {
     
     <T> List<T> loadSpiComps(Class<T> requireType);
 
-    <T> T loadSpiComp(Class<T> requireType);
+    <T> T loadSpiComp(Class<T> requireType, String compName, Object... args);
+
+    <T> T loadSpiComp(Class<T> requireType, Object... args);
+
+    InstantiationStrategy getInstantiationStrategy();
     
 }

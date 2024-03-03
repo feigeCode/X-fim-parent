@@ -1,26 +1,24 @@
 package com.feige.framework.factory;
 
 import com.feige.framework.annotation.InitMethod;
-import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.annotation.Scope;
 import com.feige.framework.aware.ApplicationContextAware;
-import com.feige.framework.factory.api.CompFactory;
-import com.feige.framework.comp.api.CompNameGenerate;
-import com.feige.framework.processor.api.CompPostProcessor;
-import com.feige.framework.registry.CompRegistry;
 import com.feige.framework.aware.EnvironmentAware;
+import com.feige.framework.aware.SpiCompLoaderAware;
+import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.context.api.InitializingComp;
 import com.feige.framework.context.api.LifecycleAdapter;
-import com.feige.framework.aware.SpiCompLoaderAware;
+import com.feige.framework.factory.api.CompFactory;
+import com.feige.framework.processor.api.CompPostProcessor;
+import com.feige.framework.registry.CompRegistry;
 import com.feige.framework.spi.api.InstanceCreationException;
 import com.feige.framework.spi.api.InstanceCurrentlyInCreationException;
 import com.feige.framework.spi.api.SpiCompLoader;
+import com.feige.framework.spi.api.SpiScope;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
-import com.feige.utils.spi.SpiScope;
-import com.feige.utils.spi.annotation.SPI;
 import org.slf4j.Logger;
-
 
 import java.util.Collections;
 import java.util.List;
@@ -46,10 +44,7 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         return applicationContext.getSpiCompLoader();
     }
 
-    protected CompNameGenerate getCompNameGenerate(){
-        return applicationContext.getCompNameGenerate();
-    }
-    
+
     protected List<CompPostProcessor> getProcessors(){
         return applicationContext.getPostProcessors();
     }
@@ -63,36 +58,38 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         return getCompRegistry().getCompFromCache(instanceName);
     }
 
-    protected <T> T createOneOrModuleInstance(String instanceName, Class<T> implClass, Object... args){
+    protected <T> T createOneOrModuleInstance(Class<T> requireType, String compName, Object... args) throws ClassNotFoundException {
+        Class<?> implClass = getSpiCompLoader().get(requireType, compName);
         try {
-            return doCreateInstance(instanceName, implClass, args);
+            return doCreateInstance(requireType, compName, args);
         }catch (Throwable e){
             LOG.error("create " + implClass.getName() + " instance failure:", e);
             throw new InstanceCreationException(e, implClass);
         }
     }
     
-    protected <T> T createInstance(String instanceName, Class<T> implClass, Object... args){
-        if (isGlobalCurrentlyInCreation(instanceName) || !this.addGlobalCurrentlyInCreation(instanceName)){
-            throw new InstanceCurrentlyInCreationException(implClass);
+    protected <T> T createInstance(Class<T> requireType, String compName, Object... args) throws ClassNotFoundException {
+        Class<?> implClass = getSpiCompLoader().get(requireType, compName);
+        if (isGlobalCurrentlyInCreation(compName) || !this.addGlobalCurrentlyInCreation(compName)){
+            throw new InstanceCurrentlyInCreationException(requireType);
         }
         try {
-            return doCreateInstance(instanceName, implClass, args);
+            return doCreateInstance(requireType, compName, args);
         }catch (Throwable e){
             LOG.error("create " + implClass.getName() + " instance failure:", e);
             throw new InstanceCreationException(e, implClass);
         }finally {
-            this.removeGlobalCurrentlyInCreation(instanceName);
+            this.removeGlobalCurrentlyInCreation(compName);
         }
     }
 
-    protected <T> T doCreateInstance(String instanceName, Class<T> implClass, Object... args) throws Exception {
+    protected <T> T doCreateInstance(Class<T> requireType, String compName,  Object... args) throws Exception {
         // 创建实例
-        T instance = instantiate(implClass, args);
+        T instance = instantiate(requireType, compName, args);
         // 为实例注入属性
         applicationContext.getCompInjection().inject(instance);
         // 初始化实例
-        return initializeInstances(instanceName, instance) ;
+        return initializeInstances(compName, instance) ;
     }
 
     protected  <T> T initializeInstances(String instanceName, Object instance) throws Exception {
@@ -111,9 +108,9 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
   
     
 
-    protected <T> T instantiate(Class<T> cls, Object... args){
+    protected <T> T instantiate(Class<T> requireType, String compName, Object... args){
         try {
-            return applicationContext.getInstantiationStrategy().instantiate(cls, args);
+            return getSpiCompLoader().loadSpiComp(requireType, compName, args);
         } catch (Exception e) {
             LOG.error("instance error:" , e);
             throw new RuntimeException(e);
@@ -139,7 +136,7 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
     private boolean isEqual(Class<?> type, String compName, SpiScope scope){
         Class<?> cls = null;
         try {
-            cls = getSpiCompLoader().get(compName, type);
+            cls = getSpiCompLoader().get(type, compName);
         } catch (ClassNotFoundException ignored) {
             
         }
@@ -147,7 +144,7 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
             ApplicationContext parent = applicationContext.getParent();
             if (parent != null){
                 try {
-                    cls = parent.getSpiCompLoader().get(compName, type);
+                    cls = parent.getSpiCompLoader().get(type, compName);
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
@@ -156,8 +153,12 @@ public abstract class AbstractCompFactory extends LifecycleAdapter implements Co
         if (cls == null){
             throw new RuntimeException(type.getName() + " not found " + compName);
         }
-        SPI SPI = AnnotationUtils.findAnnotation(cls, SPI.class);
-        return Objects.equals(SPI.scope(), scope);
+        Scope scopeAnno = AnnotationUtils.findAnnotation(cls, Scope.class);
+        SpiScope spiScope = SpiScope.GLOBAL;
+        if (scopeAnno != null){
+            spiScope = scopeAnno.scope();
+        }
+        return Objects.equals(spiScope, scope);
     }
     
     
