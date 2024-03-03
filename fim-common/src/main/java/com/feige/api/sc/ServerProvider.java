@@ -1,8 +1,7 @@
 package com.feige.api.sc;
 
 
-public interface ServerProvider {
+public interface ServerProvider extends Provider<Server> {
     
-    Server get();
-    
+
 }

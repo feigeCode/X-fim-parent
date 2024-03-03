@@ -2,8 +2,10 @@ package com.feige.cache.local;
 
 import com.feige.api.cache.AbstractCacheManager;
 import com.feige.api.cache.Bucket;
+import com.feige.api.cache.CacheManager;
 import com.feige.api.cache.Cacheable;
 import com.feige.api.cache.MapCache;
+import com.feige.utils.spi.annotation.SPI;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -11,6 +13,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+
+@SPI(value = "local", interfaces = CacheManager.class)
 public class LocalCacheManager extends AbstractCacheManager {
     
     {

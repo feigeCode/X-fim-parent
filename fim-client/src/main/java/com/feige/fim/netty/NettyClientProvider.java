@@ -1,24 +1,26 @@
 package com.feige.fim.netty;
 
+import com.feige.api.sc.ClientProvider;
 import com.feige.framework.annotation.Inject;
 import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.Client;
-import com.feige.framework.spi.api.SpiCompProvider;
 
 
-@SPI(value="nettyClient", interfaces = SpiCompProvider.class, provideTypes = Client.class)
-public class NettyClientSpiCompProvider implements SpiCompProvider<Client> {
+@SPI(value="nettyClient", interfaces = ClientProvider.class)
+public class NettyClientProvider implements ClientProvider {
     
     @Inject
     private SessionHandler sessionHandler;
 
     @Inject
     private Codec codec;
+
+    private volatile Client client;
     
     @Override
-    public Client getInstance() {
+    public Client get() {
         return new NettyClient(codec, sessionHandler);
     }
     

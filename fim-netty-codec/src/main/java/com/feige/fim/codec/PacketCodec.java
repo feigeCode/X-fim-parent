@@ -9,33 +9,46 @@ import com.feige.api.codec.VersionException;
 import com.feige.api.session.Session;
 import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
+import com.feige.framework.annotation.InitMethod;
+import com.feige.framework.annotation.Value;
+import com.feige.framework.aware.ApplicationContextAware;
+import com.feige.framework.context.api.ApplicationContext;
+import com.feige.framework.utils.Configs;
+import com.feige.utils.common.StringUtils;
+import com.feige.utils.spi.annotation.SPI;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.TooLongFrameException;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class PacketCodec implements Codec {
-    
-    private final int maxPacketSize;
-    private final byte heartbeat;
-    private final byte version;
-    private final int headerLength;
-    private final ICheckSum checkSum;
-    private final List<PacketInterceptor> packetInterceptors;
-    private final List<PacketInterceptor> reversePacketInterceptors;
 
-    public PacketCodec(int maxPacketSize, byte heartbeat, byte version, int headerLength, ICheckSum checkSum, List<PacketInterceptor> packetInterceptors) {
-        this.maxPacketSize = maxPacketSize;
-        this.heartbeat = heartbeat;
-        this.version = version;
-        this.headerLength = headerLength;
-        this.checkSum = checkSum;
-        this.packetInterceptors = packetInterceptors;
-        this.reversePacketInterceptors = new ArrayList<>(packetInterceptors);
-        this.reversePacketInterceptors.sort(Comparator.comparingInt(PacketInterceptor::order).reversed());
-    }
+@SPI(value="packet", interfaces = Codec.class)
+public class PacketCodec implements Codec , ApplicationContextAware {
+    @Value(Configs.ConfigKey.CODEC_MAX_PACKET_SIZE_KEY)
+    private int maxPacketSize;
+    @Value(Configs.ConfigKey.CODEC_HEARTBEAT_KEY)
+    private byte heartbeat;
+    @Value(Configs.ConfigKey.CODEC_VERSION_KEY)
+    private byte version;
+    @Value(Configs.ConfigKey.CODEC_HEADER_LENGTH_KEY)
+    private int headerLength;
+    private  ICheckSum checkSum;
+    private  List<PacketInterceptor> packetInterceptors;
+
+    private PacketHandler packetHandler;
+    private ApplicationContext applicationContext;
+
+    @InitMethod
+   public void init(){
+        String checkSumKey = applicationContext.getEnvironment().getString(Configs.ConfigKey.CODEC_CHECK_SUM_KEY);
+        if (StringUtils.isNotBlank(checkSumKey)){
+           checkSum = applicationContext.get(checkSumKey, ICheckSum.class);
+       }
+       packetInterceptors = applicationContext.getByType(PacketInterceptor.class);
+        packetInterceptors.sort(Comparator.comparingInt(PacketInterceptor::order));
+        packetHandler = new PacketHandler(packetInterceptors);
+   }
 
     
 
@@ -50,8 +63,7 @@ public class PacketCodec implements Codec {
             byteBuf.writeByte(getHeartbeat());
         }else {
             // 包拦截器，对包做一些处理
-            getPacketInterceptors()
-                    .forEach(packetInterceptor -> packetInterceptor.writePacket(session, packet));
+            packetHandler.writePacket(session, packet);
             int dataLength = packet.getDataLength();
             byteBuf.writeByte(getVersion());
             byteBuf.writeInt(dataLength);
@@ -101,8 +113,7 @@ public class PacketCodec implements Codec {
                     packet.setRealType(realType);
                     packet.setData(data);
                     // 包拦截器，对包做一些处理
-                    reversePacketInterceptors
-                            .forEach(packetInterceptor -> packetInterceptor.readPacket(session, packet));
+                    packetHandler.readPacket(session, packet);
                     out.add(packet);
                 }else {
                     byteBuf.resetReaderIndex();
@@ -174,5 +185,10 @@ public class PacketCodec implements Codec {
     @Override
     public List<PacketInterceptor> getPacketInterceptors() {
         return packetInterceptors;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 }
