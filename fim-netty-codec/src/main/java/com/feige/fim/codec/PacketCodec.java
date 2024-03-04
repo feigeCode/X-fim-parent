@@ -40,15 +40,15 @@ public class PacketCodec implements Codec , ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     @InitMethod
-   public void init(){
+    public void init(){
         String checkSumKey = applicationContext.getEnvironment().getString(Configs.ConfigKey.CODEC_CHECK_SUM_KEY);
         if (StringUtils.isNotBlank(checkSumKey)){
            checkSum = applicationContext.get(checkSumKey, ICheckSum.class);
-       }
-       packetInterceptors = applicationContext.getByType(PacketInterceptor.class);
+        }
+        packetInterceptors = applicationContext.getByType(PacketInterceptor.class);
         packetInterceptors.sort(Comparator.comparingInt(PacketInterceptor::order));
         packetHandler = new PacketHandler(packetInterceptors);
-   }
+    }
 
     
 

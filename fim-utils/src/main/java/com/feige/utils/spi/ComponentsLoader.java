@@ -37,13 +37,14 @@ public class ComponentsLoader {
   private ComponentsLoader() {}
 
 
-  public static  <T> List<Pair<String, T>> loadServices(Class<T> spiType, ClassLoader classLoader) {
+  public static  <T> List<Pair<String, T>> loadComponents(Class<T> spiType, ClassLoader classLoader) {
+
     AssertUtil.notNull(spiType, "'spiType' must not be null");
     ClassLoader classLoaderToUse = classLoader;
     if (classLoaderToUse == null) {
       classLoaderToUse = ComponentsLoader.class.getClassLoader();
     }
-    List<Pair<String, String>> factoryImplementationNames = loadServiceNames(spiType, classLoaderToUse);
+    List<Pair<String, String>> factoryImplementationNames = loadComponentNames(spiType, classLoaderToUse);
     if (log.isTraceEnabled()) {
       log.trace("Loaded [" + spiType.getName() + "] names: " + factoryImplementationNames);
     }
@@ -60,13 +61,13 @@ public class ComponentsLoader {
     return result;
   }
 
-  public static List<Pair<String, String>> loadServiceNames(Class<?> serviceType, ClassLoader classLoader){
+  public static List<Pair<String, String>> loadComponentNames(Class<?> serviceType, ClassLoader classLoader){
     ClassLoader classLoaderToUse = classLoader;
     if (classLoaderToUse == null) {
       classLoaderToUse = ComponentsLoader.class.getClassLoader();
     }
     String serviceTypeName = serviceType.getName();
-    List<String> names = loadServices(serviceTypeName, classLoaderToUse).getOrDefault(serviceTypeName, Collections.emptyList());
+    List<String> names = loadComponents(serviceTypeName, classLoaderToUse).getOrDefault(serviceTypeName, Collections.emptyList());
     ArrayList<Pair<String, String>> result = new ArrayList<>();
     for (String name : names) {
       String[] comps = name.split("=");
@@ -79,7 +80,7 @@ public class ComponentsLoader {
   }
 
 
-  private static Map<String, List<String>> loadServices(String serviceTypeName, ClassLoader classLoader) {
+  private static Map<String, List<String>> loadComponents(String serviceTypeName, ClassLoader classLoader) {
     Map<String, List<String>> result = cache.get(classLoader);
     if (result != null && result.get(serviceTypeName) != null) {
       return result;
@@ -93,7 +94,7 @@ public class ComponentsLoader {
       Enumeration<URL> resources = classLoader.getResources(path);
       while (resources.hasMoreElements()) {
         URL url = resources.nextElement();
-        Set<String> services = readServiceFile(url.openStream());
+        Set<String> services = readComponentFile(url.openStream());
         result.computeIfAbsent(serviceTypeName, k -> new ArrayList<>()).addAll(services);
       }
 
@@ -129,7 +130,7 @@ public class ComponentsLoader {
    * @throws IOException
    */
 
-  public static Set<String> readServiceFile(InputStream input) throws IOException {
+  public static Set<String> readComponentFile(InputStream input) throws IOException {
     HashSet<String> serviceClasses = new HashSet<>();
     try (BufferedReader br = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
       String line;
@@ -154,7 +155,7 @@ public class ComponentsLoader {
    * @param services a not {@code null Collection} of service class names.
    * @throws IOException
    */
-  public static void writeServiceFile(Collection<String> services, OutputStream output)
+  public static void writeComponentFile(Collection<String> services, OutputStream output)
           throws IOException {
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
     for (String service : services) {

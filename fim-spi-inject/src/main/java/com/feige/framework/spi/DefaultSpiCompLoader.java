@@ -22,7 +22,7 @@ public class DefaultSpiCompLoader extends AbstractSpiCompLoader {
 
     @Override
     protected List<Pair<String, String>> doLoadSpiImplClasses(Class<?> requireType) {
-        return ComponentsLoader.loadServiceNames(requireType, this.applicationContext.getClassLoader());
+        return ComponentsLoader.loadComponentNames(requireType, this.applicationContext.getClassLoader());
     }
     
 }

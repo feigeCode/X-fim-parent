@@ -255,7 +255,7 @@ public class SpiProcessor extends AbstractProcessor {
                     FileObject existingFile =
                             filer.getResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
                     log("Looking for existing resource file at " + existingFile.toUri());
-                    Set<String> oldServices = ComponentsLoader.readServiceFile(existingFile.openInputStream());
+                    Set<String> oldServices = ComponentsLoader.readComponentFile(existingFile.openInputStream());
                     log("Existing service entries: " + oldServices);
                     allServices.addAll(oldServices);
                 } catch (IOException e) {
@@ -280,7 +280,7 @@ public class SpiProcessor extends AbstractProcessor {
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
                 try (OutputStream out = fileObject.openOutputStream()) {
-                    ComponentsLoader.writeServiceFile(allServices, out);
+                    ComponentsLoader.writeComponentFile(allServices, out);
                 }
                 log("Wrote to: " + fileObject.toUri());
             } catch (IOException e) {
