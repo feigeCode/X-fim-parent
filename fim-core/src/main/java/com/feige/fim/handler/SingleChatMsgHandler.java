@@ -13,7 +13,7 @@ import com.feige.utils.spi.annotation.SPI;
 @SPI(value = "singleChat", interfaces = MsgHandler.class)
 public class SingleChatMsgHandler extends AbstractMsgHandler{
     
-    @Inject
+//    @Inject
     private RpcTransporter<Packet> rpcTransporter;
     
     @Override

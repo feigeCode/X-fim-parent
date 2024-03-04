@@ -1,13 +1,13 @@
 package com.feige.client;
 
 import com.feige.api.constant.ClientType;
-import com.feige.api.sc.Client;
+import com.feige.api.sc.ClientProvider;
 import com.feige.fim.config.ClientConfig;
-import com.feige.utils.javassist.ClassGenerator;
-import com.feige.utils.crypto.CryptoUtils;
-import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.context.StandardApplicationContext;
+import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.utils.Configs;
+import com.feige.utils.crypto.CryptoUtils;
+import com.feige.utils.javassist.ClassGenerator;
 
 
 public class NettyClientDemo {
@@ -36,7 +36,7 @@ public class NettyClientDemo {
         ClientConfig.setServerIp("127.0.0.1");
         ClientConfig.setServerPort(8001);
         ClientConfig.setTags("test");
-        Client client = applicationContext.get("nettyClient", Client.class);
-        client.syncStart();
+        ClientProvider clientProvider = applicationContext.get(ClientProvider.class);
+        clientProvider.get().syncStart();
     }
 }

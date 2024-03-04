@@ -109,7 +109,11 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     }
     
     protected List<String> getImplClassesFormCache(Class<?> requireType) {
-        return Collections.unmodifiableList(this.spiTypeAndCompNamesCache.get(requireType));
+        List<String> compNames = this.spiTypeAndCompNamesCache.get(requireType);
+        if (compNames == null){
+            return null;
+        }
+        return Collections.unmodifiableList(compNames);
     }
     
     protected List<String> doLoadImplClasses(Class<?> requireType) throws ClassNotFoundException {
@@ -124,6 +128,9 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
             addImplClass(requireType, cls, compName);
         }
         List<String> compNames = spiTypeAndCompNamesCache.get(requireType);
+        if (compNames == null) {
+            return Collections.emptyList();
+        }
         compNames.sort((c1, c2) -> {
                     Class<?> cls1 = this.compNameAndImplClassCache.get(c1);
                     Class<?> cls2 = this.compNameAndImplClassCache.get(c2);

@@ -16,8 +16,6 @@ public class NettyClientProvider implements ClientProvider {
 
     @Inject
     private Codec codec;
-
-    private volatile Client client;
     
     @Override
     public Client get() {

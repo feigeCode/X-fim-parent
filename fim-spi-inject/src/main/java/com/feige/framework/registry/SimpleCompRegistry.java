@@ -1,5 +1,6 @@
 package com.feige.framework.registry;
 
+import com.feige.framework.context.api.Disposable;
 import com.feige.framework.context.api.LifecycleAdapter;
 import com.feige.utils.common.AssertUtil;
 import com.feige.utils.spi.annotation.SPI;
@@ -33,7 +34,11 @@ public class SimpleCompRegistry extends LifecycleAdapter implements CompRegistry
 
     @Override
     public Object removeCompFromCache(String compName) {
-        return this.globalObjectCache.remove(compName);
+        Object obj = this.globalObjectCache.remove(compName);
+        if (obj instanceof Disposable){
+            ((Disposable) obj).destroy();
+        }
+        return obj;
     }
 
 
