@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN" monitorInterval="5">
+    <Properties>
+        <!-- 定义日志文件根目录 -->
+        <Property name="log.home" value="../logs" />
+        <!-- 定义日志的通用格式 -->
+        <Property name="genericPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        <!-- 定义日志分卷文件通用文件名形式 -->
+        <Property name="genericFilePattern" value="%d{yyyy-MM-dd}-%i" />
+    </Properties>
+
+    <!-- appender们的定义 -->
+    <Appenders>
+        <!-- console -->
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="${genericPattern}" />
+        </Console>
+        <!-- fim.log -->
+        <RollingRandomAccessFile name="FIM_APPENDER" fileName="${log.home}/fim.log"
+                                 filePattern="${log.home}/fim-${genericFilePattern}.log.zip" append="true">
+            <PatternLayout pattern="${genericPattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="100 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="1000000" compressionLevel="9" />
+        </RollingRandomAccessFile>
+        <!-- task.log -->
+        <RollingRandomAccessFile name="TASK_APPENDER" fileName="${log.home}/task.log"
+                                 filePattern="${log.home}/task-${genericFilePattern}.log.zip" append="true">
+            <PatternLayout pattern="${genericPattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="100 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="1000000" compressionLevel="9" />
+        </RollingRandomAccessFile>
+
+        <!-- server.log -->
+        <RollingRandomAccessFile name="SERVER_APPENDER" fileName="${log.home}/server.log"
+                                 filePattern="${log.home}/server-${genericFilePattern}.log.zip" append="true">
+            <PatternLayout pattern="${genericPattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="100 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="1000000" compressionLevel="9" />
+        </RollingRandomAccessFile>
+
+        <!-- codec.log -->
+        <RollingRandomAccessFile name="CODEC_APPENDER" fileName="${log.home}/codec.log"
+                                 filePattern="${log.home}/codec-${genericFilePattern}.log.zip" append="true">
+            <PatternLayout pattern="${genericPattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="100 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="1000000" compressionLevel="9" />
+        </RollingRandomAccessFile>
+
+
+        <!-- loader.log -->
+        <RollingRandomAccessFile name="LOADER_APPENDER" fileName="${log.home}/loader.log"
+                                 filePattern="${log.home}/loader-${genericFilePattern}.log.zip" append="true">
+            <PatternLayout pattern="${genericPattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="100 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="1000000" compressionLevel="9" />
+        </RollingRandomAccessFile>
+    </Appenders>
+    
+    <Loggers>
+        <Logger name="console" level="debug" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
+        <Logger name="task.log" level="debug" additivity="false">
+            <AppenderRef ref="CONSOLE" />
+            <AppenderRef ref="TASK_APPENDER"/>
+        </Logger>
+<!--        <Logger name="heartbeat.log" level="debug" additivity="false">-->
+<!--            <AppenderRef ref="CONSOLE" />-->
+<!--            <AppenderRef ref="HEARTBEAT_APPENDER"/>-->
+<!--        </Logger>-->
+        <Logger name="server.log" level="debug" additivity="false">
+            <AppenderRef ref="CONSOLE" />
+            <AppenderRef ref="SERVER_APPENDER"/>
+        </Logger>
+<!--        <Logger name="utils.log" level="debug" additivity="false">-->
+<!--            <AppenderRef ref="CONSOLE" />-->
+<!--            <AppenderRef ref="UTILS_APPENDER"/>-->
+<!--        </Logger>-->
+        <Logger name="codec.log" level="debug" additivity="false">
+            <AppenderRef ref="CONSOLE" />
+            <AppenderRef ref="CODEC_APPENDER"/>
+        </Logger>
+        <Logger name="loader.log" level="debug" additivity="false">
+            <AppenderRef ref="CONSOLE" />
+            <AppenderRef ref="LOADER_APPENDER"/>
+        </Logger>
+<!--        <Logger name="srd.log" level="debug" additivity="false">-->
+<!--            <AppenderRef ref="CONSOLE" />-->
+<!--            <AppenderRef ref="SRD_APPENDER" />-->
+<!--        </Logger>-->
+        <Root level="debug" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </Root>
+    </Loggers>
+</configuration>

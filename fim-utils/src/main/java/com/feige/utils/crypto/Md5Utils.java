@@ -1,6 +1,7 @@
 package com.feige.utils.crypto;
 
-import org.apache.logging.log4j.util.Strings;
+
+import com.feige.utils.common.StringUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -12,7 +13,7 @@ public class Md5Utils {
             digest.update(text.getBytes(StandardCharsets.UTF_8));
             return toHex(digest.digest());
         } catch (Exception e) {
-            return Strings.EMPTY;
+            return StringUtils.EMPTY_STR;
         }
     }
 
