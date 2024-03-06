@@ -19,7 +19,7 @@
         <module>fim-cluster</module>
         <module>fim-nacos</module>
         <module>fim-protocol</module>
-        <module>fim-netty-codec</module>
+        <module>fim-netty-common</module>
         <module>fim-common-api</module>
         <module>fim-utils</module>
         <module>fim-spi-inject</module>
@@ -279,7 +279,7 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>fim-netty-codec</artifactId>
+                <artifactId>fim-netty-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

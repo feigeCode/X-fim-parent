@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>fim-netty-codec</artifactId>
+            <artifactId>fim-netty-common</artifactId>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>

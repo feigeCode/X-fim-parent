@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>fim-netty</artifactId>
+    <artifactId>fim-netty-server</artifactId>
 
     <dependencies>
         <dependency>
@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>fim-netty-codec</artifactId>
+            <artifactId>fim-netty-common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.feige</groupId>
