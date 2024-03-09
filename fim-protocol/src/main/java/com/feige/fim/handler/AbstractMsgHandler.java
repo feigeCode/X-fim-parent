@@ -21,14 +21,24 @@ import java.util.function.Consumer;
  * @Description: <br/>
  * @date: 2023/5/25 21:50<br/>
  */
-public abstract class AbstractMsgHandler implements MsgHandler<Packet> {
+public abstract class AbstractMsgHandler implements MsgHandler {
     
 
     
     @Inject
     protected SerializedClassManager serializedClassManager;
-    
-    
+
+    @Override
+    public void handle(Session session, Object msg) throws RemotingException {
+        if (msg instanceof Packet){
+            handle(session, (Packet) msg);
+        }
+    }
+
+    public abstract void handle(Session session, Packet msg) throws RemotingException;
+
+
+
     protected <R extends Msg> R getMsg(Packet packet, Class<R> msgInterface){
         byte serializerType = packet.getSerializer();
         byte classKey = packet.getRealType();

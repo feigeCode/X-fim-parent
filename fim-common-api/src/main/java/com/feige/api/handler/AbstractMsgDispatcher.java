@@ -5,13 +5,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractMsgDispatcher<T> implements MsgDispatcher<T> {
     
-    protected final Map<Byte, MsgHandler<T>>  msgHandlerMap = new ConcurrentHashMap<>();
+    protected final Map<Byte, MsgHandler>  msgHandlerMap = new ConcurrentHashMap<>();
 
     @Override
-    public void register(MsgHandler<T> msgHandler) {
+    public void register(MsgHandler msgHandler) {
         if (msgHandler != null){
             byte cmd = msgHandler.getCmd();
-            MsgHandler<T> handler = getMsgHandler(cmd);
+            MsgHandler handler = getMsgHandler(cmd);
             if (handler != null){
                 throw new RuntimeException("exists cmd" + cmd);
             }
@@ -20,12 +20,12 @@ public abstract class AbstractMsgDispatcher<T> implements MsgDispatcher<T> {
     }
 
     @Override
-    public MsgHandler<T> unregister(byte cmd) {
+    public MsgHandler unregister(byte cmd) {
         return msgHandlerMap.remove(cmd);
     }
 
     @Override
-    public MsgHandler<T> getMsgHandler(byte cmd) {
+    public MsgHandler getMsgHandler(byte cmd) {
         return msgHandlerMap.get(cmd);
     }
 }

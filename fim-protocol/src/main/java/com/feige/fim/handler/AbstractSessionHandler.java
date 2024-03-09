@@ -40,7 +40,7 @@ public abstract class AbstractSessionHandler implements SessionHandler, Applicat
     @InitMethod
     public void initializeMsgHandler(){
         List<MsgHandler> msgHandlers = applicationContext.getByType(MsgHandler.class);
-        for (MsgHandler<Packet> msgHandler : msgHandlers) {
+        for (MsgHandler msgHandler : msgHandlers) {
             this.msgDispatcher.register(msgHandler);
         }
        

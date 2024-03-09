@@ -15,7 +15,7 @@ public class PacketDispatcher extends AbstractMsgDispatcher<Packet> {
     @Override
     public void dispatch(Session session, Packet packet) throws RemotingException {
         byte cmd = packet.getCmd();
-        MsgHandler<Packet> msgHandler = this.getMsgHandler(cmd);
+        MsgHandler msgHandler = this.getMsgHandler(cmd);
         if (msgHandler != null){
             msgHandler.handle(session, packet);
             return;
