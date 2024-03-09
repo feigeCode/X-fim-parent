@@ -1,11 +1,11 @@
 package com.feige.fim;
 
 import com.alibaba.nacos.api.naming.pojo.Instance;
-import com.feige.api.srd.ServerInstance;
-import com.feige.api.srd.ServiceRegistry;
+import com.feige.fim.srd.ServerInstance;
+import com.feige.fim.srd.ServiceRegistry;
+import com.feige.srd.InstanceConvert;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.spi.annotation.SPI;
-import com.feige.srd.InstanceConvert;
 
 @SPI(value = "nacosServiceRegistry", interfaces = ServiceRegistry.class)
 public class NacosServiceRegistry implements ServiceRegistry {

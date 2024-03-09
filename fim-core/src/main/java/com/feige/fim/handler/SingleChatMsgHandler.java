@@ -4,14 +4,14 @@ import com.feige.api.constant.Command;
 import com.feige.api.constant.ProtocolConst;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
-import com.feige.api.rpc.RpcTransporter;
+import com.feige.fim.rpc.RpcTransporter;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.annotation.Inject;
+import com.feige.handler.AbstractMsgHandler;
 import com.feige.utils.spi.annotation.SPI;
 
 @SPI(value = "singleChat", interfaces = MsgHandler.class)
-public class SingleChatMsgHandler extends AbstractMsgHandler{
+public class SingleChatMsgHandler extends AbstractMsgHandler {
     
 //    @Inject
     private RpcTransporter<Packet> rpcTransporter;

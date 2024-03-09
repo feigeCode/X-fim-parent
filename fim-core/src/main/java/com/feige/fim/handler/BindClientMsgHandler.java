@@ -1,19 +1,20 @@
 package com.feige.fim.handler;
 
-import com.feige.api.bind.ClientBindInfo;
-import com.feige.api.bind.ClientBindManager;
+import com.feige.fim.bind.ClientBindInfo;
+import com.feige.fim.bind.ClientBindManager;
 import com.feige.api.constant.Command;
-import com.feige.api.constant.Const;
+import com.feige.fim.constant.Const;
 import com.feige.api.constant.ProtocolConst;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.msg.BindClientReq;
 import com.feige.api.msg.SuccessResp;
 import com.feige.api.session.Session;
-import com.feige.api.session.SessionContext;
-import com.feige.api.constant.ServerConfigKey;
+import com.feige.fim.session.SessionContext;
+import com.feige.fim.constant.ServerConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Inject;
+import com.feige.handler.AbstractMsgHandler;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.utils.Configs;

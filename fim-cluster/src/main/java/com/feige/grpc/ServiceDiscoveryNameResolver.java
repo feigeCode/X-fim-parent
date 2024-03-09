@@ -1,8 +1,8 @@
 package com.feige.grpc;
 
 import com.feige.api.sc.Callback;
-import com.feige.api.srd.ServerInstance;
-import com.feige.api.srd.ServiceDiscovery;
+import com.feige.fim.srd.ServerInstance;
+import com.feige.fim.srd.ServiceDiscovery;
 import io.grpc.Attributes;
 import io.grpc.EquivalentAddressGroup;
 import io.grpc.NameResolver;

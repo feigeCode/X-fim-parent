@@ -1,7 +1,8 @@
 package com.feige.cache.local;
 
-import com.feige.api.cache.AbstractCacheable;
-import com.feige.api.cache.MapCache;
+
+import com.feige.fim.cache.AbstractCacheable;
+import com.feige.fim.cache.MapCache;
 
 import java.io.Serializable;
 import java.util.HashMap;

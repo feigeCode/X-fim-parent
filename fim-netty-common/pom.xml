@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>fim-protocol</artifactId>
+            <artifactId>fim-common</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>

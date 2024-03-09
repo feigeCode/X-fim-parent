@@ -8,10 +8,10 @@ public interface MsgDispatcher<T> {
     void dispatch(Session session, T t) throws RemotingException;
     
     
-    void register(MsgHandler<T> msgHandler);
+    void register(MsgHandler msgHandler);
 
 
-    MsgHandler<T> unregister(byte cmd);
+    MsgHandler unregister(byte cmd);
 
-    MsgHandler<T> getMsgHandler(byte cmd);
+    MsgHandler getMsgHandler(byte cmd);
 }

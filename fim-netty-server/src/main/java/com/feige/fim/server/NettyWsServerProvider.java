@@ -1,14 +1,14 @@
 package com.feige.fim.server;
 
-import com.feige.api.sc.AbstractServerProvider;
+import com.feige.fim.sc.AbstractServerProvider;
 import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.annotation.Value;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
-import com.feige.api.sc.Server;
-import com.feige.api.sc.ServerProvider;
+import com.feige.fim.sc.Server;
+import com.feige.fim.sc.ServerProvider;
 import com.feige.api.session.SessionRepository;
-import com.feige.api.constant.ServerConfigKey;
+import com.feige.fim.constant.ServerConfigKey;
 import com.feige.fim.server.ws.NettyWsServer;
 
 

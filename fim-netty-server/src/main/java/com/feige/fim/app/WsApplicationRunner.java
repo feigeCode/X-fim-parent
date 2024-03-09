@@ -1,8 +1,8 @@
 package com.feige.fim.app;
 
-import com.feige.api.constant.ServerConfigKey;
-import com.feige.api.sc.Server;
-import com.feige.api.sc.ServerProvider;
+import com.feige.fim.constant.ServerConfigKey;
+import com.feige.fim.sc.Server;
+import com.feige.fim.sc.ServerProvider;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.context.api.ApplicationRunner;
 import com.feige.framework.env.api.Environment;

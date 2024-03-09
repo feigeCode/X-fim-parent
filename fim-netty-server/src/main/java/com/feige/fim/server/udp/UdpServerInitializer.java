@@ -1,6 +1,6 @@
 package com.feige.fim.server.udp;
 
-import com.feige.api.sc.Server;
+import com.feige.fim.sc.Server;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.DatagramChannel;

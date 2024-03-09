@@ -42,13 +42,13 @@ public class NettyClient extends AbstractClient {
     private EventLoopGroup group;
     private Bootstrap bootstrap;
     private Channel channel;
-    private final NettyCodecAdapter codec;
+    private final NettyCodecAdapter codecAdapter;
     private final SslContext sslContext;
 
 
     public NettyClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler, SessionRepository sessionRepository, SslContext sslContext) {
         super(address, codec, sessionHandler, sessionRepository);
-        this.codec = new NettyCodecAdapter(codec);
+        this.codecAdapter = new NettyCodecAdapter(codec);
         this.sslContext = sslContext;
     }
 
@@ -160,7 +160,7 @@ public class NettyClient extends AbstractClient {
                         if (sslContext != null){
                             pipeline.addLast(sslContext.newHandler(channel.alloc()));
                         }
-                        pipeline.addLast(codec.getTcpCodec());
+                        pipeline.addLast(codecAdapter.getTcpCodec());
                         pipeline.addLast(createIdleStateHandler());
                         pipeline.addLast(new NettyChannelHandlerAdapter(sessionHandler));
                     }

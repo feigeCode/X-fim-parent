@@ -1,16 +1,15 @@
 package com.feige.fim.session;
 
 
-import com.feige.api.bind.ClientBindManager;
+import com.feige.fim.bind.ClientBindManager;
 import com.feige.api.constant.ClientType;
-import com.feige.api.constant.ServerConfigKey;
+import com.feige.fim.constant.ServerConfigKey;
 import com.feige.api.crypto.CipherFactory;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
-import com.feige.api.session.SessionContext;
 import com.feige.api.session.SessionRepository;
-import com.feige.fim.handler.AbstractSessionHandler;
+import com.feige.handler.AbstractSessionHandler;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.env.api.Environment;
 import com.feige.framework.utils.Configs;

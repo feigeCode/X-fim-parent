@@ -1,12 +1,12 @@
 package com.feige.grpc;
 
-import com.feige.api.constant.ServerConfigKey;
+import com.feige.fim.constant.ServerConfigKey;
 import com.feige.api.session.SessionRepository;
-import com.feige.api.srd.ServiceDiscovery;
+import com.feige.fim.srd.ServiceDiscovery;
 import com.feige.fim.protocol.Packet;
-import com.feige.api.rpc.RpcClient;
-import com.feige.api.rpc.RpcServer;
-import com.feige.api.rpc.RpcTransporter;
+import com.feige.fim.rpc.RpcClient;
+import com.feige.fim.rpc.RpcServer;
+import com.feige.fim.rpc.RpcTransporter;
 import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.aware.EnvironmentAware;

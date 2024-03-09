@@ -8,7 +8,7 @@ import com.feige.grpc.Message;
 import com.feige.grpc.MessageServiceGrpc;
 import com.feige.grpc.PacketAndMessageConverter;
 import com.feige.grpc.utils.GrpcUtils;
-import com.feige.api.rpc.RpcClient;
+import com.feige.fim.rpc.RpcClient;
 import io.grpc.ManagedChannel;
 import io.grpc.NameResolverProvider;
 import io.grpc.NameResolverRegistry;

@@ -1,9 +1,9 @@
 package com.feige.fim.server.ws;
 
-import com.feige.api.sc.Server;
+import com.feige.fim.sc.Server;
 import com.feige.fim.adapter.NettyChannelHandlerAdapter;
 import com.feige.fim.adapter.NettyCodecAdapter;
-import com.feige.api.constant.ServerConfigKey;
+import com.feige.fim.constant.ServerConfigKey;
 import com.feige.framework.utils.Configs;
 import com.feige.fim.factory.SslContextFactory;
 import io.netty.channel.ChannelHandler;

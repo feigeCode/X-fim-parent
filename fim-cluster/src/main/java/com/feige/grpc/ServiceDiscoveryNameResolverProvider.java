@@ -1,6 +1,6 @@
 package com.feige.grpc;
 
-import com.feige.api.srd.ServiceDiscovery;
+import com.feige.fim.srd.ServiceDiscovery;
 import io.grpc.NameResolver;
 import io.grpc.NameResolverProvider;
 

@@ -1,10 +1,11 @@
 package com.feige.cache.redis;
 
-import com.feige.api.cache.AbstractCacheManager;
-import com.feige.api.cache.Bucket;
-import com.feige.api.cache.CacheManager;
-import com.feige.api.cache.MapCache;
-import com.feige.api.constant.ServerConfigKey;
+
+import com.feige.fim.cache.AbstractCacheManager;
+import com.feige.fim.cache.Bucket;
+import com.feige.fim.cache.CacheManager;
+import com.feige.fim.cache.MapCache;
+import com.feige.fim.constant.ServerConfigKey;
 import com.feige.framework.aware.EnvironmentAware;
 import com.feige.framework.env.api.Environment;
 import com.feige.utils.spi.annotation.SPI;

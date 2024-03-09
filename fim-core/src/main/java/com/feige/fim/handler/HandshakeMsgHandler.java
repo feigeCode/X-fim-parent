@@ -1,16 +1,17 @@
 package com.feige.fim.handler;
 
-import com.feige.api.cache.Bucket;
-import com.feige.api.cache.CacheManager;
-import com.feige.api.constant.Const;
+import com.feige.fim.cache.Bucket;
+import com.feige.fim.cache.CacheManager;
+import com.feige.fim.constant.Const;
 import com.feige.api.constant.ProtocolConst;
 import com.feige.api.constant.ProtocolConst.SerializedClass;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
 import com.feige.api.msg.HandshakeResp;
 import com.feige.api.sc.Listener;
-import com.feige.api.session.SessionContext;
-import com.feige.api.constant.ServerConfigKey;
+import com.feige.fim.session.SessionContext;
+import com.feige.fim.constant.ServerConfigKey;
+import com.feige.handler.AbstractMsgHandler;
 import com.feige.utils.common.StringUtils;
 import com.feige.utils.crypto.CryptoUtils;
 import com.feige.utils.crypto.Md5Utils;

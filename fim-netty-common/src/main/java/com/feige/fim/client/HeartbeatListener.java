@@ -12,12 +12,12 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
 @SPI(value = "clientHeartbeatListener",interfaces = EventListener.class)
+@Async
 public class HeartbeatListener implements EventListener {
 
 
 
     @Subscribe
-    @Async
     public void trigger(NettyEventTrigger trigger) throws Exception {
         Object evt = trigger.getEvent();
         Session session = trigger.getSession();

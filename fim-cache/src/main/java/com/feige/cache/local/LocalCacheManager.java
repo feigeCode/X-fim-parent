@@ -1,10 +1,11 @@
 package com.feige.cache.local;
 
-import com.feige.api.cache.AbstractCacheManager;
-import com.feige.api.cache.Bucket;
-import com.feige.api.cache.CacheManager;
-import com.feige.api.cache.Cacheable;
-import com.feige.api.cache.MapCache;
+
+import com.feige.fim.cache.AbstractCacheManager;
+import com.feige.fim.cache.Bucket;
+import com.feige.fim.cache.CacheManager;
+import com.feige.fim.cache.Cacheable;
+import com.feige.fim.cache.MapCache;
 import com.feige.utils.spi.annotation.SPI;
 
 import java.io.Serializable;

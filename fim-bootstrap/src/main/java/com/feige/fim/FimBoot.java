@@ -1,7 +1,7 @@
 package com.feige.fim;
 
 
-import com.feige.api.constant.ServerConfigKey;
+import com.feige.fim.constant.ServerConfigKey;
 import com.feige.framework.context.StandardApplicationContext;
 import com.feige.framework.env.api.Environment;
 

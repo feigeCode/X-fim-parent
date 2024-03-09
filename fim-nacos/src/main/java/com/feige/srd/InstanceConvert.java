@@ -1,8 +1,9 @@
 package com.feige.srd;
 
 import com.alibaba.nacos.api.naming.pojo.Instance;
-import com.feige.api.srd.ServerInstance;
+import com.feige.fim.srd.ServerInstance;
 import com.feige.utils.convert.ObjectConvert;
+
 
 public class InstanceConvert implements ObjectConvert<Instance, ServerInstance> {
     private static final InstanceConvert INSTANCE = new InstanceConvert();

@@ -1,7 +1,8 @@
 package com.feige.cache.redis;
 
-import com.feige.api.cache.AbstractCacheable;
-import com.feige.api.cache.MapCache;
+
+import com.feige.fim.cache.AbstractCacheable;
+import com.feige.fim.cache.MapCache;
 import org.redisson.api.RMap;
 
 import java.io.Serializable;

@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>fim-common</artifactId>
+            <artifactId>fim-core</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -6,10 +6,11 @@ import com.feige.api.handler.RemotingException;
 import com.feige.api.msg.SuccessResp;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
+import com.feige.handler.AbstractMsgHandler;
 import com.feige.utils.spi.annotation.SPI;
 
 @SPI(interfaces = MsgHandler.class)
-public class BindClientRespMsgHandler extends AbstractMsgHandler{
+public class BindClientRespMsgHandler extends AbstractMsgHandler {
     @Override
     public void handle(Session session, Packet msg) throws RemotingException {
         SuccessResp successResp = getMsg(msg, SuccessResp.class);
