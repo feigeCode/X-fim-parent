@@ -1,21 +1,13 @@
 package com.feige.api.constant;
 
 public interface ServerConfigKey {
-    /**
-     * log config key
-     */
-    String LOG_DIR = "fim.log.dir";
-    String LOG_LEVEL = "fim.log.level";
-    String LOG_CONF_PATH = "fim.log.conf-path";
+
 
     /**
      * 运行模式（single单机、cluster集群）
      */
     String RUNNING_MODE = "fim.running.mode";
-    /**
-     * server config key
-     */
-    String SERVER_ENABLE_EPOLL_KEY = "fim.server.enable-epoll";
+
     String SERVER_ENABLE_TCP_KEY = "fim.server.tcp.enable";
     String SERVER_TCP_PROVIDER_NAME_KEY = "fim.server.tcp.provider.name";
     String SERVER_ENABLE_TCP_SSL = "fim.server.tcp.ssl.enable";
@@ -28,10 +20,10 @@ public interface ServerConfigKey {
     String SERVER_ENABLE_WS_KEY = "fim.server.ws.enable";
     String SERVER_WS_PROVIDER_NAME_KEY = "fim.server.ws.provider.name";
     String SERVER_ENABLE_WS_SSL = "fim.server.ws.ssl.enable";
-    String SERVER_ENABLE_WS_K_C_P = "fim.server.tcp.ssl.key-cert-chain-path";
-    String SERVER_ENABLE_WS_P_K_P = "fim.server.tcp.ssl.private-key-path";
-    String SERVER_ENABLE_WS_K_P = "fim.server.tcp.ssl.key-password";
-    String SERVER_ENABLE_WS_T_C_P = "fim.server.tcp.ssl.trust-cert-collection-path";
+    String SERVER_ENABLE_WS_K_C_P = "fim.server.ws.ssl.key-cert-chain-path";
+    String SERVER_ENABLE_WS_P_K_P = "fim.server.ws.ssl.private-key-path";
+    String SERVER_ENABLE_WS_K_P = "fim.server.ws.ssl.key-password";
+    String SERVER_ENABLE_WS_T_C_P = "fim.server.ws.ssl.trust-cert-collection-path";
     String SERVER_ENABLE_HTTP_KEY = "fim.server.http.enable";
     String SERVER_WS_IP_KEY = "fim.server.ws.ip";
     String SERVER_WS_PORT_KEY = "fim.server.ws.port";

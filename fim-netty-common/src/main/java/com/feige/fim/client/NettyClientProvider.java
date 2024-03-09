@@ -1,6 +1,7 @@
-package com.feige.fim.netty;
+package com.feige.fim.client;
 
 import com.feige.api.sc.ClientProvider;
+import com.feige.api.session.SessionRepository;
 import com.feige.framework.annotation.Inject;
 import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.codec.Codec;
@@ -15,11 +16,14 @@ public class NettyClientProvider implements ClientProvider {
     private SessionHandler sessionHandler;
 
     @Inject
+    private SessionRepository sessionRepository;
+
+    @Inject
     private Codec codec;
     
     @Override
     public Client get() {
-        return new NettyClient(codec, sessionHandler);
+        return new NettyClient(null, codec, sessionHandler, sessionRepository);
     }
     
     

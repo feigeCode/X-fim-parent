@@ -2,8 +2,9 @@ package com.feige.api.session;
 
 import com.feige.api.handler.RemotingException;
 import com.feige.api.sc.Listener;
-import com.feige.utils.common.StringUtils;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,9 +43,14 @@ public abstract class AbstractSessionRepository implements SessionRepository {
 
     @Override
     public boolean contains(String id) {
-        if (StringUtils.isNotBlank(id)){
+        if (id != null && !id.isEmpty()){
             return sessionMap.containsKey(id);
         }
         return false;
+    }
+
+    @Override
+    public Collection<Session> getAll() {
+        return Collections.unmodifiableCollection(sessionMap.values());
     }
 }

@@ -1,25 +1,26 @@
 package com.feige.fim.handler;
 
+import com.feige.api.constant.Command;
 import com.feige.api.crypto.CipherFactory;
+import com.feige.api.handler.RemotingException;
+import com.feige.api.handler.SessionHandler;
 import com.feige.api.msg.FastConnectReq;
 import com.feige.api.msg.HandshakeReq;
 import com.feige.api.sc.Listener;
+import com.feige.api.session.Session;
 import com.feige.fim.api.SessionStorage;
 import com.feige.fim.config.ClientConfig;
 import com.feige.fim.config.ClientConfigKey;
-import com.feige.fim.lg.Logs;
-import com.feige.fim.utils.PacketUtils;
-import com.feige.utils.common.StringUtils;
-import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SPI;
-import com.feige.api.handler.RemotingException;
-import com.feige.api.handler.SessionHandler;
-import com.feige.api.session.Session;
-import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
+import com.feige.fim.utils.PacketUtils;
+import com.feige.framework.annotation.Inject;
+import com.feige.utils.common.StringUtils;
+import com.feige.utils.spi.annotation.SPI;
+import lombok.extern.slf4j.Slf4j;
 
 
 @SPI(interfaces = SessionHandler.class)
+@Slf4j
 public class ClientSessionHandler extends AbstractSessionHandler {
 
     @Inject
@@ -49,7 +50,7 @@ public class ClientSessionHandler extends AbstractSessionHandler {
         ClientConfig.deserializeString(sessionConfig);
         if (ClientConfig.isExpired()) {
             sessionStorage.removeItem(ClientConfigKey.SESSION_PERSISTENT_KEY);
-            Logs.getInstance().warn("fast connect failure session expired, session=%s", session);
+            log.warn("fast connect failure session expired, session={}", session);
             handshake(session);
             return;
         }

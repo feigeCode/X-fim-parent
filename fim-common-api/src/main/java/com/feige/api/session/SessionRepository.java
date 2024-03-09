@@ -3,6 +3,7 @@ package com.feige.api.session;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.sc.Listener;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -65,4 +66,6 @@ public interface SessionRepository {
      * @return
      */
     boolean contains(String id);
+
+    Collection<Session> getAll();
 }

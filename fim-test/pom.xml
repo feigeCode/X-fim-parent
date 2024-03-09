@@ -19,7 +19,11 @@
     <dependencies>
         <dependency>
             <groupId>com.feige</groupId>
-            <artifactId>fim-netty-server</artifactId>
+            <artifactId>fim-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.feige</groupId>
+            <artifactId>fim-netty-common</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

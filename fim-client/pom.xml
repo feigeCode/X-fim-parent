@@ -21,18 +21,6 @@
             <groupId>com.feige</groupId>
             <artifactId>fim-protocol</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.feige</groupId>
-            <artifactId>fim-netty-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-transport</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-handler</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

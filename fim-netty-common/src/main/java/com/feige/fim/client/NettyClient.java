@@ -1,13 +1,14 @@
-package com.feige.fim.netty;
+package com.feige.fim.client;
 
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
+import com.feige.api.sc.AbstractClient;
 import com.feige.api.sc.Listener;
 import com.feige.api.sc.ServiceException;
-import com.feige.api.sc.AbstractClient;
-import com.feige.fim.config.ClientConfig;
-import com.feige.fim.lg.Logs;
-import com.feige.framework.utils.AppContext;
+import com.feige.api.session.Session;
+import com.feige.api.session.SessionRepository;
+import com.feige.fim.adapter.NettyChannelHandlerAdapter;
+import com.feige.fim.adapter.NettyCodecAdapter;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -21,6 +22,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
@@ -33,22 +36,24 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * @Description: <br/>
  * @date: 2023/6/4 15:30<br/>
  */
+@Slf4j
+@Getter
 public class NettyClient extends AbstractClient {
-    protected EventLoopGroup group;
-    protected Bootstrap bootstrap;
-    protected Channel channel;
+    private EventLoopGroup group;
+    private Bootstrap bootstrap;
+    private Channel channel;
     private final NettyCodecAdapter codec;
-    protected SslContext sslContext;
-    private InetSocketAddress remoteAddress;
+    private final SslContext sslContext;
 
-    public NettyClient(Codec codec, SessionHandler sessionHandler, SslContext sslContext) {
-        super(codec, sessionHandler);
-        this.codec = new NettyCodecAdapter(this);
+
+    public NettyClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler, SessionRepository sessionRepository, SslContext sslContext) {
+        super(address, codec, sessionHandler, sessionRepository);
+        this.codec = new NettyCodecAdapter(codec);
         this.sslContext = sslContext;
     }
 
-    public NettyClient(Codec codec, SessionHandler sessionHandler) {
-        this(codec, sessionHandler, null);
+    public NettyClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler, SessionRepository sessionRepository) {
+        this(address, codec, sessionHandler, sessionRepository, null);
     }
 
 
@@ -67,12 +72,13 @@ public class NettyClient extends AbstractClient {
                     .addListener(future -> {
                         if (future.isSuccess()) {
                             connected.set(true);
-                            Logs.getInstance().info("netty [{}] client in {} port connect finish....", getClass().getSimpleName() ,getAddress().getPort());
+                            reconnectCnt.set(0);
+                           log.info("netty [{}] client in {} port connect finish....", getClass().getSimpleName() ,getAddress().getPort());
                             if (listener != null){
                                 listener.onSuccess(getAddress());
                             }
                         }else {
-                            Logs.getInstance().error("server start failure on:" + getAddress().getPort(), future.cause());
+                           log.error("server start failure on:" + getAddress().getPort(), future.cause());
                             if (listener != null) {
                                 listener.onFailure(future.cause());
                             }
@@ -80,7 +86,7 @@ public class NettyClient extends AbstractClient {
                     });
             this.channel = channelFuture.channel();
         }catch (Throwable throwable){
-            Logs.getInstance().error("server start exception", throwable);
+           log.error("server start exception", throwable);
         }
     }
 
@@ -90,10 +96,10 @@ public class NettyClient extends AbstractClient {
             if (listener != null) {
                 listener.onFailure(new ServiceException("server was already shutdown."));
             }
-            Logs.getInstance().warn("{} was already shutdown.", this.getClass().getSimpleName());
+           log.warn("{} was already shutdown.", this.getClass().getSimpleName());
             return;
         }
-        Logs.getInstance().info("try shutdown {}...", this.getClass().getSimpleName());
+       log.info("try shutdown {}...", this.getClass().getSimpleName());
         try {
             if (channel != null) {
                 // unbind.
@@ -101,7 +107,7 @@ public class NettyClient extends AbstractClient {
                 channel = null;
             }
         } catch (Throwable e) {
-            Logs.getInstance().warn(e.getMessage(), e);
+           log.warn(e.getMessage(), e);
         }
         try {
             if (this.bootstrap != null) {
@@ -115,13 +121,13 @@ public class NettyClient extends AbstractClient {
                 this.group = null;
             }
         } catch (Throwable e) {
-            Logs.getInstance().warn(e.getMessage(), e);
+           log.warn(e.getMessage(), e);
         }
-        Logs.getInstance().info("{} shutdown success.", this.getClass().getSimpleName());
+       log.info("{} shutdown success.", this.getClass().getSimpleName());
         if (listener != null) {
             listener.onSuccess(getAddress());
         }
-        this.remoteAddress = null;
+        this.address = null;
     }
 
 
@@ -154,33 +160,16 @@ public class NettyClient extends AbstractClient {
                         if (sslContext != null){
                             pipeline.addLast(sslContext.newHandler(channel.alloc()));
                         }
-                        pipeline.addLast(codec.getDecoder());
-                        pipeline.addLast(codec.getEncoder());
+                        pipeline.addLast(codec.getTcpCodec());
                         pipeline.addLast(createIdleStateHandler());
-                        pipeline.addLast(new HeartbeatHandler(NettyClient.this));
-                        pipeline.addLast(new NettyClientHandler(NettyClient.this));
+                        pipeline.addLast(new NettyChannelHandlerAdapter(sessionHandler));
                     }
                 })
                 .option(ChannelOption.SO_KEEPALIVE, true);
     }
 
-    public Channel getChannel() {
-        return channel;
-    }
-
-    public EventLoopGroup getGroup() {
-        return group;
-    }
-
-    public Bootstrap getBootstrap() {
-        return bootstrap;
-    }
-
     @Override
-    public InetSocketAddress getAddress() {
-        if (this.remoteAddress == null) {
-            this.remoteAddress = new InetSocketAddress(ClientConfig.getServerIp(), ClientConfig.getServerPort());
-        }
-        return remoteAddress;
+    public Session getSession() {
+        return sessionRepository.get(channel.id().asShortText());
     }
 }

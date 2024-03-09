@@ -19,17 +19,10 @@ public class Configs  {
 
     public interface ConfigKey {
 
-        
-        
-        /**
-         * log config key
-         */
-        String LOG_DIR = "fim.log.dir";
-        String LOG_LEVEL = "fim.log.level";
-        String LOG_CONF_PATH = "fim.log.conf-path";
 
         String MODULES_DIR_KEY = "fim.modules.dir";
 
+        String SERVER_ENABLE_EPOLL_KEY = "fim.server.enable-epoll";
         /**
          * codec key
          */

@@ -13,8 +13,36 @@ import java.security.Provider;
 import java.security.Security;
 
 public class SslContextFactory {
+
+    public static SslContext createClientSslContext(String clientKeyCertChainPath, String clientPrivateKeyPath, String clientKeyPassword, String clientTrustCertCollectionPath) {
+        SslContextBuilder builder = SslContextBuilder.forClient();
+        try (
+                InputStream clientTrustCertCollectionPathStream = Configs.getInputStream(clientTrustCertCollectionPath);
+                InputStream clientCertChainFilePathStream = Configs.getInputStream(clientKeyCertChainPath);
+                InputStream clientPrivateKeyFilePathStream = Configs.getInputStream(clientPrivateKeyPath)
+        ){
+            if (clientTrustCertCollectionPathStream != null) {
+                builder.trustManager(clientTrustCertCollectionPathStream);
+            }
+
+            if (clientCertChainFilePathStream != null && clientPrivateKeyFilePathStream != null) {
+                if (clientKeyPassword != null) {
+                    builder.keyManager(clientCertChainFilePathStream, clientPrivateKeyFilePathStream, clientKeyPassword);
+                } else {
+                    builder.keyManager(clientCertChainFilePathStream, clientPrivateKeyFilePathStream);
+                }
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Could not find certificate file or find invalid certificate.", e);
+        }
+        try {
+            return builder.sslProvider(findSslProvider()).build();
+        } catch (SSLException e) {
+            throw new IllegalStateException("Build SslSession failed.", e);
+        }
+    }
     
-    public static SslContext createSslContext(String serverKeyCertChainPathKey, String serverPrivateKeyPathKey, String serverTrustCertKey, String serverKeyPasswordKey) {
+    public static SslContext createSeverSslContext(String serverKeyCertChainPathKey, String serverPrivateKeyPathKey, String serverTrustCertKey, String serverKeyPasswordKey) {
         SslContextBuilder sslClientContextBuilder;
         try(
                 InputStream serverKeyCertChainPathStream = Configs.getInputStream(serverPrivateKeyPathKey);

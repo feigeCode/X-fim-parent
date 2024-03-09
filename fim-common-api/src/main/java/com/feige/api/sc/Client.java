@@ -29,6 +29,8 @@ public interface Client extends Service {
     
     
     Session getSession();
+
+    void setAddress(InetSocketAddress remoteAddress);
     
     InetSocketAddress getAddress();
 }

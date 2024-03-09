@@ -1,9 +1,8 @@
 package com.feige.fim.factory;
 
-import com.feige.api.constant.ServerConfigKey;
-import com.feige.utils.thread.NameThreadFactory;
-import com.feige.utils.common.OsUtil;
 import com.feige.framework.utils.Configs;
+import com.feige.utils.common.OsUtil;
+import com.feige.utils.thread.NameThreadFactory;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollDatagramChannel;
@@ -41,7 +40,7 @@ public class NettyEventLoopFactory {
     }
 
     private static boolean enableEpoll() {
-        if (Configs.getBoolean(ServerConfigKey.SERVER_ENABLE_EPOLL_KEY, true) && Epoll.isAvailable()) {
+        if (Configs.getBoolean(Configs.ConfigKey.SERVER_ENABLE_EPOLL_KEY, true) && Epoll.isAvailable()) {
             return OsUtil.isLinux();
         }
         return false;

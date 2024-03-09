@@ -1,4 +1,4 @@
-package com.feige.client;
+package com.feige.fim;
 
 import com.feige.api.constant.ClientType;
 import com.feige.api.sc.ClientProvider;
@@ -7,7 +7,6 @@ import com.feige.framework.context.StandardApplicationContext;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.utils.Configs;
 import com.feige.utils.crypto.CryptoUtils;
-import com.feige.utils.javassist.ClassGenerator;
 
 
 public class NettyClientDemo {
@@ -20,7 +19,6 @@ public class NettyClientDemo {
     }
     
     public static void createClient(String[] args){
-        ClassGenerator.setDebugDump("E:\\project\\my\\X-fim-parent\\X-fim-client\\target\\classes");
         System.setProperty(Configs.CONFIG_FILE_KEY, CONFIG_PATH);
         ApplicationContext applicationContext = new StandardApplicationContext();
         applicationContext.start(args);
