@@ -11,7 +11,6 @@ import com.feige.api.msg.HandshakeResp;
 import com.feige.api.sc.Listener;
 import com.feige.fim.session.SessionContext;
 import com.feige.fim.constant.ServerConfigKey;
-import com.feige.handler.AbstractMsgHandler;
 import com.feige.utils.common.StringUtils;
 import com.feige.utils.crypto.CryptoUtils;
 import com.feige.utils.crypto.Md5Utils;

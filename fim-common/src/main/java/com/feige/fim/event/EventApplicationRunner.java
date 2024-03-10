@@ -1,4 +1,4 @@
-package com.feige.event;
+package com.feige.fim.event;
 
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.context.api.ApplicationRunner;

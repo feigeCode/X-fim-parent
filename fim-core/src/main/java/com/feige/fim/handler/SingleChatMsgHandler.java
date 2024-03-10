@@ -7,7 +7,6 @@ import com.feige.api.handler.RemotingException;
 import com.feige.fim.rpc.RpcTransporter;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
-import com.feige.handler.AbstractMsgHandler;
 import com.feige.utils.spi.annotation.SPI;
 
 @SPI(value = "singleChat", interfaces = MsgHandler.class)

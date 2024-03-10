@@ -14,7 +14,6 @@ import com.feige.fim.config.ClientConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.fim.utils.PacketUtils;
 import com.feige.framework.annotation.Inject;
-import com.feige.handler.AbstractSessionHandler;
 import com.feige.utils.common.StringUtils;
 import com.feige.utils.spi.annotation.SPI;
 import lombok.extern.slf4j.Slf4j;

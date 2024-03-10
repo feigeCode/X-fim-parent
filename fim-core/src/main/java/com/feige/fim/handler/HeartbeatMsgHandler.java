@@ -1,6 +1,5 @@
 package com.feige.fim.handler;
 
-import com.feige.handler.AbstractMsgHandler;
 import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;

@@ -13,7 +13,6 @@ import com.feige.api.sc.Listener;
 import com.feige.api.session.Session;
 import com.feige.fim.session.SessionContext;
 import com.feige.fim.protocol.Packet;
-import com.feige.handler.AbstractMsgHandler;
 import com.feige.utils.common.StringUtils;
 import com.feige.framework.annotation.Inject;
 import com.feige.utils.spi.annotation.SPI;

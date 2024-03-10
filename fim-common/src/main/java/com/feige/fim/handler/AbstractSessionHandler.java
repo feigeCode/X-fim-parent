@@ -1,4 +1,4 @@
-package com.feige.handler;
+package com.feige.fim.handler;
 
 
 import com.feige.api.handler.MsgHandler;

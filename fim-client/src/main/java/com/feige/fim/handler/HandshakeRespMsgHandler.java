@@ -12,7 +12,6 @@ import com.feige.fim.config.ClientConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.fim.utils.PacketUtils;
 import com.feige.framework.annotation.Inject;
-import com.feige.handler.AbstractMsgHandler;
 import com.feige.utils.spi.annotation.SPI;
 import org.bouncycastle.util.encoders.Base64;
 

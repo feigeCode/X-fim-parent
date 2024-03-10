@@ -14,7 +14,6 @@ import com.feige.fim.session.SessionContext;
 import com.feige.fim.constant.ServerConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.framework.annotation.Inject;
-import com.feige.handler.AbstractMsgHandler;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.utils.Configs;

@@ -1,4 +1,4 @@
-package com.feige.handler;
+package com.feige.fim.handler;
 
 import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.handler.AbstractMsgDispatcher;

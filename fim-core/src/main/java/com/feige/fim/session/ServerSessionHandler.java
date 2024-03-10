@@ -9,7 +9,7 @@ import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
-import com.feige.handler.AbstractSessionHandler;
+import com.feige.fim.handler.AbstractSessionHandler;
 import com.feige.framework.annotation.Inject;
 import com.feige.framework.env.api.Environment;
 import com.feige.framework.utils.Configs;
