@@ -9,6 +9,10 @@ import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
 import com.feige.fim.adapter.NettyChannelHandlerAdapter;
 import com.feige.fim.adapter.NettyCodecAdapter;
+import com.feige.fim.config.ClientConfig;
+import com.feige.fim.config.ClientConfigKey;
+import com.feige.fim.factory.SslContextFactory;
+import com.feige.framework.utils.Configs;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -23,6 +27,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
@@ -43,18 +48,16 @@ public class NettyClient extends AbstractClient {
     private Bootstrap bootstrap;
     private Channel channel;
     private final NettyCodecAdapter codecAdapter;
-    private final SslContext sslContext;
+    @Setter
+    private SslContext sslContext;
 
 
-    public NettyClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler, SessionRepository sessionRepository, SslContext sslContext) {
-        super(address, codec, sessionHandler, sessionRepository);
+    public NettyClient(Codec codec, SessionHandler sessionHandler, SessionRepository sessionRepository) {
+        super(codec, sessionHandler, sessionRepository);
         this.codecAdapter = new NettyCodecAdapter(codec);
-        this.sslContext = sslContext;
+        this.sslContext = buildSslContext();
     }
 
-    public NettyClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler, SessionRepository sessionRepository) {
-        this(address, codec, sessionHandler, sessionRepository, null);
-    }
 
 
     @Override
@@ -67,18 +70,19 @@ public class NettyClient extends AbstractClient {
     protected void doStart(Listener listener) {
         try {
             initBootstrap();
+            InetSocketAddress remoteAddress = new InetSocketAddress(ClientConfig.getServerIp(), ClientConfig.getServerPort());
             ChannelFuture channelFuture = this.bootstrap
-                    .connect(getAddress())
+                    .connect(remoteAddress)
                     .addListener(future -> {
                         if (future.isSuccess()) {
                             connected.set(true);
                             reconnectCnt.set(0);
-                           log.info("netty [{}] client in {} port connect finish....", getClass().getSimpleName() ,getAddress().getPort());
+                           log.info("netty [{}] client in {} port connect finish....", getClass().getSimpleName() ,remoteAddress.getPort());
                             if (listener != null){
-                                listener.onSuccess(getAddress());
+                                listener.onSuccess(remoteAddress);
                             }
                         }else {
-                           log.error("server start failure on:" + getAddress().getPort(), future.cause());
+                           log.error("server start failure on:" + remoteAddress.getPort(), future.cause());
                             if (listener != null) {
                                 listener.onFailure(future.cause());
                             }
@@ -125,9 +129,8 @@ public class NettyClient extends AbstractClient {
         }
        log.info("{} shutdown success.", this.getClass().getSimpleName());
         if (listener != null) {
-            listener.onSuccess(getAddress());
+            listener.onSuccess();
         }
-        this.address = null;
     }
 
 
@@ -167,6 +170,18 @@ public class NettyClient extends AbstractClient {
                 })
                 .option(ChannelOption.SO_KEEPALIVE, true);
     }
+
+    protected SslContext buildSslContext() {
+        Boolean isEnableSsl = Configs.getBoolean(ClientConfigKey.CLIENT_ENABLE_TCP_SSL, false);
+        if (isEnableSsl) {
+            return SslContextFactory.createClientSslContext(ClientConfigKey.CLIENT_TCP_K_C_P,
+                    ClientConfigKey.CLIENT_TCP_P_K_P,
+                    ClientConfigKey.CLIENT_TCP_T_C_P,
+                    ClientConfigKey.CLIENT_TCP_K_P);
+        }
+        return null;
+    }
+
 
     @Override
     public Session getSession() {

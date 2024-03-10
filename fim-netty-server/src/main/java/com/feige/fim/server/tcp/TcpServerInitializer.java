@@ -35,10 +35,10 @@ public class TcpServerInitializer extends ChannelInitializer<SocketChannel> {
     private SslContext buildSslContext() {
         Boolean isEnableSsl = Configs.getBoolean(ServerConfigKey.SERVER_ENABLE_TCP_SSL, false);
         if (isEnableSsl) {
-            return SslContextFactory.createSeverSslContext(ServerConfigKey.SERVER_ENABLE_TCP_K_C_P,
-                    ServerConfigKey.SERVER_ENABLE_TCP_P_K_P,
-                    ServerConfigKey.SERVER_ENABLE_TCP_T_C_P,
-                    ServerConfigKey.SERVER_ENABLE_TCP_K_P);
+            return SslContextFactory.createSeverSslContext(ServerConfigKey.SERVER_TCP_K_C_P,
+                    ServerConfigKey.SERVER_TCP_P_K_P,
+                    ServerConfigKey.SERVER_TCP_T_C_P,
+                    ServerConfigKey.SERVER_TCP_K_P);
         }
         return null;
     }

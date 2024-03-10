@@ -5,7 +5,6 @@ import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.SessionRepository;
 
-import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -24,10 +23,8 @@ public abstract class AbstractClient extends ServiceAdapter implements Client {
     protected Codec codec;
     protected SessionHandler sessionHandler;
     protected SessionRepository sessionRepository;
-    protected InetSocketAddress address;
 
-    public AbstractClient(InetSocketAddress address, Codec codec, SessionHandler sessionHandler, SessionRepository sessionRepository) {
-        this.address = address;
+    public AbstractClient(Codec codec, SessionHandler sessionHandler, SessionRepository sessionRepository) {
         this.codec = codec;
         this.sessionHandler = sessionHandler;
         this.sessionRepository = sessionRepository;
@@ -62,18 +59,5 @@ public abstract class AbstractClient extends ServiceAdapter implements Client {
     @Override
     public SessionHandler getSessionHandler() {
         return sessionHandler;
-    }
-    @Override
-    public void setAddress(InetSocketAddress remoteAddress) {
-        if (remoteAddress.equals(this.address)){
-            return;
-        }
-        this.address = remoteAddress;
-        this.doReconnect();
-    }
-
-    @Override
-    public InetSocketAddress getAddress() {
-        return address;
     }
 }

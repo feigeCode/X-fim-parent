@@ -20,6 +20,13 @@ public interface ClientConfigKey {
     String SERIALIZER_TYPE = "s_t";
     
     String TAGS = "tags";
+
+
+    String CLIENT_ENABLE_TCP_SSL = "fim.client.tcp.ssl.enable";
+    String CLIENT_TCP_K_C_P = "fim.client.tcp.ssl.key-cert-chain-path";
+    String CLIENT_TCP_P_K_P = "fim.client.tcp.ssl.private-key-path";
+    String CLIENT_TCP_K_P = "fim.client.tcp.ssl.key-password";
+    String CLIENT_TCP_T_C_P = "fim.client.tcp.ssl.trust-cert-collection-path";
   
     
 }

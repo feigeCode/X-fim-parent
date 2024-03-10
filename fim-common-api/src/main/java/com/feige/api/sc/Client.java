@@ -5,8 +5,6 @@ import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
 
-import java.net.InetSocketAddress;
-
 
 /**
  * @author feige<br />
@@ -29,8 +27,4 @@ public interface Client extends Service {
     
     
     Session getSession();
-
-    void setAddress(InetSocketAddress remoteAddress);
-    
-    InetSocketAddress getAddress();
 }

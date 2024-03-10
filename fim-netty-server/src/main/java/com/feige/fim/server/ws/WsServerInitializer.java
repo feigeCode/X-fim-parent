@@ -36,10 +36,10 @@ public class WsServerInitializer extends ChannelInitializer<SocketChannel> {
     private SslContext buildSslContext() {
         Boolean isEnableSsl = Configs.getBoolean(ServerConfigKey.SERVER_ENABLE_WS_SSL, false);
         if (isEnableSsl){
-            return SslContextFactory.createSeverSslContext(ServerConfigKey.SERVER_ENABLE_WS_K_C_P,
-                    ServerConfigKey.SERVER_ENABLE_WS_P_K_P,
-                    ServerConfigKey.SERVER_ENABLE_WS_T_C_P,
-                    ServerConfigKey.SERVER_ENABLE_WS_K_P);
+            return SslContextFactory.createSeverSslContext(ServerConfigKey.SERVER_WS_K_C_P,
+                    ServerConfigKey.SERVER_WS_P_K_P,
+                    ServerConfigKey.SERVER_WS_T_C_P,
+                    ServerConfigKey.SERVER_WS_K_P);
         }
         return null;
     }
