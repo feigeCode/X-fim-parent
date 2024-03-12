@@ -25,7 +25,6 @@ public class NettyChannelHandlerAdapter extends ChannelInboundHandlerAdapter {
             return;
         }
         sessionHandler.received(toSession(ctx), msg);
-        super.channelRead(ctx, msg);
     }
 
     @Override

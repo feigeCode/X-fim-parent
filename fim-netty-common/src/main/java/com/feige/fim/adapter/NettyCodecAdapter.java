@@ -45,11 +45,17 @@ public class NettyCodecAdapter {
     }
     private class InternalCodec extends MessageToMessageCodec<Object, Object> {
 
+        protected ByteBuf allocateBuffer(ChannelHandlerContext ctx, boolean preferDirect) throws Exception {
+            return preferDirect ? ctx.alloc().ioBuffer() : ctx.alloc().heapBuffer();
+        }
+
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, List<Object> out) throws Exception {
             try {
+                ByteBuf byteBuf = allocateBuffer(ctx, true);
                 Codec codec = getCodec();
-                codec.encode(NettySessionFactory.getOrAddSession(ctx), msg, out);
+                codec.encode(NettySessionFactory.getOrAddSession(ctx), msg, byteBuf);
+                out.add(byteBuf);
             }catch (EncoderException e){
                 ctx.channel().close();
                 throw e;
@@ -70,7 +76,7 @@ public class NettyCodecAdapter {
 
     private class InternalWsCodec extends MessageToMessageCodec<BinaryWebSocketFrame, Object> {
 
-        protected ByteBuf allocateBuffer(ChannelHandlerContext ctx, Object msg, boolean preferDirect) throws Exception {
+        protected ByteBuf allocateBuffer(ChannelHandlerContext ctx, boolean preferDirect) throws Exception {
             return preferDirect ? ctx.alloc().ioBuffer() : ctx.alloc().heapBuffer();
         }
 
@@ -86,7 +92,7 @@ public class NettyCodecAdapter {
         protected void encode(ChannelHandlerContext ctx, Object msg, List<Object> list) throws Exception {
             try {
                 // 申请buffer
-                ByteBuf out = this.allocateBuffer(ctx, msg, true);
+                ByteBuf out = this.allocateBuffer(ctx, true);
                 Codec codec = getCodec();
                 codec.encode(NettySessionFactory.getOrAddSession(ctx), msg, out);
                 list.add(new BinaryWebSocketFrame(out));
