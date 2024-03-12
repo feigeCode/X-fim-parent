@@ -30,19 +30,16 @@ public class NettyChannelHandlerAdapter extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         sessionHandler.connected(toSession(ctx));
-        super.channelActive(ctx);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         sessionHandler.disconnected(toSession(ctx));
-        super.channelInactive(ctx);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         sessionHandler.caught(toSession(ctx), cause);
-        super.exceptionCaught(ctx, cause);
     }
 
     @Override
