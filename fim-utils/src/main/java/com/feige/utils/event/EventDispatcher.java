@@ -2,28 +2,22 @@ package com.feige.utils.event;
 
 import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
-import com.feige.utils.thread.NameThreadFactory;
+import com.feige.utils.thread.ExecutorFactory;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class EventDispatcher {
    
     private static EventBus eventBus;
 
     static {
-        create(new ThreadPoolExecutor(
+        create(ExecutorFactory.createCachedThreadPool("event",
                 Runtime.getRuntime().availableProcessors(),
                 Runtime.getRuntime().availableProcessors() * 2,
-                0L,
-                TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(10000),
-                new NameThreadFactory("event-"),
-                new ThreadPoolExecutor.CallerRunsPolicy()
+                60L,
+                10000
         ));
     }
 
