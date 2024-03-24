@@ -24,7 +24,7 @@ public class MeterRegistryHelper {
     private static final String JMX_STEP_KEY = "management.metrics.export.jmx.step";
     private static final String PROMETHEUS_STEP_KEY = "management.metrics.export.prometheus.step";
     private static final String PROMETHEUS_SERVER_PORT_KEY = "management.metrics.export.prometheus.server.port";
-    private static final String DEFAULT_JMX_DOMAIN = "V5ThreadPoolMetrics";
+    private static final String DEFAULT_JMX_DOMAIN = "ThreadPoolMetrics";
     private static final int DEFAULT_JMX_STEP = 1;
 
     private final CompositeMeterRegistry meterRegistry = Metrics.globalRegistry;
