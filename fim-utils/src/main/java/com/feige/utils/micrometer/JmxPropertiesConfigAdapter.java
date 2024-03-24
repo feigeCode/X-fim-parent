@@ -7,7 +7,6 @@ import java.time.Duration;
 /**
  * Adapter to convert {@link JmxProperties} to a {@link JmxConfig}.
  *
- * @author Jon Schneider
  */
 public class JmxPropertiesConfigAdapter extends PropertiesConfigAdapter<JmxProperties> implements JmxConfig {
 

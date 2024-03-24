@@ -7,9 +7,6 @@ import java.util.function.Supplier;
 /**
  * Base class for properties to config adapters.
  *
- * @param <T> The properties type
- * @author Phillip Webb
- * @author Nikolay Rybak
  */
 public class PropertiesConfigAdapter<T> {
     private final T properties;

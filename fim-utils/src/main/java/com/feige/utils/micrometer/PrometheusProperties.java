@@ -3,11 +3,7 @@ package com.feige.utils.micrometer;
 import java.time.Duration;
 
 /**
- * @Title: configuring metrics export to Prometheus.
- * @Description:
- * @Company: seeyon.com
- * @Author ouyp
- * @Date: 2020/7/9 19:56
+ * configuring metrics export to Prometheus.
  */
 public class PrometheusProperties {
     /**

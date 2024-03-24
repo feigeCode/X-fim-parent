@@ -5,7 +5,6 @@ import java.time.Duration;
 /**
  * {@link ConfigurationProperties} for configuring JMX metrics export.
  *
- * @author Jon Schneider
  */
 public class JmxProperties {
     /**

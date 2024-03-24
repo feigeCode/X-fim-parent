@@ -5,11 +5,7 @@ import io.micrometer.prometheus.PrometheusConfig;
 import java.time.Duration;
 
 /**
- * @Title: Adapter to convert {@link PrometheusProperties} to a {@link PrometheusConfig}.
- * @Description:
- * @Company: seeyon.com
- * @Author ouyp
- * @Date: 2020/7/9 19:58
+ * Adapter to convert {@link PrometheusProperties} to a {@link PrometheusConfig}.
  */
 public class PrometheusPropertiesConfigAdapter extends PropertiesConfigAdapter<PrometheusProperties> implements PrometheusConfig {
     PrometheusPropertiesConfigAdapter(PrometheusProperties properties) {
