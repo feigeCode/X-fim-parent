@@ -57,9 +57,12 @@ public class LocalMapCache<K extends Serializable, V extends Serializable>  exte
     @Override
     public Map<K, V> getAll(Set<K> keys) {
         Map<K, V> map = new HashMap<>();
-        if (keys != null && keys.size() > 0){
+        if (keys != null && !keys.isEmpty()){
             for (K key : keys) {
-                map.put(key, innerCache.get(key));
+                V v = innerCache.get(key);
+                if (v != null){
+                    map.put(key, v);
+                }
             }
         }
         return map;

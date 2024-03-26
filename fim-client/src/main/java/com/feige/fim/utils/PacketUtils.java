@@ -1,6 +1,7 @@
 package com.feige.fim.utils;
 
 import com.feige.api.constant.Command;
+import com.feige.api.constant.ProtocolConst;
 import com.feige.api.msg.BindClientReq;
 import com.feige.api.msg.Msg;
 import com.feige.api.serialize.SerializedClassManager;
@@ -9,6 +10,7 @@ import com.feige.fim.protocol.Packet;
 import com.feige.framework.utils.AppContext;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 public final class PacketUtils {
     
@@ -48,6 +50,19 @@ public final class PacketUtils {
                 .setSessionId(ClientConfig.getSessionId())
                 .setTags(ClientConfig.getTags());
         packet.setData(getSerializedObject(bindClientReq));
+        return packet;
+    }
+
+    public static  <T extends Msg> Packet buildPacket(Command command, ProtocolConst.SerializedClass serializedClass, Consumer<T> consumer){
+        byte serializerType = ClientConfig.getSerializerType();
+        byte classKey = serializedClass.getClassKey();
+        Packet packet = Packet.create(command);
+        packet.setSerializer(serializerType);
+        packet.setRealType(classKey);
+        packet.setSeqId(cnt.incrementAndGet());
+        T msg = serializedClassManager.newObject(serializerType, classKey);
+        consumer.accept(msg);
+        packet.setData(serializedClassManager.getSerializedObject(serializerType, msg));
         return packet;
     }
     

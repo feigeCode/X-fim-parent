@@ -28,11 +28,12 @@ public abstract class AbsTask<T> implements Runnable {
 
     @Override
     public void run() {
+        ackManager.getAndRemove(this.getId());
         if (this.retryCnt > 0) {
             try {
                 this.retryCnt--;
                 AbsTask<T> task = this.copy();
-                ackManager.addTask(getId(), task);
+                ackManager.addTask(task);
                 session.write(packet);
             } catch (Throwable cause) {
                 if (callback != null) {
@@ -55,6 +56,6 @@ public abstract class AbsTask<T> implements Runnable {
     }
     public abstract AbsTask<T> copy();
 
-    public abstract Integer getId();
+    public abstract int getId();
 
 }

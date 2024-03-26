@@ -13,7 +13,7 @@ public class BindClientRespMsgHandler extends AbstractMsgHandler {
     @Override
     public void handle(Session session, Packet msg) throws RemotingException {
         SuccessResp successResp = getMsg(msg, SuccessResp.class);
-        System.out.println(successResp);
+        System.out.println("success bind");
     }
 
     @Override

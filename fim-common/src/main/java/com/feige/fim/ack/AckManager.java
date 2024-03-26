@@ -4,5 +4,5 @@ public interface AckManager {
 
     AbsTask<?> getAndRemove(int id);
 
-    void addTask(int id, AbsTask<?> task);
+    void addTask(AbsTask<?> task);
 }

@@ -17,7 +17,7 @@ public class HeartbeatMsgHandler extends AbstractMsgHandler {
 
     @Override
     public void handle(Session session, Packet packet) throws RemotingException {
-        session.write(Packet.create(Command.HEARTBEAT));
+//        session.write(Packet.create(Command.HEARTBEAT));
     }
 
 }

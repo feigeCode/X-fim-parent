@@ -3,8 +3,12 @@ package com.feige.api.msg;
 import com.feige.api.annotation.MsgComp;
 
 @MsgComp(classKey = 8)
-public interface ChatMsgReq extends Ack {
+public interface ChatMsgReq extends Msg {
     Class<ChatMsgReq> TYPE = ChatMsgReq.class;
+
+    String getId();
+
+    ChatMsgReq setId(String id);
     
     String getSenderId();
     
@@ -29,5 +33,12 @@ public interface ChatMsgReq extends Ack {
     int getStatus();
     
     ChatMsgReq setStatus(int status);
-    
+
+    long getSendTime();
+
+    ChatMsgReq setSendTime(long sendTime);
+
+    String getExtra();
+
+    ChatMsgReq setExtra(String extra);
 }

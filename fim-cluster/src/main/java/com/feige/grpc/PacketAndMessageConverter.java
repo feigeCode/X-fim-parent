@@ -4,15 +4,13 @@ import com.feige.api.constant.Command;
 import com.feige.fim.protocol.Packet;
 import com.feige.utils.convert.ObjectConvert;
 import com.google.protobuf.ByteString;
+import lombok.Getter;
 
 public class PacketAndMessageConverter implements ObjectConvert<Packet, Message> {
     
+    @Getter
     private static final PacketAndMessageConverter instance = new PacketAndMessageConverter();
 
-    public static PacketAndMessageConverter getInstance() {
-        return instance;
-    }
-    
     @Override
     public Message convertT(Packet packet) {
         return Message.newBuilder()

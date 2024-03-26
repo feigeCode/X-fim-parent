@@ -15,8 +15,10 @@ import com.feige.framework.aware.ApplicationContextAware;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.utils.Configs;
 import com.feige.utils.common.StringUtils;
+import com.feige.utils.logger.Loggers;
 import com.feige.utils.spi.annotation.SPI;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.TooLongFrameException;
 
 import java.util.Comparator;
@@ -57,8 +59,9 @@ public class PacketCodec implements Codec , ApplicationContextAware {
         if (!(msg instanceof Packet)){
             return;
         }
-        Packet packet = (Packet) msg; 
+        Packet packet = (Packet) msg;
         ByteBuf byteBuf = (ByteBuf) b;
+        Loggers.CONSOLE.info(ByteBufUtil.prettyHexDump(byteBuf));
         if (packet.getCmd() == Command.HEARTBEAT.getCmd()){
             byteBuf.writeByte(getHeartbeat());
         }else {
@@ -120,6 +123,7 @@ public class PacketCodec implements Codec , ApplicationContextAware {
                 }
             }
         }
+        Loggers.CONSOLE.info(out.toString());
     }
     
     

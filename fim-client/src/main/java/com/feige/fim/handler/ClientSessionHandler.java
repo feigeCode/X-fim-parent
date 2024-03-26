@@ -37,8 +37,8 @@ public class ClientSessionHandler extends AbstractSessionHandler {
         if (ClientConfig.enableCrypto()) {
             session.setCipher(asymmetricCipherFactory.create(new byte[0], ClientConfig.getPublicKey()));
         }
-        tryFastConnect(session);
-//        handshake(session);
+//        tryFastConnect(session);
+        handshake(session);
     }
     
     private void tryFastConnect(Session session) throws RemotingException {

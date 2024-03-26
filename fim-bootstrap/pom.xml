@@ -27,10 +27,10 @@
             <groupId>com.feige</groupId>
             <artifactId>fim-cache</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.feige</groupId>
-            <artifactId>fim-cluster</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.feige</groupId>-->
+<!--            <artifactId>fim-cluster</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

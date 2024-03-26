@@ -57,44 +57,53 @@ message ErrorRespProto {
 
 
 message AckProto {
-    string msg_id = 1;
 
-    int32 sequence_num = 2;
+    string sender_id = 1;
+
+    string receiver_id = 2;
+
+    string msg_id = 3;
+
+    int32 seq_id = 4;
     
-    int64 send_time = 3;
+    int64 send_time = 5;
 
-    string extra = 4;
+    string extra = 6;
+
+
 }
 
 
 message ChatMsgReqProto {
-    string msg_id = 1;
+    string id = 1;
 
-    int32 sequence_num = 2;
+    string sender_id = 2;
+    
+    string receiver_id = 3;
+    
+    string content = 4;
+    
+    int32 format = 5;
+    
+    int32 msg_type = 6;
+    
+    int32 status = 7;
 
-    int64 send_time = 3;
-    
-    string sender_id = 4;
-    
-    string receiver_id = 5;
-    
-    string content = 6;
-    
-    int32 format = 7;
-    
-    int32 msg_type = 8;
-    
-    int32 status = 9;
+    int64 send_time = 8;
 
-    string extra = 10;
+    string extra = 9;
 }
 
 message ChatMsgRespProto {
-    string msg_id = 1;
+    string sender_id = 1;
 
-    int32 sequence_num = 2;
+    string receiver_id = 2;
 
-    int64 send_time = 3;
+    string msg_id = 3;
 
-    string extra = 4;
+    int32 seq_id = 4;
+
+    int64 send_time = 5;
+
+    string extra = 6;
 }

@@ -12,8 +12,6 @@ public class PacketHandler {
 
     private Node<PacketInterceptor> tail;
 
-    private int size;
-
 
     public PacketHandler(List<PacketInterceptor> packetInterceptors){
         if (CollectionUtils.isEmpty(packetInterceptors)){

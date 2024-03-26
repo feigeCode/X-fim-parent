@@ -1,28 +1,18 @@
 package com.feige.fim.handler;
 
 import com.feige.api.constant.Command;
-import com.feige.api.constant.ProtocolConst;
 import com.feige.api.handler.MsgHandler;
-import com.feige.api.handler.RemotingException;
-import com.feige.fim.rpc.RpcTransporter;
-import com.feige.api.session.Session;
+import com.feige.api.msg.ChatMsgReq;
 import com.feige.fim.protocol.Packet;
 import com.feige.utils.spi.annotation.SPI;
 
 @SPI(value = "singleChat", interfaces = MsgHandler.class)
-public class SingleChatMsgHandler extends AbstractMsgHandler {
-    
-//    @Inject
-    private RpcTransporter<Packet> rpcTransporter;
-    
+public class SingleChatMsgHandler extends ForwardMsgHandler {
+
     @Override
-    public void handle(Session session, Packet msg) throws RemotingException {
-        if (!session.isBindClient()) {
-            this.sendErrorPacket(session, msg, ProtocolConst.ErrorCode.NOT_BIND, "NOT BIND");
-            return;
-        }
-        Packet respPacket = rpcTransporter.rpcClient().exchange(msg);
-        session.write(respPacket);
+    public String getReceiverId(Packet packet) {
+        ChatMsgReq chatMsgReq = this.getMsg(packet, ChatMsgReq.class);
+        return chatMsgReq.getReceiverId();
     }
 
     @Override

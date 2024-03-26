@@ -7,14 +7,22 @@ import com.feige.api.annotation.MsgComp;
 public interface Ack extends Msg {
     
     Class<Ack> TYPE = Ack.class;
+
+    String getSenderId();
+
+    Ack setSenderId(String senderId);
+
+    String getReceiverId();
+
+    Ack setReceiverId(String receiverId);
     
     String getMsgId();
     
     Ack setMsgId(String msgId);
 
-    int getSequenceNum();
+    int getSeqId();
 
-    Ack setSequenceNum(int sequenceNum);
+    Ack setSeqId(int seqId);
     
     long getSendTime();
     

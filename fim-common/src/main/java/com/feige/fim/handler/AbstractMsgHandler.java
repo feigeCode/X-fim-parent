@@ -58,12 +58,17 @@ public abstract class AbstractMsgHandler implements MsgHandler {
     protected <T extends Msg> Packet buildPacket(Command command, ProtocolConst.SerializedClass serializedClass, Packet packet, Consumer<T> consumer){
         byte serializerType = packet.getSerializer();
         byte classKey = serializedClass.getClassKey();
+        T msg = serializedClassManager.newObject(serializerType, classKey);
+        consumer.accept(msg);
+        return buildPacket(command, serializedClass, msg, packet);
+    }
+    protected <T extends Msg> Packet buildPacket(Command command, ProtocolConst.SerializedClass serializedClass, T msg, Packet packet){
+        byte serializerType = packet.getSerializer();
+        byte classKey = serializedClass.getClassKey();
         Packet respPacket = Packet.create(command);
         respPacket.setSerializer(serializerType);
         respPacket.setRealType(classKey);
-        respPacket.setSeqId(packet.getSeqId() + 1);
-        T msg = serializedClassManager.newObject(serializerType, classKey);
-        consumer.accept(msg);
+        respPacket.setSeqId(packet.getSeqId());
         respPacket.setData(serializedClassManager.getSerializedObject(serializerType, msg));
         return respPacket;
     }
