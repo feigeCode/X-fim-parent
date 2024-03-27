@@ -28,6 +28,9 @@ public abstract class ForwardMsgHandler extends AbstractMsgHandler {
         }
         String receiverId = this.getReceiverId(packet);
         Map<String, ClientBindInfo> clientBindInfoMap = clientBindManager.lookupAll(receiverId);
+        if (clientBindInfoMap == null || clientBindInfoMap.isEmpty()) {
+            return;
+        }
         for (ClientBindInfo bindInfo : clientBindInfoMap.values()) {
             sessionRepository.write(bindInfo.getSessionId(), packet);
         }
