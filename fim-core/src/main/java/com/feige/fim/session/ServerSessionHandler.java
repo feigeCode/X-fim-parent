@@ -1,34 +1,36 @@
 package com.feige.fim.session;
 
 
-import com.feige.fim.bind.ClientBindManager;
 import com.feige.api.constant.ClientType;
-import com.feige.fim.constant.ServerConfigKey;
 import com.feige.api.crypto.CipherFactory;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
+import com.feige.fim.bind.ClientBindManager;
+import com.feige.fim.constant.ServerConfigKey;
 import com.feige.fim.handler.AbstractSessionHandler;
-import com.feige.framework.annotation.Inject;
+import com.feige.framework.annotation.CompName;
 import com.feige.framework.env.api.Environment;
 import com.feige.framework.utils.Configs;
 import com.feige.utils.spi.annotation.SPI;
+import lombok.Setter;
 import org.bouncycastle.util.encoders.Base64;
 
 
 @SPI(value="single", interfaces = SessionHandler.class)
+@Setter
 public class ServerSessionHandler extends AbstractSessionHandler {
     private final static String HEARTBEAT_CNT = "hb_cnt";
     private final static int MAX_TIMEOUT_CNT = 3;
-    @Inject("asymmetricEncryption")
+
     private CipherFactory asymmetricCipherFactory;
-    
-    @Inject
+
     private ClientBindManager clientBindManager;
 
-    @Inject
     private SessionRepository sessionRepository;
+
+
 
     @Override
     public void connected(Session session) throws RemotingException {
@@ -55,5 +57,9 @@ public class ServerSessionHandler extends AbstractSessionHandler {
         if (sessionContext != null){
             clientBindManager.unregister(sessionContext.getClientId(), ClientType.valueOf(sessionContext.getClientType()));
         }
+    }
+    @CompName("asymmetricEncryption")
+    public void setAsymmetricCipherFactory(CipherFactory asymmetricCipherFactory) {
+        this.asymmetricCipherFactory = asymmetricCipherFactory;
     }
 }

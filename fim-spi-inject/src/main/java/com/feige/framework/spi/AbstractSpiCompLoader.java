@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -57,17 +58,19 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
 
 
     @Override
-    public String get(Class<?> requireType) throws ClassNotFoundException {
-        AssertUtil.notNull(requireType, "requireType");
-        List<String> compNames = this.getByType(requireType);
-        if (CollectionUtils.isEmpty(compNames)){
-            return null;
+    public String getCompNameFromCache(Class<?> implClass) {
+        AssertUtil.notNull(implClass, "implClass");
+        Set<Map.Entry<String, Class<?>>> entries = new HashMap<>(this.compNameAndImplClassCache).entrySet();
+        for (Map.Entry<String, Class<?>> entry : entries) {
+            if (implClass.equals(entry.getValue())){
+                return entry.getKey();
+            }
         }
-        return compNames.get(0);
+        return null;
     }
 
     @Override
-    public List<String> getByType(Class<?> requireType) throws ClassNotFoundException {
+    public List<String> getCompNamesByType(Class<?> requireType) throws ClassNotFoundException {
         AssertUtil.notNull(requireType, "requireType");
         List<String> compNames = doGetImplClasses(requireType);
         if (CollectionUtils.isEmpty(compNames)){
@@ -87,7 +90,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     protected List<String> getImplClassNamesFromParent(Class<?> requireType) throws ClassNotFoundException {
         ApplicationContext parent = applicationContext.getParent();
         if (parent != null){
-            return parent.getSpiCompLoader().getByType( requireType);
+            return parent.getSpiCompLoader().getCompNamesByType( requireType);
         }
         return null;
     }
@@ -169,7 +172,7 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     @Override
     public <T> List<T> loadSpiComps(Class<T> requireType) {
         try {
-            List<String> compNames = this.getByType(requireType);
+            List<String> compNames = this.getCompNamesByType(requireType);
             List<T> ts = new ArrayList<>();
             for (String compName : compNames) {
                 Class<T> cls = this.convert(this.get(requireType, compName));
@@ -186,8 +189,8 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
     @Override
     public <T> T loadSpiComp(Class<T> requireType, Object... args) {
         try {
-            String compName = this.get(requireType);
-            return loadSpiComp(requireType, compName, args);
+            List<String> compNames = this.getCompNamesByType(requireType);
+            return loadSpiComp(requireType, compNames.get(0), args);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -17,10 +17,11 @@ import com.feige.framework.spi.api.SpiCompLoader;
 import com.feige.framework.utils.AppContext;
 import com.feige.framework.utils.Configs;
 import com.feige.utils.logger.Loggers;
-import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractApplicationContext implements ApplicationContext {
@@ -96,7 +97,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     }
 
     protected void doStart(String... args) throws Exception {
-        List<ApplicationRunner> applicationRunners = getByType(ApplicationRunner.class);
+        Collection<ApplicationRunner> applicationRunners = getByType(ApplicationRunner.class).values();
         for (ApplicationRunner applicationRunner : applicationRunners) {
             applicationRunner.run(this, args);
         }
@@ -140,12 +141,12 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     }
 
     @Override
-    public <T> List<T> getByType(Class<T> requireType) throws NoSuchInstanceException {
-        List<T> ts = compFactory.getByType(requireType);
-        if (CollectionUtils.isEmpty(ts) && getParent() != null){
-            ts = getParent().getByType(requireType);
+    public <T> Map<String, T> getByType(Class<T> requireType) throws NoSuchInstanceException {
+        Map<String, T> tMap = compFactory.getByType(requireType);
+        if ((tMap == null || tMap.isEmpty()) && getParent() != null){
+            tMap = getParent().getByType(requireType);
         }
-        return ts;
+        return tMap;
     }
 
     public void registerShutdownHook() {

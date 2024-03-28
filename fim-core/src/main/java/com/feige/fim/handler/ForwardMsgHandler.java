@@ -7,16 +7,16 @@ import com.feige.api.session.SessionRepository;
 import com.feige.fim.bind.ClientBindInfo;
 import com.feige.fim.bind.ClientBindManager;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.annotation.Inject;
+import lombok.Setter;
 
 import java.util.Map;
 
 public abstract class ForwardMsgHandler extends AbstractMsgHandler {
 
-    @Inject
+    @Setter
     protected SessionRepository sessionRepository;
 
-    @Inject
+    @Setter
     protected ClientBindManager clientBindManager;
 
 

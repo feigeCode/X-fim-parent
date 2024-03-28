@@ -8,9 +8,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.METHOD})
+@Target({ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.METHOD})
 @Inherited
 @Documented
-public @interface Inject {
-    String value() default "";
+public @interface CompName {
+    /**
+     * config key
+     * @return
+     */
+    String value();
+
+    /**
+     * if null get first
+     * @return if null get first
+     */
+    boolean ifNullGetFirst() default false;
 }

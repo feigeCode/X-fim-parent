@@ -4,6 +4,8 @@ package com.feige.framework.utils;
 import com.feige.framework.env.api.Config;
 import com.feige.framework.env.api.Environment;
 import com.feige.utils.common.StringUtils;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,6 +43,8 @@ public class Configs  {
 
         String ASSOCIATED_MODULE_NAME_KEY = "fim.associated.module.names";
     }
+    @Getter
+    @Setter
     private static Environment environment;
     
     
@@ -64,13 +68,6 @@ public class Configs  {
         }
         file = new File(path);
         return file;
-    }
-    public static void setEnvironment(Environment environment) {
-        Configs.environment = environment;
-    }
-
-    public static Environment getEnvironment() {
-        return environment;
     }
 
     public static Config getCompositeConfig(){

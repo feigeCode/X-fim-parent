@@ -5,20 +5,20 @@ import com.feige.api.handler.SessionHandler;
 import com.feige.api.sc.Client;
 import com.feige.api.sc.ClientProvider;
 import com.feige.api.session.SessionRepository;
-import com.feige.framework.annotation.Inject;
+import lombok.Setter;
 import com.feige.utils.spi.annotation.SPI;
 
 
 @SPI(value="nettyClient", interfaces = ClientProvider.class)
 public class NettyClientProvider implements ClientProvider {
     
-    @Inject
+    @Setter
     private SessionHandler sessionHandler;
 
-    @Inject
+    @Setter
     private SessionRepository sessionRepository;
 
-    @Inject
+    @Setter
     private Codec codec;
     
     @Override

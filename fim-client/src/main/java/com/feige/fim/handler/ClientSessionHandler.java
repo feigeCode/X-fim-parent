@@ -13,24 +13,28 @@ import com.feige.fim.config.ClientConfig;
 import com.feige.fim.config.ClientConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.fim.utils.PacketUtils;
-import com.feige.framework.annotation.Inject;
+import com.feige.framework.annotation.CompName;
 import com.feige.utils.common.StringUtils;
 import com.feige.utils.spi.annotation.SPI;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 
 @SPI(interfaces = SessionHandler.class)
 @Slf4j
+@Setter
 public class ClientSessionHandler extends AbstractSessionHandler {
 
-    @Inject
+
     private SessionStorage sessionStorage;
     
-    @Inject("asymmetricEncryption")
+
     private CipherFactory asymmetricCipherFactory;
     
-    @Inject("symmetricEncryption")
+
     private CipherFactory symmetricCipherFactory;
+
+
 
     @Override
     public void connected(Session session) throws RemotingException {
@@ -76,5 +80,14 @@ public class ClientSessionHandler extends AbstractSessionHandler {
                 .setToken(ClientConfig.getToken());
         packet.setData(PacketUtils.getSerializedObject(handshakeReq));
         session.write(packet, new Listener.CallbackListener((args) -> session.setCipher(symmetricCipherFactory.create(ClientConfig.getClientKey(), ClientConfig.getIv())), Throwable::printStackTrace));
+    }
+
+    @CompName("asymmetricEncryption")
+    public void setAsymmetricCipherFactory(CipherFactory asymmetricCipherFactory) {
+        this.asymmetricCipherFactory = asymmetricCipherFactory;
+    }
+    @CompName("symmetricEncryption")
+    public void setSymmetricCipherFactory(CipherFactory symmetricCipherFactory) {
+        this.symmetricCipherFactory = symmetricCipherFactory;
     }
 }

@@ -9,7 +9,7 @@ import com.feige.utils.common.AssertUtil;
 import com.feige.utils.spi.annotation.SPI;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +37,7 @@ public class SpiCompFactory extends AbstractCompFactory {
     }
 
     @Override
-    public <T> List<T> getByType(Class<T> type) throws NoSuchInstanceException {
+    public <T> Map<String, T> getByType(Class<T> type) throws NoSuchInstanceException {
         AssertUtil.notNull(type, "type");
         return doGetInstances(type);
     }
@@ -100,29 +100,29 @@ public class SpiCompFactory extends AbstractCompFactory {
 
     protected   <T> T doGetInstance(Class<T> requireType, Object... args) {
         try {
-            String compName = this.getSpiCompLoader().get(requireType);
-            if (compName == null){
+            List<String> compNames = this.getSpiCompLoader().getCompNamesByType(requireType);
+            if (CollectionUtils.isEmpty(compNames)){
                 throw new NoSuchInstanceException(requireType);
             }
-            return doGetInstance(compName, requireType, args);
+            return doGetInstance(compNames.get(0), requireType, args);
         }catch (Throwable e){
             throw new InstanceCreationException(e, requireType);
         }
     }
 
 
-    protected <T> List<T> doGetInstances(Class<T> type){
+    protected <T> Map<String, T> doGetInstances(Class<T> type){
         try {
-            List<T> ts = new ArrayList<>();
-            List<String> compNames = this.getSpiCompLoader().getByType(type);
+            Map<String, T> result = new HashMap<>();
+            List<String> compNames = this.getSpiCompLoader().getCompNamesByType(type);
             if (compNames == null){
-                return ts;
+                return result;
             }
             for (String compName : compNames) {
                 T t = doGetInstance(compName, type);
-                ts.add(t);
+                result.put(compName, t);
             }
-            return ts;
+            return result;
         } catch (Throwable e) {
             throw new InstanceCreationException(e, type);
         }

@@ -32,20 +32,4 @@ public class NettyWsServerProvider extends AbstractServerProvider {
         Codec codec = getCodec();
         return new NettyWsServer(socketAddress, sessionHandler, sessionRepository, codec);
     }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
 }

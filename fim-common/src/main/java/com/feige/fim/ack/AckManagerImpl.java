@@ -1,6 +1,6 @@
 package com.feige.fim.ack;
 
-import com.feige.framework.annotation.Inject;
+import lombok.Setter;
 import com.feige.utils.spi.annotation.SPI;
 
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 @SPI(interfaces = AckManager.class)
 public class AckManagerImpl implements AckManager {
     private final Map<Integer, AbsTask<?>> queue = new ConcurrentHashMap<>();
-    @Inject
+    @Setter
     private TimerExecutor timer;
 
     @Override

@@ -16,6 +16,9 @@
 
 package com.feige.utils.clazz;
 
+import com.feige.utils.common.AssertUtil;
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.beans.Introspector;
 import java.io.Closeable;
 import java.io.Externalizable;
@@ -42,9 +45,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.feige.utils.common.AssertUtil;
-import org.apache.commons.collections4.CollectionUtils;
 
 /**
  * Miscellaneous {@code java.lang.Class} utility methods.
@@ -1431,6 +1431,23 @@ public abstract class ClassUtils {
         return candidates;
     }
 
+    public static Class<?>[] getGenericParameterTypes(Method method, int index){
+        Type[] types = method.getGenericParameterTypes();
+        Type type = types[index];
+        if (type instanceof Class){
+            return new Class[0];
+        }
+        ParameterizedType parameterizedType = (ParameterizedType) type;
+        Type[] genericTypes = parameterizedType.getActualTypeArguments();
+        if (genericTypes == null || genericTypes.length == 0){
+            return new Class[0];
+        }
+        Class<?>[]  generics = new Class[genericTypes.length];
+        for (int i = 0; i < genericTypes.length; i++) {
+            generics[i] = checkType(genericTypes[i], i);
+        }
+        return generics;
+    }
 
     /**
      * 获取接口上的泛型T

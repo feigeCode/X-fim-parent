@@ -1,7 +1,7 @@
 package com.feige.fim.bind;
 
 import com.feige.fim.cache.CacheManager;
-import com.feige.framework.annotation.Inject;
+import lombok.Setter;
 
 /**
  * @author feige<br />
@@ -10,7 +10,7 @@ import com.feige.framework.annotation.Inject;
  * @date: 2023/5/27 19:10<br/>
  */
 public abstract class AbstractClientBindManager implements ClientBindManager {
-    @Inject
+    @Setter
     protected CacheManager cacheManager;
 
 }

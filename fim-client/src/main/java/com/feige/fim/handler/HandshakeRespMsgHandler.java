@@ -11,18 +11,18 @@ import com.feige.fim.config.ClientConfig;
 import com.feige.fim.config.ClientConfigKey;
 import com.feige.fim.protocol.Packet;
 import com.feige.fim.utils.PacketUtils;
-import com.feige.framework.annotation.Inject;
+import com.feige.framework.annotation.CompName;
 import com.feige.utils.spi.annotation.SPI;
+import lombok.Setter;
 import org.bouncycastle.util.encoders.Base64;
 
 
 @SPI(value="handshake", interfaces = MsgHandler.class)
+@Setter
 public class HandshakeRespMsgHandler extends AbstractMsgHandler {
-    
-    @Inject
+
     private SessionStorage sessionStorage;
 
-    @Inject("symmetricEncryption")
     private CipherFactory symmetricCipherFactory;
     
     @Override
@@ -44,5 +44,10 @@ public class HandshakeRespMsgHandler extends AbstractMsgHandler {
         session.setCipher(symmetricCipherFactory.create(ClientConfig.getClientKey(), ClientConfig.getIv()));
         Packet bindClientPacket = PacketUtils.createBindClientPacket();
         session.write(bindClientPacket);
+    }
+
+    @CompName("symmetricEncryption")
+    public void setSymmetricCipherFactory(CipherFactory symmetricCipherFactory) {
+        this.symmetricCipherFactory = symmetricCipherFactory;
     }
 }

@@ -1,6 +1,6 @@
 package com.feige.fim.sc;
 
-import com.feige.framework.annotation.Inject;
+import lombok.Setter;
 import com.feige.api.codec.Codec;
 import com.feige.api.handler.SessionHandler;
 import com.feige.api.session.SessionRepository;
@@ -11,13 +11,13 @@ import java.net.InetSocketAddress;
 public abstract class AbstractServerProvider implements ServerProvider {
 
 
-    @Inject
+    @Setter
     private SessionHandler sessionHandler;
     
-    @Inject
+    @Setter
     private Codec codec;
     
-    @Inject
+    @Setter
     private SessionRepository sessionRepository;
     
     

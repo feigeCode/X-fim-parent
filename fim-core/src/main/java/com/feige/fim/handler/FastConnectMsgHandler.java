@@ -1,7 +1,5 @@
 package com.feige.fim.handler;
 
-import com.feige.fim.cache.Bucket;
-import com.feige.fim.cache.CacheManager;
 import com.feige.api.constant.Command;
 import com.feige.api.constant.ProtocolConst;
 import com.feige.api.crypto.CipherFactory;
@@ -11,29 +9,32 @@ import com.feige.api.msg.FastConnectReq;
 import com.feige.api.msg.SuccessResp;
 import com.feige.api.sc.Listener;
 import com.feige.api.session.Session;
-import com.feige.fim.session.SessionContext;
+import com.feige.fim.cache.Bucket;
+import com.feige.fim.cache.CacheManager;
 import com.feige.fim.protocol.Packet;
-import com.feige.utils.common.StringUtils;
-import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SPI;
+import com.feige.fim.session.SessionContext;
+import com.feige.framework.annotation.CompName;
 import com.feige.framework.utils.Configs;
+import com.feige.utils.common.StringUtils;
+import com.feige.utils.spi.annotation.SPI;
+import lombok.Setter;
 import org.bouncycastle.util.encoders.Base64;
 
 import java.util.Objects;
 
 
+@Setter
 @SPI(value="fastConnect", interfaces = MsgHandler.class)
 public class FastConnectMsgHandler extends AbstractMsgHandler {
-    @Inject
     private CacheManager cacheManager;
     
-    @Inject("symmetricEncryption")
     private CipherFactory symmetricCipherFactory;
     
     @Override
     public byte getCmd() {
         return Command.FAST_CONNECT.getCmd();
     }
+
 
     @Override
     public void handle(Session session, Packet packet) throws RemotingException {
@@ -107,6 +108,9 @@ public class FastConnectMsgHandler extends AbstractMsgHandler {
         }
     }
 
-    
+    @CompName("symmetricEncryption")
+    public void setSymmetricCipherFactory(CipherFactory symmetricCipherFactory) {
+        this.symmetricCipherFactory = symmetricCipherFactory;
+    }
 
 }

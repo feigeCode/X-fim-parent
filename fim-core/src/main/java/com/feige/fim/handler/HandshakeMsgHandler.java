@@ -1,29 +1,30 @@
 package com.feige.fim.handler;
 
-import com.feige.fim.cache.Bucket;
-import com.feige.fim.cache.CacheManager;
-import com.feige.fim.constant.Const;
+import com.feige.api.constant.Command;
 import com.feige.api.constant.ProtocolConst;
 import com.feige.api.constant.ProtocolConst.SerializedClass;
 import com.feige.api.crypto.Cipher;
 import com.feige.api.crypto.CipherFactory;
-import com.feige.api.msg.HandshakeResp;
-import com.feige.api.sc.Listener;
-import com.feige.fim.session.SessionContext;
-import com.feige.fim.constant.ServerConfigKey;
-import com.feige.utils.common.StringUtils;
-import com.feige.utils.crypto.CryptoUtils;
-import com.feige.utils.crypto.Md5Utils;
-import com.feige.framework.annotation.Inject;
-import com.feige.utils.spi.annotation.SPI;
 import com.feige.api.handler.MsgHandler;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.msg.HandshakeReq;
-import com.feige.api.constant.Command;
+import com.feige.api.msg.HandshakeResp;
+import com.feige.api.sc.Listener;
 import com.feige.api.session.Session;
+import com.feige.fim.cache.Bucket;
+import com.feige.fim.cache.CacheManager;
+import com.feige.fim.constant.Const;
+import com.feige.fim.constant.ServerConfigKey;
 import com.feige.fim.protocol.Packet;
+import com.feige.fim.session.SessionContext;
+import com.feige.framework.annotation.CompName;
+import lombok.Setter;
 import com.feige.framework.utils.Configs;
-
+import com.feige.utils.common.StringUtils;
+import com.feige.utils.crypto.CryptoUtils;
+import com.feige.utils.crypto.Md5Utils;
+import com.feige.utils.spi.annotation.SPI;
+import lombok.Setter;
 import org.bouncycastle.util.encoders.Base64;
 
 import java.util.concurrent.TimeUnit;
@@ -38,17 +39,19 @@ import java.util.concurrent.TimeUnit;
 public class HandshakeMsgHandler extends AbstractMsgHandler {
     public static final String CACHE_NAME = "SESSION_CONTEXT";
     
-    @Inject
+    @Setter
     private CacheManager cacheManager;
 
-    @Inject("symmetricEncryption")
     private CipherFactory symmetricCipherFactory;
     
     @Override
     public byte getCmd() {
         return Command.HANDSHAKE.getCmd();
     }
-
+    @CompName("symmetricEncryption")
+    public void setSymmetricCipherFactory(CipherFactory symmetricCipherFactory) {
+        this.symmetricCipherFactory = symmetricCipherFactory;
+    }
     @Override
     public void handle(Session session, Packet packet) throws RemotingException {
         if (session.isHandshake()) {

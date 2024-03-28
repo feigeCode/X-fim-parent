@@ -4,14 +4,14 @@ import com.feige.api.codec.PacketInterceptor;
 import com.feige.api.constant.ProtocolConst;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.annotation.Inject;
+import lombok.Setter;
 import com.feige.utils.spi.annotation.SPI;
 
 
 @SPI(interfaces = PacketInterceptor.class)
 public class AckPacketInterceptor implements PacketInterceptor {
 
-    @Inject
+    @Setter
     private AckManager ackManager;
 
     @Override

@@ -21,9 +21,9 @@ public interface SpiCompLoader extends Lifecycle {
 
     Class<?> getImplClassFormCache(String compName);
     
-    String get(Class<?> requireType) throws ClassNotFoundException;
+    String getCompNameFromCache(Class<?> implClass) throws ClassNotFoundException;
     
-    List<String> getByType(Class<?> requireType) throws ClassNotFoundException;
+    List<String> getCompNamesByType(Class<?> requireType) throws ClassNotFoundException;
     
     <T> List<T> loadSpiComps(Class<T> requireType);
 

@@ -9,7 +9,7 @@ import com.feige.api.msg.ErrorResp;
 import com.feige.api.msg.Msg;
 import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.annotation.Inject;
+import lombok.Setter;
 
 import com.feige.api.serialize.SerializedClassManager;
 
@@ -25,7 +25,7 @@ public abstract class AbstractMsgHandler implements MsgHandler {
     
 
     
-    @Inject
+    @Setter
     protected SerializedClassManager serializedClassManager;
 
     @Override

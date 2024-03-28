@@ -8,14 +8,14 @@ import com.feige.api.session.Session;
 import com.feige.fim.ack.AckManager;
 import com.feige.fim.ack.AckTask;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.annotation.Inject;
+import lombok.Setter;
 import com.feige.utils.spi.annotation.SPI;
 
 
 @SPI(interfaces = MsgHandler.class)
 public class AckMsgHandler extends AbstractMsgHandler{
 
-    @Inject
+    @Setter
     private AckManager ackManager;
     @Override
     public byte getCmd() {

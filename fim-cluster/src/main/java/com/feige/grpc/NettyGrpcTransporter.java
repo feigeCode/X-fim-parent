@@ -8,7 +8,7 @@ import com.feige.fim.rpc.RpcClient;
 import com.feige.fim.rpc.RpcServer;
 import com.feige.fim.rpc.RpcTransporter;
 import com.feige.framework.annotation.InitMethod;
-import com.feige.framework.annotation.Inject;
+import lombok.Setter;
 import com.feige.framework.aware.EnvironmentAware;
 import com.feige.framework.env.api.Environment;
 import com.feige.grpc.client.GrpcClient;
@@ -27,10 +27,10 @@ public class NettyGrpcTransporter implements RpcTransporter<Packet>, Environment
     
     private RpcServer<Packet> rpcServer;
     
-    @Inject
+    @Setter
     private SessionRepository sessionRepository;
     
-    @Inject
+    @Setter
     private ServiceDiscovery serviceDiscovery;
     
     private Environment environment;

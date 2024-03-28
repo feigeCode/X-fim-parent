@@ -1,11 +1,11 @@
 package com.feige.framework.utils;
 
 import com.feige.framework.context.api.ApplicationContext;
-import com.feige.framework.module.api.ModuleRepository;
 import com.feige.framework.spi.api.NoSuchInstanceException;
+import lombok.Getter;
+import lombok.Setter;
 
-
-import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -18,6 +18,8 @@ import java.util.List;
 public class AppContext {
 
     
+    @Getter
+    @Setter
     private static ApplicationContext applicationContext;
     
     
@@ -53,15 +55,7 @@ public class AppContext {
      * @param <T> class type
      * @throws NoSuchInstanceException
      */
-    public static <T> List<T> getByType(Class<T> clazz) throws NoSuchInstanceException {
+    public static <T> Map<String, T> getByType(Class<T> clazz) throws NoSuchInstanceException {
         return applicationContext.getByType(clazz);
-    }
-    
-    public static ApplicationContext getApplicationContext(){
-        return applicationContext;
-    }
-
-    public static void setApplicationContext(ApplicationContext applicationContext) {
-        AppContext.applicationContext = applicationContext;
     }
 }

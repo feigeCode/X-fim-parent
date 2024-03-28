@@ -1,14 +1,15 @@
 package com.feige.fim.codec;
 
-import com.feige.api.codec.PacketInterceptor;
 import com.feige.api.codec.Codec;
 import com.feige.api.codec.DecoderException;
 import com.feige.api.codec.EncoderException;
 import com.feige.api.codec.ICheckSum;
+import com.feige.api.codec.PacketInterceptor;
 import com.feige.api.codec.VersionException;
-import com.feige.api.session.Session;
 import com.feige.api.constant.Command;
+import com.feige.api.session.Session;
 import com.feige.fim.protocol.Packet;
+import com.feige.framework.annotation.DisableInject;
 import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.annotation.Value;
 import com.feige.framework.aware.ApplicationContextAware;
@@ -20,12 +21,15 @@ import com.feige.utils.spi.annotation.SPI;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.TooLongFrameException;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Comparator;
 import java.util.List;
 
 
 @SPI(value="packet", interfaces = Codec.class)
+@Getter
 public class PacketCodec implements Codec , ApplicationContextAware {
     @Value(Configs.ConfigKey.CODEC_MAX_PACKET_SIZE_KEY)
     private int maxPacketSize;
@@ -35,10 +39,14 @@ public class PacketCodec implements Codec , ApplicationContextAware {
     private byte version;
     @Value(Configs.ConfigKey.CODEC_HEADER_LENGTH_KEY)
     private int headerLength;
+    @DisableInject
     private  ICheckSum checkSum;
+
+    @Setter
     private  List<PacketInterceptor> packetInterceptors;
 
     private PacketHandler packetHandler;
+    @Setter
     private ApplicationContext applicationContext;
 
     @InitMethod
@@ -47,7 +55,6 @@ public class PacketCodec implements Codec , ApplicationContextAware {
         if (StringUtils.isNotBlank(checkSumKey)){
            checkSum = applicationContext.get(checkSumKey, ICheckSum.class);
         }
-        packetInterceptors = applicationContext.getByType(PacketInterceptor.class);
         packetInterceptors.sort(Comparator.comparingInt(PacketInterceptor::order));
         packetHandler = new PacketHandler(packetInterceptors);
     }
@@ -159,40 +166,5 @@ public class PacketCodec implements Codec , ApplicationContextAware {
         }
         int readableBytes = byteBuf.readableBytes();
         return bodyLength + (getHeaderLength() - 4 - 1) <= readableBytes ? bodyLength : -1;
-    }
-
-    @Override
-    public byte getVersion() {
-        return version;
-    }
-
-    @Override
-    public byte getHeartbeat() {
-        return heartbeat;
-    }
-
-    @Override
-    public int getMaxPacketSize() {
-        return maxPacketSize;
-    }
-
-    @Override
-    public int getHeaderLength() {
-        return headerLength;
-    }
-
-    @Override
-    public ICheckSum getCheckSum() {
-        return this.checkSum;
-    }
-
-    @Override
-    public List<PacketInterceptor> getPacketInterceptors() {
-        return packetInterceptors;
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
     }
 }

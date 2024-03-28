@@ -13,6 +13,7 @@ import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.framework.annotation.InitMethod;
 import com.feige.framework.context.api.ApplicationContext;
 import com.feige.framework.aware.ApplicationContextAware;
+import lombok.Setter;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
+@Setter
 public abstract class AbstractSerializedClassManager implements SerializedClassManager, ApplicationContextAware {
     
     protected final Map<Byte, Serializer> serializerMap = new ConcurrentHashMap<>();
@@ -30,15 +32,17 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
 
     protected ApplicationContext applicationContext;
 
+    private List<SerializedClassGenerator> serializedClassGenerators;
+
+    private List<Serializer> serializers;
+
     @InitMethod
     public void initializeSerializer(){
-        List<SerializedClassGenerator> serializedClassGenerators = applicationContext.getByType(SerializedClassGenerator.class);
         for (SerializedClassGenerator serializedClassGenerator : serializedClassGenerators) {
             this.registerClassGenerator(serializedClassGenerator);
             this.classGen(serializedClassGenerator);
         }
         
-        List<Serializer> serializers = applicationContext.getByType(Serializer.class);
         for (Serializer serializer : serializers) {
             this.register(serializer);
         }
@@ -50,11 +54,6 @@ public abstract class AbstractSerializedClassManager implements SerializedClassM
             Object[] args = classGen.getArgs();
             this.getClass(serializedClassGenerator.getSerializerType(), classGen.getMsgClass(), args == null || args.length == 0 ? null : () -> args);
         }
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
     }
 
     @Override

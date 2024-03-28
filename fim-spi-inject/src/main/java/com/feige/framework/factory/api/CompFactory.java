@@ -4,7 +4,7 @@ package com.feige.framework.factory.api;
 import com.feige.framework.context.api.Lifecycle;
 import com.feige.framework.spi.api.NoSuchInstanceException;
 
-import java.util.List;
+import java.util.Map;
 
 
 public interface CompFactory extends Lifecycle {
@@ -39,7 +39,7 @@ public interface CompFactory extends Lifecycle {
      * @param <T> class type
      * @throws NoSuchInstanceException
      */
-    <T> List<T> getByType(Class<T> requireType) throws NoSuchInstanceException;
+    <T> Map<String, T> getByType(Class<T> requireType) throws NoSuchInstanceException;
     
     boolean isGlobal(Class<?> type, String compName);
     

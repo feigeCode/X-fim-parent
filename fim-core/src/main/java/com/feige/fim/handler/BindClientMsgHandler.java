@@ -13,7 +13,7 @@ import com.feige.api.session.Session;
 import com.feige.fim.session.SessionContext;
 import com.feige.fim.constant.ServerConfigKey;
 import com.feige.fim.protocol.Packet;
-import com.feige.framework.annotation.Inject;
+import lombok.Setter;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.spi.annotation.SPI;
 import com.feige.framework.utils.Configs;
@@ -23,7 +23,7 @@ import java.util.Objects;
 @SPI(interfaces = MsgHandler.class)
 public class BindClientMsgHandler extends AbstractMsgHandler {
     
-    @Inject
+    @Setter
     private ClientBindManager clientBindManager;
     
     
