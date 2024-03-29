@@ -51,7 +51,7 @@ public class SimpleCompInjection extends LifecycleAdapter implements CompInjecti
 
     private Object injectSingle(Method writeMethod, Class<?> propertyType){
         Object value;
-        CompName compName = AnnotationUtils.findAnnotation(writeMethod, CompName.class);
+        CompName compName = AnnotationUtils.getAnnotation(writeMethod, CompName.class);
         if (compName != null && StringUtils.isNotBlank(compName.value())){
             try {
                 value = applicationContext.get(compName.value(), propertyType);
@@ -73,7 +73,7 @@ public class SimpleCompInjection extends LifecycleAdapter implements CompInjecti
         PropertyDescriptor[] propertyDescriptors = BeanUtils.getPropertyDescriptors(comp.getClass());
         for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
             Method writeMethod = propertyDescriptor.getWriteMethod();
-            if (writeMethod == null || AnnotationUtils.findAnnotation(comp.getClass(), writeMethod, DisableInject.class) != null) {
+            if (writeMethod == null || AnnotationUtils.findAnnotation(writeMethod, DisableInject.class) != null) {
                 continue;
             }
             Class<?>[] parameterTypes = writeMethod.getParameterTypes();

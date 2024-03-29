@@ -40,15 +40,12 @@ public class PacketCodec implements Codec , ApplicationContextAware {
     @Value(Configs.ConfigKey.CODEC_HEADER_LENGTH_KEY)
     private int headerLength;
     @DisableInject
-    private  ICheckSum checkSum;
-
+    private ICheckSum checkSum;
     @Setter
-    private  List<PacketInterceptor> packetInterceptors;
-
+    private List<PacketInterceptor> packetInterceptors;
     private PacketHandler packetHandler;
     @Setter
     private ApplicationContext applicationContext;
-
     @InitMethod
     public void init(){
         String checkSumKey = applicationContext.getEnvironment().getString(Configs.ConfigKey.CODEC_CHECK_SUM_KEY);

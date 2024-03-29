@@ -14,7 +14,7 @@ public class FimBoot {
         Environment environment = applicationContext.getEnvironment();
         String runningMode = environment.getString(ServerConfigKey.RUNNING_MODE, "single");
         if (Objects.equals(runningMode, "single")){
-            applicationContext.getSpiCompLoader().addIgnoreImpl("com.feige.cache.redis.RedisCacheManagerFactory");
+            applicationContext.getSpiCompLoader().addIgnoreImpl("com.feige.cache.redis.RedisCacheManager");
         }
         applicationContext.start(args);
     }

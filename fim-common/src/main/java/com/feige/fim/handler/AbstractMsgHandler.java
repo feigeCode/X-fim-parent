@@ -72,5 +72,13 @@ public abstract class AbstractMsgHandler implements MsgHandler {
         respPacket.setData(serializedClassManager.getSerializedObject(serializerType, msg));
         return respPacket;
     }
+
+    protected boolean checkBind(Session session, Packet msg) throws RemotingException {
+        if (!session.isBindClient()) {
+            this.sendErrorPacket(session, msg, ProtocolConst.ErrorCode.NOT_BIND, "NOT BIND");
+            return false;
+        }
+        return true;
+    }
   
 }

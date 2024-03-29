@@ -1,6 +1,5 @@
 package com.feige.fim.handler;
 
-import com.feige.api.constant.ProtocolConst;
 import com.feige.api.handler.RemotingException;
 import com.feige.api.session.Session;
 import com.feige.api.session.SessionRepository;
@@ -22,8 +21,7 @@ public abstract class ForwardMsgHandler extends AbstractMsgHandler {
 
     @Override
     public void handle(Session session, Packet packet) throws RemotingException {
-        if (!session.isBindClient()) {
-            this.sendErrorPacket(session, packet, ProtocolConst.ErrorCode.NOT_BIND, "NOT BIND");
+        if (!this.checkBind(session, packet)) {
             return;
         }
         String receiverId = this.getReceiverId(packet);

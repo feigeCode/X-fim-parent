@@ -7,17 +7,27 @@ import java.lang.reflect.Method;
 public abstract class AnnotationUtils {
 
 
-    public static <T extends Annotation> T findAnnotation(Class<?> cls, Class<T> annotation) {
+    public static <T extends Annotation> T getAnnotation(Class<?> cls, Class<T> annotation) {
+        if (cls == null || annotation == null){
+            return null;
+        }
         return cls.getAnnotation(annotation);
     }
+    public static <T extends Annotation> T findAnnotation(Class<?> cls, Class<T> annotation) {
+        return getAnnotation(cls, annotation);
+    }
 
-    public static <T extends Annotation> T findAnnotation(Method method, Class<T> annotation) {
+    public static <T extends Annotation> T getAnnotation(Method method, Class<T> annotation) {
+        if (method == null || annotation == null){
+            return null;
+        }
         return method.getAnnotation(annotation);
     }
 
-    public static <T extends Annotation> T findAnnotation(Class<?> cls, Method method, Class<T> annotation) {
-        T anno = findAnnotation(method, annotation);
+    public static <T extends Annotation> T findAnnotation(Method method, Class<T> annotation) {
+        T anno = getAnnotation(method, annotation);
         if (anno == null) {
+            Class<?> cls = method.getDeclaringClass();
             anno = findAnnotationInInterfaces(cls, method, annotation);
             if (anno == null) {
                 anno = findAnnotationInSuperClasses(cls, method, annotation);
@@ -31,16 +41,16 @@ public abstract class AnnotationUtils {
         Class<?>[] interfaces = cls.getInterfaces();
         for (Class<?> anInterface : interfaces) {
             try {
-                Method m = anInterface.getMethod(method.getName(), method.getParameterTypes());
-                anno = findAnnotation(m, annotation);
+                Method m = anInterface.getDeclaredMethod(method.getName(), method.getParameterTypes());
+                anno = getAnnotation(m, annotation);
+                if (anno != null) {
+                    break;
+                }
+                anno = findAnnotationInInterfaces(anInterface, method, annotation);
                 if (anno != null) {
                     break;
                 }
             } catch (NoSuchMethodException ignore) {
-            }
-            anno = findAnnotationInInterfaces(anInterface, method, annotation);
-            if (anno != null) {
-                break;
             }
         }
         return anno;
@@ -51,10 +61,10 @@ public abstract class AnnotationUtils {
     private static <T extends Annotation> T findAnnotationInSuperClasses(Class<?> cls, Method method, Class<T> annotation) {
         T anno = null;
         Class<?> superClass = cls.getSuperclass();
-        if (superClass != null) {
+        if (superClass != null && !Object.class.equals(superClass)) {
             try {
-                Method m = superClass.getMethod(method.getName(), method.getParameterTypes());
-                anno = findAnnotation(m, annotation);
+                Method m = superClass.getDeclaredMethod(method.getName(), method.getParameterTypes());
+                anno = getAnnotation(m, annotation);
                 if (anno == null) {
                     anno = findAnnotationInInterfaces(superClass, method, annotation);
                     if (anno == null){

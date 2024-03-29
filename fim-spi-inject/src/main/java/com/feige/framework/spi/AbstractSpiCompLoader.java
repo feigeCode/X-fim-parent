@@ -1,6 +1,7 @@
 package com.feige.framework.spi;
 
 
+import com.feige.framework.annotation.ConditionOnConfig;
 import com.feige.framework.aware.ApplicationContextAware;
 import com.feige.framework.aware.EnvironmentAware;
 import com.feige.framework.aware.SpiCompLoaderAware;
@@ -12,6 +13,7 @@ import com.feige.utils.clazz.ClassUtils;
 import com.feige.utils.clazz.ReflectionUtils;
 import com.feige.utils.common.AssertUtil;
 import com.feige.utils.common.Pair;
+import com.feige.utils.javassist.AnnotationUtils;
 import com.feige.utils.logger.Loggers;
 import com.feige.utils.order.OrderClassComparator;
 import org.apache.commons.collections4.CollectionUtils;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -118,6 +121,18 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
         }
         return Collections.unmodifiableList(compNames);
     }
+
+    protected boolean checkCondition(Class<?> cls){
+        ConditionOnConfig condition = AnnotationUtils.findAnnotation(cls, ConditionOnConfig.class);
+        if (condition == null){
+            return true;
+        }
+        String key = condition.key();
+        AssertUtil.notBlank(key, "ConditionOnConfig key");
+        String value = condition.value();
+        String configValue = applicationContext.getEnvironment().getString(key);
+        return Objects.equals(value, configValue);
+    }
     
     protected List<String> doLoadImplClasses(Class<?> requireType) throws ClassNotFoundException {
         List<Pair<String, String>> list = this.doLoadSpiImplClasses(requireType);
@@ -128,6 +143,9 @@ public abstract class AbstractSpiCompLoader extends LifecycleAdapter implements 
                 continue;
             }
             Class<?> cls = ClassUtils.forName(className, this.applicationContext.getClassLoader());
+            if (!checkCondition(cls)){
+                continue;
+            }
             addImplClass(requireType, cls, compName);
         }
         List<String> compNames = spiTypeAndCompNamesCache.get(requireType);
