@@ -33,7 +33,7 @@ public class HeartbeatListener implements EventListener {
                 }else {
 
                     if (hbCnt == 2){
-                        if (!session.isBindClient()){
+                        if (!session.isBind()){
                             Loggers.HEARTBEAT.warn("Close the session of the unbound client, id = {}, remote address = {}", session.getId(), session.getRemoteAddress());
                             session.close();
                             return;

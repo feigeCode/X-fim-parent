@@ -74,12 +74,12 @@ public abstract class AbstractSession implements Session {
     }
 
     @Override
-    public boolean isBindClient() {
+    public boolean isBind() {
         return sessionState.get() >= 2;
     }
 
     @Override
-    public void markBindClient() {
+    public void markBind() {
         sessionState.set(2);
     }
 

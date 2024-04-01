@@ -35,7 +35,7 @@ public class BindClientMsgHandler extends AbstractMsgHandler {
             return;
         }
         
-        if (session.isBindClient()) {
+        if (session.isBind()) {
             // DUPLICATE BIND
             this.sendErrorPacket(session, msg, ProtocolConst.ErrorCode.DUPLICATE_BIND, "DUPLICATE BIND");
             return;
@@ -78,7 +78,7 @@ public class BindClientMsgHandler extends AbstractMsgHandler {
                 .setPort(Configs.getInt(ServerConfigKey.SERVER_TCP_IP_KEY));
         clientBindManager.register(clientBindInfo);
         // 标记绑定客户端
-        session.markBindClient();
+        session.markBind();
         
     }
 

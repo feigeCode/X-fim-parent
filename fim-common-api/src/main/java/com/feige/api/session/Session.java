@@ -2,7 +2,6 @@ package com.feige.api.session;
 
 import com.feige.api.handler.RemotingException;
 import com.feige.api.crypto.Cipher;
-import com.feige.api.sc.FutureListener;
 import com.feige.api.sc.Listener;
 
 import java.net.InetSocketAddress;
@@ -64,15 +63,15 @@ public interface Session {
     boolean isConnected();
 
     /**
-     * is bind client
+     * is bind user
      * @return
      */
-    boolean isBindClient();
+    boolean isBind();
 
     /**
-     * mark is bind client
+     * mark is bind user
      */
-    void markBindClient();
+    void markBind();
 
     /**
      * is handshake

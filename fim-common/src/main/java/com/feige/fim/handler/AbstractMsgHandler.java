@@ -74,7 +74,7 @@ public abstract class AbstractMsgHandler implements MsgHandler {
     }
 
     protected boolean checkBind(Session session, Packet msg) throws RemotingException {
-        if (!session.isBindClient()) {
+        if (!session.isBind()) {
             this.sendErrorPacket(session, msg, ProtocolConst.ErrorCode.NOT_BIND, "NOT BIND");
             return false;
         }
