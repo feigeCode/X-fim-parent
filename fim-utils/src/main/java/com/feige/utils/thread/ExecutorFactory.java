@@ -37,6 +37,9 @@ public class ExecutorFactory {
                                                         int queueSize,
                                                         ThreadFactory threadFactory,
                                                         RejectedExecutionHandler handler){
+        if (corePoolSize > PERMIT_MAX_POOL_SIZE){
+            corePoolSize = PERMIT_MAX_POOL_SIZE;
+        }
         ExecutorService fixedThreadPoolExecutor = FIXED_EXECUTOR_SERVICE_MAP.get(key);
         if (fixedThreadPoolExecutor == null){
             synchronized (FIXED_EXECUTOR_SERVICE_MAP){
@@ -60,19 +63,22 @@ public class ExecutorFactory {
 
     }
     public static ExecutorService createCachedThreadPool(String key,
-                                                          int corePoolSize,
-                                                          int maximumPoolSize,
-                                                          long keepAliveTime,
-                                                          int queueSize){
+                                                         int corePoolSize,
+                                                         int maximumPoolSize,
+                                                         long keepAliveTime,
+                                                         int queueSize){
         return createCachedThreadPool(key,corePoolSize, maximumPoolSize, keepAliveTime, queueSize, createThreadFactory(key, ThreadPoolType.CACHED), new ThreadPoolExecutor.AbortPolicy());
     }
     public static ExecutorService createCachedThreadPool(String key,
-                                                          int corePoolSize,
-                                                          int maximumPoolSize,
-                                                          long keepAliveTime,
-                                                          int queueSize,
-                                                          ThreadFactory threadFactory,
-                                                          RejectedExecutionHandler handler){
+                                                         int corePoolSize,
+                                                         int maximumPoolSize,
+                                                         long keepAliveTime,
+                                                         int queueSize,
+                                                         ThreadFactory threadFactory,
+                                                         RejectedExecutionHandler handler){
+        if (corePoolSize > PERMIT_MAX_POOL_SIZE){
+            corePoolSize = PERMIT_MAX_POOL_SIZE;
+        }
         ExecutorService cachedThreadPoolExecutor = CACHED_EXECUTOR_SERVICE_MAP.get(key);
         if (cachedThreadPoolExecutor == null){
             synchronized (CACHED_EXECUTOR_SERVICE_MAP){
@@ -114,6 +120,9 @@ public class ExecutorFactory {
     }
 
     public static ScheduledExecutorService createScheduleThreadPool(String key, int poolSize, ThreadFactory factory){
+        if (poolSize > PERMIT_MAX_POOL_SIZE){
+            poolSize = PERMIT_MAX_POOL_SIZE;
+        }
         ScheduledExecutorService scheduledExecutorService = SCHEDULED_EXECUTOR_SERVICE_MAP.get(key);
         if (scheduledExecutorService == null) {
             synchronized (SCHEDULED_EXECUTOR_SERVICE_MAP) {
