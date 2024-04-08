@@ -102,7 +102,7 @@ public class ExecutorFactory {
         MeterRegistry meterRegistry = MeterRegistryHelper.getMeterRegistry();
         ThreadPoolExecutorMetrics executorMetrics = new ThreadPoolExecutorMetrics(executor, keyAndType, null);
         executorMetrics.bindTo(meterRegistry);
-        return new ExecutorServiceWrapper(key, ThreadPoolType.CACHED, executor, meterRegistry);
+        return new ExecutorServiceWrapper(key, type, executor, meterRegistry);
     }
 
     public static ScheduledExecutorService wrap(ScheduledThreadPoolExecutor executor, String key, ThreadPoolType type){
@@ -110,7 +110,7 @@ public class ExecutorFactory {
         MeterRegistry meterRegistry = MeterRegistryHelper.getMeterRegistry();
         ThreadPoolExecutorMetrics executorMetrics = new ThreadPoolExecutorMetrics(executor, keyAndType, null);
         executorMetrics.bindTo(meterRegistry);
-        return new ScheduledExecutorServiceWrapper(key, ThreadPoolType.CACHED, executor, meterRegistry);
+        return new ScheduledExecutorServiceWrapper(key, type, executor, meterRegistry);
     }
 
     public static ScheduledExecutorService createScheduleThreadPool(String key, int poolSize, ThreadFactory factory){
